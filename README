@@ -1,50 +1,21 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
- <html><head>
-  <!-- doctype for html 4 is only to satisfy IE -->
-  
-  <meta name="copyright" content="2011 (c) Konstantin Kirillov">
-  <meta name="description" content="Board Puzzle Framework"> 
-  <meta name="keywords" content="board game, puzzle game, on line game, game development, educational game, sokoban"> 
-
-  <title>Framework</title>
-	<script type="text/javascript" src="tp/lib/jquery-1.7.js"></script>
-	<script type="text/javascript" src="tp/bind_events.js"></script>
-	<script type="text/javascript" src="tp/core.js"></script>
-	<script type="text/javascript" src="tp/gui.js"></script>
-	<script type="text/javascript" src="tp/form.js"></script>
-	<script type="text/javascript" src="lib/entry.js"></script>
-
-	<script type="text/javascript" >
-		$.fn.tp$.gio.init=function(){
-			$.fn.tp$.core.rebuid_readme_html($.fn.tp$.gio.Description);
-		};
-	</script>
-
-</head><body><div style="color:#666666; white-space:pre; font-family:monospace;">
-
-Readme wont display if no JavaScript language enabled in your browser.
-To display a readme, turn JavaScript on.
-
-</div>
-
-
-<div style="white-space:pre; font-family:monospace; visibility:hidden;">
 
 You should run this readme from play/readme.htm
 
-<a href="index.htm">#@Title@#</a> is a #@Description@# and is jQuery subplugin tp$.gio.
-In other words, it is wrapped into a <a href="tp/readme.htm">jQuery plugin, tp</a>.
-The files are spread via <a href=".">directory tree</a>, but can be assembled in one file.
+Boardspirator is a Boardpuzzle Framework and is jQuery subplugin tp$.gio.
+In other words, it is wrapped into a jQuery plugin, tp.
+The files are spread via directory tree, but can be assembled in one file.
 
-Version:	#@Version@#
-Date:		#@Date@#
-License:	#@License@#
-Copyright:	#@Copyright@#
-WebSite:	<a href="http://#@WebSite@#">#@WebSite@#</a>
-Contact:	#@Contact@#
+Version:	0.0.58
+Date:		February 11 2012
+License:	Dual licensed under the MIT or GPL Version 2 licenses,
+                excepting of bundled game map texts "play/collections" which are open source, 
+                but licensed and copyrighted separately by their authours.
+Copyright:	(c) 2011-2012 Konstantin Kirillov excepting "play/collections"
+WebSite:	landkey.net/gio/
+Contact:	spam-protection@landkey.net where spam-protection=beaverscript
 
-<a href="tp/readme.htm#features">These features and philosophy of tp</a> are also true for #@Title@#.
+These features and philosophy of tp are also true for Boardspirator.
    ... except images, which are used only in game boards,
    ... except css-ids in ads in some index files
 
@@ -56,7 +27,7 @@ How to run:
   URL startup parameters example:
 	index.htm?game_key=colortrain&debug=true which will run game colortrain
   Entry points:
-	<a href="index.htm">this link</a> which calls <a href="lib/entry.js">entry.js</a> ...
+	this link which calls entry.js ...
 
 There is no server stuff:
     When running from local hard-drive, Chrome restricts JavaScript, FF or
@@ -65,11 +36,11 @@ There is no server stuff:
 Functionality:
 	New Games can be coded and attached from games/ folder
 	Collections of maps can be shared between games and are in collections/ folder.
-	Text maps can be copy-pasted while #@Title@# is loaded.
+	Text maps can be copy-pasted while Boardspirator is loaded.
 	Edit map feature is not elaborated.
 
 
-<a href="../diary/">Diary:</a>
+Diary:
 	is a collection of step by step versions.
 	They are snapshots of folder "play".
 	It is good to have backup versions when current version is
@@ -91,7 +62,7 @@ Game Tree:
 	Each map has own html-board comprised with tiles.
 	When user toggles from map to map, then game-collection-map-round is preserved.
 
-<a name="game_definition_matrix"> </a>
+ 
 ... Draft begins ...
 Game definition matrix.
 It is local. Describes interaction at given point of position.
@@ -148,9 +119,4 @@ TODO:
 
 
 You are welcome.
-
-</div>
-
-
-</body></html>
 

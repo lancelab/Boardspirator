@@ -8,8 +8,10 @@
 		Version			:'0.0.58',
 		Date			:'February 11 2012',
 		Usage			:'No database or server-side script is required. FF and IE can run locally. Chrome and Opera? will request server.',
-		License			:'Dual licensed under the MIT or GPL Version 2 licenses.',
-		Copyright		:'(c) 2011-2012 Konstantin Kirillov', 
+		License			:"Dual licensed under the MIT or GPL Version 2 licenses,\n"+
+						"                excepting of bundled game map texts \"play/collections\" which are open source, \n"+
+						"                but licensed and copyrighted separately by their authours.",
+		Copyright		:'(c) 2011-2012 Konstantin Kirillov excepting "play/collections"',
 		WebSite			:'landkey.net/gio/',
 		Contact			:'spam-protection@landkey.net where spam-protection=beaverscript',
 		Diary			:"\n"+
