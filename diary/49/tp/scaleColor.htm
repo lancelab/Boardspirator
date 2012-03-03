@@ -1,0 +1,67 @@
+<html><head>
+		<title>Demo-Test</title>
+		<script type="text/javascript" src="lib/jquery-1.7.js"></script>
+		<script type="text/javascript" src="core.js"></script>
+		<script type="text/javascript" src="gui.js"></script>
+
+<style>
+
+div {
+
+   -moz-border-radius: 50px;
+   -webkit-border-radius: 50px;
+   display:block-inline;
+   border-style="outset";
+   position:absolute;
+}
+
+</style>
+
+<script type="text/javascript" >
+
+
+  function draw(left, top, radius, width, height, color ){
+
+      var d = document.createElement('div');
+      var s = d.style;
+      s.left=""+(20+left)+"px";
+      s.top=""+(20+top)+"px";
+      s.width=""+width+"px";
+      s.height=""+height+"px";
+      s.borderColor="#FF0000";
+      //s.borderWidth = "1px";
+      s.borderStyle = "none";
+      s.backgroundColor=color;
+      document.body.appendChild(d);
+  }
+  var maxWidth=400;
+  var maxHeight=300;
+  var maxRadius=30;
+  var baseColor="#44EE44";
+
+  //Spawn parameters:
+  var minWidth = maxWidth - 2*maxRadius;
+  var minHeight = maxHeight - 2*maxRadius;
+
+  gui=$.fn.tp$.gui;
+  
+
+	window.onload=function(){
+		  for(var r=maxRadius; r>0; r-=1){
+		       var shift = 2 * r;
+		       var loss = maxRadius - r;
+		       //color = toHex.scaleColor( .3 + Math.abs(loss-5)/maxRadius, baseColor ) ;
+		       color = gui.scaleColor( .2 + .7 *((30-Math.abs(loss-15))+loss/2)/maxRadius, baseColor ) ;
+		       var width = minWidth + shift;
+		       var height = minHeight + shift;
+		       //console.log( "" + width + " " + height + " " + loss + " " + color);
+		       draw( loss, loss, 1, width, height, color );
+		  }
+	};
+
+</script>
+<body>
+Take baseColor="#44EE44" and use it as a base for dynamic gradients.
+
+
+</body></html>

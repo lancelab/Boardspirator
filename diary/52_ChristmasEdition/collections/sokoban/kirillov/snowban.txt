@@ -1,0 +1,32 @@
+One day Collection
+Copyright (c) 2011 Konstantin Kirillov
+All rights reserved.
+
+Put the Candles
+#                #
+#                #
+#                #
+#        .       #  
+#       .        # 
+#          .     #  
+#      .   .     #
+#      .  . .    #
+#       .        #
+#     .    .     #
+#    .     . .   # 
+#     .  .  .    #
+#      .   .     # 
+#                #
+#    .  .   .    #
+#   .   .     .  #
+#      .         #
+#     .   .      #
+#           .    #
+#                #
+#   $$$$$$$$$$$  #
+#       @        #
+#   $$$$$$$$$$$  #
+#                #
+#   $$$$$$$$$$   #
+#                #
+

@@ -1,0 +1,426 @@
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::         Sokoban (c) by Falcon Co., Ltd., Japan         ::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::                    File Format 0.11                    ::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::                                                        ::
+:: File Header                                            ::
+::   Raw File Notes                            Optional   ::
+::   File Notes                                Optional   ::
+::   Game Type                                 Optional   ::
+::   Macros                                    Optional   ::
+:: Level 1                                     Required   ::
+::    Title                                    Optional*  ::
+::    Board                                    See legend ::
+::    Level Notes                              Optional   ::
+::    Game 1                                   Optional   ::
+::      Title                                  Optional*  ::
+::      Moves                                  See legend ::
+::      Game Notes                             Optional   ::
+::    Game 2                                   Optional   ::
+::    ... (more games)                                    ::
+:: Level 2                                     Optional   ::
+:: ... (more levels)                                      ::
+::                                                        ::
+:: Remarks:                                               ::
+::                                                        ::
+:: File Header                                            ::
+::   The different types of information may be written in ::
+::   any order.                                           ::
+::                                                        ::
+:: Raw File Notes                                         ::
+::   Raw file notes are only intended for someone looking ::
+::   at the raw file in a text editor. These lines begin  ::
+::   with "::".                                           ::
+::                                                        ::
+:: File Notes                                             ::
+::   File notes are the remaining lines when all other    ::
+::   information is removed from the file header, e.g.,   ::
+::   raw file notes and macros.                           ::
+::                                                        ::
+::   As an example, file notes can contain general        ::
+::   information written as key/value pairs like          ::
+::   "Author: NN".                                        ::
+::                                                        ::
+:: Game Type                                              ::
+::   The type applies to all levels in the file. If it is ::
+::   not specified, the default value is "Sokoban".       ::
+::                                                        ::
+::   The type is written as "Game: X" or "Game=X".        ::
+::   An example: "Game: Hexoban".                         ::
+::                                                        ::
+:: Macros                                                 ::
+::   Macros are key/value pairs separated by "=".         ::
+::   An example: "Copyright=These levels are (c) by NN".  ::
+::                                                        ::
+::   The value of a key/value pair can be inserted in     ::
+::   level notes and game notes by writing the key        ::
+::   enclosed by "<#" ... "#/>". This applies to both     ::
+::   types of key/value pairs, ":" and "=", but in        ::
+::   contrast to ":" pairs, macros are not considered     ::
+::   a part of the file notes.                            ::
+::                                                        ::
+::   An example of macro usage: "<#Copyright#/>".         ::
+::   The use of key/value pairs is case-insensitive.      ::
+::                                                        ::
+::   Macro-definitions are single-lined. To insert a      ::
+::   line-break in the expanded text, write "\n".         ::
+::                                                        ::
+:: Titles                                                 ::
+::   A title line is the last non-blank text line before  ::
+::   a level or a game, provided the line is preceded     ::
+::   by a blank line or it is the only text line at this  ::
+::   position in the file.                                ::
+::                                                        ::
+::   Title lines are optional unless a single or a last   ::
+::   text line from a preceding level, game, or file      ::
+::   header can be mistaken for a title line.             ::
+::                                                        ::
+:: Level Notes                                            ::
+::   Two special key/value pairs are supported in level   ::
+::   notes: "Title" and "Author", hence, titles can       ::
+::   either come from a title line or from a key/value    ::
+::   pair.                                                ::
+::                                                        ::
+::::::::::::::::::::::::::: Board ::::::::::::::::::::::::::
+:: Legend.................:      :.................Legend ::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Wall...................: #  # :...................Wall ::
+:: Pusher.................: @  p :.................Pusher ::
+:: Pusher on goal square..: +  P :..Pusher on goal square ::
+:: Box....................: $  b :....................Box ::
+:: Box on goal square.....: *  B :.....Box on goal square ::
+:: Goal square............: .  o :............Goal square ::
+:: Floor..................:      :..................Floor ::
+:: Floor..................: -  _ :..................Floor ::
+::                                                        ::
+:: Remarks:                                               ::
+::                                                        ::
+::   The first and the last non-empty square in each row  ::
+::   must be a wall or a box on a goal. A board cannot    ::
+::   have empty rows.                                     ::
+::                                                        ::
+::   Boards may be run-length encoded (RLE), e.g.,        ::
+::   "###----@.#" may be encoded as "3#4-@.#", and        ::
+::   "#-#-#-##-#-#-#" may be encoded as "2(3(#-)#)".      ::
+::   A row cannot be split over multiple physical lines.  ::
+::                                                        ::
+::   Rows may be combined on a single physical line by    ::
+::   using "|" as a row separator, e.g.,                  ::
+::   "--3#|3#-#|#@$.#|5#". A "|" at the end of a physical ::
+::   line is optional and may be omitted.                 ::
+::                                                        ::
+::::::::::::::::::::::::::: Moves ::::::::::::::::::::::::::
+:: Legend.................:      :.................Legend ::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Move pusher up.........: u  U :.......Push/pull box up ::
+:: Move pusher down.......: d  D :.....Push/pull box down ::
+:: Move pusher left.......: l  L :.....Push/pull box left ::
+:: Move pusher right......: r  R :....Push/pull box right ::
+:: Jump start.............: [  ] :...............Jump end ::
+:: Current position.......: *  * :.......Current position ::
+::                                                        ::
+:: Remarks:                                               ::
+::                                                        ::
+::   Moves may be run-length encoded, e.g., "3r3U" means  ::
+::   "rrrUU", and "2(3(dr)R)" means "drdrdrRdrdrdrR".     ::
+::   Each line must, however, have at least one proper    ::
+::   non-digit character.                                 ::
+::                                                        ::
+::   Jumps and pulls: Only in reverse mode games.         ::
+::                                                        ::
+::   Reverse mode games must start with a jump, even if   ::
+::   it is empty. An example: "[]UU[ddlll]DDllR".         ::
+::                                                        ::
+::   Current position is optional and defaults to the     ::
+::   position after the last move.                        ::
+::                                                        ::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+Date Created: 2001-11-13  19:30:29
+Date of Last Change: 2008-06-29  10:09:53
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+:: Macros
+
+Holland1=Author: David Holland\nThe dh1 collection of Sokoban positions\nis copyright David Holland\n<hidden_from_spam@clickfest88.freeserve.co.uk where hidden_from_spam=david>\nThese levels may be distributed freely as long as this copyright message is retained.
+
+Holland2=Author: David Holland\nThe dh2 collection of Sokoban positions is\ncopyright David Holland\n<hidden_from_spam@clickfest88.freeserve.co.uk where hidden_from_spam=david>\nThese levels may be distributed freely as long as this copyright message is retained.
+
+Holland3=Author: David Holland\nThe maelstrom collection of Sokoban positions is copyright\nDavid Holland <hidden_from_spam@clickfest88.freeserve.co.uk where hidden_from_spam=david>\nThese levels may be distributed freely as long as this copyright message is retained.
+
+Holland4=Author: David Holland\nThese levels are © David Holland <hidden_from_spam@clickfest88.freeserve.co.uk where hidden_from_spam=david>\nThese levels may be distributed freely as long as this copyright message is retained.
+
+dh1=\n\nAuthor's note:\nThe dh1 Sokoban levels by David Holland.\nOriginal release date: October 2000\n\nI have experimented with computer-generation for several of the smaller puzzles hence the "co-authorship" with sokgen (a computer program of mine). If you like the puzzles email me and if you have stylistic criticisms direct them to sokgen :-)
+
+dh2=\n\nAuthor's note:\nThe dh2 Sokoban levels by David Holland.\nOriginal release date: June 2001.\n\nThere are no computer-generated levels as I am trying to evolve a puzzle-making style, and so experimenting with as many different forms as possible. Some of the puzzles are very, or slightly, symmetrical as a stylistic device (in this I am influenced by David W. Skinner's excellent Sasquatch puzzle sets at his Sokoban page). Others are completely unsymmetrical and the style is in the variations alone.
+
+maelstrom=\n\nAuthor's note:\nThe maelstrom Sokoban levels by David Holland.\n\nThe word Maelstrom means a powerful whirlpool, named after one off the coast of Norway.\n\nThe collection ranges from the pretty small (5 objects, 8x9 squares) through the mid-sized (13 objects, 15x11 squares) right up to the large (one puzzle with 57 objects 23x24 squares). Just browse for the kind of challenge you like. The puzzles are in rough order of difficulty. I designed the maze layout and goals for all the puzzles, and many but not all of the small puzzles use computer-generated start positions. A few of the puzzles feature unexpected twists within lengthy solutions and require substantial imagination, and the others I hope are at least interesting. A fully-featured Sokoban player (with drag and drop movement of objects, mouse movement of the man, ability to keep your place if you quit and return to the puzzle another time) is strongly recommended for the medium to larger puzzles, though not strictly necessary.
+
+bagatelle=\n\nAuthor's note:\nThe bagatelle Sokoban levels by David Holland.\nOriginal release date: October 2001\n\nBagatelle is a French word for a trinket, from the Italian for a conjuror's trick. The collection contains fairly simple puzzles (of less difficulty than my previous collection maelstrom) of various sizes. Some of the small puzzles are easier versions of puzzles in my other collections. Others are my take on some classical Sokoban themes (goals in a line, in a cross shape, objects outside goal room for tricky start and finish). The problems posed by each puzzle are of a fairly straightforward kind, but are nevertheless quite varied. The puzzles are in roughly ascending order of difficulty.
+
+cantrip=\n\nAuthor's note:\nThe cantrip Sokoban levels by David Holland.\nOriginal release date: September 2001.\n\nThe puzzles are all small (between 6 and 9 goals and pretty cramped), with maze and walls designed by me and computer-generated start positions. Because of the computer involvement, the start positions of the puzzles may look abstract or random. The meat of the puzzles is in the variations, the unexpected twists, and the underlying problems. The human element of design is most evident in the solved position, by construction, and I like to think of the solving process as producing order from chaos. This collection is meant for experienced solvers, or at least determined ones, as it contains probably my toughest puzzles so far. As usual I have tried to put the puzzles in rough ascending order of difficulty, but here this is even more approximate than usual as I find the puzzles difficult to compare. The puzzles have been extensively play-tested. On a good day I can actually solve them...
+
+bagatelle2=\n\nThe bagatelle2 Sokoban levels by David Holland.\nOriginal release date: July 2002.
+
+cantrip2=\n\nThe cantrip2 Sokoban levels by David Holland.\nOriginal release date: July 2002.
+
+
+KVK, Doubleban demo
+
+######################
+#@ $$ $$   ..........# 
+#  $ $ $ $ ###########
+#  $$ ######
+#     #
+#######
+
+
+
+
+David Holland, "Spade"
+
+      ##
+    ##  ###
+  ## $ $   #
+ #   #..#$ #
+ # $$#*.#  #
+ #   ....$ #
+ # # .#.#  #
+# $##$#.#$ #
+# @$    .$ #
+ #  #  ##  #
+  #####  ##
+
+<#Holland1#/><#dh1#/>
+
+Solution/Moves (Built-in)
+RRRUUluRRRdddLdlUUUluRllluurrDullddrRdrddrruuuuuluurDDDDDuuuurrrdddddd
+LLLLdlUUdlllUUUrruuuRldddlldddrrrrrrrruuuuuulllulDrrrrddlUrdddlULrrddd
+lllllllluuurruuurrrddDrrruuuLLrrddddddlUUddllllllluuurruullDDDDldRRRRR
+RRlllllluuurruuurrurDDurrrdddLLrrddddlUUUruLUUruLLrddddddllllllluuurru
+uurrurDlllddLulDDDDldRRRRRR
+
+
+David Holland, "Ninevah"
+
+    ####
+####   #
+#@$  # #
+# $$$  #
+##.#.  #
+#  ..# #
+#  #.* #
+# $.$ #
+ ##   #
+ ######
+
+Author: David Holland + sokgen
+The dh1 collection of Sokoban positions
+is copyright David Holland <hidden_from_spam@clickfest88.freeserve.co.uk where hidden_from_spam=david>
+These levels may be distributed freely as long as this copyright message is retained.<#dh1#/>
+
+Solution/Moves (Built-in)
+RDDDrruUrrdddLddlluRdrUlUUlllddRUluRuuRRDDurruuullDDlluRdrDrruLLrruull
+DDLulD
+
+
+David Holland, "CrissCross"
+
+    ###
+   #  @###
+  #  #$$  #
+ ##.#   # #
+#  $#.#$  #
+#   ...  #
+ ##$#.#$ #
+  #     #
+   ##   #
+     ####
+
+Author: David Holland + sokgen
+The dh1 collection of Sokoban positions
+is copyright David Holland <hidden_from_spam@clickfest88.freeserve.co.uk where hidden_from_spam=david>
+These levels may be distributed freely as long as this copyright message is retained.<#dh1#/>
+
+Solution/Moves (Built-in)
+DRdDrdLLLuuRurDDullddrRllLLUlldRRRRddllUdrruuuurrddLruulldDDulLddrRuuu
+uruulldlDDDrrrrurruuLLdddlllluuururrDrdddlluuRldddddrruUrULLrdddlluuUl
+luuururrdrDDuurrddLdLLrruruulldDrdLddLdlUllUUUlldRR
+
+
+David Holland, "Carousel"
+
+    ##    ###
+####  ####   #
+# $  $     $ ###
+# #   # ### #   #
+#  $   $ # $$ $ #
+ ##  ## $@$     #
+  #$ ##  # $$ $$ #
+  #    $  ## ##  #
+ ### #$##  ...# #
+ #  ..*.*..##.# #
+ # #..*.....*.# #
+ #   ########   #
+  ###        ###
+
+<#Holland1#/><#dh1#/>
+
+Solution/Moves (Built-in)
+LuLuulLrrddrddlUUrdddrdrrrrdddrruuuuUUllllLLLddrdrddrRllluuuluurrrrrrr
+ddddddllUlllllluRRllLLdldlluurRRRRdrruuuluuulLLulDDDDDuuuurrrrddlUruLL
+LrrrdddrdrrruUrurrdLLuLLLLLddrdrrruUruuurrDDldllddllluluurrrRdddlllddr
+rrrdrruuuuruLLLUlDDuulldRlullddrdrrRuUddlllddrUluRRlddllluRRdrUluRdlll
+lldldlluurRRRRRRurDldRRRlllllullluurrDullddrRRRRurDldRRlluuuluuulllulD
+DDDDurrddldldlluurRRRRRRurDldRluuuluuullluuulDDDDDDDurrddldldlluurRuur
+rddrdLuuullddRluurrdDrrruulLLLrrruuullllddDDDllddrrUdlluurRRRRRdrruulD
+rdLLruuulluUruLLLuurrDulldlDDDDDDllddrrUdlluurRRRRRdrruulDrdLuuuluuuLL
+LulDDDDDDllddrrUdlluurRRRRRlluurrrdDuuluurrrdrruLLLLLdlUruLLLulDDDDDDl
+lddrrUdlluurRRRRRRurDluuluurrrrrrruulDrdLLLLLLLdlUruLLLulDDDDDDllddrrU
+dlluurRRRRRRuuluurrrrrruulDrdLLLLLLdlUruLLLulDDDDDDllddrrUdlluurRRRRRl
+luuruuuuurrrurrdLdDlddrruLLLLdlUruLLLulDDDDDDllddrrUdlluurRRRRluurruur
+rruuuLLLLLLulDDDDDDDDllddrrUdlluurRRRuurruurrrrruLdllllluuurrrrdDrdLLL
+LdlUruLLLulDDDDDDllddrrUdlluurRRluuuulUlluuRRDullddrRurDDDDDDllddrrUdl
+luurRuuuuuruuulDDDDDDDDuulUUruulullddrRurDDDDD
+
+
+David Holland, "Pattern-oster"
+
+   ##
+  #  #
+  #  #  #####
+  #  # #..   #
+  # ####..##$##
+  #  $ $.*     #
+  # #$ #*.# $# #
+ ##$#  #..#  # #
+#   #$ #*.# $# #
+# # #  $..#  # #
+# #$#$ #..$  #  #
+#   #  #..#   # #
+# #@# $#*.#$# # #
+#  $#  #..#   # #
+ #   $ $ $ ###  #
+  ###   #      #
+     ### ######
+
+<#Holland1#/><#dh1#/>
+
+Solution/Moves (Built-in)
+ullddrdrrRuuuruuRRdrRRllUUUlUUUdddrdddrruuuuulLDDDuluUrrrrrrdddddrdddd
+ldlllllUUUUluuUUddddrddlUUUUUruuurrdddddlLdlUUdrrruuuuulldddDuuuuuurrr
+DulllddrrddddddrrddllUUUlLulDDDrddrdrrrruruuuuluuuuulLLdddDrDLLLulDDru
+rruuuuuLrddddddddrruuLrddlluUruLLLuuuuUUdddddlDulluuuuRRllddddrrruuuUd
+dddlllddlddrUdlddrURRllluurDuUUUlDrurrruuuulllddDuuurrrrrrrrdddddrdddd
+ldlllllUUUUUUUUdddddddlldlluRRRlluuuuluRRRdrUUddrruuuuurrrdddddrddddld
+lllllUUUUUUllldddlUdddllluluurrdDldRRRRRRlluuuuuuuuurrrrrrrrdddddrdddd
+ldlllllUUUddllllllluluuuuurrdDDDDldRRRRRRlluuuuuuuuurrrrrrrrdddddrdddd
+ldlllllUUdlllllluuuuuuUUUUUruulDDDDrRRRRlllllDDDDDDDDldRRRRRRlluuuuuuu
+lUrdddrrrdrruuuuurrrdddddrddddldlllllUlllllluuuuuuuuurRRRlddddlDDDDruu
+uuuuluulldddddddddrRdrUUUUUluRRRlluulDDDDDDuuuuuuuulldddddddddrRdrUUUU
+UluRRldddddrrrrdrrrruruuuuluuuuulllddrDDDldddrruuLrddlluUruLLLrruuuuur
+DDDDDldddrruuLrddlluUruLL
+
+
+David Holland, "Saturnine"
+
+ ### ####
+#   ##   # ###
+# $   $ $ #   #
+# $ #  .$ #   #
+ ##  ##.#  $ #
+# ##$##.###. #
+#   *.......$#
+#    ##.##   #
+##$####.#####
+#  $ # . #   #
+#  #  **$    #
+#  $ # @ # $ #
+# $   ### #  #
+ ##   #   ###
+   ###
+
+<#Holland1#/><#dh1#/>
+
+Solution/Moves (Built-in)
+URRRlllUUUUllLdllDDldddRRdrruLuurRuruuurrrruruulDlluuLullDRddDDDullldl
+luRRRRRuuuullllddrDuluurrrrddddllLrrrRRRdrrULrUUlDuuurrdLulDDlluuLulDD
+DDDllluuluuulldRRRRRurDDDDuuullllddrddrrRRlllluuluulldRurrrrrddddllluu
+lUluRRRRurDDDuurrdLulDulldRlullddrdddlluRRRRRllldllddlddrUUUUluRRRRRll
+dlldddddRdrruLuLrddlUlUUUUUluRRRRldlldddddrruLdlUUUUUluRRRdllddddrruuL
+rddlluUUUluRRdlddrrdrrdrUrrrurrdLLLLLrrrrrddlUruLLLL
+
+
+David Holland, "Briefcase Alt 23"
+
+   ###
+###   #
+# $*@.###
+# # *$  #
+# #. .# #
+# #$* $ #
+#    .###
+###   #
+   ###
+
+Author: David Holland + sokgen
+The dh1 collection of Sokoban positions
+is copyright David Holland <hidden_from_spam@clickfest88.freeserve.co.uk where hidden_from_spam=david>
+These levels may be distributed freely as long as this copyright message is retained.<#dh1#/>
+
+Solution/Moves (Built-in)
+DldDRUrDuUrrddLLulluRuulDrddrdrruulLdlldRddlUlluuuuRRurrDDrrddlLrruull
+DlDRuuuulldllddddrrdrUllluuuurrurrdddllDurruuulldllddddrRuurruuLLrrddl
+ldddrrUUUUrrddLruulldlldddrruUddlluRluuURuulDDrdDrrruulLrrddllllddrUll
+luuuuR
+
+
+
+
+David Holland, "Abstract"
+
+  ####
+ #    #
+ #. * #
+# . $  #
+# #**# #
+#  *+* #
+ # $$ #
+ #    #
+  ####
+
+<#Holland1#/><#dh1#/>
+
+Solution/Moves (Built-in)
+LUUluurrrddrddLLrddlULrruruuluulllddrdDRluuluurrrddLDDuuruulDDuullddRl
+uurrdLrrdrddLddllUUUURlddddrruuLUUdlDrrddlUUrruuLuullDDllddRRlluurruur
+rddrddlddlllUdrrruuruuluullddllddRdRRdrUllluluurruurrddLL
+
+
+
+
+David Holland, "Skewsymmetric Pattern #6"
+
+         #####
+      ####   #
+   ####    # #
+####  $ # $  ##
+#   .#.$.$.$. #
+# # $.$.$.$.# #
+#  $.$.$.#.$.$##
+##  $.#.$.$.$  #
+ # #.$.$ $.$.# #
+ #  $.$.$.#.$  ##
+ ##$.$.#.$.$.$  #
+  # #.$.$.$.$ # #
+  # .$.$.$.#.   #
+  ##  $ # $  ####
+   # #  @ ####
+   #   ####
+   #####
+
+<#Holland2#/><#dh2#/>
+
+
+

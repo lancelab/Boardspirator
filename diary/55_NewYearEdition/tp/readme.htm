@@ -1,0 +1,69 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+ <html><head>
+  <!-- doctype for html 4 is only to satisfy IE -->
+  
+  <meta name="copyright" content="2011 (c) Konstantin Kirillov">
+  <meta name="description" content="JavaScript jQuery plugin for generic and gui functions"> 
+  <meta name="keywords" content="JavaScript, Web development, jQuery"> 
+
+  <title>tp</title>
+	<script type="text/javascript" src="lib/jquery-1.7.js"></script>
+	<script type="text/javascript" src="core.js"></script>
+
+	<script type="text/javascript" >
+		$('document').ready( function(){
+			$.fn.tp$.core.rebuid_readme_html($.fn.tp$.Description);
+		});
+	</script>
+
+</head><body><div style="color:#666666; white-space:pre; font-family:monospace;">
+
+Readme wont display if no JavaScript language enabled in your browser.
+To display a readme, turn JavaScript on.
+
+</div>
+
+
+<div style="white-space:pre; font-family:monospace; visibility:hidden;">
+
+#@Title@# is a #@Description@#.
+It can be distributed as <a href=".">this entire folder</a>.
+
+Version:	#@Version@#
+Date:		#@Date@#
+License:	#@License@#
+Copyright:	#@Copyright@#
+Contact:	#@Contact@#
+WebSite:	<a href="http://#@WebSite@#">#@WebSite@#</a>
+
+Demos are <a href="demo">located here</a>. Chrome will possibly restrict them in local mode.
+
+<a name="features"></a>Features are:
+	... there are no css files and no images used, all is dynamic
+	... no HTML5, no XHTML stuff ... HTML4 is sufficient
+	... JavaScript globals footprint is one, it is "jQuery"
+	... CSS footprint is zero, no CSS-selector names used
+	... some of subplugins like tp$.core or tp$.gui are really a libraries and
+	... only one call ...tp$('select') is really jQuery modifier of a dom-element
+
+Philosophy.
+	Project is based on jQuery, but it is always kept in mind the possibility to depart
+	from jQ at first opportunity. jQ is important for binding to events and dom-manipulation.
+
+Credits
+	Following development tools we found highly effective:
+		FireBug in FireFox
+		Ubuntu Linux 10.04
+		Meld 1.30 http://meld.sourceforge.net/
+		regexxer 0.9 http://regexxer.sourceforge.net/
+		gimp
+		console grep
+
+You are welcome.
+
+</div>
+
+
+</body></html>
+

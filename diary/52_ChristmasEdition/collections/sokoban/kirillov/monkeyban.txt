@@ -1,0 +1,30 @@
+Demo maps for Monkeyban
+License: MIT
+Copyright (c) 2011 Konstantin Kirillov
+
+
+Introduction One
+
+############
+#       ...#
+#---b$$ ####
+# ###@###
+#______#
+####---#
+   #####
+
+
+
+Introduction Two
+
+##########
+#        #
+#    $   #
+#   $#   #
+# ###.. #
+#  @$$# #
+#     #.#
+#     #.#
+#########
+
+

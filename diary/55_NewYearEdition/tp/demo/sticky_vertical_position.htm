@@ -1,0 +1,34 @@
+<html><head>
+		<title>Demo-Test</title>
+		<script type="text/javascript" src="../lib/jquery-1.7.js"></script>
+		<script type="text/javascript" src="../core.js"></script>
+<body>
+Cannot make scroll working ...
+
+<div id="moo" style="position:absolute; height:200px; width:200px; background-color:#AAAAAA;">
+popup
+
+</div>
+
+<div id="boo" style="position:absolute; height:1400px; ">
+	<div id="moo" style="position:absolute; bottom:0px;">
+	Hello ...
+	</div>
+</div>
+
+<button style="position:fixed; top:200px;" 
+		onclick="$.fn.tp$.core.do_center_vertically_in_screen($('#moo')[0]);" >click after scroll</button>
+
+
+<script type="text/javascript" src="core.js">
+//	$(window).scroll(function(){
+	$(document.body)[0].scroll(function(){
+
+console.log('hit');			
+			$.fn.tp$.core.do_center_vertically_in_screen($('#moo')[0]);
+	});
+</script>
+
+
+</body></html>
+

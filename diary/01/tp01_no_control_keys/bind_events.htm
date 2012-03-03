@@ -1,0 +1,36 @@
+<html><head>
+		<title>Demo-Test</title>
+		<script type="text/javascript" src="lib/jquery_002.js"></script>
+		<script type="text/javascript" src="bind_events.js"></script>
+<body>
+
+<div id="element">Press keys ...</div>
+
+<script type="text/javascript">
+
+var x=function(){
+	//Usage example:
+	$.fn.tp$.bindEvents('keydown', function(keyName)
+		{
+			switch(keyName)
+			{
+				case 'up':		console.log('oh, ... arrow up');
+								//false means: stopPropagation and preventDefault
+								return false;
+				case 'down':	console.log('oh, ... arrow down');
+								break;
+				default:		console.log('keyName='+keyName);		
+			}		
+			//false means: stopPropagation and preventDefault
+			return false;
+		}			
+	);
+};
+
+
+//setTimeout(x,10000);
+x();
+</script>
+
+
+</body></html>

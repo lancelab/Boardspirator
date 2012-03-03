@@ -1,0 +1,21 @@
+this is an example of own built maps or solutions
+
+use is to hand-make them
+
+Example 1. Map
+
+#### $@. ###########
+
+:::game_key=sokoban
+
+Example 2. Solution to above map
+
+
+dldldldldld
+:::game_key=sokoban
+
+Example 3. Solution to different map
+
+:::game_key=sokoban
+:::map_key=....
+

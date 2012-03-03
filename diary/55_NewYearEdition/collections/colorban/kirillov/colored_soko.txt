@@ -1,0 +1,71 @@
+:::colorban file format
+;too late: :::title Colored Soko
+
+Authors: see individual maps
+Copyrights: see individual maps
+
+Short Flight on Grey Map
+
+- - # # # #
+# # # - - # # # # # # # #
+# - - C - - . .@ 1 # - - #
+# - - A - # D # .H 5 - - #
+# # # B # # . . 6 # - - #
+- # # - # - E F G - - # #
+- # - - # - # - # # - #
+- # - - - - - - - - - #
+- # - - # # # # # # # #
+- # # # #
+
+Author: GRIGoRusha, Colorized by K.Kirillov
+Title: Flying idea #132
+Comment:
+color red
+Comment-End:
+
+;THIS MAP IS A NON-SIGNIFICANT MODIFICATION OF 
+;GRIGoRusha ORIGINAL MAP
+;Modification is made by K.Kirillov.
+
+454
+
+rDrrddddllluURRllddrrruUUruulDllulllldLD
+DDldRRRuuRRddrrruuUruLddddllluuRRllddrrr
+uUlllllddlluuuururrDDuulldlddddrruuRuuul
+lulDDDDDldRuuuuulldRurDDDDlddrUUUUUruLrr
+rdddlddLruuruuulllddddlddrUUUUUrurrdddRd
+dLLLrrrrrruulLLddlluuRuuurrdDLDRuuulldDu
+ulldldddlddrUrruuRuuulldlddDldRuuuuruulD
+DlluRRRRRRlllldDDDlddrUUUUUluRRRRdddlddL
+ruururrdLuluulllddddlddrUrrrrUUruLdddllu
+uRlddrruUlURdddrrruuLLLddllllUUUUrurrDul
+ldlluRRRlldddddrruuRlddrruUrrrUruulDLrDD
+lllddrrrUUUruL
+
+
+
+
+Long Flight on Grey Map
+
+- - # # # #
+# # # - - # # # # # # # #
+# - - C - - . .@ 3 # - - #
+# - - A - # D # .H - - - #
+# # # B # # 5. . 4 # - - #
+- # # - # - E F G - - # #
+- # - - # - # - # # - #
+- # - - - - - - - - - #
+- # - - # # # # # # # #
+- # # # #
+
+Author: GRIGoRusha, Colorized by K.Kirillov
+Title: Flying idea #132
+Comment:
+color red
+Comment-End:
+
+;THIS MAP IS A NON-SIGNIFICANT MODIFICATION OF 
+;GRIGoRusha ORIGINAL MAP
+;Modification is made by K.Kirillov.
+
+

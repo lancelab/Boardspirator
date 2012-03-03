@@ -1,0 +1,35 @@
+<html><head>
+		<title>Demo-Test</title>
+		<script type="text/javascript" src="lib/jquery-1.7.js"></script>
+		<script type="text/javascript" src="core.js"></script>
+		<script type="text/javascript" src="gui.js"></script>
+<body>
+
+<div id="horizon" style="position:absolute; top:100px; width:100px; height:10px; background-color:#000000;"></div>
+<script type="text/javascript">
+	window.onload=function(){
+		gui=$.fn.tp$.gui;
+
+		gui.create_triangle({style:{			width:20, height:60}					});
+		gui.create_triangle({style:{left:20,	width:20, height:60},direction:'up'		});
+		gui.create_triangle({style:{left:40,	width:20, height:60},direction:'left'	});
+		gui.create_triangle({style:{left:60,	width:20, height:60},direction:'right'	});
+
+
+		div=$('#horizon');
+		gui.create_triangle({parent:div[0], style:{top:10,leff:0,	width:20, height:60},direction:'left'	});
+		gui.create_triangle({parent:div[0], style:{top:10,right:0,	width:20, height:60},direction:'right'	});
+
+
+		//corners
+		div=document.getElementById('id');
+		gui.cornerize(	{tl:10, br:20},div  );
+
+	};
+</script>
+
+
+<div id="id" style="border-radius:5px; background-color:#AAAAAA; position:absolute; left:200px; width:100px; height:100px">Moo</div>
+
+
+</body></html>

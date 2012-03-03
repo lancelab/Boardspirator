@@ -1,0 +1,50 @@
+<html><head>
+		<title>Demo-Test</title>
+		<script type="text/javascript" src="lib/jquery-1.7.js"></script>
+		<script type="text/javascript" src="bind_events.js"></script>
+<body>
+
+<div id="element">Press keys ...</div>
+
+<script type="text/javascript">
+
+var x=function(){
+	//Usage example:
+	$.fn.tp$.bindEvents('keydown', function(arg)
+		{
+			if(arg.event.ctrlKey)
+			{
+				switch(arg.keyName)
+				{
+					case 'up':		console.log('oh, ... ctrl+arrow up');
+									//false means: stopPropagation and preventDefault
+									return false;
+					case 'down':	console.log('oh, ... ctrl+arrow down');
+									break;
+					default:		console.log('ctrl+keyName='+arg.keyName);		
+				}
+			}else{ 
+				switch(arg.keyName)
+				{
+					case 'up':		console.log('oh, ... arrow up');
+									//false means: stopPropagation and preventDefault
+									return false;
+					case 'down':	console.log('oh, ... arrow down');
+									break;
+					default:		console.log('keyName='+arg.keyName);		
+				}		
+			}
+			if(arg.event.altKey) console.log('alt key is on');
+			//false means: stopPropagation and preventDefault
+			return false;
+		}			
+	);
+};
+
+
+//setTimeout(x,10000);
+x();
+</script>
+
+
+</body></html>

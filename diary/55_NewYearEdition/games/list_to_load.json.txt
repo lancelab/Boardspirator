@@ -1,0 +1,8 @@
+	[
+		"colorban",
+		"monkeyban",
+		"doubleban",
+		"sokoban",
+		"colortrain",
+		"candelban"
+	]

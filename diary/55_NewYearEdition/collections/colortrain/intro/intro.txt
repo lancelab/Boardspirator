@@ -1,0 +1,66 @@
+:::colorban
+
+Live Maze
+License: MIT
+Copyright (c) 2011 Konstantin Kirillov
+
+6 pieces
+
+##########
+#111111--#
+#b-------#
+#-ABABAB-#
+#--------#
+#-BABABA-#
+#-------a#
+#--222222#
+##########
+
+:::multiplayer=2
+
+Clumsy Players
+
+rlrlDlulrlrlrlrurudrdUlUldDdDlududrrrrur
+urlrDuuulllllrlrdUlddlRDRrldururrurLDdrl
+rUDUDrDuuulLurLdLdLluUlUDdDluUrdrLDdDluU
+RURdRdurrdDrDDlllllUlUlUullulRdddrR
+
+
+4 pieces
+
+##########
+#1111----#
+#b-------#
+#-BABA---#
+#--------#
+#---ABAB-#
+#-------a#
+#----2222#
+##########
+
+:::multiplayer=2
+
+Soko-unsolvable
+
+##########
+#-2-@....#
+#--BBBAA-#
+-####--##-
+----#--#--
+-----##---
+
+rrDLurrrdLulldddrUluuRRllddrUluRllllldRR
+urrrDLddr
+
+rrDLurrrdLulldddr
+
+Soko-solvable
+
+########
+#--@...#
+#-$$$--#
+-#---##
+--#--#
+---##
+
+

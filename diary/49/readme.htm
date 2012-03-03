@@ -1,0 +1,113 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+ <html><head>
+  <!-- doctype for html 4 is only to satisfy IE -->
+  
+  <meta name="copyright" content="2011 (c) Konstantin Kirillov">
+  <meta name="description" content="Board Puzzle Framework"> 
+  <meta name="keywords" content="board game, puzzle game, on line game, game development, educational game, sokoban"> 
+
+  <title>Framework</title>
+	<script type="text/javascript" src="tp/lib//jquery-1.7.js"></script>
+	<script type="text/javascript" src="tp/bind_events.js"></script>
+	<script type="text/javascript" src="tp/core.js"></script>
+	<script type="text/javascript" src="tp/gui.js"></script>
+	<script type="text/javascript" src="tp/form.js"></script>
+	<script type="text/javascript" src="lib/entry.js"></script>
+
+	<script type="text/javascript" >
+		$.fn.tp$.gio.init=function(){
+			var w;
+
+			var tp =$.fn.tp$;	
+			var gio=tp.gio;
+
+			//remove JS waring which pollutes the body:
+			var to_remove=tp.core.matchChild(/^\s*Readme/i,document.body);
+			if(to_remove)document.body.removeChild(to_remove);
+
+			var to_display=tp.core.matchChild(/#@Title@#/i,document.body);
+			if(to_display){
+				w=to_display.innerHTML;
+				w=w.replace(/#@Title@#/,gio.Description.Title);
+				w=w.replace(/#@Description@#/,gio.Description.Description);
+				w=w.replace(/#@Version@#/,gio.Description.Version);
+				w=w.replace(/#@Date@#/,gio.Description.Date);
+				w=w.replace(/#@License@#/,gio.Description.License);
+				w=w.replace(/#@Copyright@#/,gio.Description.Copyright);
+				w=w.replace(/#@Contact@#/,gio.Description.Contact);
+				to_display.innerHTML=w;
+
+				to_display.style.visibility='visible';
+			}else{
+				document.body.innerHTML='... cannot find readme ...';
+			}
+			document.title = gio.Description.Title;
+		};
+	</script>
+
+</head><body><div style="color:#666666; white-space:pre; font-family:monospace;">
+
+Readme wont display if no JavaScript language enabled in your browser.
+To display a readme, turn JavaScript on.
+
+</div>
+
+
+<div style="white-space:pre; font-family:monospace; visibility:hidden;">
+
+<a href="index.htm">#@Title@#</a> is a #@Description@# and is a subplugin tp$.gio where tp$ is a jQuery plugin.
+The files are spread via <a href=".">directory tree</a>, but there is realy one plugin jQuery.fn.tp$
+
+tp$ is a stand-alone plugin for general purpose.
+
+Version:	#@Version@#
+Date:		#@Date@#
+License:	#@License@#
+Copyright:	#@Copyright@#
+Contact:	#@Contact@#
+
+
+There is only one *.html file in working instance of framework, index.htm.
+Other html-files are test-units for tp JS.
+
+There are no css-files. All styling is set in "config.js" files.
+tp itself does not use images for styling controls. All is dynamic.
+
+Images are used only in game boards.
+
+There is no HTML5 or XML stuff. All fits HTML4.
+
+
+* * *
+
+
+Plugin folder tree structure.
+	Folder/file names follow project semantics.
+
+Philosophy.
+	Project is based on jQuery, but it is always kept in mind the possibility to depart
+	from jQ at first opportunity. jQ is really used for binding to events, other usage
+	is minor and should be easily recoded manually.
+
+Entry points:
+	<a href="index.htm">this link</a> which calls <a href="lib/entry.js">entry.js</a> ...
+	
+
+Dependencies:
+	There is no server stuff. When running from local hard-drive, Chrome restricts JavaScript, FF or
+	IE let games flow.
+
+Functionality:
+	New Games can be coded and attached from games/ folder
+	Collections of maps can be shared between games and are in collections/ folder.
+	Text maps can be copy-pasted.
+	Edit map feature is not elaborated.
+
+You are welcome.
+
+</div>
+
+
+</body></html>
+

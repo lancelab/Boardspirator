@@ -1,0 +1,81 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+ <html><head>
+  <!-- doctype for html 4 is only to satisfy IE -->
+ 		<title>Demo-Test</title>
+
+		<!-- this is what we need to modify an element: -->
+		<script type="text/javascript" src="../../lib/jquery-1.7.js"></script>
+		<script type="text/javascript" src="../../core.js"></script>
+		<script type="text/javascript" src="../../gui.js"></script>
+		<script type="text/javascript" src="../../form.js"></script>
+		<script type="text/javascript" src="../../beautify_el.js"></script>
+
+<body>
+
+This is a select element we want to modify:
+<form method="post">
+	<select id="select_id" name="select_name">
+		<option value="option1">Option 1</option>
+		<option value="option2">Option 2</option>
+		<option value="option3">Option 3</option>
+	</select>
+</form><br /><br />
+
+<form method="post">
+	<select id="select_id2" name="select_name">
+		<option value="option1">Select el. 2. Option 1</option>
+		<option value="option2">Select el. 2. Option 2</option>
+		<option value="option3">Select el. 2. Option 3</option>
+	</select>
+</form>
+
+
+<script type="text/javascript">
+
+	(function(){
+
+		//example 1
+		//this is how we do modify the element:
+		var beautified=$('#select_id').tp$('select');
+
+
+
+
+		//example 2
+		//this is how we set some properties of element: change parent, move ...
+		//for arf format, look at form.js var arg_settings=...
+		var beautified2=
+		$('#select_id2').tp$('select',
+			{
+				r	:{	callback	:function(ix,option){alert('optional callback '+ix);}, //optional
+						parent		:document.body
+					},
+				c	:{	
+							gui		:{	//this is tweaking of the style we want:
+										hmin					:30,
+										wmax					:400,
+										itemOverColor			:'#557777',
+										ddbox_backgroudColor	:'#3333AA',
+										outColor				:'#8888DD',
+										overColor				:'#AAAAFF',
+										style:		{wrapper: 	{	position	:'absolute',
+																	left		:'150px',
+																	top			:'150px'
+																}
+													}
+									}	
+						}
+			}
+		);
+		
+		var dom_el=beautified2['wrapper'];
+		//c onsole.log('wrapper=',dom_el);
+
+		//this is how we do reset a choice:
+		beautified2.reset_choice(1);
+	})();
+</script>
+
+
+</body></html>

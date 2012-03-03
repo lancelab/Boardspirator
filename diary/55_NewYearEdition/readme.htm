@@ -1,0 +1,138 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+ <html><head>
+  <!-- doctype for html 4 is only to satisfy IE -->
+  
+  <meta name="copyright" content="2011 (c) Konstantin Kirillov">
+  <meta name="description" content="Board Puzzle Framework"> 
+  <meta name="keywords" content="board game, puzzle game, on line game, game development, educational game, sokoban"> 
+
+  <title>Framework</title>
+	<script type="text/javascript" src="tp/lib/jquery-1.7.js"></script>
+	<script type="text/javascript" src="tp/bind_events.js"></script>
+	<script type="text/javascript" src="tp/core.js"></script>
+	<script type="text/javascript" src="tp/gui.js"></script>
+	<script type="text/javascript" src="tp/form.js"></script>
+	<script type="text/javascript" src="lib/entry.js"></script>
+
+	<script type="text/javascript" >
+		$.fn.tp$.gio.init=function(){
+			$.fn.tp$.core.rebuid_readme_html($.fn.tp$.gio.Description);
+		};
+	</script>
+
+</head><body><div style="color:#666666; white-space:pre; font-family:monospace;">
+
+Readme wont display if no JavaScript language enabled in your browser.
+To display a readme, turn JavaScript on.
+
+</div>
+
+
+<div style="white-space:pre; font-family:monospace; visibility:hidden;">
+
+<a href="index.htm">#@Title@#</a> is a #@Description@# and is jQuery subplugin tp$.gio.
+In other words, it is wrapped into a <a href="tp/readme.htm">jQuery plugin, tp</a>.
+The files are spread via <a href=".">directory tree</a>, but can be assembled in one file.
+
+Version:	#@Version@#
+Date:		#@Date@#
+License:	#@License@#
+Copyright:	#@Copyright@#
+WebSite:	<a href="http://#@WebSite@#">#@WebSite@#</a>
+Contact:	#@Contact@#
+
+<a href="tp/readme.htm#features">These features and philosophy of tp</a> are also true for #@Title@#.
+   ... except images, which are used only in game boards,
+   ... except css-ids in ads in some index files
+
+
+Plugin folder tree structure.
+	Folder/file names follow project semantics.
+	
+How to run: 
+  URL startup parameters example:
+	index.htm?game_key=colortrain&debug=true which will run game colortrain
+  Entry points:
+	<a href="index.htm">this link</a> which calls <a href="lib/entry.js">entry.js</a> ...
+
+There is no server stuff:
+    When running from local hard-drive, Chrome restricts JavaScript, FF or
+	IE let games flow.
+
+Functionality:
+	New Games can be coded and attached from games/ folder
+	Collections of maps can be shared between games and are in collections/ folder.
+	Text maps can be copy-pasted while #@Title@# is loaded.
+	Edit map feature is not elaborated.
+
+
+<a href="../diary/">Diary:</a>
+	is a collection of step by step versions.
+	They are snapshots of folder bs.
+	It is good to have backup versions when current version is
+	overengineered and one can fork from earlier ...
+
+	For example, version 49 does not use css and images for dynamic "beautified" select box
+	control. Can be a base for future browsers, with good CSS3 support.
+
+	Diary also good if documentation lacks something. For example,
+	in version 34, /var/www/bgame/gio/diary/34/games/sokoban/config.js
+	has clear layout for tiles_map. This is a basic internal format for map
+	which is used at least till verions 53, but it is not documented and 
+	not shown in files in version 53.
+
+Game Tree:
+	games--collections--maps
+	It is reflected on front page gui as three "select box" controls.
+	The leaf of this tree is a map, game map, or often gm.
+	Each map has own html-board comprised with tiles.
+	When user toggles from map to map, then game-collection-map-round is preserved.
+
+Internal data representation (map) format:
+
+	Before game is initialized, it takes map eigther from internal defaul text, or
+	reads file from parent site.
+	For example, for sokoban family maps, map is read and compiled into
+	tiles_maps for each game_map.colonies[colony_ix].tiles_map
+
+	Later, in file init.js, tile_map is converted to positions.
+	(methods: gio.init_start_position, gio.compile_colony)
+	Format of positions commented in gio.compile_colony.
+    
+	start_position does not have dom-elements. It is save to do a deep
+	copy of start_position, which is done, for example, in creating
+	a new round: r.pos=tp.core.tpaste([],gm.start_pos);
+
+
+
+Licensing:
+	If license for map is unknown, the framework provides link to external site map,
+	and opportunity for user to copy-paste the map into the game.
+
+
+TODO:
+
+ Drawbacks:
+  add or modify images feature is not yet added. Some work required to imagefy scroll bars and drop down-button.
+  works for FF and Webkit,  round corners not always work in IE 9	
+  no scroll event handler, cannot use mouse wheel
+  not all elements exist
+    scroll slider is missed
+    buttons are not visibly pushed, when clicked, only hover effect works 	
+  Opera not always works when control is used in the game: http://landkey.net/gio/gio/bs/index.htm
+  Needs better documentation beyond supplied examples.
+
+ Advantages:
+  no images used - simple
+  no css files, all settings are dynamic
+
+
+
+You are welcome.
+
+</div>
+
+
+</body></html>
+
