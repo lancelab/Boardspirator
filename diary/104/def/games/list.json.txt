@@ -1,0 +1,77 @@
+{
+
+
+
+"flocks":
+{
+	"nam": "Flocks",
+	"basekey": "mazy",
+
+	"contributor": "Konstantin Kirillov"	
+},
+
+
+
+"colorban":
+
+{
+	"nam": "Colorban",
+	"basekey": "mazy",
+	"herd_sense": 0,
+
+	"contributor": "Konstantin Kirillov"	
+
+},
+
+
+
+"sokoban":
+{
+	"nam": "Sokoban",
+	"basekey": "colorban",
+
+	"author" : "Hiroyuki Imabayashi"
+},
+
+
+
+
+"doubleban":
+{
+	"nam" : "Doubleban",
+	"basekey": "colorban",
+	"DEEPNESS_LIMIT": 2,
+
+	"contributor": "Konstantin Kirillov"	
+},
+
+
+"colortrain":
+{
+	"nam": "Colortrain",
+	"basekey": "colorban",
+	"DEEPNESS_LIMIT": 1000000,
+
+	"contributor": "Konstantin Kirillov"	
+},
+
+
+"monkeyban" :
+{
+		"nam"		: "Monkeyban",
+		"basekey"	: "mazy",
+
+		"contributor": "Konstantin Kirillov"	
+},
+
+"tokenban":
+{
+	"nam": "Tokenban",
+	"basekey": "colorban",
+	"post_definition": "tokenban",
+
+	"contributor": "Konstantin Kirillov"	
+
+}
+
+}

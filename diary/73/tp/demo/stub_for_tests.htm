@@ -1,0 +1,36 @@
+<html><head>
+		<title>Demo-Test</title>
+		<script type="text/javascript" src="../lib/jquery-1.7.js"></script>
+<body>
+jQuery extends functions and keeps their closure
+<script type="text/javascript">
+	var aob= function(){
+		var my_closure=' my_closure ';
+		var counter=0;
+		a={ x:'x',
+			f:function(a){ alert(a+my_closure+counter); },
+			yy:{xx:'xx',ff:
+						function(a){	alert('deep '+a+my_closure+counter);
+										counter++;
+						}
+				}
+		};
+        return a;	
+	}();
+
+    c1=$.extend(true,{},aob);
+    c2=$.extend(true,{},aob);
+
+	c2.new_function=function(){ alert(this.new_property); };
+	c2.new_property=' c2 new property ';
+	c2.new_function();
+
+    c1.yy.ff('c1 called');
+    c2.yy.ff('c2 called');
+    c1.yy.ff('c1 called');
+    c2.f('c2 called');
+</script>
+
+
+
+</body></html>

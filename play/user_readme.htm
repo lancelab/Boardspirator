@@ -1,0 +1,129 @@
+<href><head><title>User Readme</title>
+</head>
+
+
+<style media="screen" rel="stylesheet" type="text/css">
+
+body	{	background-color:#002244;
+			color:#FFEEFF;
+		}
+
+
+a			{	color: #FFBBBB;
+				text-decoration:none; 
+				border:none; 
+			}
+a:visited	{ color: #88F; }
+a:hover		{ color: #fff;  background-color:transparent;}
+
+
+
+</style>
+
+
+
+<body><pre>
+
+	<h1>Public Zone</h1>
+
+	Explore interface to experiment and become comfortable.
+	You even don't need a server when working in Public Zones. Download a software and
+	run your personal zone locally off-line. Go to DevZone for more details.
+
+
+	P l a y s e s s i o n s
+	Your play session or can be copy-pasted to your text editor and pasted back when landing to the site again.
+	Only one map rounds can be copy-pasted at once. Do more maps step by step.
+
+	C r a f t s e s s i o n s
+	Game maps and playpaths you created can be copy-pasted the same ways as a playsession.
+	
+
+
+<h1>Map formats</h1>
+	
+
+
+Collection-text is comprized with maps and header.
+Maps and headers called "pzones" in map parser.
+Default pzone format is a Sokoban format.
+
+
+Collection-text includes directives, which are part of more complex format, Colorban format.
+For example:
+
+:::map                  triggers colorban pzone and beginning of the map
+:::playpath             expects colorban playpath lines to follow ...
+:::playpath=sokoban     allows "short" sokoban playpath to follow ...
+
+Colorban board zone lines can begin after :::map directive and must end with :::board_end like this
+
+:::map
+-$-@-
+:::board_end
+:::map_end
+
+":::game_context=..." directive cannot happen after :::board_end
+
+
+Crafter, should look at examples to see how directives are used.
+
+
+
+N o n  -  l o g g e d i n    z o n e
+
+When crafting own maps, pay attention when mixing different games in one album. Explicit
+:::game_context directive should solve inconsistencies.
+
+
+
+D r e s s
+
+Confusing. Needs following clarification.
+
+Full definition in album:
+
+dresses: { default : { skin_key : 'dskin' }, ... special : { skin_key : 'nu_i_nu', ... } }
+If nothing is set about dress in map, images taken from def/skins/dskin and def/skins/nu_i_nu.
+
+However, dress inherits from dress:
+
+  default &lt;-- base_game.dresses.default and 
+  special &lt;-- album.plgam.dresses.special &lt;-- base_game.dresses.default
+  Tile size, backgroundColor, ... belong to dress and overriddend by child dress.
+
+  If :::dress=my_dress and :::common_skin=other are specified in a map-script, then:
+  my_dress inherits from dress "my_dress" of the same album,
+  images are taken from def/skins/other
+
+
+Examples:
+
+:::dress=flocks
+:::skip
+
+
+:::dress=night
+:::title=Night
+:::inherit_from=flocks
+:::skin=flocks
+:::chosen
+:::image=f=blue_man2.png
+:::back_image=transparent.png
+:::common_skin=very_special
+:::center_image=transparent.png
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body></html>

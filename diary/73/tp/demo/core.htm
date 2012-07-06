@@ -1,0 +1,21 @@
+<html><head>
+		<title>Demo-Test</title>
+		<script type="text/javascript" src="../lib/jquery-1.7.js"></script>
+		<script type="text/javascript" src="../core.js"></script>
+<body>
+
+<div id="horizon" style="position:absolute; top:100px; width:100px; height:10px; background-color:#000000;"></div>
+<script type="text/javascript">
+	window.onload=function(){
+		var a=['is', 'an', 'array'];
+		var wall={ not_anarray : 'my_value' };
+		var tpaste=$.fn.tp$.core.tpaste;
+		var result=tpaste(wall,a);
+		console.log(result);
+		console.log(result.length);
+	};
+</script>
+
+Test
+
+</body></html>

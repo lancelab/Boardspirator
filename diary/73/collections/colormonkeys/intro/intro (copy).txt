@@ -1,0 +1,504 @@
+:::colorban file format
+
+Demo maps for "Flocks"
+Copyrights are at map level
+
+Image credits:
+hen: http://www.clker.com/clipart-rooster-3.html
+chick: http://www.clker.com/clipart-chick-1.html
+lion: http://www.clker.com/clipart-cartoon-lion-face.html
+
+
+
+First. For demo use "Plypath" and "Forward".
+
+- # # # # # -
+# # - - - # -
+# - 1B 2A - #
+# - 2A 1a - - # 
+# - - - B - # 
+# # # - - b # 
+- - - # # # #
+
+;Author: Konstantin Kirillov
+
+:::playpath=solution
+|a.0.d|a.0.l|a.0.l|a.0.u|a.0.R|b.0.l|b.0.l|b.0.u|b.0.l|b.0.l|b.0.u|b.0.u|b.0.R|a.0.d|a.0.r
+|a.0.d|a.0.r|a.0.r|a.0.u|a.0.u|a.0.l|a.0.L|b.0.l|b.0.d|b.0.d|b.0.r|b.0.r|b.0.d|a.0.d|a.0.l
+|a.0.l|a.0.u|a.0.u|a.0.r|b.0.r|b.0.U|b.0.r|b.0.u|b.0.L|b.0.r|a.0.u|a.0.r|a.0.r|a.0.D|a.0.D
+|a.0.u|a.0.u|a.0.l|a.0.l|a.0.d|a.0.l|a.0.d|a.0.d|a.0.r|a.0.U|a.0.d|b.0.l|b.0.L|b.0.r|b.0.u
+|a.0.r|a.0.d|a.0.r|a.0.U|a.0.r|a.0.u|a.0.L
+
+
+:::image=a=skin_animals/portablejim_Man_Standing_OCAL_2008_www.openclipart.org.png
+:::image=A=skin_animals/small_monkey.png
+:::image=b=skin_animals/rooster-md.png
+:::image=1=skin_animals/target_a.png
+:::image=2=skin_animals/target_b.png
+:::image=B=skin_animals/chick.svg.med.png
+:::image=Y=skin_animals/ground_x.png
+
+
+
+Reskinned Demo
+
+- # # # # # -
+# # - - - # -
+# - 1B 2A - #
+# - 2A 1a - - # 
+# - - - B - # 
+# # # - - b # 
+- - - # # # #
+
+;Author: Konstantin Kirillov
+
+:::playpath=works
+|a.0.d|a.0.l|a.0.l|a.0.u|a.0.R|b.0.l|b.0.l|b.0.u|b.0.l|b.0.l|b.0.u|b.0.u|b.0.R|a.0.d|a.0.r
+|a.0.d|a.0.r|a.0.r|a.0.u|a.0.u|a.0.l|a.0.L|b.0.l|b.0.d|b.0.d|b.0.r|b.0.r|b.0.d|a.0.d|a.0.l
+|a.0.l|a.0.u|a.0.u|a.0.r|b.0.r|b.0.U|b.0.r|b.0.u|b.0.L|b.0.r|a.0.u|a.0.r|a.0.r|a.0.D|a.0.D
+|a.0.u|a.0.u|a.0.l|a.0.l|a.0.d|a.0.l|a.0.d|a.0.d|a.0.r|a.0.U|a.0.d|b.0.l|b.0.L|b.0.r|b.0.u
+|a.0.r|a.0.d|a.0.r|a.0.U|a.0.r|a.0.u|a.0.L
+
+
+Shelter Two
+
+- # # # # # -
+# # - - - # -
+# - 1C 3A - #
+# - 3A 1 a - # 
+# - - c C - # 
+# # # - - # # 
+- - - # # #
+
+;Author: Konstantin Kirillov
+
+:::playpath=works
+|c.0.d|a.0.l|a.0.d|a.0.l|a.0.l|a.0.u|c.0.u|c.0.u|c.0.r|c.0.r|c.0.d|a.0.R|a.0.R|c.0.L|c.0.L
+|c.0.d|a.0.d|a.0.r|c.0.u|c.0.u|c.0.l|c.0.l|c.0.u|c.0.R|a.0.r|a.0.u|a.0.L|a.0.L|c.0.l|c.0.d
+|c.0.d|c.0.R|c.0.R|c.0.d|a.0.d|a.0.l|c.0.u|c.0.u|c.0.r|c.0.r|c.0.d|a.0.l|a.0.u|a.0.u|a.0.r
+|a.0.u|a.0.r|a.0.r|a.0.D|a.0.u|a.0.l|a.0.l|a.0.d|a.0.l|a.0.d|a.0.d|a.0.r|a.0.U|a.0.r|c.0.L
+|c.0.L|c.0.d|a.0.d|a.0.r|a.0.r|a.0.u|c.0.u|c.0.u|c.0.l|c.0.l|c.0.d|c.0.R|c.0.R|c.0.d|c.0.r
+|a.0.L|a.0.r|a.0.l|a.0.u|a.0.u|a.0.l|a.0.l|a.0.D|c.0.U|c.0.r|c.0.u|c.0.L|a.0.l|a.0.d|a.0.d
+|a.0.r|a.0.U|a.0.d|c.0.L|c.0.r|c.0.u|a.0.R|a.0.d|a.0.r|a.0.U|a.0.r|a.0.u|a.0.L
+
+
+Shelter Three
+
+- # # # # # -
+# # - - - # #
+# - 6F 7F - - #
+# - 7F f 6G - # 
+# - - 6G g - # 
+# # - - - # # 
+- # # # # # -
+
+;Author: Konstantin Kirillov
+
+|g.0.u|g.0.l
+|f.0.l|f.0.u
+|f.0.l|f.0.u|g.0.D
+
+:::playpath=solution
+|g.0.r|g.0.u|g.0.u|g.0.l|g.0.D
+|f.0.d|f.0.l|f.0.l|f.0.u
+|g.0.r|g.0.d|g.0.L|g.0.u|g.0.u|f.0.R|f.0.R|g.0.r
+|g.0.d|g.0.d|g.0.l|g.0.d|g.0.l|f.0.R|f.0.l|f.0.u|f.0.u|f.0.r|f.0.D|f.0.r|f.0.d|g.0.U|g.0.U
+|g.0.d|g.0.l|f.0.L|f.0.D|g.0.l|g.0.u|g.0.R|g.0.R|f.0.L|f.0.r|f.0.d|g.0.d|g.0.r|g.0.r|g.0.u
+|f.0.u|f.0.l|f.0.u|f.0.l|f.0.l|f.0.d|g.0.L|g.0.L|g.0.r|g.0.u|f.0.R|f.0.d|f.0.r|f.0.U|f.0.d
+|f.0.r|f.0.U|f.0.l|g.0.r|g.0.d|g.0.d|g.0.l|g.0.d|g.0.l|g.0.l|f.0.r|f.0.r|f.0.u|f.0.u|f.0.l
+|f.0.D|f.0.u|f.0.u|f.0.l|f.0.l|g.0.u|g.0.l|g.0.u|g.0.R|g.0.d|g.0.d|f.0.D|f.0.l|f.0.d|f.0.d
+|f.0.r|f.0.U|g.0.u|g.0.l|f.0.d|f.0.d|f.0.r|f.0.r|f.0.U|f.0.d|f.0.l|f.0.l|f.0.u|f.0.u|f.0.l
+|g.0.r|g.0.d|g.0.r|g.0.r|g.0.u|g.0.r|g.0.u|g.0.u|g.0.L
+
+
+
+Shelter Three Reskinned.
+
+- # # # # # -
+# # - - - # #
+# - 6F 7F - - #
+# - 7F - 6G g # 
+# - - 6G - - # 
+# # - f - # # 
+- # # # # # -
+
+;Author: Konstantin Kirillov
+
+:::image=f=skin_animals/portablejim_Man_Standing_OCAL_2008_www.openclipart.org.png
+:::image=F=skin_animals/small_monkey.png
+:::image=g=skin_animals/rooster-md.png
+:::image=6=skin_animals/target_a.png
+:::image=7=skin_animals/target_b.png
+:::image=G=skin_animals/chick.svg.med.png
+:::image=Y=skin_animals/ground_x.png
+
+
+
+
+Ship
+
+
+- # # # # # -
+# # - - - # #
+# - 6F 7F - - #
+# - 7F 6f 6G - # 
+# - - 6G g - # 
+# # - - - F # 
+- # # # # # #
+
+
+;Author: Konstantin Kirillov
+
+
+:::playpath=solution
+|g.0.r|g.0.u|g.0.u|g.0.l|g.0.D|f.0.d|f.0.l|f.0.l|f.0.u|g.0.r|g.0.d|g.0.L|g.0.L|g.0.u|g.0.r
+|g.0.u|f.0.R|f.0.R|g.0.r|g.0.d|g.0.d
+|g.0.l|g.0.l|f.0.R|g.0.u|g.0.l|f.0.l|f.0.d|f.0.d|g.0.l|g.0.d|g.0.R|f.0.r|f.0.u|f.0.u|f.0.l
+|f.0.u|f.0.u|f.0.r|g.0.u|g.0.r|g.0.r|g.0.d|g.0.d|g.0.l|g.0.U|g.0.U|g.0.d|f.0.D|f.0.r|f.0.d
+|f.0.L|g.0.l|f.0.D|g.0.l|f.0.L|g.0.u|g.0.R|g.0.R|g.0.u|f.0.u|f.0.l|f.0.l|g.0.d|g.0.d|g.0.r
+|g.0.r|g.0.u|g.0.L|g.0.L|f.0.d|f.0.R|f.0.d|f.0.r|g.0.r|g.0.r|g.0.d|f.0.U|f.0.d|f.0.r|f.0.U
+|f.0.l|g.0.l|g.0.d|g.0.l|g.0.l|f.0.r|f.0.r|f.0.u|f.0.u|f.0.l|f.0.D|f.0.u|g.0.u|g.0.l|g.0.u
+|g.0.R|g.0.l|g.0.d|g.0.r|f.0.u|f.0.l|f.0.l|f.0.D|f.0.u|f.0.r|f.0.r|f.0.d|f.0.d|g.0.l|g.0.u
+|g.0.u|g.0.r|g.0.u|g.0.r|g.0.r|g.0.d|g.0.r|g.0.d|g.0.d|f.0.u|f.0.u|f.0.l|f.0.l|f.0.d|f.0.l
+|f.0.d|f.0.d|f.0.r|f.0.d|f.0.r|f.0.r|f.0.U|g.0.u|g.0.u|g.0.l|g.0.u|g.0.l|g.0.l|g.0.d|g.0.R
+|f.0.d|f.0.l|f.0.l|f.0.u|f.0.l|f.0.u|f.0.u|f.0.r|f.0.u|g.0.l|g.0.l|g.0.d|g.0.d|g.0.r|g.0.d
+|g.0.r|g.0.r|g.0.u|g.0.r|f.0.d|f.0.l|f.0.d|f.0.d|f.0.r|f.0.U|g.0.u|g.0.u|f.0.d|g.0.L|g.0.u
+|g.0.l|g.0.D|g.0.r|f.0.l|f.0.u|f.0.u|f.0.R|f.0.l|f.0.d|f.0.d|f.0.r|f.0.d|g.0.u|g.0.l|g.0.l
+|g.0.d|g.0.l|g.0.d|g.0.d|f.0.r|f.0.r|f.0.u|f.0.r|f.0.u|f.0.u|f.0.l|g.0.r|g.0.d|g.0.r|f.0.D
+|g.0.l|g.0.u|g.0.l|g.0.u|g.0.u|g.0.r|g.0.u|g.0.r|g.0.r|g.0.d|g.0.r|g.0.d|g.0.d|f.0.u|f.0.u
+|f.0.l|f.0.l|f.0.d|f.0.l|f.0.d|f.0.d|f.0.r|f.0.d|f.0.r|f.0.r|g.0.u|f.0.U|g.0.u|g.0.l|g.0.u
+|g.0.l|g.0.l|g.0.d|g.0.l|g.0.d|g.0.u|g.0.r|g.0.l|g.0.d|g.0.d|g.0.r|g.0.d|g.0.r|g.0.r|g.0.r
+|f.0.d|f.0.l|f.0.l|f.0.u|f.0.l|f.0.u|f.0.u|f.0.r|f.0.u|f.0.r|f.0.r|f.0.d|f.0.u|f.0.l|f.0.l
+|f.0.d|f.0.l|f.0.d|f.0.d|f.0.r|f.0.d|f.0.r|f.0.r|f.0.u|g.0.l|g.0.l|g.0.l|g.0.u|g.0.l|g.0.u
+|g.0.u|g.0.r|g.0.u|g.0.r|g.0.r|g.0.d|f.0.d|f.0.r|f.0.U|f.0.d|f.0.l|f.0.l|f.0.l|f.0.u|f.0.R
+|g.0.u|g.0.l|g.0.l|g.0.d|g.0.l|g.0.d|g.0.d|g.0.r|g.0.d|g.0.r|f.0.l|f.0.l|f.0.u|f.0.u|f.0.r
+|f.0.u|f.0.r|f.0.r|f.0.d|f.0.L|f.0.r|f.0.r|g.0.u|g.0.U|g.0.d|g.0.d|g.0.r|f.0.D|f.0.L|g.0.l
+|f.0.r|f.0.d|f.0.d|f.0.l|f.0.U
+
+
+
+
+
+
+Zmey
+
+
+- # # # # # -
+# # - - - # #
+# - 6F 7F - - #
+# - 7F f 6G - # 
+# - - 6G g - # 
+# # - - - 6F # 
+- # # # # # #
+
+
+;Author: Konstantin Kirillov
+
+
+:::playpath=solution
+|g.0.r|g.0.u|g.0.u|g.0.l|g.0.D|f.0.d|f.0.l|f.0.l|f.0.u|g.0.r|g.0.d|g.0.L|g.0.L|g.0.u|g.0.r|g.0.u
+|f.0.R|f.0.R|g.0.r|g.0.d|g.0.d
+|g.0.l|g.0.l|f.0.R|g.0.u|g.0.l|f.0.l|f.0.d|f.0.d|g.0.l|g.0.d|g.0.R|f.0.r|f.0.u|f.0.u|f.0.l
+|f.0.u|f.0.u|f.0.r|g.0.u|g.0.r|g.0.r|g.0.d|g.0.d|g.0.l|g.0.U|g.0.U|g.0.d|f.0.D|f.0.r|f.0.d
+|f.0.L|g.0.l|f.0.D|g.0.l|f.0.L|g.0.u|g.0.R|g.0.R|g.0.u|f.0.u|f.0.l|f.0.l|g.0.d|g.0.d|g.0.r
+|g.0.r|g.0.u|g.0.L|g.0.L|f.0.d|f.0.R|f.0.d|f.0.r|g.0.r|g.0.r|g.0.d|f.0.U|f.0.d|f.0.r|f.0.U
+|f.0.l|g.0.l|g.0.d|g.0.l|g.0.l|f.0.r|f.0.r|f.0.u|f.0.u|f.0.l|f.0.D|f.0.u|g.0.u|g.0.l|g.0.u
+|g.0.R|g.0.l|g.0.d|g.0.r|f.0.u|f.0.l|f.0.l|f.0.D|f.0.u|f.0.r|f.0.r|f.0.d|f.0.d|g.0.l|g.0.u
+|g.0.u|g.0.r|g.0.u|g.0.r|g.0.r|g.0.d|g.0.r|g.0.d|g.0.d|f.0.u|f.0.u|f.0.l|f.0.l|f.0.d|f.0.l
+|f.0.d|f.0.d|f.0.r|f.0.d|f.0.r|f.0.r|f.0.U|g.0.u|g.0.u|g.0.l|g.0.u|g.0.l|g.0.l|g.0.d|g.0.R
+|f.0.d|f.0.l|f.0.l|f.0.u|f.0.l|f.0.u|f.0.u|f.0.r|f.0.u|g.0.l|g.0.l|g.0.d|g.0.d|g.0.r|g.0.d
+|g.0.r|g.0.r|g.0.u|g.0.r|f.0.d|f.0.l|f.0.d|f.0.d|f.0.r|f.0.U|g.0.u|g.0.u|f.0.d|g.0.L
+
+
+
+
+Shelter Four
+
+
+- # # # # # -
+# # - - - # #
+# - 6F 7F g - #
+# - 7F - 6G - # 
+# - f 6G 6 - # 
+# # - - - F # 
+- # # # # # #
+
+
+;Author: Konstantin Kirillov
+
+
+
+Shelter Five
+
+- # # # # # -
+# # - - - # #
+# - 6F 7F - - #
+# - 7F - 6G g # 
+# - - 6G 7 - # 
+# # - f - G # 
+- # # # # # #
+
+
+;Author: Konstantin Kirillov
+
+
+Shelter Six
+
+- # # # # # -
+# # - - - # #
+# - 6F 7F g - #
+# - 7F - 6G - # 
+# - f 6G 7G - # 
+# # - - - - # 
+- # # # # # #
+
+;Author: Konstantin Kirillov
+
+
+
+
+
+Variation from Yoshio Murase
+
+- # # # # # #
+# # - - - - # 
+# - 1B - # - # 
+# - 2 2B - - # 
+# - - # A # # 
+# # - a b #  
+- # # # # #  
+
+;Author: Yoshio Murase (modified by KK)
+;Title: Simple "Flock"
+
+
+:::image=a=skin_animals/portablejim_Man_Standing_OCAL_2008_www.openclipart.org.png
+:::image=A=skin_animals/shopper_2011_monkey-md.png
+:::image=b=skin_animals/rooster-md.png
+:::image=1=skin_animals/target_a.png
+:::image=2=skin_animals/target_b.png
+:::image=B=skin_animals/chick.svg.med.png
+:::image=Y=skin_animals/ground_x.png
+
+
+
+:::playpath=solution
+|a.0.l|a.0.u|a.0.u|a.0.l|a.0.u|b.0.l|b.0.l|b.0.u|b.0.u|b.0.R|a.0.d|a.0.d|a.0.r|a.0.d|a.0.r
+|a.0.r|b.0.l|b.0.u|b.0.u|b.0.r|b.0.r|b.0.r|b.0.d|b.0.d|b.0.L|b.0.r|b.0.u|b.0.u|b.0.l|b.0.l
+|b.0.l|b.0.D|b.0.l|b.0.d|b.0.d|b.0.r|b.0.U|b.0.r|b.0.r|b.0.r|b.0.u|b.0.u|b.0.l|b.0.l|b.0.l
+|b.0.D|a.0.U|b.0.r|a.0.d|a.0.l|a.0.l|a.0.u|a.0.l|a.0.u|a.0.u|a.0.r|a.0.u|a.0.r|a.0.r|a.0.r
+|a.0.d|a.0.d|b.0.l|b.0.l|b.0.d|b.0.d|b.0.r|b.0.U|b.0.l|a.0.L|a.0.L|b.0.d|b.0.r|b.0.d|b.0.r
+|b.0.r|b.0.u|b.0.u|b.0.r|b.0.u|b.0.u|b.0.l|b.0.l|a.0.r|b.0.D|a.0.r|a.0.u|a.0.u|a.0.l|a.0.l
+|a.0.l|b.0.u|b.0.r|b.0.r|b.0.d|b.0.d|b.0.l|b.0.d|b.0.d|b.0.l|b.0.l|b.0.u|b.0.l|b.0.u|b.0.u
+|a.0.r|a.0.r|a.0.r|a.0.d|a.0.d|a.0.l|b.0.R|b.0.u|a.0.d|a.0.d|a.0.l|a.0.l|a.0.u|a.0.U|a.0.l
+|a.0.u|b.0.r|b.0.r|b.0.r|b.0.d|b.0.d|b.0.l|b.0.L|b.0.r|b.0.r|b.0.u|b.0.u|b.0.l|b.0.l|a.0.d
+|a.0.d|a.0.r|b.0.D
+
+
+
+
+Level YH44 
+
+- - - # # # #
+# # # # - - #
+# - 1 A 1A - # #
+# - - - A - - #
+# - 1 2b B 1 - #
+# - 1A 2B A a # #
+# # - - - - #
+- # # # # # #
+
+;Author: Yoshio Murase (modified by KK)
+;History: Yoshio Murase hand level 44 redesigned for Flocks.
+
+
+
+:::image=a=skin_animals/portablejim_Man_Standing_OCAL_2008_www.openclipart.org.png
+:::image=A=skin_animals/shopper_2011_monkey-md.png
+:::image=b=skin_animals/rooster-md.png
+:::image=1=skin_animals/target_a.png
+:::image=2=skin_animals/target_b.png
+:::image=B=skin_animals/chick.svg.med.png
+:::image=Y=skin_animals/ground_x.png
+
+
+
+:::playpath=Yoshio hand 44 solution
+|a.0.d|a.0.l|a.0.l|a.0.l|a.0.U|a.0.d|a.0.r|a.0.r|b.0.u|b.0.l|b.0.u|a.0.r|a.0.u|a.0.u|a.0.u
+|a.0.L|b.0.d|b.0.l|b.0.d|a.0.L|a.0.r|a.0.r|a.0.r|b.0.d|b.0.r|b.0.d|b.0.r|b.0.r|b.0.r|b.0.u
+|b.0.u|b.0.u|b.0.l|a.0.l|a.0.d|a.0.d|a.0.d|a.0.l|a.0.l|a.0.l|a.0.u|b.0.r|b.0.d|b.0.L|b.0.u
+|b.0.u|a.0.l|a.0.u|a.0.u|a.0.R|a.0.R|a.0.R|b.0.u|a.0.u|a.0.r|a.0.D|b.0.d|b.0.d|b.0.l|b.0.l
+|b.0.l|b.0.d|b.0.d|b.0.r|b.0.d|b.0.r|b.0.r|a.0.D|b.0.l|b.0.l|b.0.u|b.0.l|b.0.u|b.0.u|b.0.r
+|b.0.r|b.0.r|b.0.r|b.0.r|a.0.u|a.0.l|a.0.l|a.0.l|b.0.l|b.0.d|a.0.l|a.0.d|a.0.d|a.0.r|a.0.d
+|a.0.r|a.0.r|a.0.U|a.0.U|b.0.u|b.0.u|b.0.l|a.0.r|a.0.u|a.0.L|b.0.r|b.0.d|b.0.d|b.0.l|b.0.d
+|b.0.d|b.0.l|b.0.l|b.0.u|b.0.l|b.0.u|a.0.L|b.0.d|b.0.r|b.0.d|b.0.r|b.0.r|b.0.u|b.0.u|b.0.u
+|b.0.u|a.0.r|a.0.d|a.0.d|a.0.d|a.0.l|a.0.l|a.0.u|a.0.l|a.0.u|a.0.u|a.0.R|b.0.r|b.0.l|a.0.R
+|b.0.r|b.0.d|b.0.d|b.0.l|a.0.R|a.0.l|a.0.u|b.0.r|b.0.r|b.0.u|a.0.R|a.0.d|a.0.d|a.0.d|b.0.d
+|b.0.l|b.0.l|b.0.u|b.0.u|a.0.u|a.0.r|a.0.r|a.0.u|a.0.L|b.0.l|b.0.d|b.0.l|b.0.l|b.0.u|a.0.d
+|a.0.l|a.0.d|a.0.d|a.0.l|a.0.l|a.0.u|a.0.l|a.0.u|a.0.u|a.0.r|a.0.r|a.0.u|a.0.r|b.0.d|b.0.d
+|b.0.d|b.0.r|b.0.d|b.0.r|b.0.r|b.0.u|b.0.u|b.0.r|b.0.u|a.0.D|a.0.l|a.0.l|a.0.l|a.0.u|b.0.l
+|b.0.l|b.0.l|b.0.l|b.0.d|b.0.d|b.0.r|b.0.d|b.0.r|b.0.r|b.0.r|a.0.d|a.0.r|a.0.r|a.0.r|a.0.D
+|a.0.u|a.0.u|a.0.u|a.0.r|a.0.D|a.0.l|a.0.d|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.u|a.0.l|a.0.l
+|a.0.d|a.0.l|a.0.l|a.0.u|b.0.l|b.0.l|b.0.l|b.0.u|b.0.l|b.0.u|b.0.u|b.0.r|b.0.r|b.0.u|b.0.r
+|b.0.r|b.0.d|b.0.r|a.0.R|b.0.l|b.0.r|a.0.R|a.0.R|a.0.l|b.0.d|b.0.l|b.0.l|b.0.u|b.0.u|a.0.d
+|a.0.r|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.L|b.0.l|b.0.l|b.0.l|b.0.d|b.0.d|b.0.d|b.0.u|b.0.u
+|b.0.u|b.0.d|b.0.d|a.0.L|b.0.u|b.0.u|b.0.r|b.0.r|b.0.r|b.0.d|b.0.d|b.0.r|a.0.u|a.0.l|a.0.l
+|a.0.d|a.0.d|a.0.d|a.0.r|a.0.d|a.0.r|a.0.r|a.0.U|a.0.U|a.0.d|a.0.d|a.0.r|b.0.l|a.0.l|a.0.l
+|a.0.l|a.0.u|a.0.l|a.0.u|a.0.u|a.0.u|a.0.r|a.0.r|a.0.d|a.0.R|b.0.d|b.0.d|b.0.l|b.0.l|b.0.u
+|b.0.l|b.0.u|a.0.l|a.0.u|a.0.l|a.0.l|a.0.d|a.0.R|a.0.D|a.0.u|a.0.u|a.0.r|a.0.r|a.0.d|a.0.L
+|a.0.u|a.0.l|a.0.D|a.0.r|a.0.r|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|b.0.u|b.0.u|b.0.r|b.0.r|b.0.d
+|a.0.u|a.0.L|a.0.L|a.0.r|a.0.r|a.0.d|a.0.d|a.0.l|a.0.U|a.0.d|a.0.d|a.0.d|a.0.r|a.0.U
+
+
+
+
+
+Level YH44 Box-Flocks
+
+- - - # # # #
+# # # # - - #
+# - 1 A 1A - # #
+# - - - A - - #
+# - 1 2b B 1 - #
+# - 1A 2B A a # #
+# # - - - - #
+- # # # # # #
+
+;Author: Yoshio Murase (modified by KK)
+;History: Yoshio Murase hand level 44 redesigned for Flocks.
+
+
+:::playpath=Yoshio_hand_44_solution:
+|a.0.d|a.0.l|a.0.l|a.0.l|a.0.U|a.0.d|a.0.r|a.0.r|b.0.u|b.0.l|b.0.u|a.0.r|a.0.u|a.0.u|a.0.u
+|a.0.L|b.0.d|b.0.l|b.0.d|a.0.L|a.0.r|a.0.r|a.0.r|b.0.d|b.0.r|b.0.d|b.0.r|b.0.r|b.0.r|b.0.u
+|b.0.u|b.0.u|b.0.l|a.0.l|a.0.d|a.0.d|a.0.d|a.0.l|a.0.l|a.0.l|a.0.u|b.0.r|b.0.d|b.0.L|b.0.u
+|b.0.u|a.0.l|a.0.u|a.0.u|a.0.R|a.0.R|a.0.R|b.0.u|a.0.u|a.0.r|a.0.D|b.0.d|b.0.d|b.0.l|b.0.l
+|b.0.l|b.0.d|b.0.d|b.0.r|b.0.d|b.0.r|b.0.r|a.0.D|b.0.l|b.0.l|b.0.u|b.0.l|b.0.u|b.0.u|b.0.r
+|b.0.r|b.0.r|b.0.r|b.0.r|a.0.u|a.0.l|a.0.l|a.0.l|b.0.l|b.0.d|a.0.l|a.0.d|a.0.d|a.0.r|a.0.d
+|a.0.r|a.0.r|a.0.U|a.0.U|b.0.u|b.0.u|b.0.l|a.0.r|a.0.u|a.0.L|b.0.r|b.0.d|b.0.d|b.0.l|b.0.d
+|b.0.d|b.0.l|b.0.l|b.0.u|b.0.l|b.0.u|a.0.L|b.0.d|b.0.r|b.0.d|b.0.r|b.0.r|b.0.u|b.0.u|b.0.u
+|b.0.u|a.0.r|a.0.d|a.0.d|a.0.d|a.0.l|a.0.l|a.0.u|a.0.l|a.0.u|a.0.u|a.0.R|b.0.r|b.0.l|a.0.R
+|b.0.r|b.0.d|b.0.d|b.0.l|a.0.R|a.0.l|a.0.u|b.0.r|b.0.r|b.0.u|a.0.R|a.0.d|a.0.d|a.0.d|b.0.d
+|b.0.l|b.0.l|b.0.u|b.0.u|a.0.u|a.0.r|a.0.r|a.0.u|a.0.L|b.0.l|b.0.d|b.0.l|b.0.l|b.0.u|a.0.d
+|a.0.l|a.0.d|a.0.d|a.0.l|a.0.l|a.0.u|a.0.l|a.0.u|a.0.u|a.0.r|a.0.r|a.0.u|a.0.r|b.0.d|b.0.d
+|b.0.d|b.0.r|b.0.d|b.0.r|b.0.r|b.0.u|b.0.u|b.0.r|b.0.u|a.0.D|a.0.l|a.0.l|a.0.l|a.0.u|b.0.l
+|b.0.l|b.0.l|b.0.l|b.0.d|b.0.d|b.0.r|b.0.d|b.0.r|b.0.r|b.0.r|a.0.d|a.0.r|a.0.r|a.0.r|a.0.D
+|a.0.u|a.0.u|a.0.u|a.0.r|a.0.D|a.0.l|a.0.d|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.u|a.0.l|a.0.l
+|a.0.d|a.0.l|a.0.l|a.0.u|b.0.l|b.0.l|b.0.l|b.0.u|b.0.l|b.0.u|b.0.u|b.0.r|b.0.r|b.0.u|b.0.r
+|b.0.r|b.0.d|b.0.r|a.0.R|b.0.l|b.0.r|a.0.R|a.0.R|a.0.l|b.0.d|b.0.l|b.0.l|b.0.u|b.0.u|a.0.d
+|a.0.r|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.L|b.0.l|b.0.l|b.0.l|b.0.d|b.0.d|b.0.d|b.0.u|b.0.u
+|b.0.u|b.0.d|b.0.d|a.0.L|b.0.u|b.0.u|b.0.r|b.0.r|b.0.r|b.0.d|b.0.d|b.0.r|a.0.u|a.0.l|a.0.l
+|a.0.d|a.0.d|a.0.d|a.0.r|a.0.d|a.0.r|a.0.r|a.0.U|a.0.U|a.0.d|a.0.d|a.0.r|b.0.l|a.0.l|a.0.l
+|a.0.l|a.0.u|a.0.l|a.0.u|a.0.u|a.0.u|a.0.r|a.0.r|a.0.d|a.0.R|b.0.d|b.0.d|b.0.l|b.0.l|b.0.u
+|b.0.l|b.0.u|a.0.l|a.0.u|a.0.l|a.0.l|a.0.d|a.0.R|a.0.D|a.0.u|a.0.u|a.0.r|a.0.r|a.0.d|a.0.L
+|a.0.u|a.0.l|a.0.D|a.0.r|a.0.r|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|b.0.u|b.0.u|b.0.r|b.0.r|b.0.d
+|a.0.u|a.0.L|a.0.L|a.0.r|a.0.r|a.0.d|a.0.d|a.0.l|a.0.U|a.0.d|a.0.d|a.0.d|a.0.r|a.0.U
+
+
+Meeting place cannot be changed
+
+# # # # # # # #
+# # - - - - # # 
+# - # C a # - # 
+# - - 1 2 C - # 
+# - B 3 3 b - # 
+# - # c A # - # 
+# # - - - - # # 
+# # # # # # # #
+
+
+credits:
+rabbit: http://www.clker.com/clipart-orange-rabbit.html
+carrot: http://www.clker.com/clipart-11426.html
+fox: http://www.clker.com/clipart-fox-2.html
+
+
+:::image=a=skin_animals/portablejim_Man_Standing_OCAL_2008_www.openclipart.org.png
+:::image=A=skin_animals/shopper_2011_monkey-md.png
+:::image=1=skin_animals/target_a.png
+
+:::image=b=skin_animals/rooster-md.png
+:::image=B=skin_animals/chick.svg.med.png
+:::image=2=skin_animals/target_b.png
+
+:::image=c=skin_animals/fox.png
+:::image=C=skin_animals/rabbit.png
+:::image=3=skin_animals/carrot.png
+
+:::image=d=skin_animals/fox.png
+:::image=D=skin_animals/rabbit.png
+:::image=4=skin_animals/carrot.png
+
+:::image=Y=skin_animals/ground_x.png
+
+
+:::playpath=solvedLX
+|a.0.d|a.0.d|a.0.l|a.0.u|a.0.l|a.0.l|a.0.u|b.0.l|b.0.l|b.0.u|b.0.l|b.0.l|b.0.d|c.0.u|c.0.u
+|c.0.r|c.0.u|c.0.u|c.0.l|c.0.r|c.0.d|c.0.d|c.0.d|c.0.r|c.0.r|c.0.u|c.0.L|c.0.r|a.0.d|a.0.r
+|a.0.r|a.0.d|a.0.d|a.0.d|a.0.r|c.0.d|c.0.l|c.0.l|c.0.r|c.0.u|c.0.L|c.0.u|c.0.u|c.0.d|c.0.d
+|c.0.L|c.0.r|c.0.u|c.0.u|a.0.U|a.0.U|a.0.l|a.0.u|a.0.R|a.0.u|b.0.R|b.0.R|b.0.u|b.0.r|b.0.D
+|b.0.l|b.0.d|b.0.d|b.0.r|a.0.d|a.0.d|a.0.r|a.0.r|a.0.u|c.0.l|c.0.D|b.0.U|b.0.d|c.0.D|c.0.u
+|c.0.d|c.0.D|c.0.u|c.0.l|c.0.l|c.0.d|a.0.L|a.0.L|a.0.r|a.0.r|a.0.u|b.0.u|b.0.U|b.0.r|b.0.r
+|c.0.R|c.0.u|b.0.u|b.0.d|b.0.u|b.0.l|b.0.d|b.0.l|b.0.U|b.0.r|b.0.r|b.0.d|b.0.d|c.0.d|c.0.R
+|c.0.R|a.0.d|a.0.l|a.0.l|a.0.L|a.0.d|a.0.l|a.0.l|a.0.u|a.0.u|a.0.d|b.0.u|b.0.u|b.0.l|b.0.l
+|b.0.l|b.0.u|b.0.u|b.0.r|a.0.d|a.0.r|a.0.r|a.0.d|c.0.u|c.0.r|c.0.r|c.0.d|c.0.L|c.0.u|c.0.l
+|c.0.l|c.0.d|c.0.R|c.0.u|a.0.u|a.0.l|a.0.l|a.0.u|c.0.d|c.0.l|c.0.d|c.0.d|a.0.d|a.0.r|a.0.r
+|c.0.r|c.0.U|a.0.l|a.0.l|a.0.u|c.0.l|c.0.u|c.0.u|c.0.r|c.0.D|b.0.l|b.0.d|b.0.d|b.0.r|b.0.r
+|c.0.l|c.0.d|c.0.d|c.0.r|c.0.U|c.0.l|c.0.u|b.0.l|b.0.l|b.0.u|b.0.u|b.0.r|c.0.u|c.0.r|c.0.D
+|c.0.u|c.0.r|c.0.r|c.0.d|b.0.l|b.0.d|b.0.d|b.0.r|b.0.d|b.0.l|b.0.u|b.0.r|a.0.d|a.0.r|a.0.r
+|a.0.l|b.0.l|b.0.u|b.0.u|b.0.r|a.0.r|c.0.L|a.0.l|a.0.l|a.0.r|a.0.l|b.0.l|b.0.d|b.0.d|b.0.d
+|b.0.l|b.0.r|b.0.u|b.0.u|b.0.u|b.0.r|c.0.L|a.0.u|a.0.R|a.0.R|a.0.R|c.0.L|a.0.d|a.0.r|a.0.r
+|a.0.u|a.0.d|a.0.l|a.0.l|c.0.u|c.0.l|c.0.l|c.0.d|c.0.R|a.0.r|a.0.r|a.0.u|a.0.u|a.0.d|c.0.u
+|c.0.r|c.0.r|c.0.d|c.0.u|c.0.l|c.0.u|a.0.d|a.0.l|a.0.l|a.0.u|a.0.l|a.0.l|a.0.d|c.0.d|c.0.r
+|c.0.d|a.0.l|a.0.u|c.0.u|c.0.l|c.0.u|a.0.r|a.0.r|a.0.r|a.0.d|a.0.r|a.0.l|a.0.r|a.0.r|a.0.u
+|c.0.d|c.0.r|c.0.l|c.0.l|c.0.d|c.0.R|c.0.l|c.0.r|c.0.R|c.0.l|c.0.d|c.0.d|c.0.r|a.0.L|a.0.L
+|a.0.L|a.0.d|a.0.l|a.0.l|a.0.u|a.0.d|a.0.r|a.0.r|a.0.r|a.0.u|c.0.U|c.0.d|a.0.l|a.0.d|a.0.l
+|a.0.l|a.0.u|c.0.l|c.0.u|c.0.u|c.0.u|c.0.r|c.0.l|c.0.r|c.0.D|c.0.u|a.0.d|a.0.r|a.0.r|a.0.d
+|c.0.r|c.0.r|c.0.d|c.0.L|c.0.u|c.0.d|a.0.u|a.0.l|a.0.l|a.0.u|a.0.R|a.0.R|a.0.d|a.0.d|c.0.L
+|c.0.L|c.0.u|c.0.l|c.0.l|c.0.d|a.0.u|a.0.u|a.0.R|a.0.d|a.0.r|a.0.r|a.0.u|a.0.d|a.0.u|a.0.d
+|a.0.l|a.0.l|a.0.l|a.0.u|a.0.d|a.0.r|a.0.r|a.0.r|a.0.u|c.0.u|c.0.r|c.0.r|c.0.d|c.0.d|b.0.l
+|b.0.d|b.0.d|b.0.l|c.0.d|c.0.r|c.0.U|c.0.l|b.0.r|b.0.u|b.0.u|b.0.r|a.0.d|a.0.l|c.0.u|c.0.u
+|c.0.l|c.0.l|c.0.d|c.0.R|c.0.l|a.0.r|a.0.u|a.0.L|a.0.L|a.0.r|a.0.r|a.0.u|b.0.D
+
+
+
+Color place cannot be changed
+
+# # # # # # # #
+# # - - - - # # 
+# - # C a # - # 
+# - - 1 2 C - # 
+# - B 3 3 b - # 
+# - # c A # - # 
+# # - - - - # # 
+# # # # # # # #
+
+:::playpath=solvedLU
+|a.0.d|a.0.d|a.0.l|a.0.u|a.0.l|a.0.l|a.0.u|b.0.l|b.0.l|b.0.u|b.0.l|b.0.l|b.0.d|c.0.u|c.0.u
+|c.0.r|c.0.u|c.0.u|c.0.l|c.0.r|c.0.d|c.0.d|c.0.d|c.0.r|c.0.r|c.0.u|c.0.L|c.0.r|a.0.d|a.0.r
+|a.0.r|a.0.d|a.0.d|a.0.d|a.0.r|c.0.d|c.0.l|c.0.l|c.0.r|c.0.u|c.0.L|c.0.u|c.0.u|c.0.d|c.0.d
+|c.0.L|c.0.r|c.0.u|c.0.u|a.0.U|a.0.U|a.0.l|a.0.u|a.0.R|a.0.u|b.0.R|b.0.R|b.0.u|b.0.r|b.0.D
+|b.0.l|b.0.d|b.0.d|b.0.r|a.0.d|a.0.d|a.0.r|a.0.r|a.0.u|c.0.l|c.0.D|b.0.U|b.0.d|c.0.D|c.0.u
+|c.0.d|c.0.D|c.0.u|c.0.l|c.0.l|c.0.d|a.0.L|a.0.L|a.0.r|a.0.r|a.0.u|b.0.u|b.0.U|b.0.r|b.0.r
+|c.0.R|c.0.u|b.0.u|b.0.d|b.0.u|b.0.l|b.0.d|b.0.l|b.0.U|b.0.r|b.0.r|b.0.d|b.0.d|c.0.d|c.0.R
+|c.0.R|a.0.d|a.0.l|a.0.l|a.0.L|a.0.d|a.0.l|a.0.l|a.0.u|a.0.u|a.0.d|b.0.u|b.0.u|b.0.l|b.0.l
+|b.0.l|b.0.u|b.0.u|b.0.r|a.0.d|a.0.r|a.0.r|a.0.d|c.0.u|c.0.r|c.0.r|c.0.d|c.0.L|c.0.u|c.0.l
+|c.0.l|c.0.d|c.0.R|c.0.u|a.0.u|a.0.l|a.0.l|a.0.u|c.0.d|c.0.l|c.0.d|c.0.d|a.0.d|a.0.r|a.0.r
+|c.0.r|c.0.U|a.0.l|a.0.l|a.0.u|c.0.l|c.0.u|c.0.u|c.0.r|c.0.D|b.0.l|b.0.d|b.0.d|b.0.r|b.0.r
+|c.0.l|c.0.d|c.0.d|c.0.r|c.0.U|c.0.l|c.0.u|b.0.l|b.0.l|b.0.u|b.0.u|b.0.r|c.0.u|c.0.r|c.0.D
+|c.0.u|c.0.r|c.0.r|c.0.d|b.0.l|b.0.d|b.0.d|b.0.r|b.0.d|b.0.l|b.0.u|b.0.r|a.0.d|a.0.r|a.0.r
+|a.0.l|b.0.l|b.0.u|b.0.u|b.0.r|a.0.r|c.0.L|a.0.l|a.0.l|a.0.r|a.0.l|b.0.l|b.0.d|b.0.d|b.0.d
+|b.0.l|b.0.r|b.0.u|b.0.u|b.0.u|b.0.r|c.0.L|a.0.u|a.0.R|a.0.R|a.0.R|c.0.L|a.0.d|a.0.r|a.0.r
+|a.0.u|a.0.d|a.0.l|a.0.l|c.0.u|c.0.l|c.0.l|c.0.d|c.0.R|a.0.r|a.0.r|a.0.u|a.0.u|a.0.d|c.0.u
+|c.0.r|c.0.r|c.0.d|c.0.u|c.0.l|c.0.u|a.0.d|a.0.l|a.0.l|a.0.u|a.0.l|a.0.l|a.0.d|c.0.d|c.0.r
+|c.0.d|a.0.l|a.0.u|c.0.u|c.0.l|c.0.u|a.0.r|a.0.r|a.0.r|a.0.d|a.0.r|a.0.l|a.0.r|a.0.r|a.0.u
+|c.0.d|c.0.r|c.0.l|c.0.l|c.0.d|c.0.R|c.0.l|c.0.r|c.0.R|c.0.l|c.0.d|c.0.d|c.0.r|a.0.L|a.0.L
+|a.0.L|a.0.d|a.0.l|a.0.l|a.0.u|a.0.d|a.0.r|a.0.r|a.0.r|a.0.u|c.0.U|c.0.d|a.0.l|a.0.d|a.0.l
+|a.0.l|a.0.u|c.0.l|c.0.u|c.0.u|c.0.u|c.0.r|c.0.l|c.0.r|c.0.D|c.0.u|a.0.d|a.0.r|a.0.r|a.0.d
+|c.0.r|c.0.r|c.0.d|c.0.L|c.0.u|c.0.d|a.0.u|a.0.l|a.0.l|a.0.u|a.0.R|a.0.R|a.0.d|a.0.d|c.0.L
+|c.0.L|c.0.u|c.0.l|c.0.l|c.0.d|a.0.u|a.0.u|a.0.R|a.0.d|a.0.r|a.0.r|a.0.u|a.0.d|a.0.u|a.0.d
+|a.0.l|a.0.l|a.0.l|a.0.u|a.0.d|a.0.r|a.0.r|a.0.r|a.0.u|c.0.u|c.0.r|c.0.r|c.0.d|c.0.d|b.0.l
+|b.0.d|b.0.d|b.0.l|c.0.d|c.0.r|c.0.U|c.0.l|b.0.r|b.0.u|b.0.u|b.0.r|a.0.d|a.0.l|c.0.u|c.0.u
+|c.0.l|c.0.l|c.0.d|c.0.R|c.0.l|a.0.r|a.0.u|a.0.L|a.0.L|a.0.r|a.0.r|a.0.u|b.0.D
+
+

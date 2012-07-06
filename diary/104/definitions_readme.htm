@@ -1,0 +1,52 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+ <html><head>
+  <!-- doctype for html 4 is only to satisfy IE -->
+  
+  <meta name="copyright" content="2011 (c) Konstantin Kirillov">
+  <meta name="description" content="Board Puzzle Framework"> 
+  <meta name="keywords" content="board game, puzzle game, on line game, game development, educational game, sokoban"> 
+
+  <title>Framework</title>
+	<script type="text/javascript" src="tp/lib/jquery-1.7.js"></script>
+	<script type="text/javascript" src="tp/bind_events.js"></script>
+	<script type="text/javascript" src="tp/core.js"></script>
+	<script type="text/javascript" src="tp/core_no_jquery.js"></script>
+	<script type="text/javascript" src="tp/gui.js"></script>
+	<script type="text/javascript" src="tp/form.js"></script>
+
+	<!-- ** must be before others in gio: -->
+	<script type="text/javascript" src="core/config.js"></script>
+	<script type="text/javascript" src="core/config_gui.js"></script>
+
+	<script type="text/javascript" src="core/entry.js"></script>
+
+	<script type="text/javascript" >
+		$.fn.tp$.gio.session.init.entry=function(){
+			$.fn.tp$.core.rebuild_readme_html($.fn.tp$.gio.Description);
+		};
+	</script>
+
+</head><body><div style="color:#666666; white-space:pre; font-family:monospace;">
+
+Readme wont display if no JavaScript language enabled in your browser.
+To display a readme, turn JavaScript on.
+
+</div>
+
+
+<div style="white-space:pre; font-family:monospace; visibility:hidden;">
+
+
+D e r i v i n g   G a m e s
+
+There is no difference ini Game definition for Colorban and Sokoban.
+So, there is the difference? Maps are different. Sokoban maps do not use colored units.
+
+The same is true for Monkeyban, it is Flocks with single color units.
+
+
+</div>
+
+</body></html>
+

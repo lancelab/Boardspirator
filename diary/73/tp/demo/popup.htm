@@ -1,0 +1,47 @@
+<html><head>
+		<title>Demo-Test</title>
+		<script type="text/javascript" src="../lib/jquery-1.7.js"></script>
+		<script type="text/javascript" src="../core.js"></script>
+		<script type="text/javascript" src="../core_gui.js"></script>
+<body>
+... perhaps something broken in this demo ...
+
+<script type="text/javascript">
+window.onload=function(){
+
+	var popup2=window.popup2=$.fn.tp$.core.create_popup({width:1000, height:300, innerHTML:'2 - second', backgroundColor:'#FFDDDD'});
+	popup2.show({});
+
+	var popup=window.popup=$.fn.tp$.core.create_popup();
+	popup.show({width:1200, height:40, innerHTML:'1- first'});
+	popup.popup_el.style.backgroundColor='#DDFFDD';
+
+	///////////// Manger:
+	var popup3=$.fn.tp$.core.single_popup_manager({width:500, height:400});
+	popup3.update_owner({owner:'A', innerHTML:'A', backgroundColor:'#DDDDFF'});
+	popup3.update_owner({owner:'B', width:200, height:200, innerHTML:'B', backgroundColor:'#AAAAAA'});
+
+
+
+	window.showA=function(){popup3.doshow({owner:'A'});};
+	window.showB=function(){popup3.doshow({owner:'B', innerHTML:'B shown'});};
+	window.toggleA=function(){popup3.dotoggle({owner:'A'});};
+	window.toggleB=function(){popup3.dotoggle({owner:'B', innerHTML:'B toggled'});};
+
+
+};
+
+
+</script>
+
+<button onclick="popup.toggle();" >toggle 1</button>
+<button onclick="popup.hide();" >hide 1</button>
+<button onclick="popup.show();" >show 1</button>
+<button onclick="popup2.hide();" >hide 2</button>
+
+<button onclick="showA();" >show A</button>
+<button onclick="showB()" >show B</button>
+<button onclick="toggleA();" >toggle A</button>
+<button onclick="toggleB();" >toggle B</button>
+
+</body></html>

@@ -1,0 +1,72 @@
+:::colorban file format
+;too late: :::title Colored Soko
+
+Authors: see individual maps
+Copyrights: see individual maps
+
+Tokens in carts
+
+- - # # # #
+# # # - - # # # # # # # #
+# - - XC - - . .@ 1 # - - #
+# - - XA - # XD # .XH 5 - - #
+# # # XB # # . . 6 # - - #
+- # # - # - XE XF XG - - # #
+- # - - # - # - # # - #
+- # - - - - - - - - - #
+- # - - # # # # # # # #
+- # # # #
+
+Author: GRIGoRusha, Colorized by K.Kirillov
+Title: Token on Flying idea #132
+Comment:
+color red
+Comment-End:
+
+;THIS MAP IS A NON-SIGNIFICANT MODIFICATION OF 
+;GRIGoRusha ORIGINAL MAP
+;Modification is made by K.Kirillov.
+
+454
+
+:::playpath=x
+rDrrddddllluURRllddrrruUUruulDllulllldLD
+DDldRRRuuRRddrrruuUruLddddllluuRRllddrrr
+uUlllllddlluuuururrDDuulldlddddrruuRuuul
+lulDDDDDldRuuuuulldRurDDDDlddrUUUUUruLrr
+rdddlddLruuruuulllddddlddrUUUUUrurrdddRd
+dLLLrrrrrruulLLddlluuRuuurrdDLDRuuulldDu
+ulldldddlddrUrruuRuuulldlddDldRuuuuruulD
+DlluRRRRRRlllldDDDlddrUUUUUluRRRRdddlddL
+ruururrdLuluulllddddlddrUrrrrUUruLdddllu
+uRlddrruUlURdddrrruuLLLddllllUUUUrurrDul
+ldlluRRRlldddddrruuRlddrruUrrrUruulDLrDD
+lllddrrrUUUruL
+
+
+
+
+Long Flight on Grey Map
+
+- - # # # #
+# # # - - # # # # # # # #
+# - - C - - . .@ 3 # - - #
+# - - A - # D # .H - - - #
+# # # B # # 5. . 4 # - - #
+- # # - # - E F G - - # #
+- # - - # - # - # # - #
+- # - - - - - - - - - #
+- # - - # # # # # # # #
+- # # # #
+
+Author: GRIGoRusha, Colorized by K.Kirillov
+Title: Flying idea #132
+Comment:
+color red
+Comment-End:
+
+;THIS MAP IS A NON-SIGNIFICANT MODIFICATION OF 
+;GRIGoRusha ORIGINAL MAP
+;Modification is made by K.Kirillov.
+
+

@@ -1,0 +1,88 @@
+Demo maps for Monkeyban
+Copyrights are at map level
+
+
+
+
+Preliminary Hints
+
+         ######## 
+###########    .#
+#           #####
+#  .     $$$ ...#
+#   $  @  $   . #  
+#     #  $$$ ...#
+#               #
+#  .            #
+#$             $#
+#################
+
+rrRRRRllllllllulDDDrdLLdlUruulldRRRRlddr
+UUUdRRdrruulDldRRRRRRurrdLLLLLLLullddrUU
+UUUluRRRddrrUUdlluRllllllddRRRRRdrUruLLL
+LdlluurDurDDDuLLLdlUddrrrdrruLLLLulDuurr
+ruurrrrruRRR
+
+
+
+Introduction One
+
+############
+#       ...#
+#---b$$ ####
+# ###@###
+#______#
+####---#
+   #####
+
+
+
+Introduction Two
+
+##########
+#        #
+#    $   #
+#   $#   #
+# ###.. #
+#  @$$# #
+#     #.#
+#     #.#
+#########
+
+
+Introduction Three
+
+################
+#              #
+#      $ $  ...#
+#      $$$  . .#  
+#      $@$  .. #
+################
+
+26
+
+RRRURRllluulDDuulllddRRRRR
+
+
+Variation from Yoshio Murase
+
+ ######
+##----# 
+#-*-#-# 
+#-.*--# 
+#--#$## 
+##-@-#  
+ #####  
+
+;Author: Yoshio Murase and Konstantin Kirillov
+;Title: Level 1.
+
+luuUdrrruullDulDlddrdrrUdlluluururrrddL
+
+;Solutino for original Yoshio Murase map:
+;
+;luuluRurrrddlLrruullldlddrdrrUdlluluurur
+;rrddLddlluUddrruuLUdrddlluluuRuRDllddrUd
+;drruuL
+
+

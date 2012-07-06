@@ -1,0 +1,224 @@
+:::title Colored Soko
+
+Authors: see individual maps
+Copyrights: see individual maps
+
+
+:::map
+- - - # # # #
+# # # # - - #
+# - . A 1A - # #
+# - - - A - - #
+# - . 2b B 1 - #
+# - 1A 2B A a # #
+# # - - - - #
+- # # # # # #
+:::board_end
+:::title=Y44
+:::subtitle=Level Y44
+:::author=Yoshio Murase (modified by KK)
+:::history=Yoshio Murase level 44 redesigned for Coloban.
+
+
+:::playpath
+|a.0.d|a.0.l|a.0.l|a.0.l|a.0.U|a.0.l|a.0.u|a.0.u|a.0.r|a.0.u|b.0.u|b.0.l|b.0.l|b.0.d|b.0.d
+|b.0.r|b.0.d|b.0.r|b.0.r|b.0.r|b.0.u|b.0.u|a.0.d|a.0.D|a.0.u|a.0.u|b.0.L|b.0.L|b.0.u|b.0.l
+|b.0.l|b.0.d|a.0.d|a.0.r|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.L|a.0.r|a.0.r|a.0.u|a.0.u|a.0.l
+|a.0.D|a.0.r|a.0.d|a.0.d|a.0.l|a.0.l|a.0.u|a.0.R|a.0.u|a.0.L|a.0.d|a.0.r|a.0.d|a.0.r|a.0.r
+|a.0.u|a.0.L|a.0.d|a.0.l|a.0.U|a.0.d|a.0.r|a.0.d|a.0.d|a.0.l|a.0.U|a.0.r|a.0.u|a.0.u|a.0.l
+|a.0.l|a.0.d|a.0.R|a.0.u|a.0.l|a.0.u|a.0.R|a.0.d|a.0.d|a.0.d|a.0.r|a.0.U|a.0.l|a.0.u|a.0.u
+|b.0.R|b.0.R|b.0.u|b.0.r|b.0.D|b.0.r|b.0.d|b.0.d|b.0.l|a.0.d|a.0.d|a.0.l|a.0.l|a.0.l|a.0.u
+|a.0.u|a.0.R|a.0.D|a.0.r|a.0.r|a.0.u|a.0.L|a.0.d|a.0.r|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.d
+|a.0.l|a.0.l|a.0.u|a.0.u|a.0.r|a.0.u|a.0.r|a.0.D|a.0.D|a.0.u|a.0.l|a.0.l|a.0.d|a.0.d|a.0.r
+|a.0.U|b.0.l|b.0.U|b.0.d|b.0.r|b.0.r|b.0.u|b.0.L
+
+
+
+:::map
+- - - # # # #
+# # # # - - #
+# - . A 1A - # #
+# - - - A - - #
+# - . 2b - 1 - #
+# - 1A B A a # #
+# # - - - - #
+- # # # # # #
+:::board_end
+:::title=Y44
+:::subtitle=Level Y44 Simple
+:::author=Yoshio Murase (modified by KK)
+:::history= Yoshio Murase level 44 redesigned for Coloban.
+
+
+:::playpath
+|a.0.d|a.0.l|a.0.l|a.0.l|a.0.U|a.0.d|a.0.r|a.0.r|a.0.r|a.0.u|a.0.u|a.0.u|a.0.L|a.0.L|a.0.r
+|a.0.r|a.0.u|a.0.u|a.0.l|a.0.D|a.0.r|a.0.d|a.0.d|a.0.d|a.0.d|a.0.l|a.0.l|a.0.l|a.0.u|a.0.l
+|a.0.u|a.0.u|a.0.u|a.0.r|a.0.R|a.0.R|a.0.u|a.0.r|a.0.D|a.0.l|a.0.l|a.0.l|a.0.l|a.0.d|a.0.d
+|a.0.d|a.0.r|a.0.d|a.0.r|a.0.r|a.0.r|a.0.u|a.0.u|a.0.l|a.0.U|a.0.l|a.0.u|a.0.R|a.0.d|a.0.d
+|a.0.r|a.0.r|a.0.u|a.0.L|a.0.d|a.0.d|a.0.d|a.0.l|a.0.l|a.0.l|a.0.u|a.0.l|a.0.u|a.0.u|a.0.u
+|a.0.r|a.0.r|a.0.r|a.0.u|a.0.r|a.0.D|a.0.D|a.0.D|a.0.l|a.0.U|a.0.l|a.0.u|a.0.R|a.0.u|a.0.r
+|a.0.D|a.0.l|a.0.l|a.0.l|a.0.l|a.0.d|a.0.d|a.0.d|a.0.r|a.0.d|a.0.r|a.0.r|a.0.U|a.0.U|a.0.U
+|a.0.l|a.0.u|a.0.R|a.0.l|a.0.l|a.0.l|a.0.d|a.0.R|a.0.D|a.0.u|a.0.u|a.0.r|a.0.r|a.0.d|a.0.L
+|a.0.u|a.0.l|a.0.D|a.0.r|a.0.r|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.L|b.0.r|b.0.r|a.0.d|a.0.l
+|a.0.U|a.0.r|a.0.u|a.0.L|b.0.l|b.0.d|b.0.d|b.0.l|b.0.U|a.0.r|a.0.u|a.0.r|a.0.D|a.0.l|a.0.d
+|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.d|a.0.l|a.0.U|a.0.r|a.0.l|a.0.d|a.0.d|a.0.d|a.0.r|a.0.U
+
+
+
+
+:::map
+- # # # # # #
+# # - - - 1 # 
+# - A 2 D 4 # 
+# - - C - 3 # 
+# - - # B # # 
+# # - @ d #  
+- # # # # #  
+:::board_end
+:::title=YM1c
+:::subtitle=Long work
+:::author=Yoshio Murase (modified by KK)
+:::history=Yoshio Murase level 1 redesigned for Colorban.
+
+
+:::playpath
+|x.0.l|x.0.u|x.0.u|x.0.l|x.0.u|x.0.R|x.0.u|x.0.r|x.0.r|x.0.r|x.0.d|x.0.d|x.0.l|x.0.L|x.0.U
+|x.0.l|x.0.u|d.0.l|d.0.l|d.0.u|d.0.l|d.0.u|d.0.u|d.0.r|d.0.r|d.0.d|d.0.r|d.0.r|d.0.u|x.0.R
+|x.0.R|d.0.L|d.0.d|d.0.l|x.0.l|x.0.l|x.0.d|x.0.l|x.0.d|x.0.d|x.0.r|x.0.d|x.0.r|x.0.r|x.0.U
+|x.0.U|x.0.d|x.0.d|x.0.l|x.0.l|x.0.u|x.0.l|x.0.u|x.0.u|x.0.r|x.0.u|x.0.r|x.0.r|d.0.r|d.0.d
+|d.0.d|d.0.l|d.0.l|d.0.u|d.0.l|d.0.u|d.0.u|d.0.r|x.0.D|x.0.r|x.0.d|x.0.L|d.0.R|d.0.R|d.0.u
+|x.0.d|x.0.d|x.0.l|x.0.l|x.0.u|x.0.U|x.0.d|x.0.d|x.0.r|x.0.r|x.0.u|x.0.u|x.0.L|x.0.r|x.0.d
+|x.0.d|x.0.l|x.0.l|x.0.u|x.0.l|x.0.u|x.0.u|x.0.R|x.0.u|x.0.r|x.0.D|x.0.l|x.0.l|x.0.d|x.0.d
+|x.0.r|x.0.U|x.0.l|x.0.u|x.0.R|x.0.d|x.0.R|x.0.R
+
+
+
+
+
+:::map
+- # # # # # #
+# # - - 1 - # 
+# b C2 - # - # 
+# a 3 A - - # 
+# - - # B # # 
+# # - c - #  
+- # # # # #  
+:::board_end
+:::title=YM1a
+:::subtitle=Long work
+:::author=Yoshio Murase (modified by KK)
+:::history=Yoshio Murase level 1 redesigned for Colorban.
+
+
+:::playpath=non-optimized solution
+|a.0.d|b.0.d|c.0.l|c.0.u|c.0.u|a.0.r|b.0.d|c.0.l|c.0.u|c.0.R|c.0.l|a.0.u|a.0.u|a.0.u|a.0.r
+|a.0.r|a.0.r|a.0.d|a.0.d|a.0.l|a.0.L|a.0.r|a.0.r|a.0.u|a.0.u|a.0.l|a.0.l|a.0.l|a.0.d|b.0.r
+|b.0.d|b.0.r|b.0.r|c.0.d|c.0.d|c.0.r|c.0.d|c.0.r|a.0.l|a.0.d|a.0.d|a.0.r|a.0.U|a.0.r|a.0.r
+|a.0.r|a.0.u|a.0.u|a.0.l|a.0.l|a.0.l|b.0.U|c.0.l|c.0.u|c.0.u|c.0.r|a.0.D|b.0.d|b.0.l|b.0.l
+|b.0.u|b.0.l|b.0.u|b.0.u|a.0.D|b.0.r|b.0.u|b.0.r|b.0.r|b.0.r|b.0.d|b.0.d|a.0.l|c.0.l|b.0.L
+|b.0.r|b.0.u|b.0.u|b.0.l|b.0.l|b.0.l|b.0.d|b.0.l|c.0.u|a.0.r|b.0.d|b.0.d|c.0.l|a.0.u|a.0.u
+|a.0.r|a.0.r|a.0.r|a.0.d|a.0.d|a.0.l|a.0.d|a.0.d|a.0.l|a.0.l|a.0.U|a.0.U|a.0.l|b.0.r|b.0.d
+|b.0.r|b.0.r|b.0.u|b.0.u|b.0.L|b.0.r|b.0.r|b.0.u|b.0.u|b.0.l|b.0.l|b.0.l|a.0.d|a.0.r|a.0.d
+|a.0.r|a.0.r|a.0.u|a.0.u|a.0.l|c.0.d|c.0.d|c.0.r|c.0.d|c.0.r|c.0.r|c.0.u|c.0.u|c.0.r|a.0.r
+|a.0.d|c.0.u|c.0.u|c.0.l|c.0.l|c.0.D|a.0.d|a.0.l|a.0.l|a.0.u|a.0.l|a.0.u|a.0.u|c.0.u|c.0.r
+|c.0.r|c.0.d|c.0.d|c.0.l|a.0.R|a.0.l|b.0.d|b.0.D|b.0.l|c.0.L|c.0.r|c.0.d|a.0.r|a.0.u|a.0.r
+|a.0.r|a.0.r|a.0.d|a.0.d|a.0.l|a.0.l|a.0.U|a.0.l|a.0.u|a.0.R|c.0.u|c.0.r|b.0.u|b.0.r|b.0.r
+|b.0.d|b.0.r|b.0.d|b.0.d|b.0.l|b.0.l|c.0.l|c.0.l|c.0.u|c.0.l|c.0.l|c.0.d|c.0.R|c.0.l|c.0.d
+|b.0.U|b.0.U|b.0.l|c.0.r|c.0.d|c.0.r|c.0.r|c.0.u|c.0.u|c.0.L
+
+
+:::map
+- # # # # # #
+# # 2 1 - - # 
+# a B2 - # - # 
+# b - B - - # 
+# - - # A # # 
+# # - - - #  
+- # # # # #  
+:::board_end
+:::title=YM1b
+:::subtitle=Respect your peer
+:::author=Yoshio Murase (modified by KK)
+:::history=Yoshio Murase level 1 redesigned for Colorban.
+
+:::playpath=non-optimized solution
+|b.0.r|b.0.U|b.0.r|b.0.u|b.0.r|b.0.r|b.0.d|b.0.d|b.0.l|b.0.L|a.0.d|a.0.d|a.0.r|a.0.d|a.0.r
+|a.0.r|a.0.U|a.0.d|a.0.l|a.0.l|a.0.u|a.0.l|a.0.u|a.0.u|a.0.r|a.0.r|a.0.u|a.0.r|a.0.r|a.0.d
+|a.0.d|b.0.u|b.0.l|b.0.l|b.0.d|b.0.d|b.0.r|a.0.L|b.0.U|b.0.l|b.0.u|b.0.R|a.0.L|b.0.l|b.0.d
+|b.0.d|b.0.r|b.0.d|b.0.r|b.0.r|b.0.u|b.0.u|b.0.r|b.0.u|b.0.u|b.0.l|b.0.l|a.0.r|a.0.d|a.0.d
+|a.0.l|a.0.l|a.0.u|a.0.U|a.0.l|a.0.u|b.0.D|b.0.u|b.0.r|b.0.r|b.0.d|b.0.d|b.0.l|b.0.L|a.0.R
+|a.0.l|a.0.d|a.0.d|a.0.r|a.0.d|a.0.r|a.0.r|a.0.u|a.0.u|a.0.r|a.0.u|b.0.r|b.0.d|b.0.d|b.0.l
+|b.0.l|b.0.u|b.0.U|a.0.d|a.0.l|a.0.l|a.0.U
+
+
+
+
+:::map
+- - # # # #
+# # # - - # # # # # # # #
+# - - C - - . .@ 1 # - - #
+# - - A - # D # .H 5 - - #
+# # # B # # . . 6 # - - #
+- # # - # - E F G - - # #
+- # - - # - # - # # - #
+- # - - - - - - - - - #
+- # - - # # # # # # # #
+- # # # #
+:::board_end
+:::title=Flying idea #132
+:::subtitle=Short Flight on Grey Map
+:::author=GRIGoRusha, Colorized by K.Kirillov
+
+
+Comment:
+color red
+Comment-End:
+
+;THIS MAP IS A NON-SIGNIFICANT MODIFICATION OF 
+;GRIGoRusha ORIGINAL MAP
+
+454
+
+:::playpath
+rDrrddddllluURRllddrrruUUruulDllulllldLD
+DDldRRRuuRRddrrruuUruLddddllluuRRllddrrr
+uUlllllddlluuuururrDDuulldlddddrruuRuuul
+lulDDDDDldRuuuuulldRurDDDDlddrUUUUUruLrr
+rdddlddLruuruuulllddddlddrUUUUUrurrdddRd
+dLLLrrrrrruulLLddlluuRuuurrdDLDRuuulldDu
+ulldldddlddrUrruuRuuulldlddDldRuuuuruulD
+DlluRRRRRRlllldDDDlddrUUUUUluRRRRdddlddL
+ruururrdLuluulllddddlddrUrrrrUUruLdddllu
+uRlddrruUlURdddrrruuLLLddllllUUUUrurrDul
+ldlluRRRlldddddrruuRlddrruUrrrUruulDLrDD
+lllddrrrUUUruL
+
+
+
+
+
+:::map
+- - # # # #
+# # # - - # # # # # # # #
+# - - C - - . .@ 3 # - - #
+# - - A - # D # .H - - - #
+# # # B # # 5. . 4 # - - #
+- # # - # - E F G - - # #
+- # - - # - # - # # - #
+- # - - - - - - - - - #
+- # - - # # # # # # # #
+- # # # #
+:::board_end
+:::title=Flying idea #132
+:::subtitle=Long Flight on Grey Map
+:::author=GRIGoRusha, Colorized by K.Kirillov
+
+Comment:
+color red
+Comment-End:
+
+;THIS MAP IS A NON-SIGNIFICANT MODIFICATION OF 
+;GRIGoRusha ORIGINAL MAP
+;Modification is made by K.Kirillov.
+
+

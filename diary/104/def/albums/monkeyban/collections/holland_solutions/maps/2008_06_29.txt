@@ -1,0 +1,48 @@
+
+:: Macros
+
+Holland1=Author: David Holland\nThe dh1 collection of Sokoban positions\nis copyright David Holland\n<hidden_from_spam@clickfest88.freeserve.co.uk where hidden_from_spam=david>\nThese levels may be distributed freely as long as this copyright message is retained.
+
+Holland2=Author: David Holland\nThe dh2 collection of Sokoban positions is\ncopyright David Holland\n<hidden_from_spam@clickfest88.freeserve.co.uk where hidden_from_spam=david>\nThese levels may be distributed freely as long as this copyright message is retained.
+
+Holland3=Author: David Holland\nThe maelstrom collection of Sokoban positions is copyright\nDavid Holland <hidden_from_spam@clickfest88.freeserve.co.uk where hidden_from_spam=david>\nThese levels may be distributed freely as long as this copyright message is retained.
+
+Holland4=Author: David Holland\nThese levels are © David Holland <hidden_from_spam@clickfest88.freeserve.co.uk where hidden_from_spam=david>\nThese levels may be distributed freely as long as this copyright message is retained.
+
+dh1=\n\nAuthor's note:\nThe dh1 Sokoban levels by David Holland.\nOriginal release date: October 2000\n\nI have experimented with computer-generation for several of the smaller puzzles hence the "co-authorship" with sokgen (a computer program of mine). If you like the puzzles email me and if you have stylistic criticisms direct them to sokgen :-)
+
+dh2=\n\nAuthor's note:\nThe dh2 Sokoban levels by David Holland.\nOriginal release date: June 2001.\n\nThere are no computer-generated levels as I am trying to evolve a puzzle-making style, and so experimenting with as many different forms as possible. Some of the puzzles are very, or slightly, symmetrical as a stylistic device (in this I am influenced by David W. Skinner's excellent Sasquatch puzzle sets at his Sokoban page). Others are completely unsymmetrical and the style is in the variations alone.
+
+maelstrom=\n\nAuthor's note:\nThe maelstrom Sokoban levels by David Holland.\n\nThe word Maelstrom means a powerful whirlpool, named after one off the coast of Norway.\n\nThe collection ranges from the pretty small (5 objects, 8x9 squares) through the mid-sized (13 objects, 15x11 squares) right up to the large (one puzzle with 57 objects 23x24 squares). Just browse for the kind of challenge you like. The puzzles are in rough order of difficulty. I designed the maze layout and goals for all the puzzles, and many but not all of the small puzzles use computer-generated start positions. A few of the puzzles feature unexpected twists within lengthy solutions and require substantial imagination, and the others I hope are at least interesting. A fully-featured Sokoban player (with drag and drop movement of objects, mouse movement of the man, ability to keep your place if you quit and return to the puzzle another time) is strongly recommended for the medium to larger puzzles, though not strictly necessary.
+
+bagatelle=\n\nAuthor's note:\nThe bagatelle Sokoban levels by David Holland.\nOriginal release date: October 2001\n\nBagatelle is a French word for a trinket, from the Italian for a conjuror's trick. The collection contains fairly simple puzzles (of less difficulty than my previous collection maelstrom) of various sizes. Some of the small puzzles are easier versions of puzzles in my other collections. Others are my take on some classical Sokoban themes (goals in a line, in a cross shape, objects outside goal room for tricky start and finish). The problems posed by each puzzle are of a fairly straightforward kind, but are nevertheless quite varied. The puzzles are in roughly ascending order of difficulty.
+
+cantrip=\n\nAuthor's note:\nThe cantrip Sokoban levels by David Holland.\nOriginal release date: September 2001.\n\nThe puzzles are all small (between 6 and 9 goals and pretty cramped), with maze and walls designed by me and computer-generated start positions. Because of the computer involvement, the start positions of the puzzles may look abstract or random. The meat of the puzzles is in the variations, the unexpected twists, and the underlying problems. The human element of design is most evident in the solved position, by construction, and I like to think of the solving process as producing order from chaos. This collection is meant for experienced solvers, or at least determined ones, as it contains probably my toughest puzzles so far. As usual I have tried to put the puzzles in rough ascending order of difficulty, but here this is even more approximate than usual as I find the puzzles difficult to compare. The puzzles have been extensively play-tested. On a good day I can actually solve them...
+
+bagatelle2=\n\nThe bagatelle2 Sokoban levels by David Holland.\nOriginal release date: July 2002.
+
+cantrip2=\n\nThe cantrip2 Sokoban levels by David Holland.\nOriginal release date: July 2002.
+
+
+:::map
+:::title=David Holland, "Ninevah"
+:::subtitle=Monkeyban context
+:::album_key=sokoban
+:::collection_index=1
+:::map_index=1
+
+:::sokoban_playpath
+RDDDrrdDuulllddRRdrUllluurrruUddlluuRRll
+ddlddrrrUdllluuruurrdrrddLdLruruullulldd
+RllddrRlluuruurrdrruuullDurrdddddLruuuuu
+lldDDurrdLululldddlddrRdrUllluurDldRuuuu
+urrdLulD
+
+
+Author: David Holland + sokgen
+The dh1 collection of Sokoban positions
+is copyright David Holland <hidden_from_spam@clickfest88.freeserve.co.uk where hidden_from_spam=david>
+These levels may be distributed freely as long as this copyright message is retained.<#dh1#/>
+
+:::map_end
+
