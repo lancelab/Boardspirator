@@ -1,0 +1,340 @@
+
+
+:::map
+- # # # # # -
+# # - - - b #
+# - C - # - #
+# - - C 4 - #  
+- # B - - - #
+- # # - - # #
+- - - # # # -
+:::board_end
+:::title=Spinning
+ath=
+lllDrDulldRRRddlULuLDDldldRdrruLUrrUlLdl
+llUruurrDulld
+inverse_path=
+urrdDllddlUrr
+ruLrUllULdlluRururDDLdLUruuRRRurrdDlDrrr
+
+:::map
+- # # # # # -
+# # - - - # #
+# # c C A - #
+# # - 4 B - #  
+- - # - b - #
+- - - # # # #
+- - - # # # -
+:::board_end
+:::title="Squeezed"
+
+
+
+:::playpath=Generated
+|c.0.d|c.0.r|c.0.U|b.0.r|c.0.r|b.0.u|b.0.u|b.0.L|b.0.u|c.0.U|b.0.l|c.0.U|b.0.R|b.0.d|b.0.d
+|b.0.R|c.0.D|c.0.L|b.0.l|c.0.D|c.0.R|b.0.R|b.0.U|b.0.r|b.0.r|b.0.d|b.0.L|b.0.d|b.0.l|b.0.U
+
+inverse_path=
+
+|b.0.U|b.0.r|b.0.u|b.0.L|b.0.u|b.0.l|b.0.l|b.0.U|b.0.R|c.0.R|c.0.D|b.0.r|c.0.L|c.0.D|b.0.R
+|b.0.u|b.0.u|b.0.R|c.0.U|b.0.r|c.0.U|b.0.d|b.0.L|b.0.d|b.0.d|c.0.l|b.0.l|c.0.U|c.0.l|c.0.u
+
+
+:::map
+- # # # # # #
+# # - - - A #
+# # c C a - #
+# # - 4 B - #  
+- - # - b - #
+- - - # # # #
+- - - # # # -
+:::board_end
+:::title=Third Guest Special
+
+
+
+:::map
+- # # # # # -
+# # - - - # #
+# - c C a - #
+# # - A B - #  
+- - # - b - #
+- - - # 4 # #
+- - - # # # -
+:::board_end
+:::title=Dinner with Boss
+
+
+
+:::map
+- # # # # # -
+# # - - - # #
+# - c C - - #
+# # - A B - #  
+- - # - b - #
+- - - # 4 # #
+- - - # # # -
+:::board_end
+:::title=Bonus Dish
+
+
+:::playpath=Raise Up
+|c.0.d|b.0.r|b.0.u|b.0.u|b.0.l|b.0.D|c.0.R|c.0.U|c.0.r|b.0.l|b.0.d|b.0.D|c.0.L|b.0.R|b.0.D
+|b.0.l|c.0.l|c.0.D|b.0.R|b.0.d|c.0.d|c.0.R|c.0.u|c.0.u|c.0.u|c.0.r|c.0.D|c.0.r|c.0.D|c.0.L
+|c.0.u|c.0.l|c.0.D|c.0.u|c.0.u|c.0.r
+
+inverse_path=
+|c.0.l|c.0.d|c.0.d|c.0.D|c.0.r|c.0.d
+|c.0.L|c.0.D|c.0.l|c.0.D|c.0.l|c.0.d|c.0.d|c.0.d|c.0.R|c.0.u|b.0.u|b.0.R|c.0.D|c.0.r|b.0.r
+|b.0.D|b.0.R|c.0.L|b.0.D|b.0.u|b.0.r|c.0.l|c.0.U|c.0.R|b.0.D|b.0.r|b.0.d|b.0.d|b.0.l|c.0.u
+
+
+:::map
+- # # # # # -
+# # - - - # #
+# - c B a - #
+# # C A B - #  
+- # # C b - #
+- - # # 4 # #
+- - - # # # -
+:::board_end
+:::title=Dinner for Three - Team Up
+
+
+:::playpath=Post
+|b.0.r|a.0.D|b.0.u|b.0.u|b.0.l|b.0.u|a.0.u|b.0.l|a.0.u|c.0.R|b.0.l|b.0.d|b.0.l|c.0.l|c.0.D
+|b.0.R|b.0.d|c.0.d|b.0.R|b.0.U|b.0.d|c.0.r
+
+inverse_path=
+|c.0.l|b.0.u|b.0.U|b.0.R|c.0.u|b.0.u|b.0.R
+|c.0.D|c.0.r|b.0.r|b.0.u|b.0.r|c.0.R|a.0.d|b.0.r|a.0.d|b.0.d|b.0.r|b.0.d|b.0.d|a.0.D|b.0.l
+
+
+:::playpath=10 hits
+|c.0.l|a.0.L|a.0.D|a.0.r|a.0.d|a.0.L|c.0.R|c.0.l|a.0.d|a.0.L|a.0.r|a.0.d|b.0.u|a.0.l|b.0.U
+|b.0.d|b.0.L|a.0.U|a.0.l|a.0.U|a.0.R|a.0.l|a.0.l
+
+inverse_path=
+|a.0.r|a.0.r|a.0.R|a.0.U|a.0.r|a.0.U|b.0.L|b.0.u
+|b.0.U|a.0.r|b.0.d|a.0.u|a.0.l|a.0.L|a.0.u|c.0.r|c.0.R|a.0.L|a.0.u|a.0.l|a.0.D|a.0.L|c.0.r
+
+
+
+:::map
+- # # # # # -
+# # - - - # #
+# - c B B - #
+# - C - B - #  
+# - C C b - #
+# # - - 4 # #
+- # # # # # -
+:::board_end
+:::title=Twin Guests
+
+
+:::playpath
+|c.0.l|c.0.d|b.0.U|b.0.l|b.0.U|b.0.L|c.0.D|c.0.r|c.0.u|c.0.r|c.0.r|c.0.D|c.0.L|c.0.L|c.0.u
+|c.0.r|b.0.U|b.0.U|b.0.L|b.0.D
+|c.0.L|c.0.d|c.0.l|c.0.L|c.0.u|b.0.l|b.0.u|b.0.L|c.0.D|c.0.l|b.0.l|b.0.u|c.0.r|c.0.r|c.0.U
+|c.0.R
+
+
+inverse_path=
+|c.0.R
+|c.0.U|c.0.l|c.0.l|b.0.d|b.0.r|c.0.r|c.0.D|b.0.L|b.0.d|b.0.r|c.0.d|c.0.L|c.0.r|c.0.u|c.0.L
+|b.0.D|b.0.L|b.0.U|b.0.U|c.0.l
+|c.0.d|c.0.L|c.0.L|c.0.D|c.0.l|c.0.l|c.0.d|c.0.l|c.0.D|b.0.L|b.0.U|b.0.r|b.0.U|c.0.u|c.0.r
+
+
+:::map
+- # # # # # -
+# # - - - # #
+# - c B - - #
+# # C - B - #  
+- # # C b - #
+- - # # 4 # #
+- - - # # # -
+:::board_end
+:::title=Dinner for Two
+
+
+:::playpath=To L
+|c.0.R|c.0.R|c.0.l|c.0.d|c.0.R|c.0.l|c.0.L|b.0.d|c.0.d|c.0.L|b.0.U|b.0.U|c.0.l|b.0.U|b.0.R
+|b.0.D|c.0.L|b.0.r|b.0.R|c.0.u|b.0.d|c.0.L|b.0.R|b.0.d|c.0.d|c.0.R|c.0.U|c.0.l|c.0.u|c.0.u
+|c.0.r|c.0.D|c.0.u|c.0.R|c.0.d|c.0.r|c.0.D|c.0.r|c.0.r|c.0.u|c.0.L|c.0.d|c.0.l|c.0.l|c.0.u
+|c.0.l
+
+
+:::map
+# # # # # # #
+# # - - - # #
+# - c B - - #
+# - C - B - #  
+# - # C b - #
+# # - - 4 # #
+# # # # # # #
+:::board_end
+:::title=Narrow Field
+
+
+
+
+:::map
+- # # # # # #
+# # - - - - #
+# - B B B - #
+# - C b B - #  
+# - C C C - #
+# - - - 4 # #
+# # # # # # -
+:::board_end
+:::title=Dinner for One
+
+:::playpath
+DLdRuuUUllUURdRdrruUUdRRddrruuLruulLdDrr
+dddLulllddrrUdlluurRUdlluurRddrruLruuull
+ddDDrrddLUruulLulldDuurrdddlLLUruLruuull
+ddDDrrdddlluRdrruUlUluurRUUr
+
+inverse_path=
+lUURlddrUrUdlluRdrruuullDDuu
+rrdddlLdlULLruuullddDurrdLrddlULuullDDuu
+rrdddlLdlluuRlddrruURlddrruUlluurrrdLuuu
+llDuLrddlLddlluuRRuUUdlluRuRUUrrUUddRuLD
+
+:::map
+# # # # # # #
+# # - - - # #
+# - C A C - #
+# - B b B - #  
+# - A C A - #
+# # - - - # #
+# # # # # # #
+:::board_end
+:::title=Dish Fence
+
+:::playpath
+URDLddDuLLdLdLUURldRRUrULuLLdRRuRRRUUluu
+rDDlDDlluRdrrddlUruLrUUluurDulDDulldRDld
+drRRUlulluurrDLulDrddlluRdrrrDDlddrUUlUU
+ruulDLdLUlluurrrdDu
+
+inverse_path=
+dDulllddrrULuLDrddl
+UUrUUluurDDllluRdrruulDrdLDllddrrdrURRlu
+urDRurrdDDrdDlddrUUlLdlUruulluRdrrDDrDDl
+ddrUURRRdRRuLLdLUlURRurRUULuLuLLdDuuLDRU
+
+:::map
+# # # # # # #
+# # - - - - #
+# - C A C - #
+# X B b B X #  
+# - A C A - #
+# 4 - - - # #
+# # # # # # #
+:::board_end
+:::title=Gold Counts
+
+
+
+:::playpath=step1
+ULuRddDLURuuRurDlddrrRRDDrRDrddLLrruulDr
+dLuuull
+rrdLdlUruullLullddDuuurrdLddlLULUUruulDD
+rRurDlddrrdLullUUlUUruulDrRDrrDrddlLuulu
+llddrddlUUrRdrUluuLLuullDurrdLd
+
+
+
+
+
+:::map=test
+# # # # # # #
+# - - - - - #
+# - C A C - #
+# - B b B - #  
+# 4 - - - X #
+# # # # # # #
+:::board_end
+:::title=Easy Start
+
+
+
+
+:::map=test
+# # # # # # #
+# # - - - - #
+# - C A C - #
+# - B b B - #  
+# - A C A - #
+# 4 - - - # #
+# # # # # # #
+:::board_end
+:::title=Easy Start
+
+:::playpath=j2-2
+ULuRddDLUlUdrRuuRDrDRDrddLru
+dlLdlluRdrUrruululldDrrdDrdLLLuRUUluurur
+rddlLuulldlUruRurDllulu
+
+2-inverse_path=
+drdrrDldRdlUrurrddLruul
+ldlddrUURdLLLulDullDurrdrddllUluRdrruLru
+
+
+
+:::map=test
+# # # # # # #
+# - 3 3 3 - #
+# - C 0C 0C - #
+# - B b B - #  
+# - - - - - #
+# # # # # # #
+:::board_end
+:::title=Easy Start
+
+
+
+:::playpath
+UddrruuLDrddllLUllluuurDlddrrrruulLrDrdd
+ldllluuurRdDllddRUluRdddrruLdlUUdrrruu
+
+
+
+
+
+
+:::map=test
+# # # # # # # #
+# - - - - - - #
+# - C B B C - #
+# - B - - B - #  
+# 1 - - b - - #
+# # # # # # # #
+:::board_end
+:::title=Easy Start
+
+:::playpath
+luLUllluuurDRurrrrrdLLDrdDrddllLUruulLul
+llDLDllldddrURlluurDldRuurrrrd
+
+:::map=test
+# # # # # # #
+# - - - - - #
+# - 3b 3B - - #
+# - 2C 2C b - #  
+# - - - - - #
+# # # # # # #
+:::board_end
+:::title=Easy Start
+
+:::dress=pullpush
+:::image=X=cabbage-md.png
+:::image=x=normal_rabbit.png
+
+:::playpath=autosolved
+LulDlDulldRDlddrRlUluuurrDRDldddrrrULrru
+ulDrdL
+
+

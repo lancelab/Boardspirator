@@ -1,0 +1,189 @@
+(function() { 	var tp   		=  $.fn.tp$  =  $.fn.tp$ || {};	
+				var core		=  tp.core;
+				var gio  		=  tp.gio    =  tp.gio   || {};
+				var gworkers	=  gio.gui.procs;
+
+	// The purpose of this file is to prepare handlers which
+	// are common for button-click or key-strike control events.
+
+
+
+	var anchor_stub = 	"<a style=\"color:#AAAAFF; text-decoration:none; font-weight:bold;\" " +
+						"onmouseover = \"this.style.color = '#FFAAAA';\" " +
+						"onmouseout  = \"this.style.color = '#AAAAFF';\" " +
+						"target = \"_blank\" " +
+						"href=\"";
+	var anchor_http = 	anchor_stub + 'http://';
+
+
+
+	/// Makes main credits window
+	gworkers.toggle_about_pane = function(){
+
+		if(gio.gui.modes.controls_locked) return;
+
+		var gs = gio.getgs();
+		var collection = gs.coll;
+		var gm = collection.maps[collection.map_ix];
+
+		var shell_div_style =	"position:relative; top:15px; left:10px; " +
+								"font-size : 10px; width : 460px; height : 450px; overflow : auto; " +
+								"border-radius : 7px; ";
+
+		var about	= "<h2>C r e d i t s</h2>";
+		about		+= collection.credits_table;
+
+		if( collection.external ) {
+			about += 		"<br>External contents can be changed unexpectedly and\n" +
+							"are out of " + gio.description.title + " control.<br><br>\n";
+		}
+
+ 		about += gworkers.get_map_credits().credits_table;
+		about += gm.game.credits_table;
+		about += gm.dresses_wrap.chosen_dress.credits_table;
+		about += anchor_stub + gio.config.links.credits + "\"><br>I m a g e s</a><br><br>\n";
+		about += gio.description_table;
+			
+		if(collection.parsed.file_header.raw){
+			var flines = collection.script.flines;
+			var ww = collection.parsed.file_header.raw;
+			ww = core.joinRange(flines, ww.start, ww.end - ww.start);
+			var style = "font-size : 10px; width : 420px; overflow : auto; border-radius : 7px;";
+			about +=	"<div style=\"" + style + "\"><pre>" + 
+							"\n\nO r i g i n a l   C o l l e c t i o n   H e a d e r:\n\n"+
+							core.htmlencode(ww) +
+						"</pre></div>";
+		}
+		gio.common_popup.dotoggle({
+				owner:'about', innerHTML: "<div style=\"" +
+				shell_div_style + "\">" + about + "</div>" });
+		gio.gui.procs.prolong_common_popup();
+	};
+
+
+
+
+
+
+	gworkers.toggle_help=function(){
+		var gs=gio.getgs();
+		gio.common_popup.dotoggle({
+				owner:'help',
+				innerHTML:	'<pre>' +
+							(  gs.round && gs.round.gm.solver.browser_mode ? gio.solver.config.help : gio.info.help.main  ) +
+							"\n"+'</pre>'
+		}); //TODM hell. gs.round.gm.solver ... when popup can happen??
+		gio.gui.procs.prolong_common_popup();
+	};
+
+
+
+	/// shows all about map including credits
+	gworkers.toggle_about_map_pane = function(){
+
+		var res = '';
+		var gs = gio.getgs();
+		var gm = gs.gm;
+
+		if( gm.script.original_map ) {
+			res +=	"<pre>\nO r i g i n a l    B o a r d:\n\n" + 
+					core.htmlencode(gm.script.original_map.script.raw_board) +
+					"</pre>";
+		}else{
+			if( gm.script.raw_board) {
+				res +=	"<pre>\nB o a r d:\n\n" + 
+						core.htmlencode(gm.script.raw_board) +
+						"</pre>";
+			}
+		}
+
+
+		res += gworkers.get_map_credits('with_externals').description_table; //credits_table;
+
+
+		if( gm.script.original_map ) {
+			res +=	"<pre>\nO r i g i n a l    M a c r o s - D e c o d e d    P o s t - B o a r d:\n\n" + 
+					core.htmlencode(gm.script.original_map.parsed.macrosed_postboard) +
+					"</pre>";
+		}else{
+			res +=	"<pre>\nM a c r o s - D e c o d e d     P o s t - B o a r d:\n\n" + 
+					core.htmlencode(gm.parsed.macrosed_postboard) +
+					"</pre>";
+		}
+
+
+		if( core.get_first_or_null( gm.collection.macros ) ) {
+			//. shows raw because macrosed is possibly different
+			//	TODM remove board bs it is redundant
+			res +=	"<pre>\nR a w    M a p    T e x t:\n\n" + 
+					core.htmlencode(gm.script.raw_map) +
+					"</pre>";
+		}
+
+		if( gm.script.original_map ) {
+			if( core.get_first_or_null( gm.script.original_map.collection.macros ) ) {
+				//. shows raw because macrosed is possibly different
+				//	TODM remove board bs it is redundant
+				res +=	"<pre>\nO r i g i n a l    M a p    R a w    T e x t:\n\n" + 
+						core.htmlencode(gm.script.original_map.script.raw_map) +
+						"</pre>";
+			}
+		}
+
+		gio.common_popup.dotoggle( { owner:'map_comments', innerHTML : res } );
+
+		gio.gui.procs.prolong_common_popup(); //don't close now by own click
+	};
+
+
+
+	/// makes map credits
+	gworkers.get_map_credits = function( with_external ) {
+		var gs		=	gio.getgs();
+		var gm		=	gs.gm;
+		var result	= '';
+		var credits = core.clone_many(gm.credits);
+
+		var external = gm.original_coll.external;
+		if( external && with_external) {
+			credits.web_site = gm.original_coll.credits.web_site;
+			credits.source = gm.original_coll.external.link;
+		}
+		var stub_obj = {};
+		core.tooltipify(stub_obj, "Map", credits );
+		return stub_obj;
+	};
+
+
+
+
+
+
+	gworkers.show_rules = function () {
+		gio.common_popup.dotoggle({
+			owner:'help',
+			innerHTML:"<pre>R u l e s\n\n" + gio.getgs().gm.dresses_wrap.chosen_dress.rules + '</pre>'
+		});
+		gio.gui.procs.prolong_common_popup(); //don't close now by own click
+	};
+
+	gworkers.show_objective = function () {
+		gio.common_popup.dotoggle({
+			owner:'help',
+			innerHTML:"<pre>O b j e c t i v e\n\n" + gio.getgs().gm.dresses_wrap.chosen_dress.objective + '</pre>'
+		});
+		gio.gui.procs.prolong_common_popup(); //don't close now by own click
+	};
+
+	gworkers.show_story = function () {
+		gio.common_popup.dotoggle({
+			owner:'help',
+			innerHTML:"<pre>S t o r y\n\n" + gio.getgs().gm.dresses_wrap.chosen_dress.story + '</pre>'
+		});
+		gio.gui.procs.prolong_common_popup(); //don't close now by own click
+	};
+
+
+
+
+})();

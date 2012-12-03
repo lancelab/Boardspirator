@@ -1,0 +1,522 @@
+:::.  credits.author    Konstantin Kirillov
+:::.  credits.copyright Copyright (c) 2012 Konstantin Kirillov
+:::.  credits.date      November 20 2012
+
+
+
+:::map=demo
+- # # # # # -
+# # - - - # -
+# - 1B 2A - # -
+# - 2A 1a - - # 
+# - - - B - # 
+# # # - - b # 
+- - - # # # #
+:::board_end
+
+:::title=Demo
+:::author=Konstantin Kirillov
+
+:::playpath=solution
+|a.0.d|a.0.l|a.0.l|a.0.u|a.0.R|b.0.l|b.0.l|b.0.u|b.0.l|b.0.l|b.0.u|b.0.u|b.0.R|a.0.d|a.0.r
+|a.0.d|a.0.r|a.0.r|a.0.u|a.0.u|a.0.l|a.0.L|b.0.l|b.0.d|b.0.d|b.0.r|b.0.r|b.0.d|a.0.d|a.0.l
+|a.0.l|a.0.u|a.0.u|a.0.r|b.0.r|b.0.U|b.0.r|b.0.u|b.0.L|b.0.r|a.0.u|a.0.r|a.0.r|a.0.D|a.0.D
+|a.0.u|a.0.u|a.0.l|a.0.l|a.0.d|a.0.l|a.0.d|a.0.d|a.0.r|a.0.U|a.0.d|b.0.l|b.0.L|b.0.r|b.0.u
+|a.0.r|a.0.d|a.0.r|a.0.U|a.0.r|a.0.u|a.0.L
+
+
+
+:::map
+- # # # # # -
+# # - - - # -
+# - 1B 2A - # -
+# - 2A 1 a - # 
+# - - b B - # 
+# # # - - # # 
+- - - # # # -
+:::board_end
+:::title=Shelter Two
+:::author= Konstantin Kirillov
+
+:::playpath=works
+|c.0.d|a.0.l|a.0.d|a.0.l|a.0.l|a.0.u|c.0.u|c.0.u|c.0.r|c.0.r|c.0.d|a.0.R|a.0.R|c.0.L|c.0.L
+|c.0.d|a.0.d|a.0.r|c.0.u|c.0.u|c.0.l|c.0.l|c.0.u|c.0.R|a.0.r|a.0.u|a.0.L|a.0.L|c.0.l|c.0.d
+|c.0.d|c.0.R|c.0.R|c.0.d|a.0.d|a.0.l|c.0.u|c.0.u|c.0.r|c.0.r|c.0.d|a.0.l|a.0.u|a.0.u|a.0.r
+|a.0.u|a.0.r|a.0.r|a.0.D|a.0.u|a.0.l|a.0.l|a.0.d|a.0.l|a.0.d|a.0.d|a.0.r|a.0.U|a.0.r|c.0.L
+|c.0.L|c.0.d|a.0.d|a.0.r|a.0.r|a.0.u|c.0.u|c.0.u|c.0.l|c.0.l|c.0.d|c.0.R|c.0.R|c.0.d|c.0.r
+|a.0.L|a.0.r|a.0.l|a.0.u|a.0.u|a.0.l|a.0.l|a.0.D|c.0.U|c.0.r|c.0.u|c.0.L|a.0.l|a.0.d|a.0.d
+|a.0.r|a.0.U|a.0.d|c.0.L|c.0.r|c.0.u|a.0.R|a.0.d|a.0.r|a.0.U|a.0.r|a.0.u|a.0.L
+
+
+
+
+
+
+:::map
+- # # # # # -
+# # - - - # #
+# - 6F 7F - - #
+# - 7F f 6G - # 
+# - - 6G g - # 
+# # - - - # # 
+- # # # # # -
+:::board_end
+:::title=Get them Home // O.3.2.II
+:::author= Konstantin Kirillov
+
+
+:::playpath=solution
+|g.0.r|g.0.u|g.0.u|g.0.l|g.0.D
+|f.0.d|f.0.l|f.0.l|f.0.u
+|g.0.r|g.0.d|g.0.L|g.0.u|g.0.u|f.0.R|f.0.R|g.0.r
+|g.0.d|g.0.d|g.0.l|g.0.d|g.0.l|f.0.R|f.0.l|f.0.u|f.0.u|f.0.r|f.0.D|f.0.r|f.0.d|g.0.U|g.0.U
+|g.0.d|g.0.l|f.0.L|f.0.D|g.0.l|g.0.u|g.0.R|g.0.R|f.0.L|f.0.r|f.0.d|g.0.d|g.0.r|g.0.r|g.0.u
+|f.0.u|f.0.l|f.0.u|f.0.l|f.0.l|f.0.d|g.0.L|g.0.L|g.0.r|g.0.u|f.0.R|f.0.d|f.0.r|f.0.U|f.0.d
+|f.0.r|f.0.U|f.0.l|g.0.r|g.0.d|g.0.d|g.0.l|g.0.d|g.0.l|g.0.l|f.0.r|f.0.r|f.0.u|f.0.u|f.0.l
+|f.0.D|f.0.u|f.0.u|f.0.l|f.0.l|g.0.u|g.0.l|g.0.u|g.0.R|g.0.d|g.0.d|f.0.D|f.0.l|f.0.d|f.0.d
+|f.0.r|f.0.U|g.0.u|g.0.l|f.0.d|f.0.d|f.0.r|f.0.r|f.0.U|f.0.d|f.0.l|f.0.l|f.0.u|f.0.u|f.0.l
+|g.0.r|g.0.d|g.0.r|g.0.r|g.0.u|g.0.r|g.0.u|g.0.u|g.0.L
+
+
+:::dress=flocks
+:::skip
+
+
+:::dress=chicken_garden
+:::title=Chicken Garden
+:::inherit_from=flocks
+:::skin=flockgarden
+:::image=f=blue_man2.png
+:::image=F=blue_chick.png
+:::image=6=blue_target.png
+:::image=g=red_man2.png
+:::image=G=red_chick.png
+:::image=7=red_target.png
+:::image=Y=egg_ground.png
+
+:::dress=night
+:::title=Night
+:::inherit_from=flocks
+:::skin=flockgarden
+:::image=f=blue_man2.png
+:::image=F=blue_chick.png
+:::image=6=blue_target.png
+:::image=g=red_man2.png
+:::image=G=red_chick.png
+:::image=7=red_target.png
+:::image=Y=egg_ground_dark.png
+:::image=y=wall_dark.png
+:::back_image=transparent.png
+:::center_image=transparent.png
+
+
+
+
+
+:::map
+- # # # # # -
+# # - - - # #
+# - 6F 7F g - #
+# - 7F x 6G - # 
+# - f 6G 7G - # 
+# # - - - # #
+- # # # # # -
+:::board_end
+:::title=Black Manager Squeezed // O.3.3.IIO
+
+
+:::playpath=human solution
+|g.0.r|g.0.d|g.0.d|x.0.R|f.0.d|f.0.r|x.0.D|x.0.u|x.0.u|f.0.l|f.0.u|f.0.l|f.0.u|f.0.R|f.0.d
+|x.0.u|x.0.l|x.0.l|x.0.D|f.0.d|x.0.l|x.0.d|x.0.d|x.0.r|x.0.R|x.0.l|x.0.l|x.0.u|x.0.u|x.0.r
+|x.0.u|x.0.r|x.0.r|x.0.d|g.0.L|f.0.u|g.0.d|g.0.L|x.0.D|f.0.l|f.0.u|f.0.u|f.0.r|f.0.R|x.0.r
+|f.0.R|f.0.l|f.0.l|f.0.l|f.0.d|f.0.d|f.0.r|f.0.U|f.0.r|f.0.u|f.0.r|f.0.u|g.0.U|g.0.U|g.0.d
+|g.0.d|x.0.L|x.0.r|f.0.D
+
+:::dress=flocks
+:::skip
+
+:::map
+- # # # # # -
+# # - - - # #
+# - 6F 7F - - #
+# - 7F f 6G - # 
+# - - 6G g - # 
+# # - - - 6F # 
+- # # # # # #
+:::board_end
+:::title=Kite // G.4.2.II
+:::author= Konstantin Kirillov
+
+:::dress=flocks
+:::skip
+
+
+:::dress=chicken_garden
+:::title=Chicken Garden
+:::inherit_from=flocks
+:::skin=flockgarden
+:::image=f=blue_man2.png
+:::image=F=blue_chick.png
+:::image=6=blue_target.png
+:::image=g=red_man2.png
+:::image=G=red_chick.png
+:::image=7=red_target.png
+:::image=Y=egg_ground.png
+
+
+
+:::playpath=solution
+|g.0.r|g.0.u|g.0.u|g.0.l|g.0.D|f.0.d|f.0.l|f.0.l|f.0.u|g.0.r|g.0.d|g.0.L|g.0.L|g.0.u|g.0.r|g.0.u
+|f.0.R|f.0.R|g.0.r|g.0.d|g.0.d
+|g.0.l|g.0.l|f.0.R|g.0.u|g.0.l|f.0.l|f.0.d|f.0.d|g.0.l|g.0.d|g.0.R|f.0.r|f.0.u|f.0.u|f.0.l
+|f.0.u|f.0.u|f.0.r|g.0.u|g.0.r|g.0.r|g.0.d|g.0.d|g.0.l|g.0.U|g.0.U|g.0.d|f.0.D|f.0.r|f.0.d
+|f.0.L|g.0.l|f.0.D|g.0.l|f.0.L|g.0.u|g.0.R|g.0.R|g.0.u|f.0.u|f.0.l|f.0.l|g.0.d|g.0.d|g.0.r
+|g.0.r|g.0.u|g.0.L|g.0.L|f.0.d|f.0.R|f.0.d|f.0.r|g.0.r|g.0.r|g.0.d|f.0.U|f.0.d|f.0.r|f.0.U
+|f.0.l|g.0.l|g.0.d|g.0.l|g.0.l|f.0.r|f.0.r|f.0.u|f.0.u|f.0.l|f.0.D|f.0.u|g.0.u|g.0.l|g.0.u
+|g.0.R|g.0.l|g.0.d|g.0.r|f.0.u|f.0.l|f.0.l|f.0.D|f.0.u|f.0.r|f.0.r|f.0.d|f.0.d|g.0.l|g.0.u
+|g.0.u|g.0.r|g.0.u|g.0.r|g.0.r|g.0.d|g.0.r|g.0.d|g.0.d|f.0.u|f.0.u|f.0.l|f.0.l|f.0.d|f.0.l
+|f.0.d|f.0.d|f.0.r|f.0.d|f.0.r|f.0.r|f.0.U|g.0.u|g.0.u|g.0.l|g.0.u|g.0.l|g.0.l|g.0.d|g.0.R
+|f.0.d|f.0.l|f.0.l|f.0.u|f.0.l|f.0.u|f.0.u|f.0.r|f.0.u|g.0.l|g.0.l|g.0.d|g.0.d|g.0.r|g.0.d
+|g.0.r|g.0.r|g.0.u|g.0.r|f.0.d|f.0.l|f.0.d|f.0.d|f.0.r|f.0.U|g.0.u|g.0.u|f.0.d|g.0.L
+
+
+
+
+:::map
+- # # # # # -
+# # - - - # #
+# - 6F 7F - - #
+# - 7F 6f 6G - # 
+# - - 6G g - # 
+# # - - - F # 
+- # # # # # #
+:::board_end
+:::title=Ship  // G.4.2.II
+:::author= Konstantin Kirillov
+
+:::dress=flocks
+:::skip
+
+:::playpath=solution
+|g.0.r|g.0.u|g.0.u|g.0.l|g.0.D|f.0.d|f.0.l|f.0.l|f.0.u|g.0.r|g.0.d|g.0.L|g.0.L|g.0.u|g.0.r
+|g.0.u|f.0.R|f.0.R|g.0.r|g.0.d|g.0.d
+|g.0.l|g.0.l|f.0.R|g.0.u|g.0.l|f.0.l|f.0.d|f.0.d|g.0.l|g.0.d|g.0.R|f.0.r|f.0.u|f.0.u|f.0.l
+|f.0.u|f.0.u|f.0.r|g.0.u|g.0.r|g.0.r|g.0.d|g.0.d|g.0.l|g.0.U|g.0.U|g.0.d|f.0.D|f.0.r|f.0.d
+|f.0.L|g.0.l|f.0.D|g.0.l|f.0.L|g.0.u|g.0.R|g.0.R|g.0.u|f.0.u|f.0.l|f.0.l|g.0.d|g.0.d|g.0.r
+|g.0.r|g.0.u|g.0.L|g.0.L|f.0.d|f.0.R|f.0.d|f.0.r|g.0.r|g.0.r|g.0.d|f.0.U|f.0.d|f.0.r|f.0.U
+|f.0.l|g.0.l|g.0.d|g.0.l|g.0.l|f.0.r|f.0.r|f.0.u|f.0.u|f.0.l|f.0.D|f.0.u|g.0.u|g.0.l|g.0.u
+|g.0.R|g.0.l|g.0.d|g.0.r|f.0.u|f.0.l|f.0.l|f.0.D|f.0.u|f.0.r|f.0.r|f.0.d|f.0.d|g.0.l|g.0.u
+|g.0.u|g.0.r|g.0.u|g.0.r|g.0.r|g.0.d|g.0.r|g.0.d|g.0.d|f.0.u|f.0.u|f.0.l|f.0.l|f.0.d|f.0.l
+|f.0.d|f.0.d|f.0.r|f.0.d|f.0.r|f.0.r|f.0.U|g.0.u|g.0.u|g.0.l|g.0.u|g.0.l|g.0.l|g.0.d|g.0.R
+|f.0.d|f.0.l|f.0.l|f.0.u|f.0.l|f.0.u|f.0.u|f.0.r|f.0.u|g.0.l|g.0.l|g.0.d|g.0.d|g.0.r|g.0.d
+|g.0.r|g.0.r|g.0.u|g.0.r|f.0.d|f.0.l|f.0.d|f.0.d|f.0.r|f.0.U|g.0.u|g.0.u|f.0.d|g.0.L|g.0.u
+|g.0.l|g.0.D|g.0.r|f.0.l|f.0.u|f.0.u|f.0.R|f.0.l|f.0.d|f.0.d|f.0.r|f.0.d|g.0.u|g.0.l|g.0.l
+|g.0.d|g.0.l|g.0.d|g.0.d|f.0.r|f.0.r|f.0.u|f.0.r|f.0.u|f.0.u|f.0.l|g.0.r|g.0.d|g.0.r|f.0.D
+|g.0.l|g.0.u|g.0.l|g.0.u|g.0.u|g.0.r|g.0.u|g.0.r|g.0.r|g.0.d|g.0.r|g.0.d|g.0.d|f.0.u|f.0.u
+|f.0.l|f.0.l|f.0.d|f.0.l|f.0.d|f.0.d|f.0.r|f.0.d|f.0.r|f.0.r|g.0.u|f.0.U|g.0.u|g.0.l|g.0.u
+|g.0.l|g.0.l|g.0.d|g.0.l|g.0.d|g.0.u|g.0.r|g.0.l|g.0.d|g.0.d|g.0.r|g.0.d|g.0.r|g.0.r|g.0.r
+|f.0.d|f.0.l|f.0.l|f.0.u|f.0.l|f.0.u|f.0.u|f.0.r|f.0.u|f.0.r|f.0.r|f.0.d|f.0.u|f.0.l|f.0.l
+|f.0.d|f.0.l|f.0.d|f.0.d|f.0.r|f.0.d|f.0.r|f.0.r|f.0.u|g.0.l|g.0.l|g.0.l|g.0.u|g.0.l|g.0.u
+|g.0.u|g.0.r|g.0.u|g.0.r|g.0.r|g.0.d|f.0.d|f.0.r|f.0.U|f.0.d|f.0.l|f.0.l|f.0.l|f.0.u|f.0.R
+|g.0.u|g.0.l|g.0.l|g.0.d|g.0.l|g.0.d|g.0.d|g.0.r|g.0.d|g.0.r|f.0.l|f.0.l|f.0.u|f.0.u|f.0.r
+|f.0.u|f.0.r|f.0.r|f.0.d|f.0.L|f.0.r|f.0.r|g.0.u|g.0.U|g.0.d|g.0.d|g.0.r|f.0.D|f.0.L|g.0.l
+|f.0.r|f.0.d|f.0.d|f.0.l|f.0.U
+
+
+
+:::map
+- # # # # # -
+# # - - - # #
+# - 6F 7F - - #
+# - 7F x 6G g # 
+# - - 6G 7 - # 
+# # - f - G # 
+- # # # # # #
+:::board_end
+:::title=Black Manager //G.3.3.IIO
+
+:::dress=flocks
+:::skip
+
+
+:::dress=chickens_promoted
+:::title=Chickens Promoted
+:::inherit_from=flocks
+:::skin=flockgarden
+:::chosen
+:::image=x=black_man.png
+:::image=f=red_man2.png
+:::image=F=red_chick.png
+:::image=g=blue_man2.png
+:::image=6=red_target.png
+:::image=7=blue_target.png
+:::image=G=blue_chick.png
+
+
+
+:::playpath=solution
+|g.0.d|x.0.R|x.0.u|g.0.L|f.0.l|f.0.u|g.0.r|g.0.d|g.0.L|g.0.L|x.0.D|f.0.l|f.0.u|x.0.u|f.0.R
+|f.0.R|f.0.l|x.0.u|x.0.l|x.0.D|f.0.l|x.0.L|g.0.U|g.0.U|x.0.u|g.0.d|g.0.d|g.0.l|f.0.R|f.0.l
+|g.0.U|g.0.r|g.0.d|g.0.r|g.0.r|g.0.u|g.0.L|f.0.d|f.0.r|f.0.d|f.0.r|f.0.r|f.0.r|g.0.d|g.0.l
+|g.0.l|g.0.u|f.0.l|f.0.u|f.0.U|f.0.r|x.0.r|x.0.r|g.0.R|g.0.d|x.0.D
+
+
+
+
+
+:::map
+# # # # # # #
+# a A 1 - # #
+# A 6F 7F g - #
+# 1 7F x 6G - # 
+# - f 6G 7G - # 
+# # - - - # #
+# # # # # # #
+:::board_end
+:::title=The Crowd // G.2.3.3.IIIO
+
+
+:::dress=flocks
+:::skip
+
+
+:::dress=chickens_promoted
+:::title=Chickens Promoted
+:::inherit_from=flocks
+:::skin=flockgarden
+:::chosen
+:::image=x=black_man.png
+:::image=f=red_man2.png
+:::image=F=red_chick.png
+:::image=g=blue_man2.png
+:::image=6=red_target.png
+:::image=7=blue_target.png
+:::image=G=blue_chick.png
+:::image=a=yellow_man.png
+:::image=A=yellow_chick.png
+:::image=1=yellow_target.png
+:::image=y=egg_wall.png
+:::image=Y=egg_ground.png
+
+:::playpath=solution
+|g.0.r|g.0.d|g.0.d|x.0.R|x.0.u|g.0.U|g.0.d|x.0.D|x.0.u|g.0.L|g.0.d|g.0.l|x.0.D|x.0.u|f.0.l
+|f.0.u|f.0.R|f.0.R|x.0.r|x.0.d|x.0.d|f.0.R|f.0.l|f.0.u|f.0.u|f.0.r|f.0.D|x.0.U|g.0.U|g.0.U
+|g.0.d|g.0.d|f.0.u|x.0.L|x.0.r|f.0.D|a.0.R|a.0.l|a.0.D
+
+
+
+
+:::map
+# # # # # # #
+# a A - - # #
+# A 6F 7F g - #
+# - 7F x 6G - # 
+# - f 6G 7G 1 # 
+# # - - 1 # #
+# # # # # # #
+:::board_end
+:::title=Busy Farmer // G.2.3.3.IIIO
+
+:::dress=flocks
+:::skip
+
+
+:::dress=chickens_promoted
+:::title=Chickens Promoted
+:::inherit_from=flocks
+:::skin=flockgarden
+:::chosen
+:::image=x=black_man.png
+:::image=f=red_man2.png
+:::image=F=red_chick.png
+:::image=g=blue_man2.png
+:::image=6=red_target.png
+:::image=7=blue_target.png
+:::image=G=blue_chick.png
+:::image=a=yellow_man.png
+:::image=A=yellow_chick.png
+:::image=1=yellow_target.png
+:::image=y=egg_wall.png
+:::image=Y=egg_ground.png
+
+
+:::playpath=solution
+|g.0.r|g.0.d|g.0.d|x.0.R|x.0.u|g.0.U|x.0.u|g.0.L|g.0.d|x.0.D|g.0.d|f.0.l|x.0.D|g.0.L|x.0.u
+|f.0.u|f.0.R|x.0.u|x.0.l|f.0.R|x.0.r|f.0.U|a.0.D|f.0.d|x.0.L|x.0.L|x.0.r|x.0.r|f.0.U|f.0.d
+|f.0.r|a.0.R|x.0.L|f.0.r|f.0.u|a.0.l|a.0.d|a.0.R|a.0.R|a.0.l|x.0.D|a.0.R|x.0.u|f.0.L|f.0.r
+|x.0.r|x.0.d|x.0.D|x.0.D|a.0.r|a.0.r|x.0.u|x.0.l|x.0.l|x.0.l|f.0.l|f.0.u|f.0.l|f.0.D|f.0.r
+|x.0.u|x.0.R|f.0.r|x.0.R|x.0.l|g.0.U|g.0.U|x.0.l|x.0.d|x.0.d|x.0.R|x.0.R|x.0.l|x.0.l|x.0.u
+|x.0.u|x.0.r|g.0.d|x.0.D|x.0.l|f.0.L|g.0.L|f.0.u|f.0.l|f.0.D|f.0.D|f.0.u|f.0.r|g.0.d|x.0.R
+|x.0.l|g.0.U
+
+:::playpath=solution
+|g.0.r|g.0.d|g.0.d|x.0.R|x.0.u|g.0.U|x.0.u|g.0.L|g.0.d|x.0.D|g.0.d|f.0.l|x.0.D|g.0.L|x.0.u
+|f.0.u|f.0.R|x.0.u|x.0.l|f.0.R|x.0.r|f.0.U|a.0.D|f.0.d|x.0.L|x.0.L|x.0.r|x.0.r|f.0.U|f.0.d
+|f.0.r|a.0.R|x.0.L|f.0.r|f.0.u|a.0.l|a.0.d|a.0.R|a.0.R|a.0.l|x.0.D|a.0.R|x.0.u|f.0.L|f.0.r
+|x.0.r|x.0.d|x.0.D|x.0.D|a.0.r|a.0.r|x.0.u|x.0.l|x.0.l|x.0.l|g.0.U|f.0.l|f.0.L|f.0.r|g.0.U
+|f.0.r|x.0.d|x.0.R|x.0.R|x.0.l|g.0.r|g.0.u|g.0.u|g.0.l|g.0.D|g.0.D|x.0.l|x.0.u|x.0.u|f.0.l
+|f.0.l|f.0.u|x.0.R|x.0.l|x.0.d|x.0.d|g.0.L|g.0.r|g.0.d|g.0.d|g.0.l|f.0.D|f.0.u|f.0.l|x.0.R
+|f.0.r|x.0.l|x.0.u|x.0.u|x.0.R|g.0.r|x.0.D|x.0.D|x.0.l|g.0.U|x.0.u|g.0.L|g.0.d|f.0.D|f.0.D
+|f.0.u|f.0.r|x.0.R|x.0.l|g.0.U
+
+:::playpath=solution
+|g.0.r|g.0.d|g.0.d|x.0.R|x.0.u|g.0.U|x.0.u|g.0.L|g.0.d|x.0.D|g.0.d|f.0.l|x.0.D|g.0.L|x.0.u
+|f.0.u|f.0.R|x.0.u|x.0.l|f.0.R|x.0.r|f.0.U|a.0.D|f.0.d|x.0.L|x.0.L|x.0.r|x.0.r|f.0.U|f.0.d
+|f.0.r|a.0.R|x.0.L|f.0.r|f.0.u|a.0.l|a.0.d|a.0.R|a.0.R|a.0.l|x.0.D|a.0.R|x.0.u|f.0.L|f.0.r
+|x.0.r|x.0.d|x.0.D|x.0.D|a.0.l|a.0.l|x.0.u|x.0.l|x.0.l|x.0.u|f.0.l|f.0.u|f.0.l|x.0.R|x.0.l
+|f.0.d|f.0.d|f.0.r|f.0.r|f.0.u|a.0.r|a.0.r|a.0.r|a.0.r|g.0.U|g.0.U|x.0.l|x.0.d|x.0.d|x.0.R
+|x.0.R|x.0.l|x.0.l|g.0.d|g.0.d|x.0.u|x.0.u|x.0.r|x.0.D|x.0.D|f.0.L|f.0.u|f.0.l|f.0.D|x.0.u
+|x.0.l|x.0.u|f.0.r|x.0.R|f.0.u|x.0.d|x.0.r|x.0.U|g.0.U|g.0.r|x.0.D|x.0.l|g.0.L|g.0.d|x.0.u
+|x.0.r|x.0.D|x.0.l|g.0.U|g.0.d|a.0.l|x.0.l|x.0.d|x.0.R|x.0.R|x.0.l|x.0.u|x.0.u|x.0.r|x.0.D
+|x.0.u|g.0.U|g.0.L|x.0.l|x.0.l|x.0.d|g.0.r|a.0.r|g.0.u|g.0.r|g.0.l|g.0.d|g.0.d|g.0.l|f.0.D
+|f.0.u|f.0.l|f.0.D|f.0.D|f.0.u|f.0.r|x.0.R|x.0.l|g.0.U
+
+
+
+
+
+:::map
+- # # # # # -
+# # - - - # #
+# - 6F 7F 6g - #
+# - 7F 6 7G - # 
+# - f G G - # 
+# # - - - - # 
+- # # # # # #
+:::board_end
+:::title=Smaller Shelter // G.3.3.II
+:::author=Konstantin Kirillov
+
+
+:::playpath=human solution
+|g.0.r|g.0.d|g.0.L|g.0.r|g.0.d|g.0.d|g.0.l|g.0.U|g.0.r|g.0.u|g.0.u|g.0.l|g.0.D|g.0.r|g.0.d
+
+
+|g.0.d|g.0.l|g.0.L|f.0.l|f.0.u|g.0.r|g.0.r|g.0.u|g.0.u|g.0.u|g.0.l|f.0.R|f.0.R|g.0.r|g.0.d
+
+|g.0.d|f.0.R|g.0.d|g.0.l|g.0.l|f.0.l|f.0.u|f.0.u|f.0.r|g.0.r|g.0.r|g.0.u|f.0.D|g.0.d|g.0.l
+|g.0.l|g.0.U|g.0.U|g.0.d|g.0.d|g.0.r|g.0.r|g.0.u|g.0.L|g.0.d|g.0.l|g.0.l|g.0.u|g.0.R|f.0.u
+|f.0.l|f.0.l|f.0.D|f.0.l|f.0.d|f.0.d|f.0.r|f.0.d|g.0.l|g.0.l|g.0.u|g.0.u|g.0.r|g.0.u|g.0.r
+|g.0.r|g.0.d|f.0.r|f.0.r|f.0.r|f.0.u|f.0.U|g.0.u|g.0.l|g.0.l|g.0.d|g.0.l|g.0.d|f.0.d|f.0.d
+|f.0.l|f.0.l|f.0.l|f.0.u|f.0.U|g.0.d|g.0.r|g.0.r|g.0.d|f.0.d|g.0.r|g.0.r|g.0.u|g.0.L|f.0.d
+|f.0.r|f.0.r|f.0.r|f.0.u|f.0.u|f.0.L|g.0.d|g.0.l|g.0.l|g.0.u|f.0.r|g.0.R|g.0.d|g.0.r|g.0.U
+
+
+
+:::playpath=human solution
+|g.0.r|g.0.d|g.0.L|g.0.D|f.0.l|f.0.u|f.0.R|g.0.L|f.0.R|g.0.r|g.0.d|f.0.d|f.0.r|f.0.r|f.0.u
+|g.0.u|g.0.l|g.0.u|g.0.u|f.0.L|g.0.u|g.0.r|f.0.d|f.0.l|f.0.U|f.0.r|f.0.d|f.0.d|g.0.l|g.0.l
+|g.0.d|g.0.d|g.0.l|g.0.d|g.0.R|g.0.R|f.0.r|f.0.u|f.0.u|f.0.l|f.0.l|f.0.l|f.0.u|g.0.u|g.0.r
+|g.0.r|g.0.d|g.0.d|g.0.l|g.0.U|f.0.d|f.0.d|g.0.r|g.0.u|g.0.L|g.0.L|g.0.r|g.0.d|g.0.d|g.0.l
+|f.0.l|f.0.u|f.0.u|f.0.r|f.0.u|f.0.r|g.0.U|g.0.r|g.0.r|g.0.u|f.0.r|f.0.D|f.0.D|g.0.d|g.0.d
+|g.0.l|g.0.l|g.0.u|f.0.r|f.0.d|f.0.d|f.0.l|f.0.l|f.0.l|g.0.d|g.0.r|g.0.r|g.0.u|g.0.u|g.0.l
+|g.0.u|g.0.u|g.0.l|g.0.l|g.0.D|f.0.r|f.0.r|f.0.r|f.0.u|f.0.u|f.0.l|f.0.l|g.0.u|g.0.r|g.0.r
+|g.0.d|g.0.d|g.0.r|g.0.d|f.0.r|f.0.u|f.0.u|f.0.l|f.0.l|f.0.d|g.0.d|g.0.l|g.0.l|g.0.U|f.0.u
+|f.0.r|f.0.r|f.0.d|f.0.d|f.0.r|f.0.d|f.0.d|f.0.l|f.0.l|f.0.l|g.0.d|g.0.r|g.0.r|g.0.u|g.0.u
+|g.0.l|g.0.u|g.0.u|g.0.l|g.0.l|g.0.d|g.0.l|g.0.d|g.0.d|f.0.r|f.0.r|f.0.r|f.0.u|f.0.u|f.0.l
+|g.0.R|f.0.u|f.0.L|f.0.r|f.0.d|f.0.r|f.0.d|f.0.d|f.0.l|f.0.U|f.0.r|g.0.R|g.0.U|g.0.d|f.0.u
+|f.0.L|f.0.r|g.0.d|g.0.r|g.0.U
+
+
+:::dress=flocks
+:::skip
+
+
+
+:::map
+- # # # # # -
+# # - - - # #
+# - 6F 7F g - #
+# - 7F - 6G - # 
+# - f 6G 6 - # 
+# # - - - F # 
+- # # # # # #
+:::board_end
+:::title=Small Shelter A. Unsolved.  // G.4.2.II
+:::author=Konstantin Kirillov
+
+:::dress=flocks
+:::skip
+
+
+
+:::map
+- # # # # # -
+# # - - - # #
+# - 6F 7F - - #
+# - 7F - 6G g # 
+# - - 6G 7 - # 
+# # - f - G # 
+- # # # # # #
+:::board_end
+:::title=Small Shelter B. Unsolved. // G.3.3.II
+:::author= Konstantin Kirillov
+
+:::dress=flocks
+:::skip
+
+
+:::map
+- # # # # # -
+# # - - - # #
+# - 6F 7F g - #
+# - 7F - 6G - # 
+# - f 6G 7G - # 
+# # - - - - # 
+- # # # # # #
+:::board_end
+:::title=Small Shelter C. Unsolved. // G.3.3.II
+
+
+:::author= Konstantin Kirillov
+
+:::dress=flocks
+:::skip
+
+
+
+
+
+:::map
+# # # # # # # #
+# # - - - - # # 
+# - # C a # - # 
+# - - 1 2 C - # 
+# - B 3 3 b - # 
+# - # c A # - # 
+# # - - - - # # 
+# # # # # # # #
+:::board_end
+:::title=Meeting place cannot be changed // Osix4.1.1.2.III
+
+
+:::playpath=solvedLX
+|a.0.d|a.0.d|a.0.l|a.0.u|a.0.l|a.0.l|a.0.u|b.0.l|b.0.l|b.0.u|b.0.l|b.0.l|b.0.d|c.0.u|c.0.u
+|c.0.r|c.0.u|c.0.u|c.0.l|c.0.r|c.0.d|c.0.d|c.0.d|c.0.r|c.0.r|c.0.u|c.0.L|c.0.r|a.0.d|a.0.r
+|a.0.r|a.0.d|a.0.d|a.0.d|a.0.r|c.0.d|c.0.l|c.0.l|c.0.r|c.0.u|c.0.L|c.0.u|c.0.u|c.0.d|c.0.d
+|c.0.L|c.0.r|c.0.u|c.0.u|a.0.U|a.0.U|a.0.l|a.0.u|a.0.R|a.0.u|b.0.R|b.0.R|b.0.u|b.0.r|b.0.D
+|b.0.l|b.0.d|b.0.d|b.0.r|a.0.d|a.0.d|a.0.r|a.0.r|a.0.u|c.0.l|c.0.D|b.0.U|b.0.d|c.0.D|c.0.u
+|c.0.d|c.0.D|c.0.u|c.0.l|c.0.l|c.0.d|a.0.L|a.0.L|a.0.r|a.0.r|a.0.u|b.0.u|b.0.U|b.0.r|b.0.r
+|c.0.R|c.0.u|b.0.u|b.0.d|b.0.u|b.0.l|b.0.d|b.0.l|b.0.U|b.0.r|b.0.r|b.0.d|b.0.d|c.0.d|c.0.R
+|c.0.R|a.0.d|a.0.l|a.0.l|a.0.L|a.0.d|a.0.l|a.0.l|a.0.u|a.0.u|a.0.d|b.0.u|b.0.u|b.0.l|b.0.l
+|b.0.l|b.0.u|b.0.u|b.0.r|a.0.d|a.0.r|a.0.r|a.0.d|c.0.u|c.0.r|c.0.r|c.0.d|c.0.L|c.0.u|c.0.l
+|c.0.l|c.0.d|c.0.R|c.0.u|a.0.u|a.0.l|a.0.l|a.0.u|c.0.d|c.0.l|c.0.d|c.0.d|a.0.d|a.0.r|a.0.r
+|c.0.r|c.0.U|a.0.l|a.0.l|a.0.u|c.0.l|c.0.u|c.0.u|c.0.r|c.0.D|b.0.l|b.0.d|b.0.d|b.0.r|b.0.r
+|c.0.l|c.0.d|c.0.d|c.0.r|c.0.U|c.0.l|c.0.u|b.0.l|b.0.l|b.0.u|b.0.u|b.0.r|c.0.u|c.0.r|c.0.D
+|c.0.u|c.0.r|c.0.r|c.0.d|b.0.l|b.0.d|b.0.d|b.0.r|b.0.d|b.0.l|b.0.u|b.0.r|a.0.d|a.0.r|a.0.r
+|a.0.l|b.0.l|b.0.u|b.0.u|b.0.r|a.0.r|c.0.L|a.0.l|a.0.l|a.0.r|a.0.l|b.0.l|b.0.d|b.0.d|b.0.d
+|b.0.l|b.0.r|b.0.u|b.0.u|b.0.u|b.0.r|c.0.L|a.0.u|a.0.R|a.0.R|a.0.R|c.0.L|a.0.d|a.0.r|a.0.r
+|a.0.u|a.0.d|a.0.l|a.0.l|c.0.u|c.0.l|c.0.l|c.0.d|c.0.R|a.0.r|a.0.r|a.0.u|a.0.u|a.0.d|c.0.u
+|c.0.r|c.0.r|c.0.d|c.0.u|c.0.l|c.0.u|a.0.d|a.0.l|a.0.l|a.0.u|a.0.l|a.0.l|a.0.d|c.0.d|c.0.r
+|c.0.d|a.0.l|a.0.u|c.0.u|c.0.l|c.0.u|a.0.r|a.0.r|a.0.r|a.0.d|a.0.r|a.0.l|a.0.r|a.0.r|a.0.u
+|c.0.d|c.0.r|c.0.l|c.0.l|c.0.d|c.0.R|c.0.l|c.0.r|c.0.R|c.0.l|c.0.d|c.0.d|c.0.r|a.0.L|a.0.L
+|a.0.L|a.0.d|a.0.l|a.0.l|a.0.u|a.0.d|a.0.r|a.0.r|a.0.r|a.0.u|c.0.U|c.0.d|a.0.l|a.0.d|a.0.l
+|a.0.l|a.0.u|c.0.l|c.0.u|c.0.u|c.0.u|c.0.r|c.0.l|c.0.r|c.0.D|c.0.u|a.0.d|a.0.r|a.0.r|a.0.d
+|c.0.r|c.0.r|c.0.d|c.0.L|c.0.u|c.0.d|a.0.u|a.0.l|a.0.l|a.0.u|a.0.R|a.0.R|a.0.d|a.0.d|c.0.L
+|c.0.L|c.0.u|c.0.l|c.0.l|c.0.d|a.0.u|a.0.u|a.0.R|a.0.d|a.0.r|a.0.r|a.0.u|a.0.d|a.0.u|a.0.d
+|a.0.l|a.0.l|a.0.l|a.0.u|a.0.d|a.0.r|a.0.r|a.0.r|a.0.u|c.0.u|c.0.r|c.0.r|c.0.d|c.0.d|b.0.l
+|b.0.d|b.0.d|b.0.l|c.0.d|c.0.r|c.0.U|c.0.l|b.0.r|b.0.u|b.0.u|b.0.r|a.0.d|a.0.l|c.0.u|c.0.u
+|c.0.l|c.0.l|c.0.d|c.0.R|c.0.l|a.0.r|a.0.u|a.0.L|a.0.L|a.0.r|a.0.r|a.0.u|b.0.D
+
+
+

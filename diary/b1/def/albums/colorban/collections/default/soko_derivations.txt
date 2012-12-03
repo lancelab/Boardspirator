@@ -1,0 +1,76 @@
+
+:::. credits.title			:	Soko-Derivations
+:::. credits.author			:	Multiple authors. Credits are at maps level.
+:::. credits.editor			:	Konstantin Kirillov
+:::. credits.license		:	Multiple authors. Credits are at maps level.
+
+
+
+:::map
+- - # # # #
+# # # - - # # # # # # # #
+# - - C - - . .@ 1 # - - #
+# - - A - # D # .H 5 - - #
+# # # B # # . . 6 # - - #
+- # # - # - E F G - - # #
+- # - - # - # - # # - #
+- # - - - - - - - - - #
+- # - - # # # # # # # #
+- # # # #
+:::board_end
+:::title=Flying idea #132. Subtitle : Short Flight on Grey Map
+:::author=Evgeny Grigoriev (GRIGoRusha). Collection 2002.
+:::editor=Colorized by K.Kirillov
+
+
+Comment:
+color red
+Comment-End:
+
+;THIS MAP IS A NON-SIGNIFICANT MODIFICATION OF 
+;GRIGoRusha ORIGINAL MAP
+
+454
+
+:::playpath
+rDrrddddllluURRllddrrruUUruulDllulllldLD
+DDldRRRuuRRddrrruuUruLddddllluuRRllddrrr
+uUlllllddlluuuururrDDuulldlddddrruuRuuul
+lulDDDDDldRuuuuulldRurDDDDlddrUUUUUruLrr
+rdddlddLruuruuulllddddlddrUUUUUrurrdddRd
+dLLLrrrrrruulLLddlluuRuuurrdDLDRuuulldDu
+ulldldddlddrUrruuRuuulldlddDldRuuuuruulD
+DlluRRRRRRlllldDDDlddrUUUUUluRRRRdddlddL
+ruururrdLuluulllddddlddrUrrrrUUruLdddllu
+uRlddrruUlURdddrrruuLLLddllllUUUUrurrDul
+ldlluRRRlldddddrruuRlddrruUrrrUruulDLrDD
+lllddrrrUUUruL
+
+
+
+
+
+:::map
+- - # # # #
+# # # - - # # # # # # # #
+# - - C - - . .@ 3 # - - #
+# - - A - # D # .H - - - #
+# # # B # # 5. . 4 # - - #
+- # # - # - E F G - - # #
+- # - - # - # - # # - #
+- # - - - - - - - - - #
+- # - - # # # # # # # #
+- # # # #
+:::board_end
+:::title=Flying idea #132. Subtitle : Long Flight on Grey Map
+:::author=Evgeny Grigoriev (GRIGoRusha), Collection 2002. Colorized by K.Kirillov
+:::editor=Colorized by K.Kirillov
+
+
+
+Comment:
+color red
+Comment-End:
+
+
+

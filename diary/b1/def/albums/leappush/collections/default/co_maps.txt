@@ -1,0 +1,61 @@
+
+
+:::map=test
+# # # # # #
+# - 3C 3b 3 #
+# - B 2 2 #
+# - C C B #  
+# - - - - #
+# # # # # #
+:::board_end
+:::title=Warm Up
+
+:::playpath=Solution
+lddddlluuurrrrdLDlllldd
+
+:::co_playpath
+uurrrrDLulllldddrruuuur
+
+
+
+
+
+
+:::map
+# # # # # #
+# - 3C 3b 3 #
+# - B 2 2 #
+# - 0C C B #  
+# - - - X #
+# # # # # #
+:::board_end
+:::title=Gold counts
+
+
+:::playpath
+lddddRRuuurrrrdLDlllldddD
+
+:::co_playpath
+DuuurrrrDLulllldddRRuuuur
+
+
+
+
+:::map
+# # # # # #
+# - 3C 3 3 #
+# - B 2b 2 #
+# - 0C C B #  
+# X 0 - X #
+# # # # # #
+:::board_end
+:::title=Boxes on the way
+
+:::playpath
+LDllldddruulddDruldddLdRRuur
+
+:::co_playpath
+lddRRuLuuurdlDuurddluuurrrDL
+
+
+

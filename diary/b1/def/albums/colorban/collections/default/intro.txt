@@ -1,0 +1,119 @@
+:::. credits.title			:	Intro
+:::. credits.author			:	Konstantin Kirillov
+:::. credits.license		:	Public Domain
+:::. credits.date			:	2011 - November 2012
+:::. credits.email			:	beaverscript(a)landkey(.)net
+
+
+:::map
+- - # # # #  
+- # @ a b c # 
+# - $ A C B - #
+- # . 1 2 3 - # 
+- - # - - # #
+- - - # # 
+:::board_end
+:::title=In few Steps
+
+
+:::map
+#########
+#aAbAaAa#
+#AAaaAaA#
+#aa-B2Aa#
+#########
+:::board_end
+:::title=Through Crowd Easily
+
+
+
+
+
+:::map
+##########
+#1111----#
+#b-------#
+#-BBB----#
+#----AAA-#
+#-------a#
+#----2222#
+##########
+:::board_end
+:::multiplayer=2
+:::title=Two Players
+
+
+
+:::map
+########
+#aAbAaA#
+#ABaaAa#
+#aa-B2b#
+########
+:::board_end
+:::title=Alive Walls
+
+
+
+:::map
+#########
+#aAbAaAa#
+#ABaaAaB#
+#Aa-B2Ab#
+###A###A#
+--#aAaAa#
+--#######
+:::board_end
+:::title=Around an Island Easily
+
+
+:::map
+########
+# 1a - A a A a #
+#ABaaAa#
+# a A a B 2b a #
+########
+:::board_end
+:::title=Wrong Men in Targets
+
+
+:::map
+# # # # # # # #
+# # - - - - - # 
+# - # C a # - # 
+# - d 1 2 D - # 
+# - B 4 3 b - # 
+# - # c A # - # 
+# - - - - - # # 
+# # # # # # # #
+:::board_end
+:::title=Spiral Pie
+:::playpath=Easy
+|c.0.u|c.0.u|a.0.d|a.0.d|a.0.l|a.0.d|a.0.d|a.0.r|c.0.r|c.0.u|c.0.u|c.0.l|d.0.r|d.0.r|d.0.u
+|d.0.u|d.0.r|d.0.r|d.0.d|d.0.d|b.0.l|b.0.l|b.0.u|b.0.l|b.0.l|b.0.d|a.0.U|d.0.d|d.0.d|a.0.l
+|a.0.u|a.0.u|a.0.r|a.0.u|a.0.u|a.0.r|a.0.r|a.0.d|a.0.d|a.0.d|a.0.l|a.0.L|a.0.d|a.0.l|a.0.U
+|a.0.d|b.0.R|a.0.r|a.0.u|a.0.u|a.0.L|a.0.r|a.0.u|a.0.u|b.0.R|b.0.d|b.0.r|b.0.U|c.0.D|c.0.D
+|c.0.D|c.0.l|c.0.l|b.0.U|c.0.d|c.0.d|c.0.r|c.0.r|c.0.U|c.0.d|c.0.l|c.0.l|c.0.u|c.0.u|c.0.r
+|c.0.R|c.0.R|a.0.l|a.0.d|a.0.d|a.0.d|a.0.l|a.0.l|a.0.u|d.0.u|d.0.u|b.0.l|b.0.u|b.0.u|b.0.l
+|d.0.L|d.0.L|d.0.r|d.0.r|d.0.u|d.0.u|d.0.l|d.0.l|d.0.l|d.0.d|d.0.D|d.0.D|c.0.u|c.0.r|c.0.r
+|c.0.d|c.0.L|d.0.l|d.0.l|d.0.d|d.0.d|d.0.r|d.0.r|d.0.U|a.0.R|b.0.r|b.0.r|b.0.D
+
+
+:::map
+# # # # # # # #
+# # - - - - # # 
+# - # C a # - # 
+# - d 1 2 D - # 
+# - B 4 3 b - # 
+# - # c A # - # 
+# # - - - - # # 
+# # # # # # # #
+:::board_end
+:::title=Spiral Fence. Unknown Solvability.
+:::playpath=unsolved
+|a.0.d|a.0.d|c.0.u|c.0.u|a.0.l|a.0.d|a.0.d|a.0.r|c.0.r|c.0.u|c.0.u|c.0.l|c.0.D|c.0.D|c.0.D
+|a.0.U|a.0.U|a.0.U|a.0.l|a.0.u|a.0.u|a.0.r|c.0.r|c.0.d|c.0.d|c.0.l|d.0.r|d.0.r|b.0.l|b.0.l
+|b.0.u|b.0.l|b.0.l|b.0.d|d.0.d|d.0.r|d.0.r|d.0.u|d.0.L|d.0.L|d.0.L|b.0.R|b.0.R|b.0.R|d.0.d
+|d.0.l|d.0.l|d.0.u|b.0.u|b.0.r|b.0.r|b.0.d|b.0.L|c.0.U|c.0.U|c.0.U|c.0.d|c.0.d|c.0.d|b.0.u
+|b.0.l|b.0.l|b.0.d|b.0.d|b.0.r|b.0.U|b.0.l|b.0.u|b.0.R|b.0.d|b.0.r|b.0.r|b.0.u|a.0.D|a.0.D
+|a.0.D

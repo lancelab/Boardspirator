@@ -1,0 +1,50 @@
+
+
+:::map
+# # # #
+# - - #
+# - - 1 #
+# - B 2b # #
+# 1 2B 2A A #
+# - B 1A - #  
+# - a # # #
+# # # #
+:::board_end
+:::title=Invisible Friend
+:::author=Konstantin Kirillov
+:::October 31, 2012
+
+
+-:::playpath=Solution
+|b.0.D|b.0.D|b.0.r|b.0.U|b.0.L|b.0.U|b.0.u
+|b.0.l|b.0.l|b.0.d|b.0.R|b.0.l|b.0.d|b.0.d|b.0.R|b.0.U|a.0.u|b.0.U|b.0.d|b.0.R|a.0.U|b.0.R
+|b.0.D|b.0.L|b.0.U|b.0.R|b.0.d|a.0.R|b.0.U|b.0.L|b.0.D|a.0.L|a.0.L|b.0.R|b.0.u|b.0.l|b.0.L
+|b.0.L|b.0.u|a.0.L|b.0.D|b.0.d|a.0.l|a.0.U|a.0.U|b.0.d|b.0.r|b.0.U|b.0.l|b.0.u|b.0.R|b.0.l
+|b.0.u|b.0.R|b.0.d|b.0.l|b.0.U|b.0.U|b.0.U|b.0.r|b.0.D|b.0.D|b.0.u|b.0.L|b.0.D|a.0.R|a.0.d
+
+
+:::co_playpath=Solution
+|a.0.u|a.0.R|b.0.U|b.0.R|b.0.d|b.0.D|b.0.D|b.0.l|b.0.D|b.0.D|b.0.D|b.0.r|b.0.u|b.0.L|b.0.d
+|b.0.r|b.0.R|b.0.d|b.0.r|b.0.U|b.0.l|b.0.u|a.0.U|a.0.U|a.0.r|b.0.u|b.0.U|a.0.L|b.0.d|b.0.R
+|b.0.R|b.0.r|b.0.d|b.0.L|a.0.L|a.0.L|b.0.U|b.0.R|b.0.D|a.0.R|b.0.u|b.0.L|b.0.D|b.0.L|b.0.U
+|b.0.L|a.0.U|b.0.L|b.0.u|b.0.U|a.0.d|b.0.U|b.0.R|b.0.u|b.0.u|b.0.r|b.0.R|b.0.u|b.0.r|b.0.r
+|b.0.d|b.0.D|b.0.R|b.0.D|b.0.l|b.0.U|b.0.U
+
+
+
+
+
+
+
+:::map
+# # # # # #
+# - a A 1 #
+# - a B 2 #
+# - b B 2 # 
+# - b A 1 # 
+# - a b - #
+# - b a - #
+# # # # # #
+:::board_end
+:::title=Demo
+

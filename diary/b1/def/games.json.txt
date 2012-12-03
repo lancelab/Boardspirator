@@ -1,0 +1,343 @@
+{
+
+
+
+"flocks":
+{
+	"nam": "Flocks",
+	"basekey": "mazy",
+
+	"credits" :
+	{
+		"date"		: "December 28 2011 - May 7 2012",
+		"author"	: "Konstantin Kirillov"
+	},
+
+	"dresses"  		:
+	{
+			"default" :	
+			{
+				"rules"		:	"Hero can push box of matching color.\nMoved box carries away matching neighbours.\nBlack color matches any other color.\n",
+				"objective"	:	"Put available boxes on available color-matching targets."
+			}
+	}
+},
+
+
+
+"colorban":
+{
+	"nam": "Colorban",
+	"basekey": "mazy",
+	"herd_sense": 0,
+	"post_definition_copathy": "copathy",
+	"credits" :
+	{
+		"author"	: "Konstantin Kirillov"
+	}
+
+
+},
+
+
+"co_colorban":
+{
+	"nam": "Co-Colorban",
+	"basekey": "colorban",
+	"post_definition": "pullpush_inversifier",
+	"post_definition_copathy": "copathy"
+},
+
+
+
+"monkeyban" :
+{
+		"nam"		: "Monkeyban",
+		"basekey"	: "mazy",
+		"author"	: "Konstantin Kirillov",
+		"credits" :
+		{
+			"author"	: "Konstantin Kirillov"
+		}
+},
+
+
+
+"sokoban":
+{
+	"nam": "Sokoban",
+	"basekey": "colorban",
+	"post_definition_copathy": "copathy",
+
+	"credits" : {
+		"author"	: "Hiroyuki Imabayashi",
+		"license"	: "Public Domain. De facto.",
+		"web_site"	: "http://en.wikipedia.org/wiki/Sokoban",
+		"date"		: "1981",
+		"comments"  : "Published in 1982 by Thinking Rabbit, Takarazuka, Japan.\n\nOriginal game release copyrights possibly are:\nSokoban (R) Registered Trademark of Falcon Co., Ltd., Japan\nSokoban Copyright (C) 1982-2004 by Hiroyuki Imabayashi, Japan\nSokoban Copyright (C) 1989, 1990, 2001-2004 by Falcon Co., Ltd., Japan\n\n (from http://sokobano.de/wiki/index.php?title=Solver_Statistics)",
+		"email"		: ""
+	}
+},
+
+
+"pullpush":
+{
+	"nam": "PullPush",
+	"basekey": "colorban",
+	"post_definition": "pullpush",
+	"post_definition_copathy": "copathy"
+},
+
+
+"co_pullpush":
+{
+	"nam": "Co-PullPush",
+	"basekey": "pullpush",
+	"post_definition": "pullpush_inversifier",
+	"post_definition_copathy": "copathy"
+},
+
+
+"antiflocks_c":
+{
+	"nam": "Antiflocks Classic",
+	"basekey": "flocks",
+	"post_definition": "pullpush"
+},
+
+
+"antiflocks":
+{
+	"nam"		:	"Antiflocks",
+	"basekey"	:	"antiflocks_c",
+
+	"cols"		:{ 	"hero_i"	:{	"baton " : true }  },
+	"interact"	:{
+					"hero_i"	:{	"box_a" : "push",
+									"box_b" : "pull"
+								}	
+				},
+
+	"comments" : "just one baton-hero, hero_i, is added to enrich the rules ..."
+
+},
+
+
+
+"pullswappush" :
+{
+	"nam": "PullSwapPush",
+	"basekey": "colorban",
+	"post_definition": "pullswappush",
+	"post_definition_copathy": "copathy"
+
+},
+
+"co_pullswappush" :
+{
+	"nam": "Co PullSwapPush",
+	"basekey": "pullswappush",
+	"post_definition": "pullpush_inversifier",
+	"post_definition_copathy": "copathy"
+},
+
+
+
+"pullpush":
+{
+	"nam": "PullPush",
+	"basekey": "colorban",
+	"post_definition": "pullpush",
+	"post_definition_copathy": "copathy"
+},
+
+
+
+
+"pullorpush":
+{
+	"nam": "Pulopu",
+	"basekey": "colorban",
+	"post_definition": "pullorpush",
+	"post_definition_copathy": "copathy"
+},
+
+
+"leappush":
+{
+	"nam": "LeapPush",
+	"basekey": "colorban",
+	"post_definition": "leappush",
+	"post_definition_copathy": "copathy",
+	"date": "October 25 2012"	
+},
+
+
+"co_leappush":
+{
+	"nam": "Co-LeapPush",
+	"basekey": "leappush",
+	"post_definition": "pullpush_inversifier",
+	"post_definition_copathy": "copathy",
+	"date": "October 26 2012"	
+},
+
+
+
+
+"doubleban":
+{
+	"nam" : "Doubleban",
+	"basekey": "colorban",
+	"DEEPNESS_LIMIT": 2
+},
+
+
+"colortrain":
+{
+	"nam": "Colortrain",
+	"basekey": "colorban",
+	"DEEPNESS_LIMIT": 1000000
+},
+
+
+"bumpytargets":
+{
+	"nam": "Bumpy Targets",
+	"basekey": "mazy",
+
+	"cols": {
+		"target_a": {
+			"pass": false
+		},
+		"target_b": {
+			"pass": false
+		}
+	},
+
+	"interact" : {
+		"hero_a" : {	"target_a" : "pass",
+				  		"target_b" : "pass"
+		},
+		"hero_b" : {	"target_a" : "pass",
+				  		"target_b" : "pass"
+		},
+		"box_a" : { "target_a" : "pass",
+				  	 "target_b" : "pass"
+		},
+		"box_b" : { "target_a" : "block",
+					"target_b" : "pass"
+		}
+	},
+
+
+
+	"author": "Konstantin Kirillov"	
+},
+
+
+"jumphunt":
+{
+	"nam": "JumpHunt",
+	"basekey": "colorban",
+
+
+	"interact" : {
+		"hero_b" : {	"box_b" : "pull",
+				  		"box_a" : "jump",
+						"box_c" : "swap",
+						"box_d" : "leap"
+		},
+		"hero_a" : { "box_a" : "push",
+				  	 "box_b" : "jump",
+					 "box_c" : "swap",
+					 "box_d" : "leap"
+		}
+	},
+
+	"author": "Konstantin Kirillov",
+	"date" : "October 30 2012"
+
+},
+
+
+
+"ghostban":
+{
+	"nam": "GhostBan",
+	"basekey": "colorban",
+
+
+	"interact" : {
+		"hero_b" : {	"box_a" : "swap",
+						"hero_a" : "swap"
+		}
+	},
+
+	"author": "Konstantin Kirillov",
+	"date" : "October 30 2012"
+
+},
+
+
+"co_ghostban":
+{
+	"nam": "Co-GhostBan",
+	"basekey": "ghostban",
+
+
+	"interact" : {
+		"hero_a" : {	"box_a" : "pull"
+		},
+		"hero_b" : {	"box_b" : "pull"
+		}
+	},
+
+	"author": "Konstantin Kirillov",
+	"date" : "October 30 2012"
+
+},
+
+
+"ghostjump":
+{
+	"nam": "GhostJump",
+	"basekey": "colorban",
+
+
+	"interact" : {
+		"hero_b" : {	
+						"box_a" : "jump",
+						"hero_a" : "jump",
+						"box_c"  : "jump"
+		}
+	},
+
+	"author": "Konstantin Kirillov",
+	"date" : "October 30 2012"
+
+},
+
+
+
+"co_ghostjump":
+{
+	"nam": "Co-GhostJump",
+	"basekey": "colorban",
+
+
+	"interact" : {
+		"hero_b" : {	"box_b" : "pull",
+						"box_a" : "jump",
+						"hero_a" : "jump",
+						"box_c"  : "jump"
+		},
+		"hero_a" : {	"box_a" : "pull"
+		}
+	},
+
+	"date" : "October 30 2012"
+
+}
+
+}

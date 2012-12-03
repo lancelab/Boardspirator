@@ -1,0 +1,69 @@
+
+
+---------------------- drafts --------------------
+
+
+:::map=test
+# # # # # # #
+# - - - - - #
+# - 3B 3B - #
+# - 2C 2C b - #  
+# - - - - - #
+# # # # # # #
+:::board_end
+:::title=Easy Start
+
+:::dress=pullpush
+:::image=X=cabbage-md.png
+:::image=x=normal_rabbit.png
+
+
+:::map=test
+# # # # # # # #
+# - - - - - - #
+# - 3 2B 2B 3B b #
+# - 2 C C 2B - #  
+# - - - - - - #
+# # # # # # # #
+:::board_end
+
+
+:::playpath=Generated
+ullllddRurDlddrrRUluuurrrDLDrr
+rdLrddlULrruulDulDLLullllldRDldddrrrULdr
+
+
+:::map=test
+# # # # # # #
+# - - - - - #
+# - 3B 3B - - #
+# - 2C 2C b - #  
+# - - - - - #
+# # # # # # #
+:::board_end
+:::title=Easy Start
+
+:::dress=pullpush
+:::image=X=cabbage-md.png
+:::image=x=normal_rabbit.png
+
+:::playpath=autosolved
+LulDlDulldRDlddrRlUluuurrDRDldddrrrULrru
+ulDrdL
+
+
+
+:::map=test
+# # # # # # #
+# - C 3 b - #  
+# # # # # # #
+:::board_end
+:::title=Easy Start
+
+:::dress=pullpush
+:::image=X=cabbage-md.png
+:::image=x=normal_rabbit.png
+
+:::playpath
+lL
+

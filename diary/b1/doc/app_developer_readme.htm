@@ -1,38 +1,81 @@
+<!DOCTYPE html>
 
+ <html><head>
+  <!-- doctype for html 4 is only to satisfy IE -->
+  
+  <meta name="copyright" content="2011 (c) Konstantin Kirillov">
+  <meta name="description" content="Board Puzzle Framework"> 
+  <meta name="keywords" content="board game, puzzle game, on line game, game development, educational game, sokoban"> 
+
+  <title>Framework</title>
+	<script type="text/javascript" src="../tp/lib/jquery-1.7.js"></script>
+	<script type="text/javascript" src="../tp/bind_events.js"></script>
+	<script type="text/javascript" src="../tp/core.js"></script>
+	<script type="text/javascript" src="../tp/core_no_jquery.js"></script>
+	<script type="text/javascript" src="../tp/core2_no_jquery.js"></script>
+	<script type="text/javascript" >$.fn.tp$.core.reset_path_from_land_to_app_root('..');</script>
+	<script type="text/javascript" src="../tp/gui.js"></script>
+	<script type="text/javascript" src="../tp/gui_no_jq.js"></script>
+	<script type="text/javascript" src="../tp/form.js"></script>
+
+	<!-- :: must be before others in gio: -->
+	<script type="text/javascript" src="../core/config.js"></script>
+	<script type="text/javascript" src="../core/config_gui.js"></script>
+
+	<script type="text/javascript" src="../core/entry.js"></script>
+
+	<script type="text/javascript" >
+		$.fn.tp$.gio.session.init.entry=function(){
+			$.fn.tp$.core.rebuild_readme_html($.fn.tp$.gio.description);
+		};
+	</script>
+	<style media="screen" rel="stylesheet" type="text/css">
+		a			{	
+						text-decoration:none; 
+						border:none; 
+					}
+	</style>
+
+
+</head><body><div style="color:#666666; white-space:pre; font-family:monospace;">
+
+Readme won't display if no JavaScript language enabled in your browser.
+To display a readme, turn JavaScript on.
+
+</div>
+
+<div style="white-space:pre; font-family:monospace; visibility:hidden;">
+<pre>
 You should not read but run this readme from ...play/doc/app_developer_readme.htm 
 
-Boardspirator is a Boardspirator (Boardy). Tool
-                 to play, edit, solve, or develop board puzzles.. It is jQuery subplugin tp$.gio.
-In other words, it is wrapped into a jQuery plugin, tp.
-The files are spread via directory tree, but can be assembled in one file.
+<a href="../index.htm">#@title@#</a> is a #@description@#. It is jQuery subplugin tp$.gio.
+In other words, it is wrapped into a <a href="../tp/readme.htm">jQuery plugin, tp</a>.
+The files are spread via <a href="../">directory tree</a>, but can be assembled in one file.
 
-Version:				0.1.166
-Maturity:               Draft
-Date:					December 3, 2012
-License:				Dual licensed under the MIT or GPL Version 2
-                        except items in "def/albums", "def/skins", and  "doc/research"
-                        when they explicitly have own lincense.
-Copyright:				(c) 2011-2012 Konstantin Kirillov
-Language:				JavaScript
-System Requirements:	2012-modern browser (on-line) or FireFox 3.6+ or IE 8+ (from harddrive).
-WebSite:				http://landkey.net/gio/
-EMail:					beaverscript(a)landkey(.)net
-Developer Comment:		stand-alone versions do coexist as subfolders of folder "diary". Run them usually by landing on index.htm;
-                        the most recent version is in folder diary/b1
+Version:				#@version@#
+Date:					#@date@#
+License:				#@license@#
+Copyright:				#@copyright@#
+Language:				#@language@#
+System Requirements:	#@usage_requirements@#
+WebSite:				#@web_site@#
+EMail:					#@email@#
+
+
 
 
 O v e r v i e w
 
 
-Boardspirator can be ported to database-driven site like boardspirator.com, but
+#@title@# can be ported to database-driven site like boardspirator.com, but
 this is out of scope of this project. This project is in pure JavaScript.
 
 
-Game Usage
-Application Design Concepts
+<a href="guest_readme.htm">Game Usage</a>
+<a href="app_design_concepts.htm">Application Design Concepts</a>
 
 
-Boardspirator is a part of tp-package and the features and philosophy of tp are applied.
+#@title@# is a part of tp-package and <a href="../tp/readme.htm#features">the features and philosophy of tp</a> are applied.
    ... except images, which are used only in game boards,
    ... except css-ids in ads in some web pages
 
@@ -57,7 +100,7 @@ Play folder tree:
 H o w    t o   r u n   o r    t o    d e b u g 
 
   Adding &debug parameter to URL-query enables debug mode.
-  Entry point calls entry.js ...
+  <a href="../index.htm">Entry point</a> calls <a href="../core/entry.js">entry.js</a> ...
 
 
 
@@ -144,7 +187,7 @@ A p p l i c a t i o n    A r c h i t e c t u r e
 		Valid collection has property collection.maps_loaded ='success'.
 
 
-Diary:
+<a href="../diary/">Diary:</a>
 	is a collection of step by step versions.
 	They are stand-alone snapshots of application at specific time.
 
@@ -161,5 +204,8 @@ Diary:
 
 
 Y o u   a r e   w e l c o m e
+</pre>
+</div>
 
+</body></html>
 

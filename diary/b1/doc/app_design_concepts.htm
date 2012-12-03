@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html><head>
+  <!-- doctype for html 4 is only to satisfy IE -->
+  
+  <meta name="copyright" content="2011 (c) Konstantin Kirillov">
+  <meta name="description" content="Board Puzzle Framework"> 
+  <meta name="keywords" content="board game, puzzle game, on line game, game development, educational game, sokoban"> 
+
+  <title>Design Concepts</title>
+  <style media="screen" rel="stylesheet" type="text/css">
+		a			{
+						text-decoration:none; 
+						border:none; 
+					}
+  </style>
+
+</head><body>
+
+<div style="white-space:pre; font-family:monospace;">
+
+
+	<a href="wirly.htm">W i r l y   -   G a m e    f r o m    P l a y e r    P e r s p e c t i v e</a>
+
+
+	G a m e p l a y
+
+		User action is an action made by a player by click or keyboard stroke.
+		Action causes a "Move" which is a set of steps. Each step is a move made by single unit.
+
+
+	G a m e p l a y   s t a t e   r e p r e s e n t a t i o n
+
+	Between moves, the state of game is represented with position, often denoted as map.pos,
+	where map is a game map.
+	pos has few properties, but suffiecient-to-describe-the-playstate-property is
+
+		pos.lid2uid
+	
+	which means a mappimg from location-id to unit-id.
+	
+	location-id is an index of all legal locations of units.
+	Locations are contained in array map.locs. Index of this array is location-id, lid.
+	For example, location of unit on second row, first cell, on second z-level
+	is loc = [2,1,1]
+
+	In fact, there are two master arrays which represent the position:
+
+		lid2uid and
+		tops
+
+	tops[x][y] is a z - index of highest unit in z-order stack
+	Of course, tops can be deduced from lid2uid, but tops is autimatically rebuilt when lid2uid chanded.
+
+
+	In source code, the core function to make a move was
+
+	gio.do_move_steps=function(direction, gm, pos, unit, mode, freeze_pos) in 
+	map.js file
+
+
+
+
+	M o v e ..
+
+	.. begins its life in 
+
+	gio.do_process_move = function( ...
+
+	As of version 1.143 move format is set here:
+	//: validates and creates new_move
+	in core/navig/map.js
+
+	1. Until all move steps are not verified, position is not changed.
+	2. When all steps of move are confirmed valid, then position is changed
+		step-by-step in function 
+		gio.do_process_move
+		after section /// avoids changing position and leaves
+
+
+
+
+
+	S o l v e r    a n d     s a v e r   r e p r e s e n t a t i o n s
+
+
+	lid2uid is too big to be used in solver which memorizes already tested states.
+
+	Another array is used to represent a state:
+
+	The name is "ordered_hids".
+	Hid is a shortcut for "hole id".
+	"Hole" is another weird name. There is an array, hid2lid, exists. It contains only locations
+	which are reachable to dynamic unit in the map. Black walls are excluded.
+	We think about holes like about "holes" in the map where one can "drop" a dynamic unit.
+
+	Hence, index of hid2lid is "hid" and value is location-id, lid.
+
+	When we have hid2lid, we can further encode board-position by mapping
+	units to hids.
+
+	For example, consider map:
+
+		- O S
+		W O r
+
+	O - are boxes of color 1.   - dcolony 0
+	S - is box of color 2.      - dcolony 1 		
+	W - is a black wall.         
+	r - is a pusher of color 0. - dcolony 2 
+	- is an empty cell
+	
+	"dcolony" stand for "dynamic colony".
+
+	Assume, for a moment, that there are no grounds and targets.
+	Lids are mapped to this board this way:
+
+		0 1 2
+		3 4 5
+
+	Hids are:
+		0 1 2
+		  3 4
+
+	hid2lid is = [ 0, 1, 2, 4, 5 ]
+
+	Unit ids are
+		  0 1
+		2 3 4
+
+	There are three dynamic colonies: O, S, and r.
+	Then, finally, the position can be mapped as "ordered hids":
+
+		1 3 2 4
+
+	or like (1 3) (2) (4),
+	where hids are grouped by dcolony.
+	Hids inside the colony are always in ascending order.
+	Because of (1 3) and (3 1) is the same position.
+	   		
+
+	The terms "ordered_hids", "solver node", "pstate", "playstate", "canon" mean the same in the program.
+	"Solver node" sounds like a part of some tree, and indeed, such tree is built when solver does a search.
+	For above example, this tree is organized in following natural order:
+
+		0 1 ...
+		...
+
+		1 2 ...
+		...
+		...
+		....
+		0 1 2 
+		         0 1 2 3
+		         0 1 2 4
+		0 1 3 
+		         0 1 3 2
+		         0 1 3 4
+		...
+		
+		Here, the leaf nodes "0 1 2 3", "0 1 2 4" are "ordered hids".
+
+</div>
+
+
+</body></html>
+

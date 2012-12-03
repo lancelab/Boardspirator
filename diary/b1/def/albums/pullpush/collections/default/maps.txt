@@ -1,0 +1,149 @@
+
+:::.  credits.title                 Intro
+:::.  credits.author                Konstantin Kirillov
+:::.  credits.copyright             Copyright (c) 2012 Konstantin Kirillov
+:::.  credits.license               This collection is free for distribution, modification, and use provided these credits are not removed.
+:::.  credits.creation_date			2012 - November 29, 2012
+
+
+
+:::map=test
+# # # # # # #
+# - C C C - #
+# - 3b 3B 3B - #
+# - 2 - 2 - #  
+# - - - - - #
+# # # # # # #
+:::board_end
+:::title=Warm Up
+
+:::dress
+:::title=Crispy
+:::skin=pullpush
+:::image=b=sunny_rabbit.png
+:::rules=Rabbit pulls carrots and pushes cabbage
+
+
+:::playpath
+UUruLdlluuuRdrURuurrDuRldddrrrur
+uulDlLrddlllluurDldddrrrULrruulDLddlluuU
+
+
+
+:::map
+# # # # # # #
+# - C C C - #
+# - 3b 3B 3B - #
+# - 2 - 2 X #  
+# - - - - - #
+# # # # # # #
+:::board_end
+:::title=Gold does not count
+
+
+:::dress
+:::title=Crispy
+:::image=b=sunny_rabbit.png
+:::rules=Rabbit pulls carrots and pushes cabbage and gold
+
+
+:::playpath=Autosolved
+UUruLdrUlLdllluuuRdrUUluuurrDuRRdrruLrDL
+LrDrdDldlULUllluuurDuRdrRurrdLLDLdDrddll
+dlluRRlluurDRddrruuU
+
+
+:::map
+- - # # # - -
+- # - C - # -
+# c - 2B - - #
+- # 3 - 2 - #  
+- - # 3B C - #
+- - - # b # -
+- - - - # - -
+:::board_end
+:::title=Dinner for Two - Dinner Crew
+
+
+:::playpath=From L
+|c.0.r
+|c.0.d|c.0.r|c.0.r|c.0.u|c.0.L|c.0.d|c.0.l|c.0.l|c.0.D|c.0.l|c.0.u|c.0.R|c.0.d|c.0.D|c.0.l
+|c.0.d|c.0.d|c.0.r|c.0.U|c.0.R|c.0.u|b.0.u|b.0.R|c.0.L|b.0.u|c.0.d|b.0.R|b.0.l|c.0.L|b.0.D
+|b.0.R|b.0.U|c.0.r|b.0.U|b.0.U|c.0.L|c.0.u|b.0.u|c.0.L|c.0.r|c.0.R|c.0.u|c.0.r|c.0.R|c.0.R
+
+
+:::playpath=Human Solved
+|c.0.r|c.0.u|c.0.R|c.0.l|c.0.d|c.0.d|c.0.r|c.0.r|c.0.u|c.0.L|c.0.d|c.0.l|c.0.l|c.0.u|c.0.d
+|c.0.D|c.0.D|c.0.l|c.0.d|c.0.d|c.0.r|c.0.r|c.0.r|c.0.d|c.0.L|c.0.r|b.0.u|b.0.u|b.0.l|b.0.l
+|b.0.u|b.0.u|b.0.r|b.0.R|b.0.d|c.0.l|c.0.u|c.0.U|c.0.r|c.0.u|c.0.u|c.0.l|c.0.u|c.0.L|b.0.U
+|b.0.r|c.0.l|c.0.D
+
+
+:::map
+- - # # # # #
+- # C - - - #
+# C 2 2B 2 - #
+# - 3 B 2 - #  
+# C 3B 3B 3 - #
+# - - b C # -
+# # # # # - -
+:::board_end
+:::title=Dinner for One
+
+
+:::playpath
+lUURlddrUrUdlluRdrruuullDDuu
+rrdddlLdlULLruuullddDurrdLrddlULuullDDuu
+rrdddlLdlluuRlddrruURlddrruUlluurrrdLuuu
+llDuLrddlLddlluuRRuUUdlluRuRUUrrUUddRuLD
+
+
+
+
+
+:::map
+- - # # # - -
+- # A - b # -
+# - 3 1 3 C #
+# - 2A B 2B A #  
+# - 1 3 1 C #
+- # C - - # -
+- - # # # - -
+:::board_end
+:::title=Dish Fence
+
+:::playpath
+dDulllddrrULuLDrddl
+UUrUUluurDDllluRdrruulDrdLDllddrrdrURRlu
+urDRurrdDDrdDlddrUUlLdlUruulluRdrrDDrDDl
+ddrUURRRdRRuLLdLUlURRurRUULuLuLLdDuuLDRU
+
+
+
+
+
+:::map
+- - # # # # #
+- # - - - A #
+# C 3 1 3B - #
+# 8 2C X 2 8b #  
+# A 1 3X 1B - #
+# A - - C # -
+# # # # # - -
+:::board_end
+:::title=Gold Counts
+
+:::dress
+:::title=Crispy
+:::rules=Rabbit pushes green cabbage and gold and pulls other food
+:::objective=Put each movable thing on its color plate
+
+:::playpath=Manual
+uLulldDrrddLLddrUluRlUUruuluurr
+drddLruulDllDRlDrddlUUrUUrrdLulluurDldRl
+DDrddlUULULruuLulldddDuurrdLrrddlUruLull
+rrdddLu
+lDrddllLLuulDRlDDRRlluurDldRddRULDuuRdLU
+
+
+

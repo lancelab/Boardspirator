@@ -1,0 +1,171 @@
+:::. credits.title			:	Intro
+:::. credits.author			:	Konstantin Kirillov
+:::. credits.license		:	Public Domain
+:::. credits.date			:	November 2011 (approximate) - November 25 2012
+:::. credits.email			:	beaverscript(a)landkey(.)net
+
+
+
+Easy Start
+
+     ####### 
+######    .#
+#      #####
+# .  $$*..#
+#  $@ $ . #  
+# . #$$*..#
+#         #
+#$        #
+#####    $#
+    #######
+
+
+rRRlllulDDDldRRRRRurrdLLullddrUdrruulLLL
+LuurrDDldRRdrUUllllulldRRuurrrddddlUULdl
+UUUUdlluRRRdrUluRddrddlUUruLruuRRRllldLd
+ldlluurDDDuurrdLLdlUdddrruLdlU
+
+
+
+Introduction One
+
+############
+#       ...#
+#---b$$ ####
+# ###@###
+#______#
+####---#
+   #####
+
+
+
+Introduction Two
+
+##########
+#        #
+#    $   #
+#   $#   #
+# ###.. #
+#  @$$# #
+#     #.#
+#     #.#
+#########
+
+
+
+Introduction Three
+
+#############
+#           #
+#   $ $  ...#
+#   $$$  . .#  
+#   $@$  .. #
+#############
+
+
+RRRURRllluulDDuulllddRRRRR
+
+
+
+:::map
+-#####-
+##.--## 
+#-$-$-# 
+#-.j-+# 
+#-$-$-# 
+##.---#  
+-#####-  
+:::board_end
+
+:::title=Well :: Divided Friends // G1.4
+:::author=Konstantin Kirillov
+:::playpath=Optimal
+lDuruLullDRllddRUUrurDrddlLrruulDrddlUUd
+dllURdrruulDrdLLulluurrurDDrddlluRdrU
+
+:::playpath=Human
+uLullDRRlllddRUUdddrrULdlUluurrrDulllddr
+rdrruLUddlluRdrruulDrdLLulluurrurDDullld
+drrRdrU
+
+
+:::map
+# # # # # # #
+# - A - - - # 
+# - 1A - 1 - # 
+# a 1A j 1 - # 
+# - A 1 - - # 
+# - A - - - #  
+# # # # # # #  
+:::board_end
+:::title=Well :: Chair for a Leader // X1.5
+98-22
+:::playpath
+dRRRuuluLdDurrddldlluRUluRRldddrruuruulD
+LulDldddrrruUddllluuurDuurrrdLDuLulldddd
+rUdrrUUddlluRdrruL
+
+
+:::map
+# # # # # # #
+# - 1A 1 - - # 
+# - A - - - # 
+# a 1A j - - # 
+# - A - - - # 
+# - 1A 1 - - #  
+# # # # # # #  
+:::board_end
+:::title=Well :: Well for Leader // X1.5
+
+145-31
+:::playpath=Optimal
+dRRRuuluLdDurrddldlluRUluRRldddrruuruulD
+LulDldddrrruUddlluRlluurDuurrrdLLullddrU
+luRRllddddrUUluurrdrrddLLrruullullddrDlu
+uurDrrruLLdrrddlUUruLdlll
+
+
+
+
+:::map
+# # # # # # #
+# - - - - - #
+# 1 A j - - #
+# A - A A x #
+# - A j 1 1 #
+# - 1- - 1 Kk #
+# # # # # # #
+:::board_end
+:::title=Notch Stone :: Sweaty Work  // R2.5
+
+196.37
+:::playpath
+dldllluUddrrruUruullLdDDuuurrrddlUdddlLu
+uuurRddLruulldldRRRddllUdrruuuulldldRldd
+rUUddrruuuullDDDuuurrddLruulllddRlddRUUl
+uurrrdrDlddLruuuulllddrRlluurrrdrdLDuuul
+llddrRlluurDurrdrddlUlLdlUruurrDurDD
+
+
+:::map
+# # # # # # #
+# - - - 1 1 #
+# - A j - - #
+# A - A 1A x #
+# - A j 1 - #
+# - - - - - #
+# # # # - 1 #
+- - - # # # #
+:::board_end
+:::title=Net :: All to the Right  // A2.5
+
+:::playpath=246.49
+dldllluUddrrruruulDDuuulLdDRluurrdrddlUd
+rddlUllluURddrrruuuulllDDDuuurrrddlLrrdd
+lUruuullllddRlddRRRdrUlllluurDldRRluuuur
+rrddDulLrruullldDlddrrrUdllluurDldRRRllu
+uuurrrddLLLddrrUdllluUruurrrddLLrrddllll
+uuRUdddrrruulLrruulDrdddllluUluuRRRllldd
+rUluRR
+
+

@@ -1,0 +1,225 @@
+The file has been copied by following this chain of links:
+
+http://games.dir.groups.yahoo.com/group/sokoban/message/4714
+sokobano.de/scores/
+http://sokobano.de/en/levels.php
+download the zip-file, extract, get this line:
+Homepage:  http://www.clickfest88.freeserve.co.uk/
+goto way back machine on http://archive.org/index.php
+and search by "Homepage"
+goto June 2, 2004
+this brought up this link:
+http://web.archive.org/web/20040602081248/http://www.clickfest88.freeserve.co.uk/
+( which is different that link in "Archives" in page from sokobano archive:
+  http://web.archive.org/web/20040529083926/www.clickfest88.freeserve.co.uk/dh1/dh1.txt
+)
+Looking for dh1 gave this link:
+
+(apparently, one can just go straight to this link:)
+http://web.archive.org/web/20040606032319/http://www.clickfest88.freeserve.co.uk/dh1/index.html
+which had followving ..
+
+::::::::: .. contents: ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+The dh1 Sokoban levels by David Holland
+
+original release date: October 2000
+
+Author's note: I have experimented with computer-generation for several of the smaller puzzles hence the "co-authorship" with sokgen (a computer program of mine). If you like the puzzles email me and if you have stylistic criticisms direct them to sokgen :-)
+
+For those interested in the programming: sokgen uses exhaustive search of a puzzle space (backwards from a solved position). This can only be achieved for (very) small puzzles (about 100,000 "nodes" is the limit for my computer system, where a "node" represents a single legal push and movements of the man are not represented for brevity) . For the co-authored puzzles, I designed the maze and placed the goals, and sokgen generated start positions of stones and (usually) push-minimal solutions at the largest push-depth possible.
+
+These levels are © David Holland <david@noether.freeserve.co.uk>
+
+These levels may be distributed freely as long as this copyright message is retained. 
+
+::::::::: contents end  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+and the link to dh1 finally gave the text which follows --colorban header end--
+
+--colorban header beginning--
+
+:::.  credits.title                 dh1
+:::.  credits.author                David Holland
+:::.  credits.copyright             Copyright 2000 (C) David Holland.  <david@clickfest88.freeserve.co.uk>  (There is no year in original files, we assumed this is 2000, but can be 2000-2004)
+:::.  credits.license               These levels may be distributed freely as long as this copyright message is retained.
+:::.  credits.publication_date      original release date: October 2000
+:::.  credits.copied_from           http://web.archive.org/web/20040606032319/http://www.clickfest88.freeserve.co.uk/dh1/index.html
+:::.  credits.web_site              http://web.archive.org/web/20040602081248/http://www.clickfest88.freeserve.co.uk/
+:::.  credits.comments              Author's note: I have experimented with computer-generation for several of the smaller puzzles hence the "co-authorship" with sokgen (a computer program of mine). If you like the puzzles email me and if you have stylistic criticisms direct them to sokgen :-)\n\nFor those interested in the programming: sokgen uses exhaustive search of a puzzle space (backwards from a solved position). This can only be achieved for (very) small puzzles (about 100,000 "nodes" is the limit for my computer system, where a "node" represents a single legal push and movements of the man are not represented for brevity) . For the co-authored puzzles, I designed the maze and placed the goals, and sokgen generated start positions of stones and (usually) push-minimal solutions at the largest push-depth possible.
+
+
+
+
+--colorban header end--
+
+
+;The dh1 collection of Sokoban positions 
+;is copyright David Holland <david@clickfest88.freeserve.co.uk>
+;These levels may be distributed freely as long as this 
+;copyright message is retained.
+
+;dh-101.xsb
+       ##    
+     ##  ### 
+   ## $ $   #
+  #   #..#$ #
+  # $$#*.#  #
+  #   ....$ #
+  # # .#.#  #
+ # $##$#.#$ #
+ # @$    .$ #
+  #  #  ##  #
+   #####  ## 
+Title:Spade
+Author:D Holland
+
+;dh-102.xsb
+    ####
+####   #
+#@$  # #
+# $$$  #
+##.#.  #
+#  ..# #
+#  #.* #
+# $.$ # 
+ ##   # 
+ ###### 
+Title:ninevah
+Author:D Holland + sokgen
+
+;dh-103.xsb
+    ###    
+   #  @### 
+  #  #$$  #
+ ##.#   # #
+#  $#.#$  #
+#   ...  # 
+ ##$#.#$ # 
+  #     #  
+   ##   #  
+     ####  
+Title:CrissCross
+Author:D Holland + sokgen
+
+;dh-104.xsb
+    ##    ###     
+####  ####   #    
+# $  $     $ ###  
+# #   # ### #   # 
+#  $   $ # $$ $ # 
+ ##  ## $@$     # 
+  #$ ##  # $$ $$ #
+  #    $  ## ##  #
+ ### #$##  ...# # 
+ #  ..*.*..##.# # 
+ # #..*.....*.# # 
+ #   ########   # 
+  ###        ###  
+Title:Carousel
+Author:D Holland
+
+;dh-105.xsb
+   ##            
+  #  #           
+  #  #  #####    
+  #  # #..   #   
+  # ####..##$##  
+  #  $ $.*     # 
+  # #$ #*.# $# # 
+ ##$#  #..#  # # 
+#   #$ #*.# $# # 
+# # #  $..#  # # 
+# #$#$ #..$  #  #
+#   #  #..#   # #
+# #@# $#*.#$# # #
+#  $#  #..#   # #
+ #   $ $ $ ###  #
+  ###   #      # 
+     ### ######  
+Title:Pattern-oster
+Author:D Holland
+
+;dh-106.xsb
+ ### ####      
+#   ##   # ### 
+# $   $ $ #   #
+# $ #  .$ #   #
+ ##  ##.#  $ # 
+# ##$##.###. # 
+#   *.......$# 
+#    ##.##   # 
+##$####.#####  
+#  $ # . #   # 
+#  #  **$    # 
+#  $ # @ # $ # 
+# $   ### #  # 
+ ##   #   ###  
+   ###         
+Title:Saturnine
+Author:D Holland
+
+;dh-107.xsb
+   ###   
+###   #  
+# $*@.###
+# # *$  #
+# #. .# #
+# #$* $ #
+#    .###
+###   #  
+   ###   
+Title:briefcase alt 23
+Author:D Holland + sokgen
+
+;dh-108.xsb
+       ###     
+##### #   ###  
+#   ## $ $  #  
+# # ##    # #  
+# #..$ $ ## #  
+#  .$# $#   #  
+###..# $ @$ #  
+  #**# $ # ##  
+  #..#   # #   
+  #..##### ##  
+  #.*#   $  #  
+  #..# $    #  
+  ##.### ##### 
+  # $      $ # 
+  #   ####   # 
+  #####  ##### 
+Title:Salamandar v3
+Author:D Holland
+
+;dh-109.xsb
+  ####  
+ #    # 
+ #. * # 
+# . $  #
+# #**# #
+#  *+* #
+ # $$ # 
+ #    # 
+  ####  
+Title:Abstract
+Author:D Holland
+
+;dh-110.xsb
+ ##       
+#  ###### 
+#        #
+#  ###$# #
+ #.# # . #
+ # # #$* #
+ #.### + #
+ # $ #$* #
+ # #   . #
+ #.####* #
+#  $ $ * #
+#       ##
+ ######## 
+Title:Storm (in a teacup) v6
+Author:D Holland
+
+

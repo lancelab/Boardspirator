@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html><head>
+
+
+	<meta name="description"		content="Puzzle Games"> 
+	<meta http-equiv="Content-Type"	content="text/html; charset=UTF-8">
+	<meta name="keywords"			content="puzzle game, puzzle, board game, educational game, Sokoban, on line game, Boardspirator"> 
+	<!-- do validate this page with: http://validator.w3.org -->
+
+
+
+	<title>Boardspirator</title>
+
+	<script type="text/javascript" src="tp/lib/jquery-1.7.js"></script>
+
+	<!-- needed only for debug-mode: -->
+	<script type="text/javascript" src="tp/debug.js"></script>
+
+	<!-- :: dependencies: -->
+	<script type="text/javascript" src="tp/core.js"></script>
+	<script type="text/javascript" src="tp/core_no_jquery.js"></script>
+	<script type="text/javascript" src="tp/core2_no_jquery.js"></script>
+	<script type="text/javascript" src="tp/bind_events.js"></script>
+	<script type="text/javascript" src="tp/gui.js"></script>
+	<script type="text/javascript" src="tp/gui_no_jq.js"></script>
+	<script type="text/javascript" src="tp/core_gui.js"></script>
+	<script type="text/javascript" src="tp/form.js"></script>
+
+	<!-- :: must be before boardspirator scripts: -->
+	<script type="text/javascript" src="core/config.js"></script>
+	<script type="text/javascript" src="core/config_gui.js"></script>
+
+	<!-- :: boardspirator scripts; their order has no matter: -->
+	<script type="text/javascript" src="core/navig/scroll_till_alive_zone.js"></script>
+	<script type="text/javascript" src="core/navig/map.js"></script>
+
+	<script type="text/javascript" src="core/init/reinit_map.js"></script>
+
+	<script type="text/javascript" src="core/entry.js"></script>
+	<script type="text/javascript" src="core/round.js"></script>
+	<script type="text/javascript" src="core/round_manager.js"></script>
+	<script type="text/javascript" src="core/interaction.js"></script>
+	<script type="text/javascript" src="core/session.js"></script>
+	<script type="text/javascript" src="core/reflection.js"></script>
+	<script type="text/javascript" src="core/data_io/data_loader.js"></script>
+	<script type="text/javascript" src="core/data_io/session.js"></script>
+
+	<script type="text/javascript" src="core/solver/adapter.js"></script>
+	<script type="text/javascript" src="core/solver/core.js"></script>
+	<script type="text/javascript" src="core/solver/browser.js"></script>
+	<script type="text/javascript" src="core/solver/eliminator.js"></script>
+
+	<script type="text/javascript" src="core/gui/navigation.js"></script>
+	<script type="text/javascript" src="core/gui/draw_scene.js"></script>
+	<script type="text/javascript" src="core/gui/entry.js"></script>
+	<script type="text/javascript" src="core/gui/create_popup_controls.js"></script>
+	<script type="text/javascript" src="core/gui/create_consoles.js"></script>
+	<script type="text/javascript" src="core/gui/consoles_procs.js"></script>
+	<script type="text/javascript" src="core/gui/reset.js"></script>
+	<script type="text/javascript" src="core/gui/init_map.js"></script>
+	<script type="text/javascript" src="core/gui/draw_status.js"></script>
+	<script type="text/javascript" src="core/gui/init_controls.js"></script>
+	<script type="text/javascript" src="core/gui/init_control_events.js"></script>
+	<script type="text/javascript" src="core/gui/help_popup_handlers.js"></script>
+	<script type="text/javascript" src="core/gui/text_editor_popup_handlers.js"></script>
+	<script type="text/javascript" src="core/gui/popup_handlers.js"></script>
+	<script type="text/javascript" src="core/gui/fluidizer.js"></script>
+	<script type="text/javascript" src="core/gui/procs.js"></script>
+
+	<script type="text/javascript" src="core/def/map_format/core.js"></script>
+	<script type="text/javascript" src="core/def/map_format/map_tables.js"></script>
+	<script type="text/javascript" src="core/def/map_format/file_header_finalizer.js"></script>
+	<script type="text/javascript" src="core/def/map_format/finalize_map.js"></script>
+	<script type="text/javascript" src="core/def/map_format/finalize_collection.js"></script>
+	<script type="text/javascript" src="core/def/map_format/collect_playpaths.js"></script>
+	<script type="text/javascript" src="core/def/map_format/collect_dresses.js"></script>
+	<script type="text/javascript" src="core/def/map_format/parse_board_line.js"></script>
+	<script type="text/javascript" src="core/def/proc/derive.js"></script>
+	<script type="text/javascript" src="core/def/games/base_game.js"></script>
+	<script type="text/javascript" src="core/def/games/post_definitions.js"></script>
+	<script type="text/javascript" src="core/def/games/spawn_base_game_def.js"></script>
+	<script type="text/javascript" src="core/def/games/winning.js"></script>
+	<script type="text/javascript" src="core/def/games/base_game_dress.js"></script>
+
+
+	<script type="text/javascript" src="def/albums/flocks/album.js"></script>
+	<script type="text/javascript" src="def/albums/pullpush/album.js"></script>
+	<script type="text/javascript" src="def/albums/monkeyban/album.js"></script>
+	<script type="text/javascript" src="def/albums/colorban/album.js"></script>
+	<script type="text/javascript" src="def/albums/sokoban/album.js"></script>
+	<script type="text/javascript" src="def/albums/antiflocks/album.js"></script>
+	<script type="text/javascript" src="def/albums/colortrain/album.js"></script>
+	<script type="text/javascript" src="def/albums/doubleban/album.js"></script>
+	<!-- script type="text/javascript" src="def/albums/mozaic/album.js"></script -->
+
+	<script type="text/javascript" src="def/albums/bumpytargets/album.js"></script>
+
+	<script type="text/javascript" src="def/albums/pullswappush/album.js"></script>
+
+
+	<!-- must be after boardspirator files and before google applications -->
+	<script type="text/javascript" src="core/establish_session_modes.js"></script>
+
+
+	<!-- this must be before "body" as google analytics required this: -->
+	<script type="text/javascript" src="google_apps/do_insert.js"></script>
+
+
+	</head>
+	<body>
+
+
+		<div style="color:#666666;">
+			Games will not run if no JavaScript language<br />enabled in your browser.<br />
+			To run games, turn JavaScript on.
+		</div>
+		<script	type="text/javascript">
+			jQuery.fn.tp$.gio.config.google_apps.insert_ad_div_with_script();
+		</script>
+
+
+	</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+
+ <html><head>
+  <!-- doctype for html 4 is only to satisfy IE -->
+  
+  <meta name="copyright" content="2011 (c) Konstantin Kirillov">
+  <meta name="description" content="Board Puzzle Framework"> 
+  <meta name="keywords" content="board game, puzzle game, on line game, game development, educational game, sokoban"> 
+
+  <title>Guest Readme</title>
+
+	<link rel="stylesheet" href="css/readme.css">
+
+	<script type="text/javascript" src="../tp/lib/jquery-1.7.js"></script>
+	<script type="text/javascript" src="../tp/bind_events.js"></script>
+	<script type="text/javascript" src="../tp/core.js"></script>
+	<script type="text/javascript" src="../tp/core_no_jquery.js"></script>
+	<script type="text/javascript" src="../tp/core2_no_jquery.js"></script>
+	<script type="text/javascript" >$.fn.tp$.core.reset_path_from_land_to_app_root('..');</script>
+	<script type="text/javascript" src="../tp/gui.js"></script>
+	<script type="text/javascript" src="../tp/gui_no_jq.js"></script>
+	<script type="text/javascript" src="../tp/form.js"></script>
+
+	<!-- :: must be before others in gio: -->
+	<script type="text/javascript" src="../core/config.js"></script>
+	<script type="text/javascript" src="../core/config_gui.js"></script>
+
+	<script type="text/javascript" src="../core/entry.js"></script>
+	<script type="text/javascript" src="js/macrify.js"></script>
+
+</head><body><div style="color:#666666; white-space:pre; font-family:monospace;">
+
+Readme won't display if no JavaScript language enabled in your browser.
+To display a readme, turn JavaScript on.
+
+</div>
+
+<div style="white-space:pre; font-family:monospace; visibility:hidden;">
+
+<span style="visibility:hidden;">This token, #@title@#, is a necessary flag to unhide this page.</span>
+
+<pre>
+<h1>Scripting Maps</h1>
+	
+
+	Collection file contains header and maps.
+	Collection can be scripted in either Sokoban, Colorban, or both formats. <a href="../def/albums/flocks/collections/default/intro.txt">Example.</a>
+	Here, "Sokoban format" is a partially compatible classic Sokoban file format. <a href="../def/albums/sokoban/collections/holland/2008_06_29.txt">Example.</a>
+
+	Legend:
+		opt		- optional
+		req		- required
+		scode	- application-source-code
+		def		- definition
+
+	C o l l e c t i o n   f i l e   f o r m a t
+
+		MAP_LOOKUP - opt
+			colorban directives - opt
+			sokoban-header      - opt
+				raw-comments    - opt
+				macros          - opt
+				plain text      - opt
+
+		sokoban-map - opt
+			map-title - opt (tricky: map starts from title, but map encounter is detected by map-board)
+			sokoban-board-script - req
+			postboard - opt
+				title - opt
+				author - opt 
+				solution - opt
+				solution - opt
+				...
+				plain text - opt
+				...
+		
+		sokoban-map - opt
+		...
+
+		colorban-map - opt
+			:::map... - req
+				board - req
+					sub-directives - opt; def: near <a href="../core/def/map_format/core.js">//\\ dereferences map</a>
+					colorban-board-script - opt if sub-directives refer to other board
+					:::board_end - req
+				postboard - opt
+					:::title - opt
+					:::author - opt
+					:::[any-credit-related-key] - opt, see list in <a href="../tp/core2_no_jquery.js">/.\	AVAILABLE CREDIT KEYS</a>
+					(see directives in scode)
+					:::playpath... - opt
+						(see also: <a href="../core/def/map_format/collect_playpaths.js">scode</a>)
+					...
+					:::dress... - opt
+						def: near <a href="../core/def/map_format/collect_dresses.js">//\\ COLLECTS DIRECTIVES FOR DRESS</a>
+					plain text
+				:::map_end - opt only-if ::: map follows right away
+		MAP_LOOKUP - opt; happens if :::map_end is not followed by :::map
+
+		....
+
+
+
+	B a s i c    d i r e c t i v e s (draft)
+
+		Get an indea from source code section <a href="../core/def/map_format/core.js">///\\\ Digests :::-directive and runs short code</a>.
+
+		Map sugar: colorban board lines can be inserted like here:
+
+			:::map
+			-$-@-
+			:::board_end
+
+		Above map is "wallless". It has no "#" symbol which stands for colorless wall. If your map has at least one line with
+		colorless wall, then each line of this map must have opening and closing wall, as in Sokoban map.
+
+		Browse site's games, click on "About Map", "Edit Map Scripts", or "Collection Designer" buttons to learn from examples. 
+
+
+
+	D e r e f e r e n c i n g (draft)
+
+		Board in map can be omitted in case if map refers to map located in another album or collection.
+		Directives in preboard-zone are: 
+
+			:::akey
+			:::collection_index
+			:::map_index
+
+		Get an indea from source code section <a href="../core/def/map_format/core.js">//\\ dereferences</a>
+
+		:::context_akey
+
+			points to album which will supply game-definition context and dress context for this map
+			This directive must happen before begining of a board.
+
+		When crafting own maps, pay attention when mixing different games in one album.
+
+			Explicit :::context_akey directive should solve inconsistencies.
+			For example, as in "Hello Album", Doubleban and Flocks do coexist.
+
+
+
+
+	D r e s s   . . (draft)
+
+		.. is Game's Skin and Meaning.
+
+		Meaning: 	in the same Game in different Meanings, heros and walls may have different names and meaning.
+				 	Different Meanings may have different stories and different text for rules.
+		Skin:		the way how game looks and what images are used.
+
+		Dress is defined in object "dresses" in album.
+
+		Dress can be specified right in a map script. In this case it overrides properties of it's
+		parent dress in album or adds an extra dress to dresses if no parent with the same name is in album.
+		Parent dress is referred by the name of the map's dress
+			:::dress=...
+		or by directive 
+			:::inherit_from=...
+
+		Get an indea from source code section <a href="../core/def/map_format/collect_dresses.js">//\\ COLLECTS DIRECTIVES FOR DRESS</a>.
+
+		
+		Example for album designer:
+			dresses: { default : { skin_key : 'dskin' }, special : { skin_key : 'nu_i_nu', ... }, ... }
+			If nothing is set about dress in map, images taken from 
+			def/skins/dskin for dress "default" and from def/skins/nu_i_nu for dress "special"
+
+		For developer:
+			default &lt;-- base_game.dresses.default and 
+			special &lt;-- album.plgam.dresses.special &lt;-- base_game.dresses.default
+		
+
+
+		Skins
+
+			Directive
+
+				:::skin=XXXX
+
+			sets map's parser context to 'def/skins/XXXX'".
+			Skins cannot be loaded from external urls, but images can.
+
+
+			Images
+			------
+
+				If :::image=X=ZZZZ directive has a slash "/" inside ZZZZ,
+				then skin context is ignored and ZZZZ is interpreted as path-directive. 
+
+
+					:::image=f=blue_man2.png						...		result: image_url = gio.config.defpaths.SKINS_DEF_PATH + '/'+ ddww.common_skin_key + blue_man2.png  
+					:::image=f=mypath/blue_man2.png					...		result: image_url = mypath/blue_man2.png
+					:::image=f=//img/blue_man2.png					...		result: image_url = http://mysite.com/album/img/blue_man2.png
+																					for external collection from http://mysite.com/album/collection.txt
+																			apparently:
+																			result: image_url = player_root_web_path/img/blue_man2.png
+																					for bundled-to-player-collection
+					:::image=f=http://here-we-are.com/tile.png		...		result: image_url = http://here-we-are.com/tile.png
+
+				Similar path conversions are true for
+					:::back_image=transparent.png
+					:::center_image=//transparent.png
+
+				( Programmer can get an indea from section <a href="../core/def/map_format/collect_dresses.js">//\\	modifies image</a>. )
+
+
+
+	E x a m p l e s (draft)
+
+		:::dress=flocks
+		:::skip
+
+
+		:::dress=night
+		:::title=Night
+		:::inherit_from=flocks
+		:::skin=flocks
+		:::chosen
+		:::image=f=blue_man2.png
+		:::back_image=transparent.png
+		:::center_image=transparent.png
+
+		:::multiplayer=N
+			This is player's "sugar". N must be positive integer.
+			If this directive is set, then it is assumed that there are two or more
+			acting breeds in the map, and after each move, focus is set to next breed.
+			This "multiplayer" feature is ignored if this directive is absent.
+
+
+
+</pre></div></body></html>
+
+

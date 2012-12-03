@@ -1,0 +1,69 @@
+
+
+There are few pifall commands we found till got to a track:
+
+F i r s t,   w h a t   w o r k e d :
+
+git push git@github.com:lancelab/Boardspirator.git
+
+Counting objects: 283, done.
+Compressing objects: 100% (225/225), done.
+Writing objects: 100% (281/281), 1.09 MiB, done.
+Total 281 (delta 32), reused 0 (delta 0)
+To git@github.com:lancelab/Boardspirator.git
+   14b3995..d91835d  master -> master
+
+
+A n d    w h a t   f a i l e d:
+
+git push https://github.com/lancelab/Boardspirator.git
+
+error: Cannot access URL https://github.com/lancelab/Boardspirator.git/, return code 22
+error: failed to push some refs to 'https://github.com/lancelab/Boardspirator.git'
+
+
+git push https://github.com/lancelab/Boardspirator/commits/master
+error: Cannot access URL https://github.com/lancelab/Boardspirator/commits/master/, return code 22
+error: failed to push some refs to 'https://github.com/lancelab/Boardspirator/commits/master'
+
+
+
+W e    w e r e    t e m p t e d   
+to run git-updates, but dont like this until we forced doing this:
+
+$sudo apt-get update
+$sudo apt-get upgrade git
+sudo apt-get install git
+
+
+
+
+
+P i t f a l l s    o f    c l o n i n g:
+
+git clone git@github.com/lancelab/Boardspirator.git
+
+   fatal: Could not switch to 'git@github.com/lancelab'
+
+G o o d    w a y:
+
+  naladchik@Acerfrog:/var/www/ww$ git clone git@github.com:lancelab/Boardspirator.git
+    Initialized empty Git repository in /var/www/ww/Boardspirator/.git/
+    remote: Counting objects: 746, done.
+    remote: Compressing objects: 100% (474/474), done.
+    remote: Total 746 (delta 222), reused 710 (delta 186)
+    Receiving objects: 100% (746/746), 3.24 MiB | 2079 KiB/s, done.
+    Resolving deltas: 100% (222/222), done.
+  naladchik@Acerfrog:/var/www/ww$ 
+
+
+w h i c h   i m m e d i a t e l y  
+
+gave us working games on our local PC desktop:
+
+  file:///var/www/ww/Boardspirator/play/index.htm
+  http://localhost/ww/Boardspirator/play/
+  http://localhost/ww/Boardspirator/diary/55_NewYearEdition/
+
+
+

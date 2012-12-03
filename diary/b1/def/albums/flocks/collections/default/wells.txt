@@ -1,0 +1,212 @@
+
+:::.  credits.title                 Wells
+:::.  credits.version				1.1  
+:::.  credits.author                Konstantin Kirillov
+:::.  credits.copyright             Copyright (c) 2012 Konstantin Kirillov
+:::.  credits.license               This collection is free for distribution, modification, and use provided these credits are not removed.
+:::.  credits.publication_date      November 5 - November 25, 2012
+
+
+:::map
+# # # # # #
+# - - - - # 
+# - 1A # - - # 
+# A - 1B x - # 
+# - A # 1 - # 
+# - - - - #  
+# # # # # #  
+:::board_end
+:::title=BWells :: Aligned Chairs // D2.3.1
+This is too sharp change from O1.5, should be smoother ...
+
+110-27
+:::playpath=Optimal
+LruullldDRRlluurrrdrddlUddlLuuluurDldRRR
+lluurrDrDLddllUUddrruuLruullldDRRlluurrr
+dDDuuullDldRlddrUURlluurrrdrdL
+
+112-31
+:::playpath=pre-triangle
+LrddllluURRllddrUluRluuRDldddrrruruulDuu
+LLdDRRlllddrrrUUlluurrDrDLLLulDDurrrddll
+UUrruullDDrrddllUluRRlluurrrdrdL
+
+
+
+:::map
+# # # # # #
+# - 1 - - # 
+# - A # - - # 
+# A - B 1x - # 
+# - A # - - # 
+# - 1 - - #  
+# # # # # #  
+:::board_end
+:::title=BWells :: Triangled Chairs // D2.3.1
+
+51-13
+:::playpath=Optimal
+LruullldDRRRuullDldRlddRUUluurrrddddLruu
+uulllddrUdR
+
+
+
+
+
+:::map
+# # # # # #
+# - 1 - - # 
+# - A # - - # 
+# A - B 1x - # 
+# - A # - - # 
+# 2 1 - - #  
+# # # # # #  
+:::board_end
+:::title=BWells :: Corner for Chicken // D2.3.1
+
+189-47
+:::playpath=Hint
+LrddllluURRllddrUluRluuRDldddrrruruulDuu
+LLdDRRlllddrrrUUlluurrDrDLLLulDDurrrddll
+
+
+
+:::map
+# # # # # #
+# 2 - - 1 # 
+# - A # - - # 
+# A - B B x # 
+# - A # 1 - # 
+# - - 1 2 #  
+# # # # # #  
+:::board_end
+:::title=BWells :: Chicken to Corners // D2.3.2
+
+125-38
+:::playpath=Optimal
+ulDLrDuuullldDRRlluurrrdrddlUllluurDldRl
+ddRUURRllluurrrDrDLLLrruullDlDRddlUUrRlu
+urrdrdLLruulldDlddrUUrruulllDDrUluRRlddd
+dlUUU
+
+
+
+
+:::map
+# # # # # # #
+# 2 1 - - - # 
+# - A Jj B - # 
+# A - B 1 2x # 
+# - A Jj B - # 
+# 2 1 - - - #  
+# # # # # # # 
+:::board_end
+:::title=Happy Pairs // X2.3.3
+
+346.67
+:::playpath
+lLrruulllldDuurrrrddddllLrrruulDuruullll
+ddRddrRuuUdddlluuRlddrruUruuLLLDldRRRdrU
+UdllluurrDrddldllUdrruruululldldRDuuurrd
+rddldlLuuuurrdDLruulldlddrdrrUdlluluurDu
+urrdrdLrddlllUdrrruulDrdLLLuURlddrruruul
+ullDldRuurrdDrddlllUURRllddrrruUluullDld
+RRlddrrruuLLLuurrDulldddlUdrdrrruuLLrrdd
+lUruuullldDrRlluurrrdDlddllUluRUdddrruuL
+rruulDrdLddrUldlluluurDDuR
+
+
+
+
+
+:::map
+# # # # # # #
+# 1 1 - - - # 
+# - A j A - # 
+# A - A 1 1x # 
+# - A j A - # 
+# 1 1 - - - #  
+# # # # # # # 
+:::board_end
+:::title=Monkeyban Happy Pairs :: Solution does not exist // X2.6
+
+222.0 = pstates = sphere.angles
+329357.329357.0 = total.ball.layer
+3364900 = pstates ix upper bound
+7 = pstate dimension
+25 = hids, ms=106167, ms/step=481, mks/pstate=323
+
+
+
+
+
+:::map
+- 1 - - -
+- A Jj - 1 
+A - 1B B x 
+- A Jj - - 
+- - - - Kk 
+:::board_end
+:::title=Notch Stone :: Divided Monkeys // R2.3.2
+
+74-24
+:::playpath=Optimal
+ulullldDuurrrdrddlUUruLddddlLuURRdrUUluL
+LDldRRRddllUUrrdrUluullDldRlddrUUU
+
+:::dress=forest
+:::skip
+
+
+:::map
+- 1 - - 2
+- A Jj - 1 
+A - 1B B x 
+2 A Jj - - 
+- - - - Kk  
+:::board_end
+:::title=Notch Stone :: Divided Friends // R2.3.2
+
+:::dress=flocks
+:::skip
+
+:::dress=forest
+:::title=Forest
+:::chosen=true
+
+
+:::map
+- 1 - 1 2
+- A Jj - -
+A - B B x
+- A Jj 2 -
+- - - 1 Kk
+:::board_end
+:::title=Notch Stone :: Insanely Hard // R2.3.2
+
+
+
+:::dress=flocks
+:::skip
+
+:::dress=forest
+:::title=Forest
+:::chosen=true
+
+
+:::map
+# - . - . . #
+# - A # - - #
+# A - A A x #
+# - A # . - #
+# - - - . # #
+:::board_end
+:::title=Notch Stone :: Monkeyban Insanely Hard. Solution does not exist. // R2.3.2
+
+
+212.0 = pstates = sphere.angles
+98286.98286.0 = total.ball.layer
+447678 = pstates ix upper bound
+6 = pstate dimension
+22 = hids, ms=37191, ms/step=177, mks/pstate=379
+

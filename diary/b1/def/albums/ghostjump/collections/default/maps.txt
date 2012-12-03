@@ -1,0 +1,154 @@
+
+
+
+
+
+:::map
+# # # #
+# - - #
+# - - #
+# - - # # #
+# 1 - B b #
+# - A 1A - #  
+# - a # # #
+# # # #
+:::board_end
+:::title=Clumsy Helper.
+:::author=Konstantin Kirillov. Derivative from David W. Skinner. Microban II, Map 1. Source: http://users.bentonrea.com/~sasquatch/sokoban/m2 Site: http://users.bentonrea.com/~sasquatch/sokoban/
+:::date=October 31, 2012.
+
+
+84-30
+:::playpath=Optimal
+|a.0.U|a.0.U|a.0.U|b.0.L|b.0.r|b.0.d|b.0.l|b.0.l|a.0.l|a.0.d|b.0.u|b.0.r|b.0.D|b.0.u|b.0.l
+|b.0.d|b.0.d|b.0.r|a.0.r|a.0.r|b.0.U|b.0.l|b.0.u|b.0.u|b.0.r|a.0.r|a.0.d|a.0.L|a.0.L|a.0.r
+|b.0.D|b.0.l|b.0.d|b.0.r|a.0.u|a.0.l|a.0.l|a.0.u|a.0.u|a.0.u|a.0.r|a.0.D|a.0.D|a.0.l|a.0.d
+|a.0.R|a.0.l|b.0.U|b.0.U|b.0.U|b.0.l|b.0.u|b.0.u|b.0.r|a.0.r|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L
+|a.0.d|a.0.l|a.0.d|a.0.l|a.0.U|a.0.U|a.0.U|a.0.r|a.0.D|b.0.D|a.0.l|b.0.D|a.0.d|a.0.R|a.0.l
+|b.0.D|a.0.u|a.0.u|a.0.r|a.0.u|a.0.u|a.0.l|a.0.D|a.0.D
+
+
+
+:::map
+:::board_end
+:::title=Comparing GhostJump with Microban II Map 1
+:::author=David W. Skinner. Microban II, Map 1. Source: http://users.bentonrea.com/~sasquatch/sokoban/m2 Site: http://users.bentonrea.com/~sasquatch/sokoban/
+:::date=Downloaded: October 31, 2012.
+:::context_akey=sokoban
+:::subtitle=subtitle x
+:::akey=sokoban
+:::collection_index=4
+:::map_index=0
+
+:::playpath=Opt.44-16.
+dllUdrruLLUluurDDlDRdrruLdldlUUUrDldRuuu
+ulDD
+
+
+
+:::map
+# # # #
+# - b #
+# - B # #
+# - A 1 # #
+# 1 2A - - #
+# - A 1 - #  
+# - a # # #
+# # # #
+:::board_end
+:::title=Triangle Table
+:::author=Konstantin Kirillov. Derivative from David W. Skinner. Microban II, Map 1. Source: http://users.bentonrea.com/~sasquatch/sokoban/m2 Site: http://users.bentonrea.com/~sasquatch/sokoban/
+:::data=October 31, 2012
+
+
+121-40
+-:::playpath=Solution
+|a.0.l
+|a.0.u|b.0.l|b.0.d|b.0.d|b.0.d|b.0.d|b.0.r|a.0.R|a.0.l|a.0.u|a.0.u|a.0.R|a.0.D|a.0.l|a.0.d
+|a.0.d|b.0.u|a.0.r|b.0.l|b.0.u|b.0.u|b.0.u|b.0.r|b.0.D|b.0.D|b.0.l|b.0.d|b.0.R|b.0.l|a.0.U
+|a.0.U|a.0.U|a.0.l|b.0.d|a.0.d|b.0.r|b.0.r|b.0.u|b.0.L|b.0.r|b.0.d|b.0.l|b.0.l|b.0.u|b.0.r
+|b.0.D|b.0.r|a.0.r|b.0.l|a.0.r|a.0.r|a.0.d|b.0.d|b.0.d|b.0.r|b.0.U|b.0.l|a.0.L|b.0.u|a.0.L
+|a.0.r|a.0.u|b.0.u|b.0.r|b.0.D|b.0.l|a.0.l|a.0.u|a.0.l|a.0.u|a.0.u|a.0.r|a.0.D|a.0.D|a.0.l
+|b.0.d|a.0.d|a.0.R|a.0.l|b.0.r|b.0.U|b.0.U|b.0.U|a.0.r|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.d
+|a.0.l|a.0.d|a.0.l|a.0.U|b.0.l|b.0.u|a.0.U|b.0.u|a.0.U|a.0.r|a.0.D|a.0.l|a.0.d|a.0.R|a.0.l
+|a.0.u|b.0.r|b.0.D|b.0.D|b.0.l|b.0.d|a.0.u|a.0.r|a.0.u|a.0.u|a.0.l|a.0.D|a.0.D|a.0.r|b.0.u
+
+
+
+:::map
+# # # #
+# - b #
+# - B # #
+# - A 1 # #
+# 1 A - - #
+# - A 1 - #  
+# - a # # #
+# # # #
+:::board_end
+:::title=No Dish for Ghost
+:::author=Konstantin Kirillov. Derivative from David W. Skinner. Microban II, Map 1. Source: http://users.bentonrea.com/~sasquatch/sokoban/m2 Site: http://users.bentonrea.com/~sasquatch/sokoban/
+:::data=October 31, 2012
+
+106-37
+-:::playpath=Optimal
+|a.0.l|a.0.u|a.0.R|a.0.l|a.0.u|a.0.u|a.0.R|a.0.D|b.0.D|a.0.l|b.0.D|b.0.l|a.0.d|b.0.d|b.0.R
+|b.0.l|a.0.d|b.0.d|a.0.r|a.0.U|a.0.U|b.0.r|b.0.r|b.0.u|a.0.U|b.0.L|b.0.r|b.0.d|b.0.l|b.0.l
+|a.0.l|a.0.d|b.0.u|b.0.r|b.0.D|b.0.u|b.0.l|b.0.d|b.0.d|b.0.r|a.0.r|a.0.r|b.0.U|b.0.l|b.0.u
+|b.0.u|b.0.r|a.0.r|a.0.d|a.0.L|a.0.L|a.0.r|b.0.D|b.0.l|b.0.d|b.0.r|a.0.u|a.0.l|a.0.l|a.0.u
+|a.0.u|a.0.u|a.0.r|a.0.D|a.0.D|a.0.l|a.0.d|a.0.R|a.0.l|b.0.U|b.0.U|b.0.U|b.0.l|b.0.u|b.0.u
+|b.0.r|a.0.r|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.d|a.0.l|a.0.d|a.0.l|a.0.U|a.0.U|a.0.U|a.0.r
+|a.0.D|b.0.D|a.0.l|b.0.D|a.0.d|a.0.R|a.0.l|b.0.D|a.0.u|a.0.u|a.0.r|a.0.u|a.0.u|a.0.l|a.0.D
+|a.0.D
+
+
+
+
+:::map
+# # # #
+# - b #
+# - B # # #
+# - 1A 1 - #
+# - 2A 1 - #
+# - A - - #  
+# - a # # #
+# # # #
+:::board_end
+:::title=Departured Micro. Get Together.
+:::author=Konstantin Kirillov
+:::data=November 9 2012
+
+79-27
+-:::playpath=Opt
+|a.0.l|a.0.u|a.0.R|a.0.l|a.0.u|a.0.u|a.0.R|a.0.D|b.0.D|a.0.l|b.0.D|b.0.l|a.0.d|b.0.d|b.0.R
+|b.0.u|b.0.r|b.0.d|a.0.d|a.0.r|a.0.U|a.0.U|a.0.U|b.0.L|b.0.r|b.0.u|a.0.l|b.0.l|b.0.D|b.0.l
+|b.0.d|b.0.d|b.0.r|a.0.d|a.0.r|a.0.r|b.0.U|b.0.l|b.0.u|a.0.r|b.0.R|b.0.l|b.0.u|a.0.d|a.0.L
+|a.0.r|a.0.u|a.0.u|a.0.L|a.0.r|b.0.r|b.0.D|b.0.r|b.0.d|a.0.l|a.0.d|a.0.l|a.0.l|a.0.d|a.0.d
+|a.0.r|a.0.U|a.0.l|b.0.L|b.0.u|b.0.l|b.0.d|b.0.r|a.0.u|a.0.R|a.0.l|b.0.U|a.0.u|a.0.R|a.0.l
+|a.0.u|a.0.u|a.0.r|a.0.D
+
+
+
+:::map
+# # # #
+# - b #
+# - B # # #
+# - 1A - - #
+# - 1A - - #
+# - 1A - - #  
+# - 2a # # #
+# # # #
+:::board_end
+
+:::title=Departured Micro. Ghost to Bottom.
+:::author=Konstantin Kirillov
+:::data=November 9 2012
+
+94-30
+-:::playpath=Hint
+|a.0.l|a.0.u|a.0.R|a.0.l|a.0.u|a.0.u|a.0.R|a.0.D|b.0.D|a.0.l|b.0.D|b.0.l|a.0.d|b.0.d|b.0.R
+|b.0.u|b.0.r|b.0.d|a.0.d|a.0.r|a.0.U|a.0.U|a.0.U|b.0.L|b.0.r|b.0.u|a.0.l|b.0.l|b.0.D|b.0.l
+|b.0.d|b.0.d|b.0.r|a.0.d|a.0.r|a.0.r|b.0.U|b.0.l|b.0.u|a.0.r|b.0.R|b.0.l|b.0.u|a.0.d|a.0.L
+
+
+
+

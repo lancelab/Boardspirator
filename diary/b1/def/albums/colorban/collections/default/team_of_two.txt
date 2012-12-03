@@ -1,0 +1,179 @@
+
+:::.  credits.title                 Team of Two
+:::.  credits.version				1.1  
+:::.  credits.author                Konstantin Kirillov
+:::.  credits.copyright             Copyright (c) 2012 Konstantin Kirillov
+:::.  credits.license               This collection is free for distribution, modification, and use provided these credits are not removed.
+:::.  credits.creation_date         November 30, 2012
+
+
+
+:::map
+:::context_akey=colorban
+- - - Jj Jj
+- - - A b 
+1 1B Jj 2A 2 
+- B - - - 
+Jj Jj a - -  
+:::board_end
+:::class= // A/19/(2.1)(2.1) sym
+:::factory_title=Small Line :: Swap the Pairs
+:::title=Perfect Notch :: Swap the Pairs
+
+
+-:::playpath=91.16 abs symmetrical
+:::playpath=Solution
+|b.0.d
+|b.0.d|b.0.d|a.0.u|a.0.r|a.0.r|a.0.u|a.0.u|a.0.L|a.0.L|a.0.r|a.0.r|a.0.d|a.0.d|a.0.l|b.0.u
+|b.0.u|b.0.u|b.0.l|b.0.l|b.0.u|b.0.l|b.0.l|b.0.d|b.0.d|b.0.d|b.0.R|a.0.U|b.0.R|b.0.d|b.0.r
+|a.0.r|b.0.U|b.0.l|b.0.d|a.0.d|a.0.l|a.0.l|a.0.l|b.0.u|a.0.l|b.0.l|a.0.u|b.0.l|a.0.u|b.0.u
+|a.0.u|b.0.u|a.0.r|b.0.u|a.0.r|b.0.r|a.0.d|a.0.L|a.0.r|b.0.d|b.0.D|b.0.l|b.0.d|b.0.R|b.0.R
+|b.0.l|b.0.l|a.0.l|a.0.d|a.0.d|a.0.r|b.0.r|a.0.d|b.0.r|a.0.r|a.0.r|a.0.u|a.0.u|b.0.R|b.0.d
+|b.0.r|a.0.u|b.0.U|b.0.l|b.0.l|a.0.L|a.0.L|a.0.u|a.0.l|a.0.D|a.0.u|a.0.l|a.0.D|a.0.r|a.0.r
+
+:::playpath=Human. 95.16
+|b.0.d|b.0.d|b.0.d|a.0.u|a.0.r|a.0.r|a.0.u|a.0.u|a.0.L|a.0.L|a.0.r|a.0.r|a.0.d|a.0.d|a.0.l
+|b.0.u|b.0.u|b.0.u|b.0.l|b.0.l|b.0.u|b.0.l|b.0.l|b.0.d|b.0.d|b.0.d|b.0.R|a.0.U|b.0.R|b.0.d
+|b.0.r|b.0.r|b.0.u|b.0.u|b.0.u|a.0.r|a.0.d|a.0.d|a.0.l|a.0.l|a.0.u|a.0.l|a.0.l|a.0.u|a.0.u
+|a.0.u|a.0.r|a.0.r|a.0.d|b.0.d|b.0.d|b.0.d|b.0.l|b.0.U|b.0.l|b.0.l|b.0.l|b.0.u|b.0.u|b.0.u
+|b.0.r|a.0.L|a.0.r|b.0.d|b.0.D|b.0.l|b.0.d|b.0.R|b.0.R|b.0.l|b.0.l|a.0.l|a.0.d|a.0.d|a.0.r
+|a.0.d|a.0.r|a.0.r|a.0.u|a.0.u|a.0.u|a.0.L|a.0.L|a.0.u|a.0.l|a.0.D|a.0.u|a.0.l|a.0.D|b.0.r
+|b.0.r|b.0.R|b.0.d|b.0.r|b.0.U
+
+
+
+
+:::map
+:::context_akey=colorban
+# # # # # - - -
+# - - - # # # -
+# - A b B - # -
+# 1 1 # 2 2 # #
+# - a B - A - # 
+# # # - - - - #  
+- - # # # # # #
+:::board_end
+:::class=A/21/(2.1)(2.1)
+:::factory_title= Free Line :: Build the Line
+:::title= Bonus Notch :: Build the Line
+
+
+-:::playpath=183.46
+:::playpath=Solution
+|a.0.l|a.0.u|a.0.u
+|a.0.u|a.0.r|a.0.D|a.0.u|b.0.l|b.0.l|b.0.d|b.0.d|b.0.r|b.0.R|b.0.d|b.0.r|b.0.U|a.0.l|a.0.d
+|a.0.d|a.0.d|a.0.r|a.0.r|a.0.d|a.0.r|a.0.r|b.0.d|a.0.r|b.0.r|a.0.u|a.0.L|a.0.L|b.0.u|b.0.u
+|b.0.u|b.0.L|a.0.L|a.0.r|a.0.r|b.0.D|a.0.u|a.0.u|b.0.r|b.0.d|b.0.d|b.0.l|b.0.l|b.0.u|b.0.R
+|b.0.d|b.0.r|b.0.U|b.0.l|b.0.u|b.0.u|b.0.L|b.0.u|b.0.l|b.0.l|b.0.d|a.0.l|a.0.l|a.0.u|b.0.R
+|a.0.l|a.0.l|a.0.d|a.0.d|a.0.d|a.0.R|a.0.R|a.0.R|a.0.l|a.0.l|a.0.l|a.0.u|a.0.u|a.0.u|b.0.l
+|b.0.d|b.0.d|b.0.r|b.0.r|b.0.r|b.0.u|b.0.u|a.0.d|a.0.r|a.0.D|b.0.L|b.0.u|b.0.l|a.0.l|b.0.D
+|b.0.r|b.0.r|b.0.r|a.0.d|a.0.R|a.0.R|a.0.d|a.0.r|a.0.U|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.L
+|b.0.D|a.0.U|a.0.d|b.0.l|a.0.L|b.0.d|b.0.d|b.0.r|a.0.r|a.0.u|a.0.r|a.0.u|b.0.U|b.0.l|b.0.u
+|a.0.L|a.0.L|b.0.u|b.0.r|a.0.u|a.0.l|a.0.l|a.0.d|a.0.d|a.0.d|a.0.R|a.0.R|a.0.R|a.0.u|a.0.u
+|a.0.l|a.0.L|a.0.r|a.0.r|a.0.d|a.0.d|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.d|b.0.D|b.0.l|b.0.u
+|b.0.l|b.0.l|b.0.D|b.0.l|b.0.d|b.0.R|a.0.l|a.0.U|a.0.U|b.0.R|b.0.d|b.0.r|b.0.r|a.0.r|a.0.u
+|b.0.U|b.0.d|b.0.l|b.0.U|b.0.l|a.0.L|a.0.L|a.0.u|a.0.l|a.0.D|a.0.u|a.0.l|a.0.D|a.0.r|a.0.r
+
+:::playpath=Human 312.50
+|a.0.u|b.0.u|b.0.l|b.0.l|b.0.d|b.0.d|b.0.d|b.0.r|b.0.R|b.0.d|b.0.r|b.0.U|b.0.d|b.0.l|a.0.l
+|a.0.u|a.0.u|a.0.r|a.0.r|a.0.l|a.0.D|a.0.l|a.0.d|a.0.d|a.0.r|a.0.r|a.0.r|a.0.d|a.0.r|a.0.r
+|a.0.u|a.0.L|a.0.r|b.0.r|b.0.r|b.0.u|b.0.u|b.0.u|b.0.L|b.0.L|b.0.u|b.0.l|b.0.l|a.0.l|a.0.L
+|a.0.L|b.0.r|a.0.d|b.0.r|b.0.d|b.0.r|b.0.D|a.0.r|a.0.r|a.0.r|a.0.u|b.0.r|b.0.d|b.0.d|b.0.l
+|b.0.l|b.0.u|b.0.R|b.0.d|b.0.r|b.0.U|a.0.d|a.0.l|a.0.l|a.0.u|a.0.u|a.0.u|a.0.l|a.0.u|a.0.l
+|a.0.l|a.0.d|a.0.d|a.0.d|a.0.R|a.0.R|a.0.d|a.0.r|a.0.r|a.0.r|a.0.u|b.0.d|b.0.l|b.0.l|b.0.u
+|b.0.l|b.0.l|b.0.u|b.0.u|b.0.u|b.0.r|b.0.r|b.0.d|b.0.r|b.0.r|b.0.D|b.0.u|b.0.l|b.0.l|b.0.u
+|b.0.l|b.0.l|b.0.d|b.0.R|b.0.l|b.0.d|b.0.d|b.0.r|b.0.r|b.0.d|b.0.r|b.0.r|b.0.U|b.0.d|b.0.l
+|b.0.l|b.0.r|b.0.r|b.0.r|a.0.l|a.0.d|a.0.l|a.0.l|a.0.u|a.0.R|a.0.d|a.0.l|b.0.l|b.0.l|b.0.u
+|b.0.u|a.0.r|a.0.r|a.0.r|a.0.u|a.0.L|b.0.u|a.0.d|a.0.l|a.0.U|a.0.l|a.0.l|a.0.l|a.0.u|a.0.u
+|a.0.r|a.0.D|a.0.l|a.0.d|a.0.R|a.0.R|b.0.L|b.0.u|b.0.l|b.0.D|a.0.d|a.0.r|a.0.r|a.0.u|a.0.r
+|b.0.r|a.0.d|a.0.l|a.0.l|a.0.l|a.0.r|a.0.r|a.0.u|a.0.L|a.0.r|a.0.r|b.0.r|b.0.r|b.0.D|a.0.d
+|a.0.l|a.0.l|a.0.u|a.0.U|a.0.d|a.0.d|a.0.l|b.0.l|b.0.d|b.0.d|b.0.r|a.0.r|a.0.u|a.0.u|a.0.r
+|a.0.u|a.0.L|a.0.L|a.0.u|a.0.l|a.0.l|a.0.d|a.0.R|a.0.l|a.0.d|a.0.d|a.0.r|a.0.R|a.0.d|a.0.r
+|a.0.U|a.0.d|b.0.r|b.0.u|b.0.L|b.0.L|a.0.r|a.0.u|a.0.u|a.0.u|a.0.l|a.0.L|a.0.r|a.0.r|a.0.d
+|a.0.d|a.0.r|b.0.r|b.0.u|b.0.u|b.0.l|b.0.l|b.0.u|b.0.l|b.0.l|b.0.d|b.0.d|b.0.d|b.0.r|b.0.R
+|b.0.R|b.0.d|b.0.r|b.0.l|b.0.l|a.0.d|a.0.l|a.0.l|a.0.u|a.0.U|a.0.d|a.0.l|a.0.l|a.0.l|a.0.u
+|a.0.u|a.0.u|a.0.r|a.0.r|a.0.d|b.0.u|b.0.l|b.0.l|b.0.u|b.0.u|b.0.u|b.0.r|a.0.L|a.0.r|b.0.d
+|b.0.D|b.0.l|b.0.d|b.0.R|b.0.R|b.0.d|b.0.r|b.0.U|b.0.d|b.0.r|b.0.r|b.0.u|b.0.L|b.0.r|a.0.l
+|a.0.u|a.0.l|a.0.D|a.0.r|a.0.d|a.0.d|a.0.r|a.0.d|a.0.r|a.0.r|a.0.u|a.0.u|a.0.u|a.0.L|a.0.L
+|a.0.u|a.0.l|a.0.D|b.0.l|b.0.d|b.0.l|b.0.l|b.0.u|b.0.R|b.0.d|b.0.r|b.0.U
+
+
+
+:::map
+:::context_akey=co_colorban
+- # # # # # -
+# - - - # # #
+# - 1 a 2 - # 
+# A A # B B # 
+# - - 2b - 1 - # 
+# # # - - - - #  
+- # # # # # # -
+:::board_end
+
+:::class=A/21/(2.1)(2.1)
+:::factory_title= Co. Free Line :: Build the Line
+:::title= Reverse. Bonus Notch :: Build the Line
+
+-:::playpath=183.46
+:::playpath=Solution
+|a.0.l|a.0.l|a.0.D|a.0.r|a.0.d|a.0.D|a.0.r|a.0.d|a.0.L|a.0.L|b.0.r|b.0.U|b.0.r|b.0.u|b.0.U
+|a.0.d|a.0.l|b.0.l|b.0.l|b.0.u|b.0.R|a.0.U|a.0.U|a.0.r|b.0.R|b.0.u|b.0.r|b.0.D|b.0.r|b.0.r
+|b.0.d|b.0.r|b.0.D|a.0.u|a.0.L|a.0.d|a.0.l|a.0.l|a.0.u|a.0.u|a.0.u|a.0.l|a.0.l|a.0.L|a.0.r
+|a.0.d|a.0.d|a.0.R|a.0.R|a.0.R|a.0.u|a.0.u|a.0.u|a.0.r|a.0.r|a.0.d|b.0.l|b.0.d|a.0.L|a.0.L
+|b.0.d|b.0.r|b.0.U|a.0.d|a.0.l|a.0.d|a.0.l|b.0.l|b.0.u|b.0.u|a.0.L|b.0.r|a.0.u|a.0.U|b.0.D
+|a.0.L|a.0.L|a.0.d|a.0.l|a.0.l|a.0.u|a.0.U|a.0.l|a.0.u|a.0.R|a.0.R|a.0.u|b.0.l|b.0.l|b.0.l
+|b.0.D|a.0.r|b.0.r|b.0.d|b.0.L|a.0.D|a.0.l|a.0.u|b.0.d|b.0.d|b.0.l|b.0.l|b.0.l|b.0.u|b.0.u
+|b.0.r|a.0.d|a.0.d|a.0.d|a.0.r|a.0.r|a.0.r|a.0.R|a.0.R|a.0.R|a.0.u|a.0.u|a.0.u|a.0.r|a.0.r
+|b.0.R|a.0.d|a.0.r|a.0.r|b.0.u|b.0.r|b.0.r|b.0.d|b.0.L|b.0.d|b.0.d|b.0.r|b.0.U|b.0.l|b.0.u
+|b.0.R|b.0.d|b.0.r|b.0.r|b.0.u|b.0.u|b.0.l|a.0.d|a.0.d|b.0.D|a.0.l|a.0.l|a.0.L|b.0.L|b.0.d
+|b.0.d|b.0.d|a.0.L|a.0.L|a.0.d|b.0.l|a.0.l|b.0.u|a.0.l|a.0.l|a.0.u|a.0.l|a.0.l|a.0.u|a.0.u
+|a.0.u|a.0.r|b.0.U|b.0.l|b.0.u|b.0.R|b.0.l|b.0.u|b.0.u|b.0.r|b.0.r|a.0.d|a.0.D|a.0.l|a.0.d
+|a.0.d|a.0.d|a.0.r
+
+
+
+
+
+
+
+:::map
+:::context_akey=colorban
+- # # # # - - -
+# - - - # # # -
+# - A B - - # -
+# 1 1 # 2 2 # -
+# - - - B A a # 
+# # # # - - b #  
+- - - # # # # -
+:::board_end
+:::class= // A/21/1(2.1)(2.1)
+:::factory_title= Little Spiral:: Colors, Unite
+:::title= Lost Bonus :: Colors, Unite
+
+-:::playpath=291.50
+:::playpath=Hint
+|b.0.l|b.0.l|b.0.U|b.0.l|b.0.l|b.0.l
+|a.0.d|a.0.l|a.0.l|a.0.u|a.0.l|a.0.l|a.0.u|a.0.l|a.0.u|b.0.u|a.0.u|b.0.u|a.0.r|b.0.u|a.0.D
+|a.0.l|a.0.d|b.0.d|a.0.d|b.0.d|a.0.r|b.0.d|a.0.r|b.0.r|a.0.r|b.0.r|a.0.d|b.0.r|a.0.r|b.0.d
+|a.0.r|b.0.r|a.0.u|a.0.L|a.0.r|b.0.u|b.0.u|b.0.u|b.0.l|b.0.L|b.0.r|b.0.r|b.0.d|b.0.d|b.0.d
+|a.0.l|a.0.u|b.0.u|a.0.u|b.0.u|a.0.l|b.0.u|a.0.l|b.0.l|a.0.u|a.0.l|a.0.l|a.0.d|a.0.d|a.0.d
+|a.0.r|a.0.r|a.0.R|a.0.d|b.0.D|b.0.u|b.0.l|b.0.u|b.0.l|b.0.l|b.0.d|b.0.d|b.0.d|b.0.r|b.0.r
+|a.0.r|a.0.U|a.0.d|b.0.R|b.0.l|a.0.l|a.0.u|a.0.u|b.0.r|b.0.d|b.0.r|b.0.r|b.0.u|b.0.L|b.0.L
+|a.0.u|b.0.u|a.0.r|b.0.u|b.0.l|b.0.u|b.0.l|b.0.l|b.0.d|b.0.d|b.0.d|b.0.r|a.0.D|a.0.l|a.0.d
+
+|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.d|a.0.l|a.0.U|a.0.r|b.0.R|a.0.u|b.0.R|b.0.d|b.0.r|a.0.u
+|b.0.U|b.0.l|b.0.l|b.0.l|b.0.l|b.0.u|b.0.u|a.0.l|a.0.D|a.0.u|a.0.l|a.0.u|b.0.R|a.0.l|a.0.l
+|a.0.d|a.0.d|a.0.d|a.0.r|a.0.r|a.0.R|a.0.l|a.0.l|a.0.l|a.0.u|a.0.u|a.0.u|b.0.l|b.0.d|b.0.d
+|b.0.r|b.0.r|b.0.r|b.0.u|b.0.u|a.0.d|a.0.r|a.0.D|b.0.L|b.0.u|b.0.l|a.0.l|b.0.D|b.0.r|b.0.r
+|b.0.r|a.0.u|a.0.r|a.0.r|a.0.r|a.0.d|a.0.d|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.d|b.0.D|a.0.l
+|a.0.U|a.0.U|a.0.d|b.0.l|a.0.l|b.0.d|b.0.d|b.0.r|a.0.r|a.0.u|a.0.r|a.0.u|b.0.U|b.0.l|b.0.u
+|a.0.L|a.0.L|b.0.u|a.0.u|b.0.l|a.0.l|b.0.u|a.0.l|b.0.l|a.0.d|a.0.R|a.0.l|b.0.d|a.0.d|a.0.d
+|a.0.R|a.0.R|b.0.D|b.0.l|b.0.u|a.0.R|a.0.u|a.0.u|a.0.L|a.0.u|a.0.l|a.0.D|a.0.r|b.0.r|a.0.r
+|b.0.r|a.0.d|b.0.r|b.0.r|a.0.d|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.d|b.0.D|a.0.l|a.0.U|a.0.U
+|a.0.d|b.0.l|a.0.l|b.0.d|b.0.d|b.0.r|a.0.r|a.0.u|a.0.r|a.0.u|b.0.U|b.0.l|b.0.u|a.0.L|a.0.L
+|a.0.r|a.0.r|b.0.u|b.0.l|b.0.u|b.0.l|b.0.l|b.0.d|b.0.d|b.0.d|b.0.R|b.0.R|b.0.R|b.0.d|b.0.r
+|b.0.r|b.0.u|b.0.L|b.0.d|b.0.l|b.0.U|b.0.l|a.0.l|a.0.l|a.0.L|a.0.u|a.0.l|a.0.D|a.0.r|a.0.r
+
+
+
+

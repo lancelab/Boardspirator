@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+ <html><head>
+  <!-- doctype for html 4 is only to satisfy IE -->
+  
+  <meta name="copyright" content="2011-2012 (c) Konstantin Kirillov">
+  <meta name="description" content="Board Puzzle Framework"> 
+  <meta name="keywords" content="board game, puzzle game, on line game, game development, educational game, sokoban"> 
+
+  <title>Guest Readme</title>
+
+	<link rel="stylesheet" href="css/readme.css">
+
+	<script type="text/javascript" src="../tp/lib/jquery-1.7.js"></script>
+	<script type="text/javascript" src="../tp/bind_events.js"></script>
+	<script type="text/javascript" src="../tp/core.js"></script>
+	<script type="text/javascript" src="../tp/core_no_jquery.js"></script>
+	<script type="text/javascript" src="../tp/core2_no_jquery.js"></script>
+	<script type="text/javascript" >$.fn.tp$.core.reset_path_from_land_to_app_root('..');</script>
+	<script type="text/javascript" src="../tp/gui.js"></script>
+	<script type="text/javascript" src="../tp/gui_no_jq.js"></script>
+	<script type="text/javascript" src="../tp/form.js"></script>
+
+	<!-- :: must be before others in gio: -->
+	<script type="text/javascript" src="../core/config.js"></script>
+	<script type="text/javascript" src="../core/config_gui.js"></script>
+
+	<script type="text/javascript" src="../core/entry.js"></script>
+	<script type="text/javascript" src="js/macrify.js"></script>
+
+</head><body><div style="color:#666666; white-space:pre; font-family:monospace;">
+
+Readme won't display if no JavaScript language enabled in your browser.
+To display a readme, turn JavaScript on.
+
+</div>
+
+<div style="white-space:pre; font-family:monospace; visibility:hidden;">
+
+<span style="visibility:hidden;">This token, #@title@#   , is a necessary flag to unhide this page.</span>
+
+<pre>
+
+<h1>In Guest Zone .. </h1>
+
+	.. you can play the game without logging-in as a member.
+
+
+	P l a y S e s s i o n   . .
+
+	.. can be saved as a text.
+	Copy-paste to your text editor and paste back when landing to the site again.
+	Only single map session can be copy-pasted at single copy-paste.
+
+
+	C r a f t S e s s i o n   . .
+	<a name="speedup"></a>
+	.., game maps and playpaths you created, can be copy-pasted the same way as PlaySessions.
+	( Use this hint to speed up repeating job: e, Ctr+a, Ctrl+v, Ctrl+d which means: open-editor, select-current-text, paste, done. )
+	<script>
+			if( false && feeder.exists ) {
+				document.write(
+					"You can keep your maps on your site and give your friends a link,\n\tand they will play from your links, or you can " +
+					"create <a href=\"#ownsite\">own playable site</a>."
+				);
+			}
+	</script>			
+
+
+<h1>Games, Albums, and Collections</h1>
+
+	Game is a mathematical definition. It contains colonies, rules, and ovbjective.
+		It cannot be copyrighted, but credited.
+	Album contains three things: game, dress, and collections.
+		Dress is how game looks and is interpreted in words.
+		Dress includes images which are called "Skin".
+		Collection is a file containing maps.
+
+	Traditionally dresses and collections can be copyrighted.
+	
+	Games can be inherited from other games. The top of inheritance tree is:
+
+
+<h1><a href="wirly.htm">Wirly - the Root Game</a></h1>
+
+
+<h1>Customizing</h1>
+
+	If Album omits dress, the default dress inherited from applied game.
+	Album can be located on any part on Internet, not only on #@title@# server.
+	Album can refer collection located on any part on Internet.
+	Map script can refer any album and include skins from any part of Internet.
+
+	<a name=\"urlquery\"></a>
+
+	I n p u t   P a r a m e t e r s   . .
+
+		.. can be set in URL-query string. For example,
+
+			...&akey=sokoban                                            - album key
+			...&aurl=http://mysite.com/mypath/myalbum.txt               - albums url
+			...&curl=http://users.bentonrea.com/~sasquatch/sokoban/m1   - collection url
+			...&curl=//mycollection_path/mycollection.txt
+			...&collection_ix=123
+			...&map_ix=345
+			...&asingle                                                 - suppresses display of other's albums except of &aurl
+
+
+		&aurl or &curl can be set independently: both or one of them. 
+			You can set &aurl and define references to your collections
+					1) inside of your album or,
+				alternatively, add
+					2) &curl
+				In case 1), references to your (or others) collections are defined inside <a href="../def/albums/sokoban/album.js">album definition</a>.
+				
+
+		&aurl is a full url:
+			&aurl=http://mysite.com/mypath/myalbum.txt
+
+		&curl can be set either as full or relative:
+			full url:
+				&curl = http://users.bentonrea.com/~sasquatch/sokoban/m1">Sokoban map 123 from external collection
+			relative url:
+				relative url is attached to a "parent album" by using prefix "//":
+				&curl = //mycollection_path/mycollection.txt
+					if albums is also supplied in form
+							&aurl=http://mysite.com/mypath/myalbum.txt
+						then resulting curl will be
+							curl = http://mysite.com/mypath/mycollection_path/mycollection.txt
+					otherwise, result is an appending to player's url:
+							curl = #@AppRoot@#/mycollection_path/mycollection.txt
+
+		If "//" used in maps, then relative url is attached to collection's root.
+
+
+		Examples:
+			<a href="../?akey=co_pullpush&curl=http://www.ne.jp/asahi/ai/yoshio/sokoban/handmade/soko001.txt">loading reverse Sokoban from external site</a>,
+			<a href="../?akey=sokoban&map_ix=123&curl=http://users.bentonrea.com/~sasquatch/sokoban/m1">Sokoban map 123 from external collection</a>
+
+		For available options, look at <a href="../core/config.js">gio.config.query template</a>.
+
+		More is in file <a href="../core/def/proc/derive.js">derive.js at section: //\\	referencifies collection
+		The plan was:	collection.external is a flag which externifies collection; otherwise, 
+						collection.address sets it relative to the player album tree.
+		The template of album is <a href="../def/albums/album_template.js">here</a>.
+
+	<script>
+			if( false && feeder.exists ) {
+				document.write(
+					"\n\t\tMore examples for &aurl:" +
+					"\n<a name=\"ownsite\"></a>" +
+					"\n\t" +
+					"<a href=\"" + feeder.url + "/mysite/index.php\">M a k e   O w n   P l a y a b l e   " + gio.description.title + "   S i t e</a>\n"
+			);}
+	</script>			
+
+	<a href="map_formats.htm">M a p    f o r m a t s</a>
+
+
+<a name="solver"> </a>
+
+<h1>Solver</h1>
+
+	.. is breadth-first and weak. Its power depends on size of your computer memory.
+	Solver memory limit is preset to slim=(300000 pstates) for PC with 1 Gig memory.
+	If your computer has less, solver may freeze your browser. If you computer has more,
+	on your own risk, you may increase the limit to solve harder puzzles.
+
+	For FireFox 11, Ubuntu, empirical values are:
+		slim=300000 for 1 Gig,
+		slim=1200000 for 3 Gig. (6000000 for string canons, Ubuntu 10.04, FF 11)
+	
+	Examples of supplying slim in URL string:
+		Do land to player URL, select game of your choice, and then run solver like this:
+			#@AppRoot@#/?slim=1000000
+		or
+			#@AppRoot@#/?akey=mozaic&slim=100000&map_ix=1
+
+
+	Specifics:
+		Solver starts from given position, not from initial position of the map.
+		To generate new game-scenario, run solver for co-game, find "longest" solution in terms of
+		interactions or moves, then co-vert the scenario.
+
+	There are possible difficulties at the edge of Web-browser capabilities:
+		Browsers die, quit, crash differently on different OSes.
+		For example: Around version 1.163. In Windows 7, in FF 16, solver halts on 2046 Megs of mem.  32 bit limit?
+		So, far the best combination we found is FF 11, on Ubuntu 10.04 on 
+		Acer laptop Aspire 5532.
+
+		FF memory limits:	http://www.talesofinterest.net/top-10-awesome-firefox-tricks/
+							http://superuser.com/questions/459448/how-can-i-configure-firefox-to-assume-i-have-less-memory
+
+<h1>Troubleshooting</h1>
+
+	Game crafter should not need debugging.
+	If you feel this helps to publish the game, add URL-query parameter:
+
+		...&debug 		- enables debugging
+		...&debug=3		- traces path representation, parsing, and replays
+		...&debug=5		- traces interaction
+		...&debug=7		- album derivation
+
+	Multiplication, enables both: ...&debug=15
+	Heavy debug may take too much browser resources.
+
+
+<h1><a href="app_developer_readme.htm">Application Developer Readme</a></h1>
+
+	
+
+</pre></div></body></html>
+
+
