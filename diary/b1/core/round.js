@@ -198,7 +198,7 @@
 	//=========================================================================
 	rman.path2texts=function(round, sugar_do_inverse_path){
 
-		var ww					= gio.def.colorban_maps_decoder.playpath;
+		var ww					= gio.core.def.map_format.playpath;
 		var DIRECTION			= ww.DIRECTION;
 		var TOKEN_SEPARATOR		= ww.TOKEN_SEPARATOR;
 		var SUBTOKEN_SEPARATOR	= ww.SUBTOKEN_SEPARATOR;
@@ -206,9 +206,9 @@
 		var text='', count=0, c;
 		var gm=round.gm;
 		var colonies=gm.cols;
-		var breed2symbol = gm.actors>1 && gio.def.colorban_maps_decoder.breed2symbol;
+		var breed2symbol = gm.actors>1 && gio.core.def.map_format.breed2symbol;
 		//gm.script.breed2symbol;
-		//gio.def.colorban_maps_decoder.breed2symbol; //colorban_decoder_table
+		//gio.core.def.map_format.breed2symbol; //colorban_decoder_table
 
 
 		var sugar_inverse_path = '';
@@ -279,7 +279,7 @@
 	// 		Returns:	"" if no errors Otherwise - validator_err.
 	rman.text2round = function(text_, round){
 
-		var ww					= gio.def.colorban_maps_decoder.playpath;
+		var ww					= gio.core.def.map_format.playpath;
 		var DIRECTION			= ww.DIRECTION;
 		var TOKEN_SEPARATOR		= ww.TOKEN_SEPARATOR;
 		var SUBTOKEN_SEPARATOR	= ww.SUBTOKEN_SEPARATOR;
@@ -306,7 +306,7 @@
 		//		multiactor is truing if
 		//			!!gm.actors
 		//			TOKEN_SEPARATOR is detected 
-		var symbol2breed	= gm.actors > 1 && gio.def.colorban_maps_decoder.symbol2breed; //gm.script.symbol2breed;
+		var symbol2breed	= gm.actors > 1 && gio.core.def.map_format.symbol2breed; //gm.script.symbol2breed;
 		var multiactor		= (symbol2breed && text.indexOf(TOKEN_SEPARATOR) > -1);
 		var splitter		= multiactor ? TOKEN_SEPARATOR : ''
 		var textArray		= text.split(splitter);

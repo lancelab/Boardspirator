@@ -1,4 +1,12 @@
 
+:::.  credits.title                 Beginner
+:::.  credits.version               1.1  
+:::.  credits.author                Konstantin Kirillov
+:::.  credits.copyright             Copyright (c) 2012 Konstantin Kirillov
+:::.  credits.license               This collection is free for distribution, modification, and use provided collection and map credits are not removed.
+:::.  credits.creation_date         October 31, 2012
+
+
 
 :::map
 # # # #
@@ -15,7 +23,7 @@
 :::October 31, 2012
 
 
--:::playpath=Solution
+:::playpath=Solution
 |b.0.D|b.0.D|b.0.r|b.0.U|b.0.L|b.0.U|b.0.u
 |b.0.l|b.0.l|b.0.d|b.0.R|b.0.l|b.0.d|b.0.d|b.0.R|b.0.U|a.0.u|b.0.U|b.0.d|b.0.R|a.0.U|b.0.R
 |b.0.D|b.0.L|b.0.U|b.0.R|b.0.d|a.0.R|b.0.U|b.0.L|b.0.D|a.0.L|a.0.L|b.0.R|b.0.u|b.0.l|b.0.L

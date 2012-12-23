@@ -1,0 +1,55 @@
+::://
+{ "albums" :
+{ "kids6" :
+	{
+		"gkey" : "colorban",
+		"album_name" : "Kids 6",
+
+		"collections"  :
+		[
+			{ "list_title"	: "Beginner", "ref" : { "folder" : { "akey" : "kids"} } }
+		],
+
+		"default" : { "skip" : true },
+
+		"dresses"  :  {
+			"pullpush" :
+			{
+					"skin_key"	: "pullpush",
+					"chosen"	: true,
+					"features"	: "kids",
+
+					"credits" : {
+						"title"		: "Dinner",
+						"copyright"	: "Copyright (C) 2012 Konstantin Kirillov",
+						"license"	: "host-based",
+						"web_site"	: "http://landkey.net/gio/gio/play",
+						"date"		: "November 2 2012",
+						"email"		: "beaverscript (a) landkey (.) net"
+					},
+					"tile"	:{	"width"	: 90, "height" : 90 },
+					"style"	:{	"play"	:{	"backgroundImage" : "background_humble.png",
+											"backgroundColor" : ""
+										}
+							},			
+					"rules" 		: "Rabbit can push cabbage, but cannot pull it.",
+					"objective"		: "Push all cabbages to plates",
+					"story"			: "Rabbti is hungry, but don't konw how to serve the dishes.\nWhy not to help him?",
+					"hname_table"	:{
+							"hero_b"	: "Rabbit",
+							"box_b"		: "cabbage",
+							"wall_x"	: "vase"
+					},
+					"image_decoder"	:{
+							"hero_x"		:	"hero_a_hat.png",
+							"box_x"			:	"box_b.png",
+							"target_x"		:	"target_b.png"
+					}
+			}
+		}
+	}
+}
+}
+
+
+:::\\\

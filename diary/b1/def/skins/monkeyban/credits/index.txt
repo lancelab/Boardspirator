@@ -1,9 +1,9 @@
 Monkey:
 File: monkey-md.png
-Downloaded From: www.clker.com/clipart-monkey-12.html
+Downloaded From: http://www.clker.com/clipart-monkey-12.html
 Shared by: Shopper since Friday, 22-Jul-11 09:18:59 PDT
 Contributor profile: http://www.clker.com/profile-103806.html
-Derived from: http://www.clker.com/clipart-monkey-.html
+Derived from = http://www.clker.com/clipart-monkey-.html
 
 
 Sofa: 
@@ -16,7 +16,7 @@ Downloaded From: http://www.clker.com/clipart-sofa-2.html
 Blue Man:
 File: 1217862211489363282portablejim_Man_Standing.svg.med.png
 Shared by: OCAL since Monday, 04-Aug-08 08:03:35 PDT
-Contributor profile: www.clker.com/profile-1068.html
+Contributor profile: http://www.clker.com/profile-1068.html
 Downloaded From: http: http://www.clker.com/clipart-man-standing-1.html
 
 
@@ -26,13 +26,5 @@ File: 12075839391287732736bobocal_simple_vector_tree.svg.med.png
 Shared by: OCAL since Monday, 07-Apr-08 08:59:01 PDT
 Contributor profile: http://www.clker.com/profile-1068.html
 Downloaded From: http: http://www.clker.com/clipart-simple-tree.html
-
-
-File: 
-Shared by: 
-Contributor profile: 
-Downloaded From: http: 
-
-
 
 

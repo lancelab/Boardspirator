@@ -14,46 +14,39 @@
 		collections	: [
 
 
-				{	"credits" : {	"title"		: "Intro" 	}  },
+				{	"credits" : {	"title"		: "Beginner" 	}  },
 
+				{	"list_title"	: "Unexplored. D. W. Skinner. Microban.",			"ref" : { "folder" : { "akey" : "sokoban", "fkey": "microban1.txt",	"ckey": "skinner" }  } },
+				{	"list_title"	: "Unexplored. D. W. Skinner. Microban II.",		"ref" : { "folder" : { "akey" : "sokoban", "fkey": "microban2.txt",	"ckey": "skinner" }  } },
+				{	"list_title"	: "Unexplored. D. W. Skinner. Microban III.",		"ref" : { "folder" : { "akey" : "sokoban", "fkey": "microban3.txt",	"ckey": "skinner" }  } },
+				{	"list_title"	: "Unexplored. D. W. Skinner. Microban IV.",		"ref" : { "folder" : { "akey" : "sokoban", "fkey": "microban4.txt",	"ckey": "skinner" }  } },
+				{	"list_title"	: "Unexplored. D. W. Skinner. Microban V.",			"ref" : { "folder" : { "akey" : "sokoban", "fkey": "microban5.txt",	"ckey": "skinner" }  } },
 
-				{	"title"	: "Unexplored. D. W. Skinner. Sasquatch.", "address"		:{ "akey" : "sokoban", "fkey": "sasquatch1.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "Unexplored. D. W. Skinner. Sasquatch II.", "address"	:{ "akey" : "sokoban", "fkey": "sasquatch2.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "Unexplored. D. W. Skinner. Sasquatch III.", "address"	:{ "akey" : "sokoban", "fkey": "sasquatch3.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "Unexplored. D. W. Skinner. Sasquatch IV.", "address"	:{ "akey" : "sokoban", "fkey": "sasquatch4.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "Unexplored. D. W. Skinner. Sasquatch V.", "address"	:{ "akey" : "sokoban", "fkey": "sasquatch5.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "Unexplored. D. W. Skinner. Sasquatch VI.", "address"	:{ "akey" : "sokoban", "fkey": "sasquatch6.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "Unexplored. D. W. Skinner. Sasquatch VII.", "address"	:{ "akey" : "sokoban", "fkey": "sasquatch7.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "Unexplored. D. W. Skinner. Sasquatch VIII.", "address"	:{ "akey" : "sokoban", "fkey": "sasquatch8.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "Unexplored. D. W. Skinner. Sasquatch IX.", "address"	:{ "akey" : "sokoban", "fkey": "sasquatch9.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "Unexplored. D. W. Skinner. Sasquatch X.", "address"	:{ "akey" : "sokoban", "fkey": "sasquatch10.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "Unexplored. D. W. Skinner. Sasquatch XI.", "address"	:{ "akey" : "sokoban", "fkey": "sasquatch11.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "Unexplored. D. W. Skinner. Sasquatch XII.", "address"	:{ "akey" : "sokoban", "fkey": "sasquatch12.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
+				{	"list_title"	: "David Holland. dh1.",							"ref" : { "folder" : {  "akey" : "sokoban", "fkey": "authentic_David_Holland_dh1.txt",	"ckey": "holland" } }, 	"map_title_source"	: "comment" },
 
-
-				{	"title"	: "Unexplored. D. W. Skinner. Microban.", "address"		:{ "akey" : "sokoban", "fkey": "microban1.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "Unexplored. D. W. Skinner. Microban II.", "address"	:{ "akey" : "sokoban", "fkey": "microban2.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "Unexplored. D. W. Skinner. Microban III.", "address"	:{ "akey" : "sokoban", "fkey": "microban3.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "Unexplored. D. W. Skinner. Microban IV.", "address"	:{ "akey" : "sokoban", "fkey": "microban4.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "Unexplored. D. W. Skinner. Microban V.", "address"		:{ "akey" : "sokoban", "fkey": "microban5.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-
+				{	"list_title"	: "Unexplored. D. W. Skinner. Sasquatch.",			"ref" : { "folder" : { "akey" : "sokoban", "fkey": "sasquatch1.txt",	"ckey": "skinner" }  } },
+				{	"list_title"	: "Unexplored. D. W. Skinner. Sasquatch II.",		"ref" : { "folder" : {  "akey" : "sokoban", "fkey": "sasquatch2.txt",	"ckey": "skinner" }  } },
+				{	"list_title"	: "Unexplored. D. W. Skinner. Sasquatch III.",		"ref" : { "folder" : { "akey" : "sokoban", "fkey": "sasquatch3.txt",	"ckey": "skinner" }  } },
+				{	"list_title"	: "Unexplored. D. W. Skinner. Sasquatch IV.", 		"ref" : { "folder" : { "akey" : "sokoban", "fkey": "sasquatch4.txt",	"ckey": "skinner" }  } },
+				{	"list_title"	: "Unexplored. D. W. Skinner. Sasquatch V.", 		"ref" : { "folder" : { "akey" : "sokoban", "fkey": "sasquatch5.txt",	"ckey": "skinner" }  } },
+				{	"list_title"	: "Unexplored. D. W. Skinner. Sasquatch VI.",		"ref" : { "folder" : { "akey" : "sokoban", "fkey": "sasquatch6.txt",	"ckey": "skinner" }  } },
+				{	"list_title"	: "Unexplored. D. W. Skinner. Sasquatch VII.",		"ref" : { "folder" : { "akey" : "sokoban", "fkey": "sasquatch7.txt",	"ckey": "skinner" }  } },
+				{	"list_title"	: "Unexplored. D. W. Skinner. Sasquatch VIII.",		"ref" : { "folder" : { "akey" : "sokoban", "fkey": "sasquatch8.txt",	"ckey": "skinner" }  } },
+				{	"list_title"	: "Unexplored. D. W. Skinner. Sasquatch IX.",		"ref" : { "folder" : { "akey" : "sokoban", "fkey": "sasquatch9.txt",	"ckey": "skinner" }  } },
+				{	"list_title"	: "Unexplored. D. W. Skinner. Sasquatch X.",		"ref" : { "folder" : { "akey" : "sokoban", "fkey": "sasquatch10.txt",	"ckey": "skinner" }  } },
+				{	"list_title"	: "Unexplored. D. W. Skinner. Sasquatch XI.",		"ref" : { "folder" : { "akey" : "sokoban", "fkey": "sasquatch11.txt",	"ckey": "skinner" }  } },
+				{	"list_title"	: "Unexplored. D. W. Skinner. Sasquatch XII.",		"ref" : { "folder" : { "akey" : "sokoban", "fkey": "sasquatch12.txt",	"ckey": "skinner" }  } },
 
 
 				{
-					credits : { "title"		: "Unexplored. Evgeny Grigoriev. 2001." },
-					address	:{	"akey" : "sokoban", 
-								ckey: 'grigoriev',
-								fkey: 'grigr2001.txt'
-							},
-					map_title_source	:'comment'
+					"ref" : { "folder" : {	"akey" : "sokoban", ckey: 'grigoriev', fkey: 'grigr2001.txt' } },
+					credits : { "title" : "Unexplored. Evgeny Grigoriev. 2001." },
+					map_title_source :'comment'
 				},
 
 				{
+					"ref" : { "folder" : {	"akey" : "sokoban", ckey: 'grigoriev', fkey: 'grigr2002.txt' } },
 					credits : { "title"		: "Unexplored. Evgeny Grigoriev. 2002." },
-					address	:{	"akey" : "sokoban",
-								ckey: 'grigoriev',
-								fkey: 'grigr2002.txt'
-							},
 					map_title_source	:'comment'
 				}
 
@@ -67,16 +60,15 @@
 				tile	:{ width : 30, height: 30 }
 			},
 
-			'monkeban' :
+			'monkeyban' :
 			{
 
 					skin_key : 'monkeyban',
 					chosen	: true,
-					title	: 'Yard',
 
 
 					credits : {
-						"author"	: "Konstantin Kirillov",
+						"title"		: "Yard",
 						"copyright"	: "Copyright (C) 2012 Konstantin Kirillov",
 						"license"	: "host-based",
 						"web_site"	: "http://landkey.net/gio/gio/play",
@@ -127,7 +119,7 @@
 
 						image_decoder	:{
 							'hero_x':'portablejim_Man_Standing_OCAL_2008_www.openclipart.org.png',
-							'ground_x':''
+							'ground_b' : 'ground_x.png'
 						}
 			}// monkeban
 

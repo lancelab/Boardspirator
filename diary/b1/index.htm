@@ -29,6 +29,9 @@
 	<!-- :: must be before boardspirator scripts: -->
 	<script type="text/javascript" src="core/config.js"></script>
 	<script type="text/javascript" src="core/config_gui.js"></script>
+	<script type="text/javascript" src="core/config_templates.js"></script>
+	<script type="text/javascript" src="core/config_description.js"></script>
+	<script type="text/javascript" src="core/config_spawner.js"></script>
 
 	<!-- :: boardspirator scripts; their order has no matter: -->
 	<script type="text/javascript" src="core/navig/scroll_till_alive_zone.js"></script>
@@ -59,7 +62,7 @@
 	<script type="text/javascript" src="core/gui/reset.js"></script>
 	<script type="text/javascript" src="core/gui/init_map.js"></script>
 	<script type="text/javascript" src="core/gui/draw_status.js"></script>
-	<script type="text/javascript" src="core/gui/init_controls.js"></script>
+	<script type="text/javascript" src="core/gui/create_controls.js"></script>
 	<script type="text/javascript" src="core/gui/init_control_events.js"></script>
 	<script type="text/javascript" src="core/gui/help_popup_handlers.js"></script>
 	<script type="text/javascript" src="core/gui/text_editor_popup_handlers.js"></script>
@@ -75,7 +78,9 @@
 	<script type="text/javascript" src="core/def/map_format/collect_playpaths.js"></script>
 	<script type="text/javascript" src="core/def/map_format/collect_dresses.js"></script>
 	<script type="text/javascript" src="core/def/map_format/parse_board_line.js"></script>
+	<script type="text/javascript" src="core/def/map_format/jwon.js"></script>
 	<script type="text/javascript" src="core/def/proc/derive.js"></script>
+	<script type="text/javascript" src="core/def/proc/spawn_collection.js"></script>
 	<script type="text/javascript" src="core/def/games/base_game.js"></script>
 	<script type="text/javascript" src="core/def/games/post_definitions.js"></script>
 	<script type="text/javascript" src="core/def/games/spawn_base_game_def.js"></script>
@@ -88,14 +93,14 @@
 	<script type="text/javascript" src="def/albums/monkeyban/album.js"></script>
 	<script type="text/javascript" src="def/albums/colorban/album.js"></script>
 	<script type="text/javascript" src="def/albums/sokoban/album.js"></script>
-	<script type="text/javascript" src="def/albums/antiflocks/album.js"></script>
+	<script type="text/javascript" src="def/albums/flockmasters/album.js"></script>
 	<script type="text/javascript" src="def/albums/colortrain/album.js"></script>
 	<script type="text/javascript" src="def/albums/doubleban/album.js"></script>
-	<!-- script type="text/javascript" src="def/albums/mozaic/album.js"></script -->
 
 	<script type="text/javascript" src="def/albums/bumpytargets/album.js"></script>
 
 	<script type="text/javascript" src="def/albums/pullswappush/album.js"></script>
+	<script type="text/javascript" src="def/albums/mozaic.js"></script>
 
 
 	<!-- must be after boardspirator files and before google applications -->
@@ -113,6 +118,10 @@
 		<div style="color:#666666;">
 			Games will not run if no JavaScript language<br />enabled in your browser.<br />
 			To run games, turn JavaScript on.
+			<br><br>
+			<br><a href="doc/guest_readme.htm">Guest Readme</a>
+			<br><a href="doc/project_files.htm">Project Files</a>
+			<br><a href="doc/whirly.htm">Whirly</a>
 		</div>
 		<script	type="text/javascript">
 			jQuery.fn.tp$.gio.config.google_apps.insert_ad_div_with_script();

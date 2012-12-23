@@ -1,218 +1,303 @@
-(function( $ ){ 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+(function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var gstyle	=  gio.config.style;
 					var gdr		=  gio.domwrap.regions;
 					var gde		=  gio.domwrap.elems;
 
 					
-					var STOP_ANNOYANCE = 15; // Stops showing map caption after this number
+					var STOP_ANNOYANCE	= 15; // Stops showing map caption after this number
 					var annoyance_count = 0;
+					var bC				= 'backgroundColor';
+					var iH				= 'innerHTML';
+					var tL				= 'title';
+					var tT				= 'tooltip';
 
 
 
 
-	// =================================
-	// Displays game status 
-	// =================================
+
+	/// Displays game status 
 	gio.draw_status=function(dont_redraw_won_status){ 
 
-		var w,ww;
 
 		var gs		= gio.getUnfinishedState();
 		var gm		= gs.gm;
 
-		// * visualizes dcenter for the first time after start up:
+
+		//. visualizes dcenter for the first time after start up:
 		gdr.dcenter.style.display = 'block';
 
-		// ** ? resets headers
-		var bundle = gm.collection.album;
-		bundle.title = gio.gui.procs.calculate_game_titile_from_names(gm.game.nam, bundle.album_name);
-		gio.domwrap.headers.title_select_el.reset(); // TODm do we need to shake options?:
+
+		//: resets GUI and non-GUI album's title
+		var album__cur	= gs.playalb;
+		album__cur[tL]	= gio.gui.procs.get_master_title_from_session_state();
+		gio.domwrap.headers.title_select_el[iH] = album__cur[tL];
+		//.	TODm We need light-weight reset of dom-select-element-in-tp-package.
+		//	Don't waste time resetting all the items. do we need to shake options?:
+		//gio.domwrap.headers[tL]_select_el.reset(); 
+
 
 		gio.core.procs.update_top_links();
 
-		// *	visualizes ad if enabled,
-		//		the only reason it is annoyingly here is
-		//		that startup reset not able to fire add because ad wrapper is yet null
+
+		//.	visualizes ad if enabled,
+		//	the only reason it is annoyingly here is
+		//	that startup reset not able to fire add because ad wrapper is yet null
 		gio.config.google_apps.reset_ad_visibility();
 
 
-
 		if(gm.load !== 'finalized'){
-			// * hides chaser
+			//. hides chaser
 			gde.chaser.style.display = 'none'; //TODm allow help. Redesign GUI scenarios.
 			return;
 		}
-		// * unhides chaser
-		gde.chaser.style.display = 'block';
 
 
+		//:	gets more info about map because it is loaded
 		var gs		= gio.getgs();
 		var round	= gs.round;
 		var pos		= round.pos;
-		var unit	= gm.unit;
 
 
-		// Interacts info
-		gde.interactionsNumber.innerHTML=''+round.interacts;
+		//. unhides chaser
+		gde.chaser.style.display = 'block';
 
-		if(gm.actor_cols.length > 1){
-			w= unit ? 'Hero: ' +unit.hname : '';
+
+		//: writes down who is a hero if acting-colonies are more than 1
+		var ww = ( gm.actor_cols.length > 1 && gs.unit.col.focused && gs.unit.hname ) || ''; 
+		gio.domwrap.status.unit_div[iH] = '<pre>' + ww + '</pre>';
+
+
+		var dress = gm.dresses_wrap.chosen_dress;
+		var dress_features = dress.features;
+
+		/// shows statistics
+		if( !dress_features || dress_features.statistics ) {
+		
+			//: shows statistics
+			gde.interactionsNumber[iH]	= '' + round.interacts;
+			gde.movesCount[iH]			= '' + round.current_pos_ix;
+			gde.backsCount[iH]			= '' + round.backs;
+			gde.pathCount[iH]			= '' + round.moves.length;
+
+			gio.domwrap.status.main_status_div.style.display = "block";
+
 		}else{
-			w='';
+
+			gio.domwrap.status.main_status_div.style.display = "none";
 		}
-		gio.domwrap.status.unit_div.innerHTML='<pre>'+w+'</pre>';
-		
-		
-		//===== stat ============================
-		// TODm?:
-		//w= gm.multiplayer ? ' Players' : '';
-		//ww= gm.multiplayer ? '  '+gm.multiplayer : '';
-
-		gde.movesCount.innerHTML=''+round.current_pos_ix;
-		gde.backsCount.innerHTML=''+round.backs;
-		gde.pathCount.innerHTML=''+round.moves.length;
-		//===== stat end ============================
 
 
-		if(!dont_redraw_won_status)gio.draw_won_or_not();
-
-
-
-		// ////////////////////////////////////
-		// Control panel buttons manager
-		// ////////////////////////////////////
-
-
-
-		// //\\ solver ////
-
-		var solo = gio.gui.solver_select_el.arg.r.options;
+		// //\\ Solver ////
+		//		Manages select-element lists and
+		//		manages available events by setting titles
+		var solo = gio.domwrap.cpanel.cont_rols.solver_control.arg.r.options;
 		var msol = gm.solver;
-		solo[1].title = "---";
-		solo[2].title = "---";
-		solo[3].title = "---";
-		solo[4].title = "---";
-		var mess_stub1 =  "Discards previous search data and releases its memory. Searches on other maps are preserved and not affected.";
+		solo[1][tL] = "---";
+		solo[2][tL] = "---";
+		solo[3][tL] = "---";
+		solo[4][tL] = "---";
+		var mess_stub1 =	"Discards previous search data and releases its memory. " +
+							"Searches on other maps are preserved and not affected.";
 
 		if( msol.inactive_bf ) {
-			solo[0].title = "Search First";
-			solo[0].tooltip = 'Searches and stops when first solution is found, ' + mess_stub1;
-			solo[1].title = "Search All";
-			solo[1].tooltip = 'Does not stop when first solution is found, ' + mess_stub1;
+			solo[0][tL] = "Search First";
+			solo[0][tT] = 'Searches and stops when first solution is found, ' + mess_stub1;
+			solo[1][tL] = "Search All";
+			solo[1][tT] = 'Does not stop when first solution is found, ' + mess_stub1;
 			if( msol.stat && msol.stat.total_states > 1 ) {
 				if( msol.space_exhausted() ) {
-					solo[2].title = "Exhausted";
-					solo[2].tooltip = 'All positions reachable from start position are collected.';
+					solo[2][tL] = "Exhausted";
+					solo[2][tT] = 'All positions reachable from start position are collected.';
 				}else{
-					solo[2].title = "Resume";
-					solo[2].tooltip = 'Resumes suspended search';
+					solo[2][tL] = "Resume";
+					solo[2][tT] = 'Resumes suspended search';
 				}
 			}
 			if( msol.browser_mode ) {
-				solo[3].title = "Go to Play";
-				solo[3].tooltip = 'Leaves solver browser and returns to palying game';
+				solo[3][tL] = "Go to Play";
+				solo[3][tT] = 'Leaves solver browser and returns to palying game';
 			}else if( msol.stat && msol.stat.total_states > 1 ) {
-				solo[3].title = "Browse";
-				solo[3].tooltip = 'Browses collected positions space';
-				solo[4].title = "Release Memory";
-				solo[4].tooltip = 'Deletes collected positions only for given map. Does not release memory for searches made in other maps.';
+				solo[3][tL] = "Browse";
+				solo[3][tT] = 'Browses collected positions space';
+				solo[4][tL] = "Release Memory";
+				solo[4][tT] =	'Deletes collected positions only for given map.' +
+									'Does not release memory for searches made in other maps.';
 			}
 		}else if( msol.stopped_bf ) {
-			solo[0].title = "Suspending ...";
-			solo[1].title = "Suspending ...";
-			solo[2].title = "Suspending ...";
+			solo[0][tL] = "Suspending ...";
+			solo[1][tL] = "Suspending ...";
+			solo[2][tL] = "Suspending ...";
 		}else {
 			//:: solver is active
-			solo[0].title = "Suspend";
-			solo[0].tooltip = "Suspends search. Can be resumed later.";
+			solo[0][tL] = "Suspend";
+			solo[0][tT] = "Suspends search. Can be resumed later.";
+			solo[1][tL] = "Suspend";
+			solo[1][tT] = "Suspends search. Can be resumed later.";
+			solo[2][tL] = "Suspend";
+			solo[2][tT] = "Suspends search. Can be resumed later.";
 		}
-		gio.gui.solver_select_el.reset();
+		gio.domwrap.cpanel.cont_rols.solver_control.reset();
 		//. reveals solver console
 		gde.solver_cons.style.display =		msol.inactive_bf && !msol.browser_mode ? 
 											'none' : 'block';
 
 		/// possibly fails when this sub. is inside of event-handler
-		var ww = gio.gui.solver_select_el.display;
+		var ww = gio.domwrap.cpanel.cont_rols.solver_control.display;
 		if( msol.inactive_bf && msol.solutions && msol.solutions.length > 0 ) {
-			ww.innerHTML = 'Solved';
+			ww[iH] = 'Solved';
 		}else if( msol.inactive_bf && msol.stat && msol.stat.total_states > 1 ) {
 			//. cleans up master title ... q&d?
-			ww.innerHTML = 'Finished';
+			ww[iH] = 'Finished';
 		}else{
-			ww.innerHTML = 'Solver';
+			ww[iH] = 'Solver';
 		}	
-
-		// \\// solver ////
-
+		// \\// Solver ////
 
 
 
-		w = round.current_pos_ix < round.moves.length ? 'block' : 'none';
-		w = {c:{gui:{style :{wrapper:{display:w}}}}};
-		gio.controls.move_forward.reset(w);
-		gio.controls.autoplay.reset(w);
 
-		w = round.current_pos_ix > 0 ? 'block' : 'none';
-		w = {c:{gui:{style :{wrapper:{display:w}}}}};
-		gio.controls.move_back.reset(w);
-		gio.controls.restart.reset(w);
+
+		// //\\ status color
+		var ww_won = !dont_redraw_won_status ?  draw_won_or_not() : false;
+
+		//. TODM why not use smaller box for indication ... 
+		//	no need for 4 colors ... no box dimension? 
+		//var ww_s = gio.domwrap.elems.chaser.style;
+
+		var ww_s = document.body.style;
+		var ww_c = gstyle.solver_color;
+		if( msol.browser_mode ) {
+			ww_s[bC] = ww_won ? ww_c.BROWSER_WON : ww_c.BROWSER;
+		}else if( msol.inactive_bf ) {
+			if( !ww_won ) ww_s[bC] = gstyle.rootColor;
+		}else{
+			ww_s[bC] = ww_won ? ww_c.SEARCHING_WON : ww_c.SEARCHING;
+		}
+		// \\// status color
+
+
+		//. Manages Control panel buttons
+		do_filter_features_display( gm, round );
+
+
+		
+		/// shows consoles
+		if( !dress_features || dress_features.consoles ) {
+			gde.con_div.style.display = "block";
+		}else{
+			gde.con_div.style.display = "none";
+		}
 
 	};// draw_status
 
 
 
 
-	// =================================
-	// Displays winning/unwinning status 
-	// =================================
-	gio.draw_won_or_not=function(){ 
 
-		var w;
-		var gs = gio.getgs();
-		var game = gs.gm.game;
-		var gm = gs.gm;
-		var pos = gs.pos;
+	/// Blocks controls which are forbidden by dress or by
+	//	playphase.
+	var do_filter_features_display = function ( gm, round ) {
 
-		var WCOLOR = gstyle.WINNING_COLOR;
+		var dress = gm.dresses_wrap.chosen_dress;
+		var dress_features = dress.features;
+		var w_config = false;
+		if( dress_features ) {
+			var w_config = gio.config.style.features[ dress_features ];
+		}
+		var w_controls = gio.domwrap.cpanel.cont_rols;
 
-		//do nothing if "no rules":
-		if(!game.won_or_not)return;
+		tp.core.each( w_controls, function ( name, vv ) {
+			var do_display = "block";
+			if( w_config ) {
+				do_display = w_config.indexOf( '.' + name + '.' ) > -1 ? "block" : "none";
+				// c onsole.log( name + ' ' + do_display );
+			}
 
-		var report=game.won_or_not();
+
+			// //\\		setting play-phase-depending visibility
+			if( name === "forward" || name === "autoplay" ) {
+				do_display = round.current_pos_ix < round.moves.length ? do_display : 'none';
+			}
+
+			if( name === "back" || name === "restart" ) {
+				do_display = round.current_pos_ix > 0 ?		do_display : 'none'
+			}
+
+			if( name === "playpaths" ) {
+				do_display = gm.playpaths ?	do_display : 'none';
+			}
+
+			// \\//		setting play-phase-depending visibility
+
+
+			// c onsole.log( 'final: ' + name + ' ' + do_display );
+			do_display = {c:{gui:{style :{wrapper:{ display : do_display }}}}};
+			w_controls[name].reset( do_display );
+		});
+	}; /// Blocks controls which are forbidden by dress or by
+
+
+
+
+
+
+	///	Predisplays winning/unwinning status and sugar caption-message
+	//	Returns: true for won, false for not or for "no objective defined"
+	var draw_won_or_not = function () { 
+
+		var gs			= gio.getgs();
+		var gm			= gs.gm;
+		var won_or_not	= gm.game.won_or_not;
+		var pos			= gs.pos;
+		var WCOLOR		= gstyle.WINNING_COLOR;
+		var mcap		= gio.domwrap.headers.map_caption_div;
+
+		//: stops show map caption after number of shows to not annoy user
+		annoyance_count	+= 1;
+		var ww			= annoyance_count < STOP_ANNOYANCE ? 'Map Level' : '';
+		mcap[iH]		= ww;
+
+		//. leaves if no objective defined:
+		if( !won_or_not ) return false;
+		var report = won_or_not();
+
 
 		if(report){
-			gio.domwrap.headers.map_caption_div.innerHTML		= 'Won';
-			gde.con_div.style.backgroundColor	= WCOLOR;
-			gdr.dcenter.style.backgroundColor	= WCOLOR;
-			document.body.style.backgroundColor	= WCOLOR;
+
+			//: excites user by indicating winning state
+			mcap[iH]				= 'Won';
+			gde.con_div.style[bC]	= WCOLOR;
+			gdr.dcenter.style[bC]	= WCOLOR;
+			document.body.style[bC]	= WCOLOR;
+
 		}else{
-			annoyance_count += 1;
-			var ww = annoyance_count < STOP_ANNOYANCE ? 'Map Level' : '';
-			gio.domwrap.headers.map_caption_div.innerHTML	= ww;
-			gde.con_div.style.backgroundColor				= gstyle.console.backgroundColor;
-			gdr.dcenter.style.backgroundColor				= gstyle.controls.backgroundColor;
-			document.body.style.backgroundColor				= gstyle.rootColor;
 
-			//sugar:
-			if(	pos.filled_units>0 &&
-				pos.filled_units !== gm.objective.necessary &&
-				gio.modes.play !== 'autoplay'){
+			//: restores colors broken by winning state
+			gde.con_div.style[bC]				= gstyle.console[bC];
+			gdr.dcenter.style[bC]				= gstyle.controls[bC];
+			document.body.style[bC]				= gstyle.rootColor;
 
-				// TODm annoying. Show in status table?:
-				if( gio.debug ) {
-						gio.plcons_add(	'Completed '+ pos.filled_units +' goal(s) ... remains '+
-								(gm.objective.necessary - pos.filled_units) + ' ...');
+			/// sugarifies ... useless? // TODm annoying. Show in status table?:
+			if( gio.debug ) {
+				if(	pos.filled_units>0 &&
+					pos.filled_units !== gm.objective.necessary &&
+					gio.modes.play !== 'autoplay'){
+						gio.plcons_add(		'Completed '+ pos.filled_units +' goal(s) ... remains '+
+											(gm.objective.necessary - pos.filled_units) + ' ...');
 				}
 			}
 		}
-	};
+
+		return report;
+	};	///	Predisplays winning/unwinning status ...
 
 
 
 
 
-	// ** updates top links to related sites depending on login status
+
+	/// updates top links to related sites depending on login status
 	gio.core.procs.update_top_links = function(){
 
 		var gcl		= gio.config.links;
@@ -220,14 +305,13 @@
 		var mtit	= gio.session.server.top_menu_titles;
 		var anchor	= '<a ' + gstyle.top_navig.link_style + ' href="';
 		var target	= '" target="_blank" ';
+		var w_p		= anchor + '#" onclick="jQuery.fn.tp$.gio.map_editors.';		
 		
 		if(gsm.loggedin){
-			var logio	=	anchor + '#' +
-							'" onclick="jQuery.fn.tp$.gio.map_editors.send_logout_request(); return false;" ' +
+			var logio	=	w_p + 'send_logout_request(); return false;" ' +
 							mtit.logout_url;
 		}else if( gio.modes.sta_tic.db ){
-			var logio	=	anchor + '#' +
-							'" onclick="jQuery.fn.tp$.gio.map_editors.invoke_login(); return false;" ' +
+			var logio	=	w_p + 'invoke_login(); return false;" ' +
 							mtit.login_url;
 		}else{
 			// .. in plain site .. point to remote db-login
@@ -267,10 +351,11 @@
 		var more		= anchor + gcl.more_zone	+ target + mtit.more;
 		var credits		= anchor + 'javascript:jQuery.fn.tp$.gio.gui.procs.toggle_about_pane(); "' + mtit.credits;
 	
-		//gdr.dtopcenter.innerHTML = howto + home + logio + craft + dev + more + terms + credits;
-		gdr.dtopcenter.innerHTML = howto + home + logio + craft + more + terms + credits;
-	};
+		//gdr.dtopcenter[iH] = howto + home + logio + craft + dev + more + terms + credits;
+		gdr.dtopcenter[iH] = howto + home + logio + craft + more + terms + credits;
+	};/// updates top links to related sites ...
 
 
 
-})(jQuery);
+
+})();

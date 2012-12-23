@@ -178,7 +178,7 @@
 
 							var salvor = gio.solver.create_solver(gm);
 							//salvor = gm.solver;
-							var canon = salvor.adapter.createdNode( virtual_pos, null, null, 'dont build nodes' );
+							var canon = salvor.adapter.createdNode( virtual_pos );
 							// c onsole.log( canon );
 							// now run the salvor and compare canons
 							// salvor.fire_up(gs.round.pos, null, true, true);

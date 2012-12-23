@@ -80,10 +80,10 @@
 	// //\\ BUILDS NESTED CREDITS HTML-DISPLAYS
 
 	//	/.\	AVAILABLE CREDIT KEYS
-	var tooltipify_data			=	'title=description=version=version_name=author=';
-	tooltipify_data				+=	'editor=copyright=license=date=creation_date=publication_date=web_site=source=';
+	var tooltipify_data			=	'title=description=version=version_name=maturity=author=';
+	tooltipify_data				+=	'editor=copyright=license=date=creation_date=publication_date=download=web_site=source=';
 	tooltipify_data				+=	'copied_from=copied_on=copy_date=bundling_date=influenced_by=';
-	tooltipify_data				+=	'email=comments';
+	tooltipify_data				+=	'email=developer_comment=comments';
 	//	\./	AVAILABLE CREDIT KEYS
 
 
@@ -91,7 +91,7 @@
 	var tooltip_data			=	'author=title=editor=copyright=license=date=source=web_site=email';
 
 	//. excludes these data from credits-table:
-	var tooltipify_desrc_data	=	'description=download=language=usage_requirements';
+	var tooltipify_desrc_data	=	'description=maturity=language=usage_requirements=developer_comment';
 
 	//. adds <a> tag
 	var anchorize_data			=	'download=source=web_site=copied_from';
@@ -103,7 +103,7 @@
 	tooltip_data				=	'=' + tooltip_data + '=';
 	anchorize_data				=	'=' + anchorize_data + '=';
 	self.tooltipify_data		=	tooltipify_data;
-	
+	self.tooltipify_array		=	tooltipify_array;
 
 	///	Recreates:	coll.title_compiled_from_credits	
 	//				coll.credits_table
@@ -220,13 +220,24 @@
 
 
 
-	/// Returns function which parses by this fomat from beginning of string:
+	/// Returns function which parses by this fomat from the beginning of string:
 	//			marker --- key --- \s|:|= --- trimmed value with possible spacers ---
-	//			where --- stands for possible space
+	//			where	"---" stands for possible space,
+	//					empty key causes no-match, but value can be empty.
 	//	Inputs:	marker, part of reg-ex syntax resulting in non-empty token, match[1]
+	//	Outputs:	function which may assigns values to object's property and returns
+	//					match-array:
+	//						null if no match,
+	//						otherwise:
+	//							match-array[0] = full match
+	//							match-array[1] = matched marker
+	//							match-array[2] = key
+	//							match-array[3] = trimmed value
+	//					
 	self.make_kv_parser = function ( marker ) {
+
 		var reg = new RegExp(
-				"(" + marker + ")" +
+				"(^" + marker + ")" +
 				"\\s*([^\\t :=]+)\\s*(?:\\s|=|:)\\s*([^\\t :=](?:.*\\S|\\S)*)\\s*$", "i");
 
 		///	This function does:
@@ -247,7 +258,7 @@
 				}else{
 					if( match[2] ) {
 						var property = preserve_case ? match[2] : match[2].toLowerCase();
-						var value = self.str2multiline( match[3] );
+						var value = self.str2mline( match[3] );
 						if( property.indexOf('.') > -1 ) {
 							//:: splits key to parent and child properties
 							var props = property.split('.');
@@ -268,7 +279,7 @@
 	/// in given string, str, replaces \n and \\ with line-feed and slash
 	var str2multiline_lf = /\\n/g;
 	var str2multiline_sl = /\\\\/g;
-	self.str2multiline = function ( str ) {
+	self.str2mline = function ( str ) {
 		if( !str ) return '';
 		return str.replace( str2multiline_lf, "\n" ).replace( str2multiline_sl, "\\" );
 	}
@@ -326,6 +337,45 @@
 			).replace( _titlify_mid, ' '
 			);
 	}
+
+
+
+	///	Expands:	own_url to external_url if leading "//" are met in own_url.
+	//				If no "//", returns own_url back unchanged.
+	//				if !external_url, then binds to tp.webpath_to_app_land. including http(s)://
+	self.expand_to_parent = function (
+				own_url,	 // can be user-specified relative path
+				external_url // can be web-path to album in remote server
+	){
+			if( !own_url ) return '';
+			if(own_url.indexOf('//') === 0 ) {
+
+					own_url = own_url.substr(2);
+
+					// c onsole.log( 'core.app_webpath_noindex='+ core.app_webpath_noindex + ' window.location.pathname='+ window.location.pathname + ' own_url='+own_url + ' external_url=' + external_url + ' ww='+ww);
+
+					//:: rerelativizes images in respect to collection
+					if( external_url ) {
+
+						//: removes tailing file name
+						var www = /(.*\/)[^\/]+$/;
+						var ww = external_url.match(www);
+						own_url = ww[1] + own_url; 
+						// c onsole.log(	'From parent, own url is set to ' + own_url);
+
+					}else{
+
+						//. this is a comment, don't remove
+						// c onsole.log(	" ... there is no parent ...  expanding to " +
+						//					" app web path, app web path = " +
+						//					core.app_webpath_noindex );
+
+						own_url =	self.app_webpath_noindex + '/' + own_url;
+					}
+			}
+			return own_url;
+	};
+
 
 
 })();

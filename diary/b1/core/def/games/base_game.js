@@ -10,8 +10,8 @@
 	//	will be extended to base game definition in spawn_base_game_def.js
 	gio.def.base_game = {
 
-		basekey						: 'mazy',
-		nam							: 'Mazy',
+		basekey						: 'whirly',
+		nam							: 'Whirly',
 
 		DEEPNESS_LIMIT				: 1,	//how many boxes can be pushed
 		herd_sense					: 1,	//flag. >0 for flock behaviour
@@ -108,9 +108,13 @@
 			//	defines max permitted units number stacked in cell in z-direction: how tall map can be 
 			map_roof		: 3,
 
-			//.	map-parser parameter
-			//	simplifies indexing of locations permitted for unit in a map
-			map_boundary	: 'wall_x'
+			//.	Map-parser parameter.
+			//	Used to build xy-permitted locations.
+			//	Presence of this character indicates map has to have
+			//	left and right boundary-walls built by this character
+			//	like in canonical Sokoban maps.
+			//	Do set to '' to disable this functionality.
+			map_boundary	: '#'
 		}
 		//	\\// APPLICATION ASSUMPTIONS
 

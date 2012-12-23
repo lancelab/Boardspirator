@@ -1,0 +1,437 @@
+ <!DOCTYPE html>
+ <html><head>
+  <!-- doctype for html 4 is only to satisfy IE -->
+  
+  <meta name="copyright" content="2011-2012 (c) Konstantin Kirillov">
+  <meta name="description" content="Board Puzzle Framework"> 
+  <meta name="keywords" content="board game, puzzle game, on line game, game development, educational game, sokoban"> 
+
+  <title>Whirly. Draft.</title>
+
+	<link rel="stylesheet" href="css/readme.css">
+
+	<script type="text/javascript" src="../tp/lib/jquery-1.7.js"></script>
+	<script type="text/javascript" src="../tp/bind_events.js"></script>
+	<script type="text/javascript" src="../tp/core.js"></script>
+	<script type="text/javascript" src="../tp/core_no_jquery.js"></script>
+	<script type="text/javascript" src="../tp/core2_no_jquery.js"></script>
+	<script type="text/javascript" >$.fn.tp$.core.reset_path_from_land_to_app_root('..');</script>
+	<script type="text/javascript" src="../tp/gui.js"></script>
+	<script type="text/javascript" src="../tp/gui_no_jq.js"></script>
+	<script type="text/javascript" src="../tp/form.js"></script>
+
+	<!-- :: must be before others in gio: -->
+	<script type="text/javascript" src="../core/config.js"></script>
+	<script type="text/javascript" src="../core/config_gui.js"></script>
+	<script type="text/javascript" src="../core/config_description.js"></script>
+	<script type="text/javascript" src="../core/config_spawner.js"></script>
+
+
+	<script type="text/javascript" src="../core/entry.js"></script>
+	<script type="text/javascript" src="js/macrify.js"></script>
+
+
+
+
+</head><body><div style="color:#666666; white-space:pre; font-family:monospace;">
+
+Readme won't display if no JavaScript language enabled in your browser.
+To display a readme, turn JavaScript on.
+
+</div>
+
+<div style="white-space:pre; font-family:monospace; visibility:hidden;">
+<span style="visibility:hidden;">This token, #@title@#   , is a necessary flag to unhide this page.</span>
+<pre>
+<h1>Draft</h1>
+<h1><a href="../">Whirly ..</a></h1>
+		.. is a generalization of Sokoban game,
+		.. is a root for derivation all #@WebSiteWithTitle@# games,
+		.. evolved along whith the #@title@# since the end of 2011,
+		.. Whirly's instance is defined by rules, map, and objective:
+
+
+	<b>Map</b> ..
+
+		.. is a set of units which are cubes in 3D space. 
+
+		Maps have a flat index: at any position of the game, location of each unit is defined by x,y planar
+		coordinates of the unit. Units can stack on each other, like wall on ground, target on ground, box on target, or hero on wall, ...
+
+		Units have attributes: breed, activity, and motive.
+		For example, in Sokoban, breeds are boxes, walls, grounds, ...
+
+		Activity attribute can be active, passive, or static.
+		Active unit is an unit which can moved by user's action. For example, hero in Sokoban.
+		Passive unit is an unit which can be moved as a result of interaction. Like box in Sokoban.
+		Usually only heros are active.
+		Active and passive units called dynamic.
+		There can be only one dynamic unit in map's cell unit stack and it can be only on top of the stack.
+
+		Motive can be a baton or goal. Motives used to define objective, like delivering baton-boxes to goals in Sokoban.
+
+
+
+	<b>Rules</b> ..
+
+		.. is an interaction matrix - matrix of available interactions between breeds:
+		
+			push  - acting unit can push neighbour unit, actee, like in Sokoban,
+			pull  - acting unit pulls neighbour,
+			swap  - acting unit swaps with neighbour,
+			leap  - neigbour leaps over actor,
+			jump  - actor jumps over units,
+			...
+
+		"pass" or "block" interactions omitted for brevity.
+
+
+		Breeds have additinal attribute - color. In other words breed is a couple (race, color).
+		Races are heros, walls, boxes, targets, grounds.
+		Breeds, for example, are red_box, blue_wall, ...
+
+		There are colors available: 0, 1, 2, 3, ...
+
+		0 - color called white or "colorless", 1 - blue, 2 - green, 3 - red, ...
+		(Often in context of this package, colorless color is called black or grey.)
+
+		Rules have following attributes: contrast, deepness, flockness.
+
+
+		<b>Deepness</b> ..
+
+			.. is a parameter of interaction, DEEPNESS_LIMIT. 
+			It defines how far the inital hero's action can propagate through its neighbours.
+			For examle, pushed box, can push second box if second box is on its way. If second box cannot push any other box, this means
+			that deepness is 2. If 3 boxes can be pushed at once, deepness is 3. #@Sokoban@# is a game with deepness 1.
+
+		<b>Flockness</b> ..
+
+			.. is a parameter of interaction, herd_sense, which natural number n &gt; = 0 ( 0 stands for no-herd-effect ).
+			Flocked interaction involves neighbours which mock the move of primary unit which was in touch before move began.
+
+
+
+	<b>Objective</b> ..
+
+		.. of the game is to "fill" goals with color-matching-batons:
+		Precisely: if number of targets less than number of batons, then deliver color-matching batons to all targets.
+		Otherwise: deliver all batons to color-matching targets.
+
+
+
+
+
+	
+
+W i r l y ' s     G a m e s     a n d     G a m i o n s
+
+	Formal definitions are these <a href="../def/games.json.txt">seeds</a> applied to their ancestors.
+	Informal descriptions do follow here:	
+
+	<b>Bimatch Games</b>
+
+			.. are such games where rules do not depend on pair of colors, but depend in their match.
+			If one of units is colorless or units have the same color, then units are "color-matching".
+			Otherwise, they are not color-matching. (This is a match based on "wearing" filter-glasses with own color.)
+			Not all Whirly games are "bimatch".
+
+
+
+		#@Flocks@#
+			interaction:	heros can only push color-matching boxes,
+							grey matches any color,
+			herd_sense = 1,
+			DEEPNESS_LIMIT = 1,
+
+		#@Colorban@#
+			Flocks, but flockness = false.
+
+		#@Sokoban@#
+			"Monochrome Colorban", Gamion:
+			class of single-hero Colorban maps: all boxes and targets have the same color as the hero and
+			number of targets is equal to number of boxes
+
+		#@Monkeyban@#
+			Gamion: monochrome Flocks
+
+		#@Doubleban@#
+			Colorban, but deepness is 2.
+
+		#@Colortrain@#
+			Colorban, but deepness is infinite.
+		
+
+	
+	<b>Non-Bimatch Games</b>
+
+
+		#@Bumpy Targets@#
+			Folcks with following rule overriding parent rules:
+			Blue target does block green box. Green target passes blue box.
+
+
+		Pull-Swap-Push
+			Colorban with following rule overriding parent rules:
+			If box or hero are grey, rules are the same.
+			Otherwise:
+				If box color is less than hero's color, then it will be pulled, - if equal, then pushed, - and
+				if greater, then swapped with hero.
+
+
+
+	<b>In Progress</b>
+
+		<a href="../?akey=ghostban&aurl=//def/albums/ghostban/album.json.txt">GhostBan</a>
+		<a href="../?akey=ghostjump&aurl=//def/albums/ghostjump/album.json.txt">GhostJump</a>
+
+
+
+<a name="dualgames"></a>
+
+D u a l   G a m e s
+
+	Two games G, H called co-games if they have equal set of legal positions and
+			
+		1. for each move a - b in G, there exists move b - a in H and vice versa,
+		2. there is one-to-one correspondence g |-&gt; h between actions g, h such
+		   h results in co-move of g.
+
+	Examples: 
+		#@Sokoban@# and coSokoban. #@PullPush@# and #@Co-PullPush@#: <!-- #@Pull-Swap-Push@# and #@Co-Pull-Swap-Push@#. -->
+			pull and push, left-move and right-move are co-actions.
+			Path uullURdl and ruRUrrdd are copaths.
+
+	Copath of solution is a solution of cogame. Finding longest departure from given position in co-game
+	helps to construct a map leading to given position in direct game.
+	
+	#@Doubleban@#, #@Colortrain@#, and #@Monkeyban@# have no implemented co-games.
+
+
+
+M i x i n g    m a p s
+
+	Whirly can convert maps of one game to play them in other game for two cases:
+		#@Sokoban@# --&gt; #@PullPush@#: <a href="../?akey=pullpush&collection_ix=1">Modified map grig2002</a> and
+		#@Sokoban@# --&gt; #@Monkeyban@#: <a href="../?akey=monkeyban&collection_ix=1">Modified map grig2002</a>
+		In such transformation, unit's breed may be changed; however, such transformations do not necessarily result in 
+		interesting games. 
+
+	(See settings of collection property sugar.do_colorize_randomly.)
+
+
+
+<a name="deriving"></a>
+
+D e r i v i n g    f r o m    W i r l y
+
+
+	Setting new interaction matrix in games' definition file, <a href="../def/games.json.txt">games.json.txt</a>, file creates a new Whirly's subgame.
+	Examples: sokoban or bumpytargets.
+
+	This should be a topic of itself ...
+	Deriving dresses: <a href="../core/def/proc/derive.js">//.\\	collects 4 dresses from </a>
+
+
+<a name="restrictions"></a>
+
+I m p l e m e n t a t i o n    R e s t r i c t i o n s
+
+	Changing of "flockness" is not possible when deriving from bundled games.
+
+	Changing of "deepness" from 1 to n > 1 is not guaranteed for non-push interactions, for example, for "pull"
+	(because current hard-coded "deepenes" routine assumes all geometircal shifts in one direction).
+
+	Setting interaction matrix for new game must not lead to postions which violated condition
+	"one_dynamic_unit_on_top : true" described here: <a href="../core/def/games/base_game.js">//\\ APPLICATION ASSUMPTIONS</a>
+
+
+					
+
+<a name="extending"></a>
+
+E x t e n d i n g    W i r l y
+
+	To create new type of interactions available in interaction matrix, programming job is required.
+	In simple cases like "push", "pull", "jump", ...,  this job is done in sections
+	<a href="../core/interaction.js">///\\\ push,  ///\\\ pull,   ///\\\ jump, ...</a>
+	
+
+
+
+
+<a name="variants"></a>
+
+W i r l y     a n d     S o k o b a n     V a r i a n t s
+
+
+	This information from 3rd-party sources is as reliable as they were at Time of Reasearch.
+
+<table style="position:relative; left:50px;">
+<thead>
+<tr>	<th>Time of Research</th>
+		<th>Variant</th>
+		<th>Description</th>
+		<th>Deriving from Whirly</th>
+		<th>Reference</th>
+		<th>Play</th></tr>
+</thead>
+
+
+
+
+<tbody>
+<tr>	<td>October 13, 2012</td>
+	   	<td>Sokomind Plus<br>Block-o-Mania (Unverified)</td>
+		<td>Numbered Sokoban</td>
+		<td>
+#@Colorban@# with grey hero and colored breeds which single box and target
+		</td>
+		<td><a href="http://www.erimsever.com/sokoban8.htm">Erim Server</a> <a href="http://sokomind.de/">sokomind.de</a></td>
+</tr>
+
+
+
+<tr>	<td>October 13, 2012</td>
+		<td>Multiban</td>
+		<td></td>
+		<td>Apparently: #@Colorban@# with only one color</td>
+		<td><a href="http://www.erimsever.com/sokoban8.htm">Erim Server</td>
+		<td><a href="../?akey=colorban&map_ix=0&curl=http://www.erimsever.com/e_sokoban.htm">www.erimsever.com/e_sokoban.htm</a></td>
+</tr>
+
+
+
+<tr>	<td>October 18, 2012</td>
+		<td>Pukoban</td>
+		<td>Hero can pull or push</td>
+		<td>Non implemented</td>
+		<td><a href="http://puzzles.net23.net">puzzles.net23.net</td>
+		<td><a href="http://puzzles.net23.net/pukoban.htm">puzzles.net23.net/pukoban.htm</td>
+</tr>
+
+
+
+<tr>	<td>October 18, 2012</td>
+		<td>Sokostrong</td>
+		<td>Hero can push any number of boxes</td>
+		<td>#@Colortrain@# with one color and one hero</td>
+		<td><a href="http://puzzles.net23.net">puzzles.net23.net</td>
+		<td><a href="http://puzzles.net23.net/pukoban.htm">puzzles.net23.net/sokostrong.htm</td>
+</tr>
+
+
+<tr>	<td>November 8, 2012</td>
+		<td>CyberBox (Unverified)</td>
+		<td>Hero has a baton which must be put on "exit" target</td>
+		<td>Not implemented</td>
+		<td><a href="http://sokoban.software.informer.com/wiki/">http://sokoban.software.informer.com/wiki/</td>
+		<td><a href="http://sokoban.software.informer.com/wiki/">???</td>
+</tr>
+
+
+
+<tr>
+	<td>October 13, 2012</td>
+	<td>PseudoMultiban</td>
+		<td>Not a new game.<br>Just a number Sokoban maps listed together.</td>
+	<td>
+	</td>
+	<td><a href="http://www.erimsever.com/sokoban8.htm">Erim Server</a></td>
+</tr>
+
+
+
+<tr><td>October 13, 2012</td>
+	<td>MultiBanPlus</td>
+		<td>Who knows what is this?<br>The info will be much appreciated. Please email to<br>b e a v e r s c r i p t  a t   l a n d k e y . n e t</td>
+	<td>???</td>										
+	<td>
+	</td>
+</tr>
+
+
+<tr>
+	<td>October 13, 2012</td>
+	<td>Hexoban</td>
+		<td></td>
+	<td>Not implemented</td>
+	<td><a href="http://users.bentonrea.com/~sasquatch/sokoban/hex.html">Hex</a> <a href="http://www.erimsever.com/sokoban8.htm">Erim Server</a></td>
+</tr>
+
+
+
+<tr>
+	<td>October 13, 2012</td>
+	<td>Trioban</td>
+		<td></td>
+	<td>Not implemented</td>
+	<td><a href="http://www.erimsever.com/sokoban8.htm">Erim Server</a></td>
+</tr>
+
+
+
+
+<tr>
+	<td>October 13, 2012</td>
+	<td>Octoban</td>
+		<td></td>
+	<td>Not implemented</td>
+	<td><a href="http://webpages.dcu.ie/~tyrrelma/MazezaM/">MazezaM</a> <a href="http://www.erimsever.com/sokoban8.htm">Erim Server</a></td>
+</tr>
+
+
+
+
+<tr>	<td>October 18, 2012</td>
+		<td>Beanstalk. (Unverified)</td>
+		<td>Constrains filling-targets time-sequence</td>
+		<td>Non implemented</td>
+		<td><a href="http://sokoban.software.informer.com/wiki/">sokoban.software.informer.com/wiki/</a></td>
+		<td>Not found</td>
+</tr>
+
+
+
+</tbody>
+</table>
+
+	"Rules" is what which normally associated with the "game" in mind of casual player.
+	For example, adding a "pull" rule to Sokoban game, creates a different "game", "Pukoban".
+	Occasional teleporting or traps do not create a new "game", but just "decorate" existing game
+	because these decorations do not fit any simple rule. Adding extra heros sometimes
+	associated with the "new" game, like "Multiban", but in context of Whirly,
+	maps with multiple heros is just a class of instances of a "game" with the same rules.
+
+
+
+
+
+F e w    S o k o b a n    R e f e r e n c e s
+
+	<a href="http://en.wikipedia.org/wiki/Sokoban">Sokoban in Wikipedia</a>
+	<a href="http://sokoban.software.informer.com/wiki/">sokoban.software.informer.com/wiki</a>
+	<a href="http://www.erimsever.com/sokoban.htm">Sokoban in General</a>
+	<a href="http://sokobano.de/en/index.php">http://sokobano.de/en/index.php</a>
+	<a href="http://sneezingtiger.com/sokoban/">http://sneezingtiger.com/sokoban/</a>
+
+
+R e s e a r c h
+
+	<a href="../?akey=research&asingle&aurl=//doc/research/selective_maps.album.json.txt">selective_maps</a>
+
+
+
+#@WebSiteWithTitle@#:
+
+Version:	#@version@#
+Date:		#@date@#
+License:	#@license@#
+Copyright:	#@copyright@#
+EMail:		#@email@#
+
+
+
+</pre></div></body></html>
+
+

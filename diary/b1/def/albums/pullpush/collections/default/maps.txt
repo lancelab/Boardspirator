@@ -1,9 +1,10 @@
 
-:::.  credits.title                 Intro
+:::.  credits.title                 Beginner
 :::.  credits.author                Konstantin Kirillov
+:::.  credits.version               1.1
 :::.  credits.copyright             Copyright (c) 2012 Konstantin Kirillov
 :::.  credits.license               This collection is free for distribution, modification, and use provided these credits are not removed.
-:::.  credits.creation_date			2012 - November 29, 2012
+:::.  credits.creation_date			November 29, 2012
 
 
 

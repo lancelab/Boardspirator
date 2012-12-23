@@ -37,7 +37,7 @@
 
 
 
-	///	is called from the end of master entry
+	///	is called at finalizing  of core/entry.js
 	gio.gui.init.control_events=function(){
 
 		// **	destroys all interfering events
@@ -213,7 +213,7 @@
 			var album		= gs.playalb;
 			var collection	= gs.collection;
 			var gm			= gs.gm;
-			var len			= gio.playalbs.length;
+			var len			= gio.session.alist.length;
 
 			if(a.event.ctrlKey){
 				if(a.arrow){ //select unit
@@ -240,8 +240,8 @@
 					if( !a.event.shiftKey ) {
 						if(len===1)return true;
 						gio.gui.procs.hide_current_board();
-						gio.album_ix=(gio.album_ix+1)%len;
-						gio.scroll_till_valid_game();
+						gio.session.state.album_ix=(gio.session.state.album_ix+1)%len;
+						gio.scroll_till_valid_albumion();
 						return false;
 					}
 					return true;
@@ -349,15 +349,15 @@
 				//gio.gui.modes.controls_locked=true;
 				//c onsole.log('game title selected. selected_ix='+selected_ix);
 				gio.gui.procs.hide_current_board();
-				gio.gui.procs.lock_controls('Initiating a game ...');
+				//gio.gui.procs.lock_controls('Initiating a game ...');
 
 				gio.config.google_apps.track.variable( 'Album Selected', selected_game.key);
 
-				gio.album_ix=selected_ix;
-				if(gio.scroll_till_valid_game()){
+				gio.session.state.album_ix = selected_ix;
+				if(gio.scroll_till_valid_albumion()){
 					//gio.gui.modes.controls_locked=false;
-					gio.gui.procs.unlock_controls();
-					return gio.album_ix;
+					//gio.gui.procs.unlock_controls();
+					return gio.session.state.album_ix;
 				}else{
 					return -1; //disprove
 				}
@@ -398,13 +398,8 @@
 				gio.getgs().colls.ix = selected_ix;
 				gio.navig.select_album_and_collection();
 
-				if(gio.scroll_till_valid_game()){
-					//gio.gui.modes.controls_locked=false;
-					gio.gui.procs.unlock_controls();
-					return gio.getgs().colls.ix;
-				}else{
-					return -1; //disprove
-				}
+				if( gio.scroll_till_valid_albumion() ) return gio.getgs().colls.ix;
+				return -1; //disprove
 			}
 		}});
 

@@ -1,12 +1,12 @@
-:::. credits.title			:	Intro
-:::. credits.author			:	Konstantin Kirillov
-:::. credits.license		:	Public Domain
-:::. credits.date			:	November 2011 (approximate) - November 25 2012
-:::. credits.email			:	beaverscript(a)landkey(.)net
+:::. credits.title          Beginner
+:::. credits.author         Konstantin Kirillov
+:::. credits.license        Public Domain
+:::. credits.date           November 2011 (approximate) - November 25 2012
+:::. credits.email          beaverscript(a)landkey(.)net
 
 
 
-Easy Start
+Warm Up
 
      ####### 
 ######    .#
@@ -71,15 +71,21 @@ RRRURRllluulDDuulllddRRRRR
 -#####-
 ##.--## 
 #-$-$-# 
-#-.j-+# 
+#-.#-+# 
 #-$-$-# 
 ##.---#  
 -#####-  
 :::board_end
 
-:::title=Well :: Divided Friends // G1.4
+:::title=Well :: Divided Friends
+:::class=G1.4
 :::author=Konstantin Kirillov
-:::playpath=Optimal
+
+:::dress=monkeyban
+:::image=wall_x_3_3=wall_a.png
+
+
+:::playpath=Opt. 77.21
 lDuruLullDRllddRUUrurDrddlLrruulDrddlUUd
 dllURdrruulDrdLLulluurrurDDrddlluRdrU
 
@@ -93,12 +99,17 @@ drrRdrU
 # # # # # # #
 # - A - - - # 
 # - 1A - 1 - # 
-# a 1A j 1 - # 
+# a 1A # 1 - # 
 # - A 1 - - # 
 # - A - - - #  
 # # # # # # #  
 :::board_end
-:::title=Well :: Chair for a Leader // X1.5
+:::title=Well :: Chair for a Leader
+:::class=X1.5
+
+:::dress=monkeyban
+:::image=wall_x_3_3=wall_a.png
+
 98-22
 :::playpath
 dRRRuuluLdDurrddldlluRUluRRldddrruuruulD
@@ -110,36 +121,45 @@ rUdrrUUddlluRdrruL
 # # # # # # #
 # - 1A 1 - - # 
 # - A - - - # 
-# a 1A j - - # 
+# a 1A # - - # 
 # - A - - - # 
 # - 1A 1 - - #  
 # # # # # # #  
 :::board_end
-:::title=Well :: Well for Leader // X1.5
+:::title=Well :: Well for Leader
+:::class=X1.5
 
-145-31
-:::playpath=Optimal
-dRRRuuluLdDurrddldlluRUluRRldddrruuruulD
-LulDldddrrruUddlluRlluurDuurrrdLLullddrU
-luRRllddddrUUluurrdrrddLLrruullullddrDlu
-uurDrrruLLdrrddlUUruLdlll
+:::dress=monkeyban
+:::image=wall_x_3_3=wall_a.png
 
+
+:::playpath=Opt. 141.31
+uRRRddldLuUdrruululldRDldRRluuurrddrddlU
+LdlUluuurrrdDuulldRllddrUddrrruLLdlluurD
+ldRRlluuuurDDlddrrurruuLLrrddlldlluurUld
+ddrUrrrdLLurruulDDrdL
 
 
 
 :::map
 # # # # # # #
 # - - - - - #
-# 1 A j - - #
+# 1 A # - - #
 # A - A A x #
-# - A j 1 1 #
+# - A # 1 1 #
 # - 1- - 1 Kk #
 # # # # # # #
 :::board_end
-:::title=Notch Stone :: Sweaty Work  // R2.5
+:::title=Notch Stone :: Sweaty Work
+:::class=R2.5
 
-196.37
-:::playpath
+:::dress=monkeyban
+:::image=wall_x_3_2=wall_a.png
+:::image=wall_x_3_4=wall_a.png
+:::image=wall_x_3_5=wall_a.png
+
+
+:::playpath=Sol. 196.37
 dldllluUddrrruUruullLdDDuuurrrddlUdddlLu
 uuurRddLruulldldRRRddllUdrruuuulldldRldd
 rUUddrruuuullDDDuuurrddLruulllddRlddRUUl
@@ -150,14 +170,21 @@ llddrRlluurDurrdrddlUlLdlUruurrDurDD
 :::map
 # # # # # # #
 # - - - 1 1 #
-# - A j - - #
+# - A # - - #
 # A - A 1A x #
-# - A j 1 - #
+# - A # 1 - #
 # - - - - - #
 # # # # - 1 #
 - - - # # # #
 :::board_end
-:::title=Net :: All to the Right  // A2.5
+:::title=Net :: All to the Right
+:::class=A2.5
+
+:::dress=monkeyban
+:::image=wall_x_3_2=wall_a.png
+:::image=wall_x_3_4=wall_a.png
+:::image=wall_x_3_5=wall_a.png
+
 
 :::playpath=246.49
 dldllluUddrrruruulDDuuulLdDRluurrdrddlUd

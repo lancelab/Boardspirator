@@ -1,12 +1,35 @@
-(function( $ ){ 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
+(function(){	 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio  =  tp.gio    =  tp.gio   || {};
 
 
-	gio.config.style={
+
+
+
+
+	gio.config.style = {
+
+		features :
+		{	"kids" : ".back.forward.restart.playpaths.autoplay.help." 
+			//	blockable candidates:
+			//				.statistics.
+			//				.consoles.
+			//				.menu_how.
+			//				.menu_more.
+			//				.menu_dev.
+			//				.menu_terms.
+
+		},
 
 		rootColor			:'#000000',
 		backgroundColor		:'#EEEEEE',
 		WINNING_COLOR		:'#111144',
+
+		solver_color		:{	BROWSER			:'#004400',
+								BROWSER_WON		:'#005555',
+								SEARCHING		:'#221100',
+								SEARCHING_WON	:'#330055'
+							},
+
 
 		playboard			:{	widthMin			:580,	//TODm artificial, Do improve.
 								zIndex				:10,
@@ -41,27 +64,33 @@
 								gameTitleColor 		: '#FFFFFF'
 							},
 
+
 		controls			:{
 								boardWidth			:240,
 								width				:200,
 
-								restart				:{ width : 87, left : 0, slot : 2 },
-								forward				:{ width : 110, left : 68, slot : 2 },
-								back				:{ width : 88, left : 158, slot : 2},
+								restart				:{ width : 87, left : 0, slot : 2		},
+								forward				:{ width : 110, left : 68, slot : 2		},
+								back				:{ width : 88, left : 158, slot : 2		},
 
-								help				:{ width : 140, left : 0, slot : 3 },
+								help				:{ width : 140, left : 0, slot : 3		},
 
-								reset				:{ width : 90, left : 0, slot : 4 },
-								newround			:{ width : 85, left : 62, slot : 4 },
-								rounds				:{ width : 109, left : 119, slot : 4 },
 
-								bundle				:{ width : 130, left : 0, slot : 5 },
-								autoplay			:{ width : 110, left : 140, slot : 5},
+
+								playpaths			:{ width : 145, left : 0, slot : 4,		},
+								autoplay			:{ width : 110, left : 150, slot : 4	},
+
+
+								reset				:{ width : 90, left : 0, slot : 5		},
+								newround			:{ width : 85, left : 62, slot : 5		},
+								rounds				:{ width : 109, left : 119, slot : 5	},
 
 								edit				:{ width : 225, left : 0, slot : 6},
 								solver_control		:{ width : 150, left : 0, slot : 7},
 
 								save_or_load		:{ width : 170, left : 0, slot : 8},
+
+								load_external		:{ width : 170, left : 0, slot : 9},
 
 								buttonsFontWeight	:'normal',
 
@@ -76,7 +105,7 @@
 								zIndex	:1000000
 							},
 
-		popups				:{	zIndex				:1002000,
+		popups				:{	zIndex				:4002000, // why this fails?: 1002000,
 								help				:{
 														owner:'help',
 														position: 'fixed', //'absolute',
@@ -113,7 +142,8 @@
 								horizontal_gap				: 28, //between consoles for scroll bars
 								vertical_gap				: 20, //between consoles for scroll bars
 
-								wrapper						: {
+								wrapper	:
+								{
 										width				: 290,
 										height				: 340,
 										overflow			: 'visible',
@@ -124,7 +154,8 @@
 										//zIndex				: 1000000 //TODm rid?
 								},
 				
-								common						: {
+								common :
+								{
 										color				: '#EEEEEE',
 										paddingLeft			: 10,
 										paddingRight		: 10,
@@ -163,5 +194,5 @@
 	};
 
 
-})(jQuery);
+})();
 

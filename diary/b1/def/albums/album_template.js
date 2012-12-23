@@ -1,30 +1,28 @@
-(function( ){ 	var tp  =  $.fn.tp$  =  $.fn.tp$ || {};	
+(function(){ 	var tp  =  $.fn.tp$  =  $.fn.tp$ || {};	
 				var gio =  tp.gio    =  tp.gio   || {};
 
 
-	// //\\//	This file is a part of documentation. 
-	//			Not a file included in source code.
 	
-	gio.def.albums['monkeyban']={
+	gio.def.albums[ 'sokoban' ] =
+	{
+			collections :[
 
+				{	"list_title"	: "David Holland. dh1.",					"ref" : { "folder" : { "fkey": "authentic_David_Holland_dh1.txt",	"ckey": "holland" } }, 	"map_title_source"	: "comment" },
 
-		gkey	: 'monkeyban' ,
-		album_name	: 'Island School',
-		collections : [
-
-			{	
-				"credits" : {	"author"	: "Authors credited for each map separately",
-								"title"		: "Intro",
-								"license"	: "Each map is licensed separately."
-				}
-			},
-
-
-
-
-
+				{	"list_title"	: "David W Skinner. Microban.",				"ref" : { "folder" : { "fkey": "microban1.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Microban II.",			"ref" : { "folder" : { "fkey": "microban2.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Microban III.",			"ref" : { "folder" : { "fkey": "microban3.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Microban IV.",			"ref" : { "folder" : { "fkey": "microban4.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Microban V.",			"ref" : { "folder" : { "fkey": "microban5.txt",	"ckey": "skinner"  } } },
 
 				{	
+					"ref" :
+					{ 
+						link :
+						{	
+							link : 'http://users.bentonrea.com/~sasquatch/sokoban/m5'
+						}
+					},
 					credits : { "author"	: "David W Skinner",
 								"title"		: "Microban V (26 puzzles, October 2010, this set is unfinished)",
 								"copyright" : "Copyright (c) 2010 David W Skinner",
@@ -32,64 +30,74 @@
 								"web_site"	: "http://users.bentonrea.com/~sasquatch/sokoban/",
 								"email"		: "s a s q u a t c h (a) b e n t o n r e a . c o m"
 							  },
-					external			:{	
-											link : 'http://users.bentonrea.com/~sasquatch/sokoban/m5'
-										},
 					map_title_source	: 'title'
 				},
 
 
 
+				{	"list_title"	: "David W Skinner. Sasquatch.",			"ref" : { "folder" : { "fkey": "sasquatch1.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch II.", 		"ref" : { "folder" : { "fkey": "sasquatch2.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch III.", 		"ref" : { "folder" : { "fkey": "sasquatch3.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch IV.", 		"ref" : { "folder" : { "fkey": "sasquatch4.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch V.", 			"ref" : { "folder" : { "fkey": "sasquatch5.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch VI.", 		"ref" : { "folder" : { "fkey": "sasquatch6.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch VII.", 		"ref" : { "folder" : { "fkey": "sasquatch7.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch VIII.", 		"ref" : { "folder" : { "fkey": "sasquatch8.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch IX.", 		"ref" : { "folder" : { "fkey": "sasquatch9.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch X.", 			"ref" : { "folder" : { "fkey": "sasquatch10.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch XI.", 		"ref" : { "folder" : { "fkey": "sasquatch11.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch XII.", 		"ref" : { "folder" : { "fkey": "sasquatch12.txt",	"ckey": "skinner"  } } },
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-			{	
-				// referres to "collection object" from possibly alien album definition 
-				//			(hence, referres to undressed album)
-				"ref" : {	"akey" : "sokoban",
-							"ix"	: 0
-				}				
+			{
+				"ref" : { "folder" : {	ckey: 'grigoriev', fkey: 'grigr2001.txt' } },
+				credits : { "title"		: "Evgeny Grigoriev. 2001." },
+				map_title_source	:'comment'
 			},
 
 			{
-				credits : { "title"		: "Unexplored. Evgeny Grigoriev. 2001." },
+				"ref" : { "folder" : {	ckey: 'grigoriev', fkey: 'grigr2002.txt' } },
+				credits : { "title"		: "Evgeny Grigoriev. 2002." },
+				map_title_source	:'comment'
+			},
 
-				// referres to "collection file" from possibly alien album folder
-				address	:{	"akey" : "sokoban", 
-							ckey: 'grigoriev',
-							fkey: 'grigr2001.txt'
-						},
+
+
+			{
+				"ref" : { "folder" : {	ckey: 'wierdy' } },
+				credits : { "title"		: "Weirdy" 	},
 				map_title_source	:'comment'
 			}
 
 		],
 
 
+		/// dresses
 		dresses  :
-		{ 
-			'default' :
-			{
-				tile	:{ width : 30, height: 30 }
-			},
-			'monkeban' :
+		{	'default' :
 			{
 
-					skin_key : 'monkeyban',
-					chosen	: true,
-					title	: 'Yard',
+				links	:	[
+					{title:'<a target="_blank" href="http://www.ne.jp/asahi/ai/yoshio/sokoban/handmade/index.html">Yoshio Murase and Masato Hiramatsu. Handmade.</a>'},
+					{title:'<a target="_blank" href="http://www.ne.jp/asahi/ai/yoshio/sokoban/auto52/index.html">Yoshio Murase. Autogenerated.</a>'},
+					{title:'<a target="_blank" href="http://www.sourcecode.se/sokoban/levels.php">Possibly enough for one human life ...</a>'},
+					{title:'<a target="_blank" href="http://users.bentonrea.com/~sasquatch/sokoban/">Sokoban puzzles by David W. Skinner</a>'},
+					{title:'<a target="_blank" href="http://sneezingtiger.com/sokoban/levels.html">Some Levels</a>'},
+					{title:'<a target="_blank" href="http://www.sneezingtiger.com/sokoban/levels/yoshioText.html">Non Researched Source</a>'},
+					{title:'<a target="_blank" href="http://sokoban.ws/">MF8 Sokoban Competition</a>'}
+				],
 
+				rules: 	"robot can push a box",
+				objective: 	"push all boxes into black cells",
+				story: 	"Our Hero, the robot, walks through the maze and pushes the boxes to dark cells."
+
+			}, // default
+
+			'pullpush' :
+			{
+
+					skin_key	: 'pullpush',
+					title		: 'Dinner',
 
 					credits : {
 						"author"	: "Konstantin Kirillov",
@@ -100,57 +108,32 @@
 						"email"		: "beaverscript (a) landkey (.) net"
 					},
 
+					tile	:{	width	: 40, height: 40 },
+					style	:{	play	:{	backgroundImage:'background.png',
+											backgroundColor:''
+										}
+							},			
 
-					links	:	[
-						{title:'<a target="_blank" href="http://www.ne.jp/asahi/ai/yoshio/sokoban/handmade/index.html">Yoshio Murase and Masato Hiramatsu. Handmade.</a>'},
-						{title:'<a target="_blank" href="http://www.ne.jp/asahi/ai/yoshio/sokoban/auto52/index.html">Yoshio Murase. Autogenerated.</a>'},
-						{title:'<a target="_blank" href="http://www.sourcecode.se/sokoban/levels.php">Possibly enough for one human life ...</a>'},
-						{title:'<a target="_blank" href="http://users.bentonrea.com/~sasquatch/sokoban/">Sokoban puzzles by David W. Skinner</a>'}
-					],
-
-					//////////////////////// GUI /////////////////////////////////
-					tile	:{ width : 30, height: 30 },
-					style	:{	play:{
-										backgroundImage:'background.png',
-										backgroundColor:''
-								},
-						},			
-					//////////////////////// GUI END /////////////////////////////////
-
-					//////////////////////// INFO /////////////////////////////////
-					rules	:
-						"The schoolkeeper is not dexterous to pull monkey, but can push it.\n"+
-						"Monkeys in contact with the moved fellow\n"+
-						"will do the same move whenever possible.\n"+
-						"Monkeys can run over chairs and schoolkeeper\nlearned do the same from them.\n",
-
-					objective:
-						"Put each monkey into class chair",
-
-					story:
-						"It's hard to take classes in summer time ... that's why these monkeys\n"+
-						"at large ... Help bring them back to learning ...\n",
-		
-						//////////////////////// INFO END /////////////////////////////////
+					rules 		: "Rabbit can push cabbage",
+					objective	: "Fill dishes with food",
+					story		: "It is already evening and hero is hungry.\nWho can help to serve the dinner?",
 
 
-						//////////////// mask with human names ... ///////////////////////
-						hname_table	:{ //optional
-							hero_x	: 'klasskeeper',
-							box_x	: 'monkey'
-						},
-						///////////////////////////////////////////////////////////////////
+					hname_table	:{
+							hero_b	: 'Rabbit',
+							box_b	: 'cabbage',
+							wall_x	: 'vase'
+					},
 
-						image_decoder	:{
-							'hero_x':'portablejim_Man_Standing_OCAL_2008_www.openclipart.org.png',
-							'ground_x':''
-						}
-			}// monkeban
+					image_decoder	:{
+							hero_x		:	"hero_a_hat.png",
+							box_x		:	"box_b.png",
+							target_x	:	"target_b.png"
+					}
+			}
 
-		}// dresses
-
+		}/// dresses
 	};
-
 
 })();
 

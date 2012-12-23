@@ -1,0 +1,254 @@
+:::whirly
+{	
+	"collection" :
+	{
+		"credits" :
+		{	"title"      : "Beginner",
+			"copyright"  : "Copyright (c) 2012 Konstantin Kirillov",
+			"license"    : "Free for use, distribution, and modification as long as these credits retained.",
+			"date"       : "December 15, 2012"
+		}
+	},
+	"albums" :
+	{ 
+		"kids6" :
+		{
+			"gkey" : "colorban",
+			"album_name" : "Kids 6",
+			"dresses"  :  {
+				"pullpush" :
+				{
+						"skin_key"	: "pullpush",
+						"chosen"	: true,
+						"credits" : {
+							"title"		: "Dinner",
+							"copyright"	: "Copyright (C) 2012 Konstantin Kirillov",
+							"license"	: "host-based",
+							"web_site"	: "http://landkey.net/gio/gio/play",
+							"date"		: "November 2 2012",
+							"email"		: "beaverscript (a) landkey (.) net"
+						},
+						"tile"	:{	"width"	: 90, "height" : 90 },
+						"style"	:{	"play"	:{	"backgroundImage" : "background_humble.png",
+												"backgroundColor" : ""
+											}
+								},			
+						"rules" 		: "Rabbit can push cabbage, but cannot pull it.",
+						"objective"		: "Push all cabbages to plates",
+						"story"			: "Rabbti is hungry, but don't konw how to serve the dishes.\nWhy not to help him?",
+						"hname_table"	:{
+								"hero_b"	: "Rabbit",
+								"box_b"		: "cabbage",
+								"wall_x"	: "vase"
+						},
+						"image_decoder"	:{
+								"hero_x"		:	"hero_a_hat.png",
+								"box_x"			:	"box_b.png",
+								"target_x"		:	"target_b.png"
+						}
+				}
+			}
+		}
+	}
+}
+	
+	
+	
+; Warm Up
+
+######
+# @  #
+# $  #
+#  . #
+#    #
+######
+
+Opt. 4.2
+:::playpath=Solution
+DldR
+
+
+
+; Two Dishes
+
+#######
+# @   #
+# $   #
+# $.. #
+#     #
+#######
+
+
+Opt. 11.4
+:::playpath=Solution
+lddRluRRurD
+
+
+
+
+:::map
+#######
+#-@---#
+#-----#
+#-$*0-#
+#-----#
+#######
+:::board_end
+:::title=Finish the Job
+:::dress=pullpush
+:::skip
+
+:::dress=pullpush
+:::image=X=box_c.png
+:::image=0=target_c.png
+
+-Opt. 13.4
+-:::playpath
+-ldddrUluRRurD
+
+
+:::map_end
+
+
+
+
+
+
+:::map
+# # # # # # #
+# - x - - - #
+# - X # 0 - #
+# - X - 0 - #
+# - - # - - #
+# # # # # # #
+:::board_end
+:::title=Around Vase
+:::dress=pullpush
+:::image=X=box_c.png
+:::image=0=target_c.png
+
+-Opt. 29.6
+-:::playpath
+-lddRRlluurrrdrddlUllluurDldRR
+
+:::map_end
+
+
+
+
+:::map
+# # #  # # #
+# - x  - - #
+# - X  - - #
+# - 0X # - #
+# - 0  # - #
+# # #  # # #
+:::board_end
+:::title=Move Down
+:::dress=pullpush
+:::image=X=box_c.png
+:::image=0=target_c.png
+
+-Opt 13.4
+-:::playpath
+-ldRDuurrdLulD
+
+
+:::map_end
+
+
+
+
+
+:::map
+# # #  # # # # #
+# - x  0 - - - #
+# 0 X  - - - - #
+# - X  # # - - #
+# - -  # - - - #
+# # #  # # # # #
+:::board_end
+:::title=Move Around
+:::dress=pullpush
+:::image=X=box_c.png
+:::image=0=target_c.png
+
+Opt. 23.10
+:::playpath=Solution
+ldRlddrUUluRdRRurrdLLLL
+
+:::map_end
+
+
+:::map
+# # #  # # # # #
+# - 0x 0 - - - #
+# - X  - - - - #
+# - X  # # # - #
+# - -  # - - - #
+# # #  # # # # #
+:::board_end
+:::title=Put Together
+:::dress=pullpush
+:::image=X=box_c.png
+:::image=0=target_c.png
+
+Opt 30.10
+:::playpath
+ldRlddrUUluRRRdLullddrUrrrruLL
+
+:::map_end
+
+
+
+
+:::map
+# # # # # # #
+# - - - - - #
+# - B1 2 A - #
+# - B1 2 A x #
+# - - - - - #
+# # # # # # #
+:::board_end
+:::title=Match Colors
+:::factory_title=Meet Together
+:::note=Possibly Kids 7.
+
+:::co_playpath=60.14
+rrrdLdlUruullLLulldDldDlddrrRRdrruUruUru
+ullLLulldDldRurrrrdd
+
+-:::playpath=60.14
+-uulllldRurDurrdLLrrd
+-dlUdlUdlluRRlluurDurDurrdLLrrddlUruLulll
+
+:::playpath=56.14
+uulllldRurDurrdLLrrd
+dlUdlUdlluRRlluurDurDurrdLLrrddlUruL
+
+:::map_end
+
+
+:::map
+# # #  #  # # #
+# - -  -  - - #
+# - 1  2A - - #
+# x 3B 1C A - #
+# - -  -  - - #
+# # #  #  # # #
+:::board_end
+:::title=Fix 3 Colors
+:::note=not very interesting?
+
+:::co_playpath
+rrrdLdlUruullLDrddlLdlluUlluurrRRurrdDrd
+DrddllLUlluUlu
+
+hidden:
+-:::playpath=50.13
+drUdrrULrruulD
+ulDulldRRllddrrUdrruLruulDLrrddlUruL
+
+:::map_end
+
+

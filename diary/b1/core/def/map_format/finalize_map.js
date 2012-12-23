@@ -4,37 +4,30 @@
 					var ceach	=  core.each;
 					var clonem	=  core.clone_many;
 					var propertify		=  core.propertify;
-					var cmd				=  gio.def.colorban_maps_decoder = gio.def.colorban_maps_decoder || {};
-					var str2multiline	=  core.str2multiline;
+					var cmd				=  gio.core.def.map_format;
+					var str2mline		=  core.str2mline;
 					var tooltipify_data	=  core.tooltipify_data;
 
 
+					var empty_match					= /^\s*$/g;
+					var macro_match					= /<#(.*)#\/>/g;
+					var multiplayer_match			= /^:::multiplayer=\s*(\S*)\s*$/i;
 
-	var empty_match					=/^\s*$/g;
-	var macro_match					=/<#(.*)#\/>/g;
-
-
-	// //\\ key value pairs for sokomaps
-		//. not good for ";Author:" because appends : to author
-		//var _kvsoko_match				=/^(;)\s*(\S+)\s*(\S(?:.*\S|\S)*)\s*$/;
-
-		//. can we? [^\s:=] ... who can tell?:
-		//var _kvsoko_match				=/^(;)\s*(\S*[^\s:=])\s*(?:\s|=|:)\s*([^\s:=](?:.*\S|\S)*)\s*$/;
-
-		var _kvsoko_match				=/^(;)\s*(\S*[^\t :=])\s*(?:\s|=|:)\s*([^\t :=](?:.*\S|\S)*)\s*$/;
-	// \\// key value pairs for sokomaps
+					//: Sokoban Map Sugar. To get trimmed info ...
+					var _get_malformatted_author	= /^\s*Author\s*(?::|=)\s*(\S(?:.*\S|\S)*)\s*$/i;
+					var _get_malformatted_title		= /^\s*Title\s*(?::|=)\s*(\S(?:\S.*\S|\S)*)\s*$/i;
 
 
+					// //\\	key value pairs for sokomaps
+					//.		not good for ";Author:" because appends : to author
+					//		var _kvsoko_match				= /^(;)\s*(\S+)\s*(\S(?:.*\S|\S)*)\s*$/;
 
-	var multiplayer_match			=/^:::multiplayer=\s*(\S*)\s*$/i;
+					//.		can we? [^\s:=] ... who can tell?:
+					//		var _kvsoko_match				= /^(;)\s*(\S*[^\s:=])\s*(?:\s|=|:)\s*([^\s:=](?:.*\S|\S)*)\s*$/;
+					var _kvsoko_match				= /^(;)\s*(\S*[^\t :=])\s*(?:\s|=|:)\s*([^\t :=](?:.*\S|\S)*)\s*$/;
+					// \\// key value pairs for sokomaps
 
-	//TODm make target_ instead of target:
-	var target_match				=/^target/i;  //match name target_XXX
-	var box_name_match				=/^box_/;
 
-	//: Sokoban Map Sugar. To get trimmed info ...
-	var _get_malformatted_author	=/^\s*Author\s*(?::|=)\s*(\S(?:.*\S|\S)*)\s*$/i;
-	var _get_malformatted_title		=/^\s*Title\s*(?::|=)\s*(\S(?:\S.*\S|\S)*)\s*$/i;
 
 
 
@@ -47,106 +40,121 @@
 	{
 
 		//. this will be changed to 'parsed' if success
-		map.load = 'invalid';
+		map.load				= 'invalid';
 
 		var master_y;
-
 		var colorbanKV			= cmd.colorbanKV;
-		var cbformat			= map.script.cbformat;
+		var script				= map.script;
+		var cbzone_bf			= script.cbzone_bf;
 		var collection			= map.collection;
 		var parsed				= map.parsed;
 
 		var flines				= collection.script.flines;
 		var trimmed_lines		= collection.script.trimmed_lines;
 
-		var parsed_file_header	= collection.parsed.file_header;
-		var own_raw_board_lines	= map.script.raw_board_lines;
+		var parsed_file_header	= collection.script.parsed.file_header;
+		var rbl__own			= script.raw_board_lines;
 
-		map.script.last_map_line = postboard.lim-1;
+		script.last_map_line	= postboard.lim-1;
 
-		// c onsole.log('cbformat='+cbformat);
+		// c onsole.log('cbzone_bf='+cbzone_bf);
 		// c onsole.log('postboard=',postboard);
 
-		var www = '';
-		var ww = map.script.last_map_line;
-		for( master_y = map.script.first_map_line; master_y <= ww; master_y++ ) {
+
+
+
+		// //\\ STASHES DATA BEFORE PROCESSING
+
+		//::	creates string map.script.raw_map which is used
+		//		in map-editor and "about map" popup
+		var www	= '';
+		var ww	= script.last_map_line;
+		for( master_y = script.first_map_line; master_y <= ww; master_y++ ) {
 			www += flines[master_y] + "\n";
 		}
-		map.script.raw_map = www; //TODm possibly need to detect a change for session-saved-maps
+		script.raw_map = www;
 
-
-		var own_raw_board=''; 		//TODm rid ??. bs used in session-saved-maps-detection
-		for(var yy=0; yy<own_raw_board_lines.length; yy++){
-			own_raw_board += own_raw_board_lines[yy]+"\n";
+		//:: recreates string map.script.raw_board used  
+		//			in toggle_about_map_pane and
+		//			as	a "digest" to compare saved and current board
+		//				in session.js:
+		//				if( gm.script.raw_board !== sess_map.raw_board )
+		var ww_b = '';
+		for(var yy=0; yy < rbl__own.length; yy++){
+			ww_b += rbl__own[yy] + "\n";
 		}
-		map.script.raw_board=own_raw_board;
+		script.raw_board = ww_b;
+		// \\// STASHES DATA BEFORE PROCESSING
 
 
-		// //\\ Takes raw map or referred map
-		//		As this is seen below: ....collection_index is a flag. of raw map presense.
-		var ref_coll = null;
-		if( map.reference.collection_index ){
 
-			var ref_alb = map.reference.akey;
-			var ref_coll = map.reference.collection_index;
-			var ref_map = map.reference.map_index;
-			// c onsole.log('map.reference=',map.reference);
-		}else if(collection.reference.collection_index){
 
-			var ref_alb = collection.reference.akey;
-			var ref_coll = collection.reference.collection_index;
-			var ref_map = map.ix;
-			// c onsole.log('collection.reference=',collection.reference);
-		}
+		// //\\ BUNDLES REFERRED MAP IF ANY
+		var w_r			= map.bundled__ref;
+		var w_r_coll	= w_r.collection_index;
+		var ref_alb		= w_r.akey;
 
-		if(ref_coll){
-			var coll_ix = parseInt(ref_coll);
-			var map_ix = parseInt(ref_map);
+		//.	as this is seen below: these variables are flags of raw map presense
+		if( !ref_alb || !(w_r_coll || w_r_coll === 0) ) {
 			
-			var original_coll = gio.navig.select_album_and_collection(
+			var map__eff = map;
+
+		}else{
+
+			// c onsole.log('map.bundled__ref=',map.bundled__ref);
+			var coll_ix	= parseInt( w_r_coll );
+			var map_ix	= parseInt( w_r.map_index );
+			
+			var coll__eff = gio.navig.select_album_and_collection(
 					ref_alb,
 					coll_ix,
 					map_ix,
 					'dont_land'
 			);
-			/// TODM provide external coll info if failed .... var ww_external = 
-			if(!original_coll) {
+
+			/// TODM	This info is too dry: who is failed: collection wrapper or
+			//			collection link, or collection text?
+			//			provide external coll info if failed .... var ww_external = 
+			//	
+			if( !coll__eff ) {
 				return	'Failed download referred map: ref_alb = ' + ref_alb + 
 						' coll_ix=' + coll_ix + ' map_ix=' + map_ix;
 			}
 
-			var original_map = original_coll.maps[map_ix];
-			if( !original_map ){
+			var map__eff = coll__eff.maps[ map_ix ];
+			if( !map__eff ){
 				return	'Map with index ' + map_ix + ' does not exist' + "\n" +
 						'Failed download referred map: ref_alb = ' + ref_alb + 
 						' coll_ix=' + coll_ix;
 			}
-			map.script.original_map		= original_map;
-			raw_board_lines				= clonem( original_map.script.raw_board_lines );			
-			var line_parser_cbformat	= original_map.script.cbformat;
-			var dtable					= original_map.script.decoder_table;
+			script.data_source_map = map__eff;
 
-			//. helps protecting original credits for external collections
-			map.original_coll			= original_coll;
-			// c onsole.log('reffered map success. board lines=',raw_board_lines);
+			map.data_source_coll	= coll__eff;
+
+			// //\\	We have source collection
+			//		Now, we are taking source-coll header credits, source-map credits,
+			//		overriding coll. with map. and store result in map.data_source_coll_credits
+			//		On "top" of this, recall from file_header_finalizer that
+			//		colln.credits = clonem( captions.credits, colln.credits )
+			//		Following is not consistent because looses collection header info, but
+			//		is better than to loose it completely.
+			map.data_source_coll_credits = clonem( coll__eff.credits, map__eff.credits );			
+			// \\//
+
+			// c onsole.log('reffered map success. board lines=',rbl__eff);
 			// c onsole.log('flines',flines);
 
-		}else{
-
-			map.original_coll = map.collection;
-			raw_board_lines = own_raw_board_lines;
-			var dtable = map.script.decoder_table;
-			var line_parser_cbformat = map.script.cbformat;
 		}
-		// \\// Takes raw map or referred map
+
+		//.	used to populate web and source in credits in get_map_credits()
+		map.coll__eff		= map__eff.collection;
+		var dtable			= map__eff.script.decoder_table;
+		var rbl__eff		= clonem( map__eff.script.raw_board_lines );			
+		if( !rbl__eff.length ) return 'Empty map`s board. Map ix=' + map.ix;
+
+		// \\//	BUNDLES REFERRED MAP IF ANY
 
 
-
-		if( !raw_board_lines.length ) return 'Empty map`s board. Map ix='+map.map_ix;
-		cmd.parse_board_lines( raw_board_lines, map, line_parser_cbformat, dtable );
-		map.size[1] = raw_board_lines.length;
-
-		// c onsole.log("map.script.raw_map "+map.ix+"=\n"+map.script.raw_map+"\nRaw board=\n"+map.script.raw_board);
 
 
 
@@ -155,52 +163,52 @@
 
 		// //\\ COLLECTS DATA FROM POSTBOARD
 		var playpaths		= [];
-		var current_pp		= { pp : null, cbflag : false };
+		var playpath_tray	= { pp : null, cbflag : false };
 
-		/// dress wrap
-		var ddww	= {	dr : null, zoneon_flag : false,
-						counter : 0, dresses : {}, map : map
-					  };
+		/// wraps data to exchange it with extract_to_dresses function
+		var dress_tray	= {	dr : null, zoneon_flag : false,
+							counter : 0, dresses : {}, map : map
+						  };
 		var macrosed_postboard = ''; 
 
 
 		/// does loop through postboard
 		for( master_y = postboard.start; master_y<postboard.lim; master_y++ ) {
 
-			var com=flines[master_y].replace(/\r/g,''); //vital for match
-			var com_trimmed=trimmed_lines[master_y]; //TODO trimmed will not be macrosed. do document this.
+			//. prepares line vitally for match
+			var master_line			= flines[ master_y ]; 
+			var master_line_trimmed	= trimmed_lines[ master_y ];
 
 			/// inserts macros into lines of sokoban format zone
 			//	TODM speed up by: if( parsed_file_header.macros ...
 			core.each(parsed_file_header.macros, function( nam, macro ){
-				com = com.replace( macro.regex, macro.val );
+				master_line = master_line.replace( macro.regex, macro.val );
 			});
-			macrosed_postboard += com + "\n";
+			macrosed_postboard += master_line + "\n";
 
-			var pkey=colorbanKV(com);
+			var pkey = colorbanKV(master_line);
 			var pkey1 = pkey[1];
 			var pkey2 = pkey[2];
 			var pkey3 = pkey[3];
-			// if(pkey1) c onsole.log('cbkeys=',pkey1, pkey2, pkey3);
 
 			/// collects palypaths
-			if( cmd.extract_to_playpaths(
-				current_pp,
-				com_trimmed,
+			if( cmd.extract_to_playpaths (
+				playpath_tray,
+				master_line_trimmed,
 				pkey,
-				com,
+				master_line,
 				playpaths,
-				cbformat
+				cbzone_bf
 			)) continue;
 
 
 			try{
 				/// collects dresses
-				if( cmd.extract_to_dresses(
-					ddww,
-					com_trimmed,
+				if( cmd.extract_to_dresses (
+					dress_tray,
+					master_line_trimmed,
 					pkey,
-					com,
+					master_line,
 					dtable
 				)) continue;
 			}catch(err){
@@ -210,10 +218,10 @@
 			///.. does loop through postboard
 
 
-			if(cbformat && pkey1){
+			if(cbzone_bf && pkey1){
 
 				var lcasekey = pkey2.toLowerCase();
-				pkey3 = str2multiline( pkey3 );
+				pkey3 = str2mline( pkey3 );
 
 				if(	pkey2==='multiplayer' ){
 						if(isNaN(pkey3))return 'Invalid map settings. multiplayer='+pkey3;
@@ -223,17 +231,17 @@
 					propertify( parsed, 'credits', lcasekey, pkey3 );
 					continue;
 				}	
-			}//if(cbformat){
+			}//if(cbzone_bf){
 
 
 
 
-			if(!cbformat){
+			if( !cbzone_bf ) {
 
-				var soko_keys=com.match(_kvsoko_match) || [];
-				var pkey3 = core.str2multiline( soko_keys[3] );
+				var soko_keys = master_line.match(_kvsoko_match) || [];
+				var pkey3 = str2mline( soko_keys[3] );
 
-				if( soko_keys[2]){
+				if( soko_keys[2] ) {
 					var lcasekey = soko_keys[2].toLowerCase();
 					if( tooltipify_data.indexOf('=' + lcasekey + '=' ) > -1 ) {
 						propertify( parsed, 'credits', lcasekey, pkey3 );
@@ -243,11 +251,11 @@
 
 				// //\\ sugarifies. collects autor or title from poolry formatted Sokoban maps
 				if( !parsed.credits || !parsed.credits.author ) {
-					var match = com.match(_get_malformatted_author);
+					var match = master_line.match(_get_malformatted_author);
 					propertify( parsed, 'credits', 'author', match && match[1] );
 				}
 				if( !parsed.credits || !parsed.credits.title ) {
-					var match = com.match(_get_malformatted_title);
+					var match = master_line.match(_get_malformatted_title);
 					propertify( parsed, 'credits', 'title', match && match[1] );
 				}
 				// \\// sugarifies. collects autor or title from poolry formatted Sokoban maps
@@ -255,11 +263,10 @@
 			}
 		} ///.. does loop through postboard
 
-		if( playpaths.length>0 ) map.playpaths = playpaths;
-		if( ddww.counter ) map.dresses = ddww.dresses;
-		// c onsole.log(' fin map ... added after counter ...map.dresses=', map.dresses);
+		if( playpaths.length > 0 )	map.playpaths = playpaths;
+		if( dress_tray.counter )	map.dresses = dress_tray.dresses;
+		// c onsole.log(' fin map ... added after counter ...map.dresses=', map.dresses, map.ix);
 		map.parsed.macrosed_postboard = macrosed_postboard;
-
 		// \\// COLLECTS DATA FROM POSTBOARD
 
 
@@ -269,7 +276,7 @@
 		/// //\\ SETS TITLES AND CREDITS
 
 		var ww_final_title = (parsed.credits && parsed.credits.title) || '';
-		if(!cbformat){
+		if(!cbzone_bf){
 			if( !( collection.map_title_source === 'comment' && ww_final_title ) ){
 				ww_final_title = parsed.backward_soko_title;
 			}
@@ -277,39 +284,49 @@
 		propertify( parsed, 'credits', 'title', ww_final_title );
 
 
-		// ///\\\ pasting credits
 
+
+		// ///\\\ pasting credits //////////////////////////////
 		map.credits = map.credits || {};
-		var ww_omap = map.script.original_map;
-		if( ww_omap && ww_omap.credits ) {
+
+		if( map.data_source_coll_credits ) {
 			if( parsed.credits ) {
-				map.credits = clonem( ww_omap.credits, parsed.credits );
-				map.credits.credits = [ clonem( ww_omap.credits ) ];
+
+				map.credits = clonem( parsed.credits );
+				//. makes display overengineered: to much duplicating info
+				//	parent credits override child
+				//	map.credits = clonem( map.data_source_coll_credits, parsed.credits );
+
+				//. but child is preserved as subcredits
+				map.credits.credits = [ map.data_source_coll_credits ];
+
 			}else{
-				map.credits = clonem( ww_omap.credits );
+				map.credits = map.data_source_coll_credits;
 			}
 		}else if( parsed.credits ) {
 				map.credits = clonem( parsed.credits );
 		}
 
 
-		if(!map.credits.title) map.credits.title = 'Map ' + map.ix;
-		//Finalize the titles for select control:
+		if( !map.credits.title ) map.credits.title = 'Map ' + map.ix;
+		//: finalizes titles for select control
 		map.title	=	core.dotify( map.credits.title, 50 );
 		map.tooltip	=	core.dotify( map.credits.author, 200, 'Author: ', '. '  );
 		map.tooltip	+=	core.dotify( map.credits.title, 200, 'Title: ', '. '  );
 		map.tooltip	+=	'zcount: ' + map.ix + '.';
-		// \\\/// pasting credits
+		// \\\/// pasting credits //////////////////////////////
 		/// \\// SETS TITLES AND CREDITS
 
 
 
-		//.. /// FINALIZES MAP
+		//:: PARSES BOARD
+		cmd.parse_board_lines( rbl__eff, map, map__eff.script.cbzone_bf, dtable );
+		map.size[1] = rbl__eff.length;
+		// c onsole.log("map.script.raw_map "+map.ix+"=\n"+script.raw_map+"\nRaw board=\n"+script.raw_board);
 
 
 
-
-		/// //\\ bookkeeps breeds
+		/// //\\ BOOKKEEPS BREEDS
 		var targets=0;
 		var batons=0;
 		var actors=0;
@@ -323,25 +340,28 @@
 			actors +=col.units.length;
 		});
 
+		//:	collects numbers for winning criteria and
+		//	puts them in map.objective "repository" 
 		var objective = map.objective = map.objective || {};
 		objective.necessary = Math.min(batons,targets);
 		objective.targets = targets;
 		objective.batons = batons;
 
 		map.actors = actors;
-		/// \\// bookkeeps breeds
+		/// \\// BOOKKEEPS BREEDS
 
 
 
-		collection.maps[map.ix] = map;
-
-		//: TODm validate
-		if(map.acting_col){
+		//:: DOES PRIMITIVE VALIDATION TODm improve
+		if( map.acting_col ) {
 			map.load = 'parsed';
 		}else{
-			//return "Invalid map. No actor on the map " + map.ix + ".";
 			map.invalid_map_message = "no actor on the map";
 		}
+
+
+		//. ABSORBS MAP INTO COLLECTION
+		collection.maps[map.ix] = map;
 
 
 		return '';

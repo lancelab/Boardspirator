@@ -1,0 +1,5 @@
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteCond %{REQUEST_URI} ^/(.*)wirly.htm
+RewriteRule (.*) /%1whirly.htm [R=301]
+</IfModule>

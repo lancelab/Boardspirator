@@ -1,0 +1,205 @@
+:::.  credits.title       Beginner
+:::.  credits.copyright   Copyright (c) 2012 Konstantin Kirillov
+:::.  credits.license     Free for use, distribution, and modification as long as these credits retained.
+:::.  credits.date        December 15, 2012
+
+
+
+; Warm Up
+
+######
+# @  #
+# $  #
+#  . #
+#    #
+######
+
+Opt. 4.2
+:::playpath=Solution
+DldR
+
+
+
+; Two Dishes
+
+#######
+# @   #
+# $   #
+# $.. #
+#     #
+#######
+
+
+Opt. 11.4
+:::playpath=Solution
+lddRluRRurD
+
+
+
+
+:::map
+#######
+#-@---#
+#-----#
+#-$*0-#
+#-----#
+#######
+:::board_end
+:::title=Finish the Job
+:::dress=pullpush
+:::skip
+
+:::dress=pullpush
+:::image=X=box_c.png
+:::image=0=target_c.png
+
+-Opt. 13.4
+-:::playpath
+-ldddrUluRRurD
+
+
+:::map_end
+
+
+
+
+
+
+:::map
+# # # # # # #
+# - x - - - #
+# - X # 0 - #
+# - X - 0 - #
+# - - # - - #
+# # # # # # #
+:::board_end
+:::title=Around Vase
+:::dress=pullpush
+:::image=X=box_c.png
+:::image=0=target_c.png
+
+-Opt. 29.6
+-:::playpath
+-lddRRlluurrrdrddlUllluurDldRR
+
+:::map_end
+
+
+
+
+:::map
+# # #  # # #
+# - x  - - #
+# - X  - - #
+# - 0X # - #
+# - 0  # - #
+# # #  # # #
+:::board_end
+:::title=Move Down
+:::dress=pullpush
+:::image=X=box_c.png
+:::image=0=target_c.png
+
+-Opt 13.4
+-:::playpath
+-ldRDuurrdLulD
+
+
+:::map_end
+
+
+
+
+
+:::map
+# # #  # # # # #
+# - x  0 - - - #
+# 0 X  - - - - #
+# - X  # # - - #
+# - -  # - - - #
+# # #  # # # # #
+:::board_end
+:::title=Move Around
+:::dress=pullpush
+:::image=X=box_c.png
+:::image=0=target_c.png
+
+Opt. 23.10
+:::playpath=Solution
+ldRlddrUUluRdRRurrdLLLL
+
+:::map_end
+
+
+:::map
+# # #  # # # # #
+# - 0x 0 - - - #
+# - X  - - - - #
+# - X  # # # - #
+# - -  # - - - #
+# # #  # # # # #
+:::board_end
+:::title=Put Together
+:::dress=pullpush
+:::image=X=box_c.png
+:::image=0=target_c.png
+
+Opt 30.10
+:::playpath
+ldRlddrUUluRRRdLullddrUrrrruLL
+
+:::map_end
+
+
+
+
+:::map
+# # # # # # #
+# - - - - - #
+# - B1 2 A - #
+# - B1 2 A x #
+# - - - - - #
+# # # # # # #
+:::board_end
+:::title=Match Colors
+:::factory_title=Meet Together
+:::note=Possibly Kids 7.
+
+:::co_playpath=60.14
+rrrdLdlUruullLLulldDldDlddrrRRdrruUruUru
+ullLLulldDldRurrrrdd
+
+-:::playpath=60.14
+-uulllldRurDurrdLLrrd
+-dlUdlUdlluRRlluurDurDurrdLLrrddlUruLulll
+
+:::playpath=56.14
+uulllldRurDurrdLLrrd
+dlUdlUdlluRRlluurDurDurrdLLrrddlUruL
+
+:::map_end
+
+
+:::map
+# # #  #  # # #
+# - -  -  - - #
+# - 1  2A - - #
+# x 3B 1C A - #
+# - -  -  - - #
+# # #  #  # # #
+:::board_end
+:::title=Fix 3 Colors
+:::note=not very interesting?
+
+:::co_playpath
+rrrdLdlUruullLDrddlLdlluUlluurrRRurrdDrd
+DrddllLUlluUlu
+
+hidden:
+-:::playpath=50.13
+drUdrrULrruulD
+ulDulldRRllddrrUdrruLruulDLrrddlUruL
+
+:::map_end
+
+

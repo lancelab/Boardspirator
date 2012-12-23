@@ -1,0 +1,21 @@
+
+example of good update session for version 1.165
+naladchik@Acerfrog:~/w$ history 100
+
+  465  git clone git@github.com:lancelab/Boardspirator.git
+  467  cd Boardspirator/
+
+  ... do the job, add ... delete
+	
+  471  git add -A
+  476  git commit -m "1.165"
+  489  git push git@github.com:lancelab/Boardspirator.git
+
+  ... test the job
+
+  491  mkdir fromgh
+  495  cd fromgh/
+  496  git clone git@github.com:lancelab/Boardspirator.git
+
+  ... compare with original
+

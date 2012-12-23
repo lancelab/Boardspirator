@@ -1,8 +1,8 @@
-(function( $ ){ 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+(function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var ceach	=  tp.core.each;
 
-					// This file must be loaded before other game javascript files:
+					// //\\// This file must be loaded before other game javascript files
 
 					gio.config		= { 
 										links : {},
@@ -10,11 +10,10 @@
 
 										/// overridden from URL-query
 										query : {
-													//luck.... : false,				// logins softly
-													slim : false,			// allows to manually set a limit 
+													slim : false,					// allows to manually set a limit 
 													curl : '',
 													aurl : '',						// loads ablums from Internet
-													asingle : false,			// exclude default albums if albums is set
+													asingle : false,				// exclude default albums if albums is set
 													akey : '',
 													collection_ix : false,
 													map_ix : false
@@ -24,13 +23,11 @@
 					gio.def			= { base_game : {},
 										games : {}, albums : {}, 
 										dresses : null,
-										inherited_games : {}, dressed_albums : {},
+										inherited_games : {}, dressed_games : {},
 										colorban_map_decoder : null,
 										procs : {},
 										personal_craft_akey : 'my_album'  };
 
-					gio.playalbs 	= [];
-					gio.playzone	= { albums : {} }; // Alternative album indices in form of strings
 
 					gio.modes		= {	
 										//.	TODF no static and dynamic ... everythig is dynamic
@@ -43,15 +40,29 @@
 					// blocks : {}, probably will be a good name:
 					gio.gui			= { procs : {}, 	modes : {},  init : {}, create : {} };
 					gio.data_io		= { core : { load : {}, save : {} }, session : { load : {}, save : {} } };
-					gio.session		= { procs : {},  reinit : {}, server : {}, init : {} };
-					gio.core		= { procs : {}, reflection : {} };
-					gio.controls	= {}; //TODm remove
+					gio.session		= 
+					{		state : {},
+							procs : {},  reinit : {}, server : {},
+							init : {},
+							//. albums' list for GUI
+							alist : [],
+							//. TODM this is a garbage ... non-acceptable redundancy
+							alist_by_key : {},
+							//. derived albums
+							stemmed_albums : {}
+					};
+
+
+					gio.core		= { procs : {}, reflection : {}, def : { map_format : {} } };
 					gio.navig		= { in_session : { round : {} }, in_map : {}}; // TODm map must be in gio.gui
 					gio.map_editors	= {};
 					gio.solver		= {};
 					gio.domwrap		= {	regions : {}, popups : {}, elems : {}, wraps : {},
 										headers : {}, status : {},
-										cpanel : { controls : {} } 
+										cpanel : 
+										{	
+													cont_rols : {}
+										} 
 									  };
 					gio.info		= {	help : {},
 										log : {
@@ -107,7 +118,7 @@
 	gio.config.feeder					= { exists : false };
 	gio.config.feeder.url				='feeder'; // in respect to app. root or full url
 	gio.config.feeder.external_maps		='requested_map.php?user_requested_link=mm';
-	gio.config.feeder.external_albums	='requested_albums.php?aurl=';
+	gio.config.feeder.alb_req_stub	='requested_albums.php?aurl=';
 
 
 	gio.config.defpaths	=	{	GAMES_DEF_PATH : 'def',
@@ -305,82 +316,5 @@
 
 
 
-
-	// //\\//		CONFIGURATIONI SPAWNER 							/////////////
-	// ///////////	Don't put configuration data below this line.	/////////////
-
-
-
-	//: gets parameters from URL query string:
-	var query 	= gio.config.query = tp.core.clone_many( gio.config.query, tp.core.getQueryKeyPairs('integerify') );
-	gio.debug	= gio.debug || query.debug;
-	gio.solver.config.NODES_LIMIT	= query.slim || gio.solver.config.NODES_LIMIT; 
-
-	(function () { // //\\ SPAWNS GOOGLE CONFIGURATION
-
-		var gapps = gio.config.google_apps;
-
-		//. removes google from site if URL-query requested this
-		if(query.nogoogle) gapps.enabled = false;
-
-		/// removes traces of google apps for given subpathname
-		var ww = window.location.pathname.toLowerCase();
-		if(	ww.indexOf( gapps.forbidden_dir ) > -1 ) {
-			gapps.enabled = false;
-		}
-
-		gapps.host = gapps.hosts[window.location.hostname.toLowerCase()] || gapps.hosts['landkey.net'];
-		tp.core.paste_non_arrays(gapps.ad, gapps.host.ad);
-
-		// //\\ ENABLES ADVERTISEMENT
-		var ad = gio.config.advertisement;
-		var forbidden = true;
-	
-		if(ad.enabled && gapps.enabled ){
-			//.	disable ad for external albums or collections
-			if(!query.curl && !query.aurl) {
-				ceach(ad.permittedBrowsers, function(key,name){
-					if(tp.core.browser[name]) forbidden = false
-				});
-			}
-		}
-		ad.enabled = !forbidden;
-		// \\// ENABLES ADVERTISEMENT
-
-
-	})(); // \\// SPAWNS GOOGLE CONFIGURATION
-
-
-
-
-	// //\\	PREPARES COSMETICS
-	///		Prepares top menu stubs
-	var ww = gio.session.server.top_menu_titles;
-	var www = {};
-	tp.core.each( ww, function(k,v) {
-		www[k] = '>' + v + '</a> ';
-	});
-	gio.session.server.top_menu_titles = www;
-	// \\//	PREPARES COSMETICS
-
-
-
-
-	/// checks feeder presence
-	var feeder = gio.config.feeder;
-	if(feeder.url){
-			var ww = tp.core.path_from_page_to_app_root;
-			if(ww && !feeder.url.match('http://') ){
-				feeder.url = ww + '/' + feeder.url;
-			}
-			var ww = tp.core.load_object_synchronously( 
-				feeder.url + "/" + feeder.external_maps + "&does_feeder_exist=yes",
-				2000
-			);
-			if(typeof ww === 'object' && ww !== null && ww.feeder === "exists") feeder.exists = true;;
-	}
-	// TODM add message if(!feeder.exists) gio.cons_add("No feeder exists at URL = " + feeder.url);
-
-
-})(jQuery);
+})();
 

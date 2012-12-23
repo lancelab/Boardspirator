@@ -68,7 +68,9 @@
 
 
 
-	med.edit_custom_maps=function(){
+	/// pops up textarea and populates it with current map script
+	//	for further map redesign
+	med.edit_custom_maps = function () {
 
 		//if(!tp.core.allow_non_mainstream_browser()) return
 
@@ -96,7 +98,39 @@
 
 		textarea.value =	tp.core.htmlencode(gs.gm.script.raw_map);
 		textarea.focus();
-	};
+	};//med.edit_custom_maps
+	/// pops up textarea and populates it with current map script
+
+
+
+	/// pops up textarea and populates it with current map script
+	//	for further map redesign
+	med.submit_box_to_enter_collection_link = function () {
+
+		//if(!tp.core.allow_non_mainstream_browser()) return
+
+		var gs=gio.getgs();
+		var game=gs.gm.game;
+
+		gio.gui.procs.lock_controls('Preparing to enter link for external collection ... ');
+
+		//. sets mode which will be used as a flag when
+		//	taking data back from popup input textarea
+		gio.input_mode = 'external_link';
+
+		med.show_text_editor();
+		//. we don't use CSS-ids or classes, so this is how we find data acceptor
+		var textarea=$(gio.domwrap.popups.input_text_popup.popup_el).children('textarea')[0];
+
+		textarea.value = "Enter link to external collection here";
+		textarea.focus();
+
+	};//med.edit_custom_maps
+	/// pops up textarea and populates it with current map script
+
+
+
+
 
 
 	// Input:	if "stringified" supplied, no "done(load)" button enabled
@@ -153,15 +187,38 @@
 		med.hide_text_editor('don`t unlock controls');
 
 		if(gio.input_mode === 'path'){
+
 			gio.input_mode='';
 			gio.gui.procs.inject_path_from_text(custom_text, 'do_messagify');
 			gio.gui.procs.unhide_current_dom_board();
 			return;
-		}else if( gio.input_mode === 'rounds' ){ 
+
+		}else if( gio.input_mode === 'rounds' ) { 
 			gio.input_mode='';
 			// * this may change the game and collection
 			gio.navig.in_session.round.deserialize_rounds(custom_text);
 			gio.gui.procs.unlock_controls();
+			return;
+
+		}else if( gio.input_mode === 'external_link' ) {
+			// Now, state is: gio.input_mode = 'map'  // TODm make gio.session.dmodes.input gio.session.smodes.db
+
+			custom_text = $.trim( custom_text );
+
+			var akey = gm.collection.lkey;
+			var new_collection = gio.def.procs.attach_external_collection (	custom_text, akey );
+			if( new_collection ) {
+					gio.navig.select_album_and_collection(
+						new_collection.lkey,
+						new_collection.coll_ix,
+						0
+					);
+			}else{
+				gio.cons_add( 'Faild download collection url = ' + custom_text );
+			}
+
+			gio.gui.procs.unlock_controls(); //only then clear it ...
+			gio.input_mode='';
 			return;
 		}
 

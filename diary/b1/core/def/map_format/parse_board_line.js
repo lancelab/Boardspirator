@@ -1,10 +1,10 @@
 (function( $ ){ 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var ceach	=  tp.core.each;
-					var cmd		=  gio.def.colorban_maps_decoder = gio.def.colorban_maps_decoder || {};
+					var cmd		=  gio.core.def.map_format;
 
-					var unspased_board_match = /^ *(#|-)[^ ]*(#|-)$/; //for map sugar
-
+					var unspased_board_match	= /^ *(#|-)[^ ]*(#|-)$/;	//for map sugar
+					var reg_ex_cont_space		= /\s+/g;					//for map sugar
 
 
 	///////////////////////////////
@@ -20,40 +20,42 @@
 
 
 	/// enters? board lines parser
-	cmd.parse_board_lines = function(raw_board_lines, map, cbformat, dtable){
+	cmd.parse_board_lines = function(raw_board_lines, map, cbzone_bf, dtable){
 		sugar		= map.collection.sugar;
 		sugar_range	= sugar && sugar.do_colorize_randomly;
 		sugar_color	= map.sugar_color = map.sugar_color || {};
 
 		breed2symbol = cmd.breed2symbol;
 		symbol2breed = cmd.symbol2breed;
+
+		map.parsed.wall_boundary_encountered = false;
 		/// processes the job via board lines
 		for(var yy=0; yy<raw_board_lines.length; yy++){
-			cmd.parse_board_line(yy,raw_board_lines[yy],map,cbformat,dtable);
+			cmd.parse_board_line(yy,raw_board_lines[yy],map,cbzone_bf,dtable);
 		}
 	};
 
 
 
 
-	cmd.parse_board_line=function( board_y, line, map, cbformat, dtable){
+	cmd.parse_board_line=function( board_y, line, map, cbzone_bf, dtable){
 
 		var w,i,j,len;
 		var game=map.game;
 		var size=map.size;
 		var rank;
-		var soko_map = !cbformat;
 		var rhelper_ground = game.rule_helpers.ground_always_on_level_0;
-
+		var sugar_speed_map_boundary = game.rule_helpers.map_boundary;
+		var mparsed = map.parsed;
 
 		//: clears up the line
 		line=line.replace(/\s+$|<br>/gi,''); 
 		line=line.replace(/\t/g,' ');  //TODm sugar. slow
 		//. removes dangerous double space "beautifiers" from the map //TODM fails?
-		if(!soko_map)line=line.replace(/\s+/,' ');
+		if( cbzone_bf ) line=line.replace(reg_ex_cont_space, ' ');
 
 		//. applies sugar: slips to sokoban line if no blanks inside the walls
-		var oneSymbolPerCell = soko_map || unspased_board_match.test(line);
+		var oneSymbolPerCell = (!cbzone_bf) || unspased_board_match.test(line);
 
 		w	=	oneSymbolPerCell ? '' : ' ';
 		line_arr=line.split(w);
@@ -89,6 +91,7 @@
 			// Loops trough cluster (tower)
 			//-------------------------------
 			//var dtable = map.script.decoder_table;
+			var sugar_wall_encountered = false;
 			for(i=0, len=cluster.length; i<len; i++){
 				unit_char=cluster[i];
 
@@ -98,19 +101,24 @@
 					unit_char=unit_char.charAt(0);
 				}				
 
+				if( unit_char === sugar_speed_map_boundary ) {
+					mparsed.wall_boundary_encountered =
+						mparsed.wall_boundary_encountered || [x, board_y];
+				}
 
-					w=dtable[unit_char]; //.charAt(i)]; //c[i]
-					//assume wall. no validation for wrong char
-					if(!w)w=dtable['#'];
-					if(typeof w === 'object'){
+
+				w=dtable[unit_char]; //.charAt(i)]; //c[i]
+				//assume wall. no validation for wrong char
+				if(!w) w=dtable['#'];
+				if(typeof w === 'object'){
 						//array:
 						units=units.concat(w);
-					}else{
+				}else{
 						// Until map does not really have ranks,
 						// this "if" is idle:
 						if(cluster[i].length>1)	w=[w,rank];
 						units.push(w);
-					}
+				}
 			}
 			//-------------------------------
 			// Loops trough cluster (tower)
@@ -155,7 +163,6 @@
 				var colony = colonies[u];
 				var gcol = game.cols[u];
 				var race = gcol.race;
-
 
 				// ** sugarifies
 				if(sugar_range){
@@ -218,9 +225,11 @@
 
 						//view:
 						colony.focused = true;
-
+						//. collects targets for map's winning criteria
 						if(colony.target) map.target_cols.push(colony);
+						//. collects batons for map's winning criteria
 						if(colony.baton) map.baton_cols.push(colony);
+
 						if(activity.active){
 							map.actor_cols.push(colony);
 							if(!map.acting_col){
@@ -231,6 +240,7 @@
 							colony.did = map.dynamic_cols.length;
 							map.dynamic_cols.push(colony);
 						}
+
 				}
 				//-------------------------
 

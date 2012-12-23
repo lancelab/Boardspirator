@@ -1,14 +1,13 @@
+::://
+{ "albums" :
+
 { "ghostjump" :
 
 	{
 		"album_name": "",
 		"collections": [
 			{
-				"credits" : {	"author"	: "Konstantin Kirillov unless specific map explicitly has own author",
-								"title"		: "Beginner",
-								"copyright"	: "Copyright (C) 2012 Konstantin Kirillov unless specific map explicitly has own copyright",
-								"license"	: "Free for distribution or use as long as collection credit is applicable and retains"
-				}
+				"credits" : {	"title"		: "Beginner" 	}
 			}
 		],
 		"dresses": {
@@ -17,6 +16,7 @@
 					"width": 30,
 					"height": 30
 				},
+				"playvigation"	:{	"UNIT_IS_UNSELECTABLE" : false },
 				"rules": "Heros push own-color boxes. Green hero jumps over with blue things.",
 				"objective": "Put blue boxes to blue targets."
 			},
@@ -24,13 +24,10 @@
 			"ghostban": {
 				"chosen"	: true,
 				"skin_key": "ghostban",
-				"playvigation"	:{	
-							"UNIT_IS_UNSELECTABLE" : false
-				},
-				"title": "Courtesy",
+				"playvigation"	:{	"UNIT_IS_UNSELECTABLE" : false },
 
 							"credits" : {
-								"author"	: "Konstantin Kirillov",
+								"title"		: "Courtesy",
 								"copyright"	: "Copyright (C) 2012 Konstantin Kirillov",
 								"license"	: "host-based",
 								"web_site"	: "http://landkey.net/gio/gio/play",
@@ -64,4 +61,6 @@
 		}
 	}
 	
+}
+
 }

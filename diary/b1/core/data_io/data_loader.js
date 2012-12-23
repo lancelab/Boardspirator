@@ -27,11 +27,23 @@
 					}
 				}
 		};
-		$.ajax(ajax_call).fail( function(explanation){
-					var w='Ajax failed to load object.';
-					gio.cons_add(w+' url='+url+"\n");
-					if(gio.debug) tp$.deb(explanation);
+
+
+		//	//\\	Missed doc for this. 
+		//					$.ajax( ajax_call ).fail( function( explanation ) { ...
+		//			Guessing this: error(jqXHR, textStatus, errorThrown)
+		//			From this: http://api.jquery.com/jQuery.ajax/
+		//	\\//
+		$.ajax( ajax_call ).fail( function( explanation ) {
+					var ww ='Ajax failed to load object.';
+					gio.cons_add( ww + ' url=' + url + "\n");
+					if(gio.debug) {
+						tp$.deb( "Possible error status = " + arguments[1]);
+						tp$.deb( "Possible error expanation = " + arguments[2]);
+						// c onsole.log('arguments[0]=', arguments[0], "\n\n\narguments[1]=", arguments[1], "\n\n\narguments[1]=", arguments[2]);
+					}
 		});
+
 		return obj[property];
 	};
 
@@ -51,10 +63,20 @@
 					}
 				}
 		};
-		$.ajax(ajax_call).fail( function(explanation){
-					var w='Ajax failed to load object.';
-					gio.cons_add(w+' url='+url+"\n");
-					if(gio.debug) tp$.deb(explanation);
+
+		//	//\\	Missed doc for this. 
+		//					$.ajax( ajax_call ).fail( function( explanation ) { ...
+		//			Guessing this: error(jqXHR, textStatus, errorThrown)
+		//			From this: http://api.jquery.com/jQuery.ajax/
+		//	\\//
+		$.ajax( ajax_call ).fail( function( explanation ) {
+					var ww ='Ajax failed to load object synchronously ';
+					gio.cons_add( ww + ' url=' + url + "\n");
+					if(gio.debug) {
+						tp$.deb( "Possible error status = " + arguments[1]);
+						tp$.deb( "Possible error expanation = " + arguments[2]);
+						// c onsole.log('arguments[0]=', arguments[0], "\n\n\narguments[1]=", arguments[1], "\n\n\narguments[1]=", arguments[2]);
+					}
 		});
 		return obj.result;
 	};
@@ -78,10 +100,14 @@
 					}
 				}
 		};
+
 		$.ajax(ajax_call).fail( function(explanation){
 					var w='Ajax failed to upload object.';
 					gio.cons_add(w+' url='+url+"\n");
-					if(gio.debug) tp$.deb(explanation);
+					if(gio.debug) {
+						tp$.deb( "Possible error status = " + arguments[1]);
+						tp$.deb( "Possible error expanation = " + arguments[2]);
+					}
 		});
 		return obj.result;
 	};
@@ -94,27 +120,26 @@
 	// Returns:	false if coll and default coll texts failed
 	// Advances:	to the point where map.load are 'parsed' and
 	//				leaves maps in this state.
-	gio.download_collection=function(coll){
-
-		coll_ix = coll.coll_ix;
-		var game = coll.game;
+	gio.download_collection=function( coll ) {
 
 		var url;
+		var coll_ix	= coll.coll_ix;
+		var folder	= coll.ref.folder;
 
-		if( gio.modes.sta_tic.db && coll.address.full){
-			url =	gio.modes.sta_tic.db + 
-					'/collections/1?text=yes' +
-					'&akey='		+ coll.address.akey + 
-					'&ckey='	+ coll.address.ckey +
-					'&fkey='		+ coll.address.fkey;
+		if( gio.modes.sta_tic.db && folder.full){
+			var url = 	gio.modes.sta_tic.db + 
+						'/collections/1?text=yes' +
+						'&akey='	+ folder.akey + 
+						'&ckey='	+ folder.ckey +
+						'&fkey='	+ folder.fkey;
 		}else{
-			if(coll.address && coll.address.full){
-				url=coll.address.full;
+			if( folder.full ){
+				url=folder.full;
 			}else{
 				if(gio.config.feeder.exists){
-					url = gio.config.feeder.url + "/" + gio.config.feeder.external_maps + coll.external.link;
+					url = gio.config.feeder.url + "/" + gio.config.feeder.external_maps + coll.ref.link.link;
 				}else{
-					coll.maps_loaded += 'No feeder exists to load "' + coll.external.link + '"';
+					coll.maps_loaded += 'No feeder exists to load "' + coll.ref.link.link + '"';
 					return coll.maps_loaded === 'success';
 				}
 			}
@@ -140,24 +165,54 @@
 						coll.maps_loaded='ajax success';
 						if(gio.debug) gio.cons_add('data load ajax success');
 
-						game.maps_decoder(data, coll);
-						if(gio.debug) gio.cons_add('maps decoder done for akey '+ coll.album.key + '.');
+						if( data.match( /^:::failed/i ) ) {
 
-						if(coll.maps_loaded !== 'success'){
-							w = 'Collection "' + url + '" text failed.';
-							gio.cons_add(w);
+							coll.maps_loaded = 
+									"Failed collection load.\nRedirector responded with text:\n" +
+									data.substr(0, 200);
+						}else {	
+
+							coll.script.source_text = data;
+							gio.core.def.map_format.decode( coll );
+							if( gio.debug ) {
+								gio.cons_add( 'Finished maps decoder for akey ' + coll.lkey + '.');
+							}
 						}
+
+/*
+						var w_success = coll.maps_loaded === 'success' || coll.script.state.definitions_processed;
+
+						if( !w_success ) {
+							var ww = "Collection \"" + url + "\" text failed.\n";
+							if( !coll.script.state.definitions_processed ) ww += "No definitions.\n"
+							ww	+= "coll.maps_loaded = " + coll.maps_loaded;
+							gio.cons_add( ww );
+						}
+*/
 					}
 				}
 		};
+
 		$.ajax(ajax_call).fail( function(explanation){
 					var w = " .. ajax download failed .. ";
 					coll.maps_loaded +=w;
 					w = w+"\nurl="+url;
 					gio.cons_add(w);
+					if(gio.debug) {
+						tp$.deb( "Possible error status = " + arguments[1]);
+						tp$.deb( "Possible error expanation = " + arguments[2]);
+					}
 		});
 
-		return coll.maps_loaded === 'success';
+		var w_success = coll.maps_loaded === 'success' || coll.script.state.definitions_processed;
+		if( !w_success ) {
+				var ww = "Collection \"" + url + "\"\nis failed.\n";
+				if( !coll.script.state.definitions_processed ) ww += "No definitions.\n"
+				ww	+= "coll.maps_loaded = " + coll.maps_loaded;
+				gio.cons_add( ww );
+		}
+
+		return w_success;
 	};//gio.download_collection
 
 
@@ -169,20 +224,21 @@
 	// Purpose:	loads maps from text, same way as it was loaded from file
 	// Action:	adds custom text to collection and parses the addition
 	// ====================================================================
-	gio.load_custom_collection=function(text){
+	gio.load_custom_collection = function( text ) {
 
-		var gs				=	gio.getgs();
-		var colln			=	gs.coll;
-		var new_coll_txt 	= 	colln.source_text + "\n" +
-								colln.maps.length + "\n\n"+text;
+		var gs						=	gio.getgs();
+		var colln					=	gs.coll;
+		colln.script.source_text	+= 	"\n" + colln.maps.length + "\n\n" + text;
 
-		colln.maps_loaded='began';
-		if(gio.debug) gio.cons('began to add map to collection ... ');
-		colln.game.maps_decoder(new_coll_txt, colln);
+		colln.maps_loaded = 'began';
+		if( gio.debug ) gio.cons( 'began to add map to collection ... ' );
+
+		gio.core.def.map_format.decode ( colln );
+
 		var failed = true;
-		if(colln.maps_loaded === 'success'){
-			var gm = colln.maps[colln.maps.length-1];
-			if(gio.session.reinit.finalize_map(gm)){
+		if( colln.maps_loaded === 'success' ) {
+			var gm = colln.maps[ colln.maps.length-1 ];
+			if( gio.session.reinit.finalize_map( gm ) ) {
 				colln.map_ix = colln.maps.length-1;
 				var gs = gio.getgs();
 				gs.gm.title = 'My Edited. ' + gs.gm.title;
@@ -190,7 +246,7 @@
 				failed = false;
 			}
 		}
-		if(failed) gio.cons_add( "Failed to edit map.");
+		if(failed) gio.cons_add( "Failed to edit map." );
 	};
 
 

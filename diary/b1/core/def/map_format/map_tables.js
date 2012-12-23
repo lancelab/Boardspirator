@@ -1,7 +1,7 @@
 (function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var ceach	=  tp.core.each;
-					var cmd		=  gio.def.colorban_maps_decoder = gio.def.colorban_maps_decoder || {};
+					var cmd		=  gio.core.def.map_format;
 
 
 
@@ -15,7 +15,7 @@
 
 
 
-	// ** sets playpath format
+	///	sets playpath format
 	cmd.playpath	={	
 						// * for sokoban converters:
 						DIRECTION : {d : 2, u : -2, l : -1, r : 1},
@@ -25,8 +25,8 @@
 					};	
 	
 
-	// **	configures pure Sokoban mapper,
-	//		format: map-symbol : breed
+	///	configures pure Sokoban mapper,
+	//	format: map-symbol : breed
 	cmd.sokoban_decoder_table={
 		'#':'wall_x',
 		'u':'wall_a', //extra
@@ -53,11 +53,11 @@
 	};
 
 
-	//=======================================
-	// Towerban decoder table. Part I and II.
-	//---------------------------------------
-	// **	seeds colorban mapper,
-	//		format: map-symbol : breed
+
+	// //\\ Configures colorban decoder table. Part I and II.
+
+	///	Part I. Seeds colorban mapper,
+	//	format: map-symbol : breed
 	cmd.colorban_decoder_table={
 		// Part I. Before autobuiling, 
 		// adds a little bit Sokoban compatibility:
@@ -69,13 +69,11 @@
 		'.':'target_x',
 
 		'+':['target_x','hero_x'],
-		'*':['target_x','box_x'],
-		is_finished : false
+		'*':['target_x','box_x']
 	};
 
-	// Part II. Autobuiling, 
-	// **	finalizes colorban mapper,
-	cmd.finalize_colorban_decoder_table=function(game){
+	/// Part II. Finalizes colorban mapper,
+	cmd.finalize_colorban_decoder_table = function( game ) {
 
 		var cnames = game.cnames;
 		// i=color_ix:
@@ -109,14 +107,10 @@
 			t[''+i]=cnames.target[i];						//0,1,2,3 --- for target_x, target_a, target_b ...
 		}
 		//important: c onsole.log(t['y'],t['Y']); // this gives: wall_x ground_x
-		t.is_finished=true;
 
-	};
-	//---------------------------------------
-	// Towerban decoder table. Part I and II.
-	//=======================================
-	// Decoder tables.
-	/////////////////////////////////////////
+	}; 	// //\\ Configures colorban decoder table. Part I and II.
+
+
 
 })();
 

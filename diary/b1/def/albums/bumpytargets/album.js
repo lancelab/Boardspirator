@@ -17,10 +17,10 @@
 			bumpy :{
 			
 				skin_key : 'flocks',
-				title	:   'Bumpy',
 
 
 				credits : {
+						"title"		: "Bumpy",
 						"license"	: "host-based",
 						"date"		: "November 2 2012"
 				},

@@ -9,32 +9,28 @@
 
 		album_name	: 'TyaNee-TolKy',
 
-			collections : [
-			{	
-				"credits" : {	"title"		: "Intro" }
-			},
+			collections :
+			[ 
+				{	"list_title" : "Beginner" },
 
 
-			{
-				"ref" : {		"akey" : "sokoban",
-								"ix"	: 0
+				{	"list_title"	: "Unexplored. David Holland. dh1.",				"ref" : { "folder" : {  "akey" : "sokoban", "fkey": "authentic_David_Holland_dh1.txt",	"ckey": "holland"  } }, 	
+					/*,
+					sugar :
+					{ 
+						do_colorize_randomly :
+						{
+									box : 3,
+									target : 3,
+									hero : 3
+						}
+					} */
 				},
-
-				sugar : { 
-							do_colorize_randomly : {
-								box : 3,
-								target : 3,
-								hero : 3
-							}
-				}
-
-			},
 
 			{	
 
-				"ref" : {	"akey" : "sokoban",
-								"ix"	: 1
-				},
+				"list_title"	: "Unexplored. D. W. Skinner. Microban.",			"ref" : { "folder" : { "akey" : "sokoban", "fkey": "microban1.txt",	"ckey": "skinner" }  },
+
 				sugar : { 
 							do_colorize_randomly : {
 								box : 4,
@@ -54,17 +50,17 @@
 			'default' :
 			{
 				tile	: { width : 30, height: 30 },
-				rules	: "The hero pushes boxes of matching color and pulls boxes of other color."
+				rules	: "The hero pushes boxes of matching colors and\npulls boxes of other colors"
 			},
+
 			'pullpush' :
 			{
 
-					skin_key : 'pullpush',
-					chosen	: true,
-					title	: 'Dinner',
+					skin_key	: 'pullpush',
+					chosen		: true,
 
 					credits : {
-						"author"	: "Konstantin Kirillov",
+						"title"		: "Dinner",
 						"copyright"	: "Copyright (C) 2012 Konstantin Kirillov",
 						"license"	: "host-based",
 						"web_site"	: "http://landkey.net/gio/gio/play",
@@ -72,36 +68,24 @@
 						"email"		: "beaverscript (a) landkey (.) net"
 					},
 
-					tile	: { width : 50, height: 50 },
+					tile	:{	width	: 60, height: 60 },
+					style	:{	play	:{	backgroundImage:'background.png',
+											backgroundColor:''
+										},
+							},			
 
-					//////////////////////// GUI /////////////////////////////////
-					tile	:{ width : 60, height: 60 },
-					style	:{	play:{
-										backgroundImage:'background.png',
-										backgroundColor:''
-								},
-						},			
-					//////////////////////// GUI END /////////////////////////////////
-
-					//:: INFO 
 					rules 		: "Hero pushes gold and food of own color and \npulls food of other colors",
 					objective	: "Put food on color-matching plate.",
-					story		: 'It is already evening and heros are hungry. Help them to serve a dinner.',
+					story		: "It is already evening and heros are hungry.\nHelp them to serve a dinner.",
 
 
-						//////////////// mask with human names ... ///////////////////////
-						hname_table	:{ //optional
-							hero_b	: 'rabbit',
+					hname_table	:{
+							hero_b	: 'Rabbit',
 							box_b	: 'cabbage',
 							box_c	: 'carrot',
 							box_x	: 'gold',
 							wall_x	: 'obstacle'
-						},
-						///////////////////////////////////////////////////////////////////
-
-						image_decoder	:{
-							//wall_x	: 'bouquet_of_flowers_01.svg.med.png'
-						}
+					}
 			}
 
 		}// dresses

@@ -20,7 +20,7 @@
 
 		var ww = gio.common_popup = tp.core.single_popup_manager( gstyle.popups.help );
 			ws = ww.popup_el.style;
-			ws.paddingLeft='10px';
+			ws.paddingLeft='15px';
 			ws.fontSize='12px';
 			ws.fontFamily='Arial, Helvetica';
 			ws.zIndex=gstyle.popups.zIndex;

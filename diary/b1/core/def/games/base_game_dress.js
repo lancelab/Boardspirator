@@ -8,10 +8,10 @@
 
 	gio.def.default_dress = 
 	{
-			title : 'Boxiland',
 
 			credits :
 			{
+				"title"		: "Boxiland",
 				"author"	: "Konstantin Kirillov",
 				//"license"	: "Free for use, distribution, and modification as long as this credit is retained",
 				"license"	: "Public Domain",
@@ -39,10 +39,10 @@
 							}
 						}, 
 
-			image_decoder	:{ 'ground_x':'ground_x.png' },
+			image_decoder	:{},
 			focuser			: '', // '' causes 'default' in code
 			playvigation	:{	
-							UNIT_IS_UNSELECTABLE : true // set to false for hanoi towers
+								UNIT_IS_UNSELECTABLE : true // should be set to false for interacting heros
 			},
 			// \\// GUI /////////////////////////////////
 
@@ -57,7 +57,7 @@
 								"Black, matches any color.\n",
 			objective		:	"Put boxes to color-matching targets till all boxes are put or all targets are filled",
 			story			:	"",
-			hname_table		:	{ hero_x	: 'hero' },
+			hname_table		:	{},
 			DIMENSION_NAMES	:	[ 'x', 'y', 'z' ]
 			// \\// INFO /////////////////////////////////
 

@@ -27,6 +27,7 @@
 		var objective = gm.objective;
 
 		var necessary_to_fill = objective.necessary;
+		if( !necessary_to_fill ) return 0;
 
 		var filled_units=0;
 		var filled=false;

@@ -22,8 +22,10 @@
 
 					skin_key : 'pullswappush',
 					chosen	: true,
-					title	: 'Busy Table',
-					tile	: { width : 50, height: 50 },
+					credits :
+					{
+						"title"		: "Busy Table"
+					},
 
 					// //\\ GUI
 					tile	:{ width : 60, height: 60 },

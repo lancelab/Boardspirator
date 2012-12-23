@@ -24,18 +24,20 @@
 
 
 		// //\\ Shadowed-Position. Not a current position. 
+		//		Keeps non-dynamic units unchanged. 
+		//		"Shuffles" dynamic units.
 		//		APPARENTLY IS DISCARDED AFTER EVERY CONSTRUCTION OF CANON OR VICE VERSA
 		//		Helper. Reused at each "restore":
 		//		Reserves memory for l_ - variables
 		var l_pos=tp.core.tclone(gm.pos);
 
 		//: sets masters
-		var l_lid2uid = l_pos.lid2uid;
-		var l_tops = l_pos.tops;
+		var l_lid2uid	= l_pos.lid2uid;
+		var l_tops		= l_pos.tops;
 		
 		//: sets auxiliaries
-		var l_uid2lid = l_pos.uid2lid;
-		var l_uid2loc = l_pos.uid2loc;
+		var l_uid2lid	= l_pos.uid2lid;
+		var l_uid2loc	= l_pos.uid2loc;
 		// \\// Shadowed-Position. Not a current position. 
 
 

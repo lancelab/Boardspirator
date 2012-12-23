@@ -17,6 +17,7 @@
 
 
 
+	//TODO canon and solver body lacks try-catch or rigit guard
 
 
 
@@ -73,6 +74,7 @@
 
 		self.inactive_bf = true;
 		self.stopped_bf = false;
+		self.browser_mode = false;
 		var adapter = self.adapter = solver.Adapter( self, gm );
 
 
@@ -87,7 +89,8 @@
 									dont_slice_time_			// search without interruptions
 		){
 
-			if(	gm.game.gkey !== 'sokoban' && gm.game.gkey !== 'colorban' ) {
+			if(	gm.game.gkey !== 'sokoban' && gm.game.gkey !== 'colorban' &&
+				!gio.config.query.luckedin ) {
 				NODES_LIMIT = 300000;
 			}
 
@@ -118,7 +121,21 @@
 			//: establishes first departure sphere
 			spheres[0]=[[]];
 			//: sets first state ... cannot be a solution.
-			spheres[0][0][STATE] = adapter.createdNode( startPos, 0, 0, alive_nodes );
+
+			//.	we implement this "try" because lock of time to make proper //TODM
+			//	validations in code ... especially for correctnes of 
+			//	generated hid array and parsed map-board
+			try {
+				spheres[0][0][STATE] = adapter.createdNode( startPos, 0, 0, alive_nodes );
+			}catch (err) {
+				gio.cons_add(	"zeor pos. " + 
+								( typeof error === 'object' && error !== null ? error.message : '' + error )
+				);
+				//.	we can return here because nothing is yet done, and
+				//	all flags are set to beginning
+				return;
+			}
+
 												// time limits estimations for sane maps:
 			spheres[0][0][PARENT_SPHERE] = -1;	// max = 16 bits
 			spheres[0][0][PARENT_ANGLE] = -1;	// 32 bits
@@ -150,7 +167,9 @@
 			}
 
 			//. sets sail
-			self.do_searches();
+			//	fires up after event-handler done its job,
+			//	it seems not good to fire this inside GUI event
+			setTimeout( self.do_searches, wait_TIME ); 
 
 		};/// Fires up solving beginning from startPos
 
@@ -206,6 +225,8 @@
 				case 'e': 
 					gio.solver_cons('Solver stopped by exhausting search space');
 					break;
+				case 'b':
+					gio.solver_cons('Solver stopped because of internal crash');
 				}
 
 				//. does not affect gm.palypaths
@@ -225,7 +246,7 @@
 			}
 			gio.solver_cons( ww + 'on map "' + gm.title + '"');
 			gio.solver_cons_add(	phase.sphere + '.' + phase.angle +
-									' = departuring move.departured positions');
+									' = move.positions of depature');
 			print_messages();
 			if( !dont_slice_time ) setTimeout( self.do_searches, wait_TIME ); 
 		};
@@ -288,11 +309,28 @@
 					}
 
 					var spoint	= sphere[an];
-					var canon	= CANON_IS_STRING ? adapter.str2canon( spoint[STATE] ) : spoint[STATE];
 					spawned_states_number = 0;
 
-					// TODF iteratesPushlessZone(canon);
-					unitsIterator( canon );
+
+					//.	we implement this "try" because lock of time to make proper //TODM
+					//	validations in code ... especially for correctnes of 
+					//	generated hid array and parsed map-board
+//					try {
+
+						var canon	= CANON_IS_STRING ? adapter.str2canon( spoint[STATE] ) : spoint[STATE];
+						// TODF iteratesPushlessZone(canon);
+						unitsIterator( canon );
+/*
+					}catch (error) {
+
+							gio.cons_add(	"Internal error at sphere ix, angle ix = " + 
+											phase.sphere + ' ' + phase.angle + ' ' + 
+											( typeof error === 'object' && error !== null ? error.message : '' + error )
+							);
+							terminate_iterations = 'b';
+							break infsearch;
+					}	
+*/
 					stat.total_states += spawned_states_number;
 
 					cycle_is_done_bf = true;
@@ -365,10 +403,10 @@
 		// Loops via actors, one in a time and
 		// fires space search for each actor
 		// ==============================================
-		var unitsIterator=function(canon){
+		var unitsIterator = function(canon){
 
 			// Unwrap canon
-			var pos=adapter.doReStorePosition(canon);
+			var pos = adapter.doReStorePosition(canon);
 
 			for(var ii=0; ii<gm.actor_cols.length; ii++){
 				var col = gm.actor_cols[ii];
@@ -407,8 +445,18 @@
 
 			var growing = spheres[phase.sphere+1];
 			var growing_angle = growing.length;
-
+				try {
 			var new_canon = adapter.createdNode(new_move.pos, phase.sphere+1,  growing_angle,  alive_nodes);
+				}catch (err) {
+					gio.cons_add(	"Handling move. sphere ix, angle ix= " + phase.sphere + ' ' + phase.angle + ' ' + 
+									( typeof error === 'object' && error !== null ? error.message : '' + error )
+					);
+					//tp$.deb(error);
+				}
+
+
+
+
 			if( !new_canon ) return new_move;
 
 			spawned_states_number += 1;
@@ -445,19 +493,19 @@
 			var 	last_move_count = spheres.length-1;
 			if(		!spheres[last_move_count].length  ) last_move_count -= 1;
 			if(		last_move_count > 0 ) {
-					res += last_move_count + " = last move.\n";
+					res += last_move_count + " = arrival move.\n";
 			}
 
 			res		+=	stat.total_states + '.' +
 						stat.completed_ball_size + '.' +
 						spheres[spheres.length-1].length  + 
-						" = total.in finalized-moves.beyond finalized"+ "\n";
-			res 	+=	stat.flat_dynamics_top_nodes_estimation + " = positions number boundary\n";
-			res 	+=	stat.node_dimension	+ " = pstate dimension\n";
+						" = total.departure ball.arrival sphere"+ "\n";
+			res 	+=	stat.flat_dynamics_top_nodes_estimation + " = total boundary\n";
+			res 	+=	stat.node_dimension	+ " = canon dimension\n";
 			res 	+=	stat.hids_number	+ " = hids, ";
-			res 	+=	"ms="				+ stat.total_milliseconds+", ";
-			res 	+=	"ms/last-move="		+ stat.ms_per_last_step+", ";
-			res 	+=	"mks/pos="			+ stat.mks_per_state+"\n";
+			res 	+=	"ms="				+ stat.total_milliseconds + ", ";
+			res 	+=	"ms/(total moves)="	+ stat.ms_per_last_step + ", ";
+			res 	+=	"mks/(total pos)="	+ stat.mks_per_state + "\n";
 			res		+=	"moves:\n";
 			for( var ss = 1; ss < spheres.length; ss++ ) {
 				res += ss + '.' + spheres[ss].length + "\n";

@@ -11,6 +11,10 @@
 				var self = jQuery.fn.tp$[self_name];
 
 
+				// //\\		VITAL HELP
+				//			regex: http://blog.stevenlevithan.com/archives/singleline-multiline-confusing
+
+				// \\//
 
 
 
@@ -152,7 +156,7 @@
 				wall={};				
 			}
 
-			if( (paper.length || paper.length === 0) && !wall.length && wall.length !== 0 )
+			if( (paper.length || paper.length === 0) && !wall.length && wall.length !== 0 ) //TODM Bad test. Use "Array protot" instead.
 			{
 				// tp$.deb(' Paper is an array and wall not. Generating array. Breaking paste feature.');
 				var wall_preserved = wall;
@@ -165,7 +169,11 @@
 			{
 				if(paper.hasOwnProperty(p))
 				{
-					wall[p]=paste_non_arrays(wall[p],paper[p],level+1);
+					if( p !== 'length' ) {
+						wall[p]=paste_non_arrays(wall[p],paper[p],level+1);
+					}else{
+						throw "Reserved word \"length\" used as a property"; //TODO
+					}
 				}
 			}
 			return wall;
@@ -461,9 +469,13 @@
 		};
 
 
+		/// (re)sets primary paths:
+		//		when appropriate, with format: http(s):://host[pathname],
+		//	 	webpath_to_land_folder_noslash has no tailing slash
 		self.reset_path_from_land_to_app_root = function ( from_land_to_root ) {
 			self.path_from_page_to_app_root		=	from_land_to_root;
-			self.webpath_to_land_folder_noslash	=	self.getFileParent( window.location.hostname + ( window.location.pathname || '/' ) );	
+			self.webpath_to_land_folder_noslash	=	window.location.protocol + '//' + 
+													self.getFileParent( window.location.hostname + ( window.location.pathname || '/' ) );	
 			self.app_webpath_noindex			=	self.webpath_to_land_folder_noslash +
 													(self.path_from_page_to_app_root && ( '/' + self.path_from_page_to_app_root ));
 		};

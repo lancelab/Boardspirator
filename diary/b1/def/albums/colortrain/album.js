@@ -12,17 +12,9 @@
 		{	
 
 				"credits" : {	"author"	: "Authors credited for each map separately",
-								"title"		: "Intro",
+								"title"		: "Beginner",
 								"license"	: "Each map is licensed separately."
-				},
-
-				address	:
-				{
-					ckey : 'intro',
-					fkey : 'intro.txt',
-				},
-				title	: 'Intro',
-				map_title_source	:'title'
+				}
 		}],
 
 

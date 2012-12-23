@@ -1,0 +1,56 @@
+::://
+{ "albums" :
+{ "kids6co_colo" :
+
+	{
+
+		"gkey" : "co_colorban",
+		"album_name" : "Kids 6 CoColo",
+
+		"collections"  :
+		[
+			{ "list_title"	: "Beginner", "ref" : { "folder" : { "akey" : "kids", "fkey" : "coco_maps.txt" } } }
+		],
+
+
+		"dresses"  :  {
+
+			"default" : { "skip" : true },
+
+			"co_colorban" :
+			{
+					"skin_key"	: "co_colorban",
+					"chosen"	: true,
+					"features"	: "kids",
+
+					"credits" : {
+						"title"		: "Deep Grass",
+						"copyright"	: "Copyright (C) 2012 Konstantin Kirillov except for images expressing different copyright.",
+						"license"	: "GFDL except for images expressing different license.",
+						"date"		: "December 15, 2012"
+					},
+
+					"tile"	:{	"width"	: 90, "height" : 90 },
+					"style"	:{	"play"	:
+								{	
+									"backgroundImage" : "background.png",
+									"backgroundColor" : ""
+								} 
+							},			
+
+					"rules" 		: "Hedgehog pulls good mashrooms, but cannot push them.",
+					"objective"		: "Fill out each basket with one mushroom",
+					"story"			: "Summer is going to an end ... fall is looming ... ",
+
+					"hname_table"	:{
+							"hero_a"	: "Hedgehog",
+							"box_a"		: "mushroom",
+							"wall_a"	: "dangerous mushroom"
+					}
+
+			}
+		}
+	}
+}
+}
+:::\\

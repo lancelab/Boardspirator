@@ -5,11 +5,11 @@
 "flocks":
 {
 	"nam": "Flocks",
-	"basekey": "mazy",
+	"basekey": "whirly",
 
 	"credits" :
 	{
-		"date"		: "December 28 2011 - May 7 2012",
+		"date"		: "December 28, 2011 - May 7, 2012",
 		"author"	: "Konstantin Kirillov"
 	},
 
@@ -20,7 +20,27 @@
 				"rules"		:	"Hero can push box of matching color.\nMoved box carries away matching neighbours.\nBlack color matches any other color.\n",
 				"objective"	:	"Put available boxes on available color-matching targets."
 			}
-	}
+	},
+
+	"cols"		:{ 	"hero_i"	:{	"baton" : true },  
+					"hero_h"	:{	"baton" : true },
+					"hero_g"	:{	"baton" : true }
+				},
+	"interact"	:{	"hero_i"	:{	"box_a" : "push",
+									"box_i" : "none"
+								},
+
+					"hero_h"	:{	"box_b" : "push",
+									"box_h" : "none"
+								},
+
+					"hero_g"	:{	"box_c" : "push",
+									"box_g" : "none"
+								}	
+				},
+
+	"comments" : "hero_i does the same as a, but is a baton to target_i"
+
 },
 
 
@@ -28,15 +48,10 @@
 "colorban":
 {
 	"nam": "Colorban",
-	"basekey": "mazy",
+	"basekey": "whirly",
 	"herd_sense": 0,
 	"post_definition_copathy": "copathy",
-	"credits" :
-	{
-		"author"	: "Konstantin Kirillov"
-	}
-
-
+	"credits"	:{	"author"	: "Konstantin Kirillov"  }
 },
 
 
@@ -52,14 +67,12 @@
 
 "monkeyban" :
 {
-		"nam"		: "Monkeyban",
-		"basekey"	: "mazy",
-		"author"	: "Konstantin Kirillov",
-		"credits" :
-		{
-			"author"	: "Konstantin Kirillov"
-		}
+		"nam"		:	"Monkeyban",
+		"basekey"	:	"whirly",
+		"credits"	:{	"author"	: "Konstantin Kirillov"  }
 },
+
+
 
 
 
@@ -80,11 +93,17 @@
 },
 
 
+
+
 "pullpush":
 {
 	"nam": "PullPush",
 	"basekey": "colorban",
 	"post_definition": "pullpush",
+	"interact"	:{	"hero_i"	:{	"box_a" : "push",
+									"box_b" : "pull"
+								}	
+				},
 	"post_definition_copathy": "copathy"
 },
 
@@ -98,28 +117,42 @@
 },
 
 
-"antiflocks_c":
-{
-	"nam": "Antiflocks Classic",
-	"basekey": "flocks",
-	"post_definition": "pullpush"
-},
-
 
 "antiflocks":
 {
-	"nam"		:	"Antiflocks",
-	"basekey"	:	"antiflocks_c",
+	"nam": "Antiflocks",
+	"basekey": "flocks",
+	"post_definition": "pullpush_inversifier"
+},
 
-	"cols"		:{ 	"hero_i"	:{	"baton " : true }  },
-	"interact"	:{
-					"hero_i"	:{	"box_a" : "push",
-									"box_b" : "pull"
+
+"flockmasters":
+{
+	"nam": "Flockmasters",
+	"basekey": "flocks",
+	"post_definition": "pullpush",
+
+	"interact"	:{	"hero_i"	:{	"box_a" : "push",
+									"box_i" : "none"
+								},
+
+					"hero_h"	:{	"box_b" : "push",
+									"box_h" : "none"
+								},
+
+					"hero_g"	:{	"box_c" : "push",
+									"box_g" : "none"
 								}	
-				},
+				}
 
-	"comments" : "just one baton-hero, hero_i, is added to enrich the rules ..."
+},
 
+
+"antimasters":
+{
+	"nam": "Antimasters",
+	"basekey": "flockmasters",
+	"post_definition": "pullpush_inversifier"
 },
 
 
@@ -129,9 +162,14 @@
 	"nam": "PullSwapPush",
 	"basekey": "colorban",
 	"post_definition": "pullswappush",
+	"interact"	:{	"hero_i"	:{	"box_a" : "push",
+									"box_b" : "pull"
+								}	
+				},
 	"post_definition_copathy": "copathy"
-
 },
+
+
 
 "co_pullswappush" :
 {
@@ -169,7 +207,9 @@
 	"basekey": "colorban",
 	"post_definition": "leappush",
 	"post_definition_copathy": "copathy",
-	"date": "October 25 2012"	
+	"credits"	:{	"author"	: "Konstantin Kirillov",
+					"date"		: "October 25, 2012"	
+				}
 },
 
 
@@ -179,7 +219,9 @@
 	"basekey": "leappush",
 	"post_definition": "pullpush_inversifier",
 	"post_definition_copathy": "copathy",
-	"date": "October 26 2012"	
+	"credits"	:{	"author"	: "Konstantin Kirillov",
+					"date": "October 26, 2012"	
+				}
 },
 
 
@@ -203,8 +245,9 @@
 
 "bumpytargets":
 {
-	"nam": "Bumpy Targets",
-	"basekey": "mazy",
+	"nam"		: "Bumpy Targets",
+	"basekey"	: "whirly",
+	"credits"	:{	"author"	: "Konstantin Kirillov"  },
 
 	"cols": {
 		"target_a": {
@@ -228,18 +271,18 @@
 		"box_b" : { "target_a" : "block",
 					"target_b" : "pass"
 		}
-	},
-
-
-
-	"author": "Konstantin Kirillov"	
+	}
 },
+
 
 
 "jumphunt":
 {
 	"nam": "JumpHunt",
 	"basekey": "colorban",
+	"credits"	:{	"author"	: "Konstantin Kirillov",
+					"date"		: "October 30, 2012"
+				},
 
 
 	"interact" : {
@@ -253,11 +296,7 @@
 					 "box_c" : "swap",
 					 "box_d" : "leap"
 		}
-	},
-
-	"author": "Konstantin Kirillov",
-	"date" : "October 30 2012"
-
+	}
 },
 
 
@@ -266,17 +305,15 @@
 {
 	"nam": "GhostBan",
 	"basekey": "colorban",
-
+	"credits"	:{	"author"	: "Konstantin Kirillov",
+					"date"		: "October 30, 2012"
+				},
 
 	"interact" : {
 		"hero_b" : {	"box_a" : "swap",
 						"hero_a" : "swap"
 		}
-	},
-
-	"author": "Konstantin Kirillov",
-	"date" : "October 30 2012"
-
+	}
 },
 
 
@@ -284,18 +321,16 @@
 {
 	"nam": "Co-GhostBan",
 	"basekey": "ghostban",
-
+	"credits"	:{	"author"	: "Konstantin Kirillov",
+					"date"		: "October 30, 2012"
+				},
 
 	"interact" : {
 		"hero_a" : {	"box_a" : "pull"
 		},
 		"hero_b" : {	"box_b" : "pull"
 		}
-	},
-
-	"author": "Konstantin Kirillov",
-	"date" : "October 30 2012"
-
+	}
 },
 
 
@@ -303,7 +338,9 @@
 {
 	"nam": "GhostJump",
 	"basekey": "colorban",
-
+	"credits"	:{	"author"	: "Konstantin Kirillov",
+					"date"		: "October 30, 2012"
+				},
 
 	"interact" : {
 		"hero_b" : {	
@@ -311,11 +348,7 @@
 						"hero_a" : "jump",
 						"box_c"  : "jump"
 		}
-	},
-
-	"author": "Konstantin Kirillov",
-	"date" : "October 30 2012"
-
+	}
 },
 
 
@@ -324,7 +357,9 @@
 {
 	"nam": "Co-GhostJump",
 	"basekey": "colorban",
-
+	"credits"	:{	"author"	: "Konstantin Kirillov",
+					"date"		: "October 30, 2012"
+				},
 
 	"interact" : {
 		"hero_b" : {	"box_b" : "pull",
@@ -334,10 +369,7 @@
 		},
 		"hero_a" : {	"box_a" : "pull"
 		}
-	},
-
-	"date" : "October 30 2012"
-
+	}
 }
 
 }

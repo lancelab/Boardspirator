@@ -13,7 +13,7 @@
 		// ================================================================
 		dios.session2db_ready_obj = function(){
 			var session = {};
-			core.each(gio.playalbs, function(gix, playalb){
+			core.each(gio.session.alist, function(gix, playalb){
 				core.each(playalb.collections, function(coll_ix, coll){
 					var coll_key = 'c'+coll_ix;
 					if( coll.maps_loaded !== 'success' ) return true;
@@ -46,7 +46,7 @@
 			var session = JSON.parse(jsoned_session);
 			var success = true;
 			var last_gm = null;
-			core.each(gio.playalbs, function(gix, playalb){
+			core.each(gio.session.alist, function(gix, playalb){
 
 				if( !session[playalb.key] ) return true;
 				core.each(playalb.collections, function(coll_ix, coll){
@@ -79,7 +79,7 @@
 							gio.cons_add('Going to deserialize map ' + gm.ix +
 										' game.basekey=' + gm.game.basekey  +
 										' game.gkey=' + gm.game.gkey +
-										' bundle='+gm.collection.album.key);
+										' bundle='+gm.collection.lkey);
 						}
 						var this_success = rman.deserialize_rounds(
 							sess_map.rounds,
@@ -95,8 +95,8 @@
 			});
 
 			if(last_gm){
-				if(!gio.navig.select_album_map(last_gm)){
-					gio.cons_add('Failed to load rounds for map ' + gm.title);
+				if( !gio.navig.do_return_sess_state_from_map( last_gm ) ) {
+					gio.cons_add( 'Failed to load rounds for map ' + gm.title );
 					return false;
 				}
 			}

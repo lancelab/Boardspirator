@@ -20,7 +20,7 @@
 		// Rounds' warehouse:
 		var stash = {};
 
-		stash.akey = gm.collection.album.key;
+		stash.akey = gm.collection.lkey;
 		stash.collection_ix = gm.collection.coll_ix;
 		stash.map_ix = gm.ix;
 		stash.current_round_ix = rounds.ix;
@@ -83,7 +83,7 @@
 			gio.cons_add('We have successfully positioned on map ix = ' + 
 					gm.ix + ' game.basekey=' + gm.game.basekey +
 					' game.gkey=' + gm.game.gkey +
-					' bundle=' + gm.collection.album.key);
+					' bundle=' + gm.collection.lkey);
 			gio.cons_add('Beginning loop of expanding round(s). Number of rounds = '+des.rounds.length);
 		}
 		// c onsole.log('expanding rounds',des.rounds);

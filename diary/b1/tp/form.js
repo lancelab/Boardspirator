@@ -8,9 +8,17 @@
 //*************************************************
 
 
+
+
+
+
+
+
 (function( $ ){	var tp		= $.fn.tp$;	
 				var ceach	= tp.core.each;
 				//var deb	= tp$.debug; //to debug Opera, IE, ... ; rem out if no need;
+
+
 
 	var self_name='form';
 	//dependency check:
@@ -27,16 +35,29 @@
 
 
 
-		//===================================
-		//CREATE SELECT-ELEMENT
-		//===================================
-		//Input:	see arg={...
-		//			only arg.options is required
-		self.create_select_el=function(arg){ // argr_,argt_){
+
+
+
+		/// CREATES CUSTOM SELECT-ELEMENT
+		//
+		//	Input:		see arg={...
+		//				only arg.options is required
+		//
+		//	Returns:	select_el which has properties:
+		//				arg, parent, wrapper, ... names ...
+		//
+		//				All properties except "arg" are dom-elements which do compose "select_el".
+		//				arg's properties are the references to arg_settings properties.
+		//
+		//				For the list of generated names, see //.\\ element-specific settings
+		//
+		self.create_select_el = function( arg ) {
+
 			arg = arg || {};
 
-			//sample of input format for arg:
+			/// sample of input format for arg:
 			var arg_settings={
+
 				r	:{	//options passed by reference
 						parent		:document.body,
 						options		:[{}],	//apparently, program does not care about
@@ -44,8 +65,9 @@
 											//but it is nice to have {title:...}
 						callback	:null
 					},
+
 				c	:{	//options passed by content
-						//should be true if resetting with changed number of items:
+						//. should be true if resetting with changed number of items
 						dont_reset_styles :false,
 						choice_ix	:-1, //0,
 						gui			:{
@@ -79,15 +101,16 @@
 
 			var argr=arg_settings.r;
 			var argt=arg_settings.c;
+
 			core.rpaste(argr,arg.r);
 			core.tpaste(argt,arg.c);
 			//c onsole.log('creation of sel. el: args=',argr, argt);
 
-			//master object which wraps "everything" in this constructor and
-			//which is returned from constructor:
-			var select_el = {parent:argr.parent, arg : arg_settings};
+			//.	master object which wraps "everything" in this constructor and
+			//	which is returned from constructor
+			var select_el = { parent:argr.parent, arg : arg_settings };
 
-			//aux
+			//: aux
 			var elements;
 			var item_settings;
 			var hbox;
@@ -97,15 +120,20 @@
 			var ddbox_backgroudColor;
 
 
-			var reset_styles=function(){
-				var gui=argt.gui;
 
-				//object shortcuts
+
+
+			/// reset_styles 
+			var reset_styles = function () {
+
+				var gui = argt.gui;
+
+				//: object shortcuts
 				hbox						=gui.height_of_box_limit;
 				hitem						=gui.hitem;
 				ddbox_backgroudColor		=gui.ddbox_backgroudColor;
 
-				//method shortcuts
+				//: method shortcuts
 				hmin						=gui.hmin;
 				var wmax					=gui.wmax;
 				var wbut					=gui.wbut;
@@ -118,7 +146,7 @@
 				var corners					=gui.corners;
 
 
-				//spawning parameters start
+				// //\\ spawns parameters
 				var wbut2=Math.floor(wbut/2);
 				if(!itemindent)itemindent=wbut2;
 				var bottom_indent=hitem-2;
@@ -137,13 +165,15 @@
 				var scroll_arrow_left=Math.floor(wbut*3/10);
 				var scroll_arrow_gap=Math.floor(wbut*2/10);
 				if(!gui.corners)gui.corners={r:wbut2};
+				// \\// spawns parameters
 
 
-				//spawning parameters end
+
+				//.. /// reset_styles
 
 
-				//element-specific settings:
-				elements=[
+				// //.\\ element-specific settings
+				elements = [
 					{	name	:'wrapper',
 						parent	:'parent',
 						style	:{
@@ -154,7 +184,7 @@
 		
 	
 	
-					///////////// strip start /////////////////////
+					// //\\ strip /////////////////////
 					{	name	:'top_strip',
 						parent	:'wrapper',
 						style	:{
@@ -224,10 +254,10 @@
 										over:{backgroundColor	:overColor}
 									}
 					},
-					///////////// strip end /////////////////////
+					// \\// strip /////////////////////
 
 
-					///////////// box start /////////////////////
+					// //\\ box /////////////////////
 					{	name	:'ddbox',
 						parent	:'wrapper',
 						style	:{
@@ -265,7 +295,7 @@
 					},
 	
 	
-					//=========== scroll bars start ======================
+					// //\\ scroll bars /////////////////////
 					{	name	:'scroll_up',
 						parent	:'ddbox',
 						style	:{
@@ -304,8 +334,8 @@
 										over:{backgroundColor	:overColor}
 									}
 					}
-					//=========== scroll bars end ======================
-					///////////// box end //////////////////////////////
+					// \\// scroll bars /////////////////////
+					// \\// box /////////////////////
 				];
 	
 			
@@ -328,17 +358,34 @@
 								backgroundColor	:itemOverColor
 					}
 				};
+				// \\// element-specific settings
 
-				//auxiliary
-				var setup_element=function(parameters){
+
+
+
+
+				//.. /// reset_styles
+
+
+
+				/// Creates DOM-element if not yet done, and
+				//		stacks it into master-select_el object
+				//			under name parameters.name, and
+				// 		appends to dom-parent, and
+				//		... styling ... fixes ... innerHTML
+				var setup_element = function( parameters ) {
+
 						var w,div,gradColor,gradTip;
 						var v=parameters;
 						var name=v.name;
-						if(select_el[name]){
+
+						if( select_el[name] ) {
+
 							div=select_el[name];
 						}else{
-							div=select_el[name]= document.createElement('div');
-							select_el[v['parent']].appendChild(div);
+
+							div = select_el[name] = document.createElement('div');
+							select_el[ v['parent'] ].appendChild(div);
 							//effects:
 							
 							if(argt.gui.gradient){
@@ -376,18 +423,22 @@
 						//}
 						//-------------------------------
 
-						if(gui.corners)tp.gui.cornerize(gui.corners,div);
-						if(v['innerHTML'])div.innerHTML=v['innerHTML'];
+						if( gui.corners ) tp.gui.cornerize( gui.corners, div );
+						if( v['innerHTML'] ) div.innerHTML = v[ 'innerHTML' ];
 
 						return div;
-				};//var setup_element=function(parameters){
+				}; // var setup_element = function (
+				/// Creates DOM-element if not yet done 
 
+
+
+				//.. /// reset_styles
 
 
 				//===================================
 				//spawn divs and styles
 				//-----------------------------------
-				core.each(elements,function(ix,v){
+				core.each( elements, function( ix, v ) {
 					var w,ww;
 					if(v.mousables){
 						core.each(v.mousables,function(name,mousable){
@@ -404,8 +455,11 @@
 							div.style.visibility=  name==='over' ? 'hidden' : 'visible';
 						});
 					}
-					var el_already_created=select_el[v['name']] && true;
-					w=setup_element(v);
+
+					//. "Master Place" to generate dom-element ?
+					var el_already_created = select_el[ v['name'] ] && true;
+					w = setup_element( v );
+
 					if(!el_already_created && v.arrow){
 						ww=core.tclone(v.arrow,{parent:w});
 						w=tp.gui.create_triangle(ww);
@@ -431,8 +485,8 @@
 				//Here we restoring it:
 				//TODm better solution should not slow everyone:
 				//-----------------------------------------------------
-					ceach(select_el, function(ix,val){
-						if(ix !== 'parent' ){
+				ceach( select_el, function ( ix, val ) {
+						if( ix !== 'parent' && ix !== 'arg' ) {
 							if(val.tagName){
 								//deb(''+val.id+' '+val.tagName + 'id, tag');
 								if(val.tagName.toLowerCase() === 'div' ){
@@ -446,24 +500,23 @@
 								}
 							}
 						}
-					});						
+				});						
 				//-----------------------------------------------------
 				//Opera and IE8 fix: abs. pos. is lost by some reason.
 				//Here we restoring it:
 				//=====================================================
 
 
-
-
+				//.. /// reset_styles
 
 			};//...reset_styles=function
 
 
 
 
-			////////////////////////////////////////
-			//Helpers
-			//======================================
+
+
+			// //\\ HELPERS ////////////////////////
 			
 			//Input		action = 'close', 'open'. 
 			//			Optional.
@@ -509,9 +562,7 @@
 			select_el.close=function(){
 				toggle_dd('close');
 			};
-			//======================================
-			//Helpers
-			////////////////////////////////////////
+			// \\// HELPERS ////////////////////////
 
 
 
@@ -751,7 +802,12 @@
 			};	
 
 			return select_el; //return created object
+
 		};//end of constructor: self.create_select_el=function...
+		/// CREATES CUSTOM SELECT-ELEMENT
+
+
+
 
 		return self; //tp return
 	})(); //tp end

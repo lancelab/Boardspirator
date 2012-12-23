@@ -41,14 +41,19 @@
 		// Before building "holes" and "exists",
 		// calculate wall boundaries for each y-row:
 		// -----------------------------------------
-		var map_boundary = game.rule_helpers.map_boundary;
+
+		//.	detects is map boundaryness,
+		//	if it is, sets map_boundary to cname of a wall (usually wall_x),
+		//	if not, sets to false.
+		var map_boundary =	map.parsed.wall_boundary_encountered && 
+							map.script.decoder_table[ game.rule_helpers.map_boundary ];
 		var left_wall = [];
 		var right_wall = [];
 		for(var yy=0; yy<map.size[1]; yy++){
 			var left = -1;
 			var right = map.size[0];
 
-			if( map_boundary ){
+			if( map_boundary ) {
 				for(var xx=0; xx<map.size[0]; xx++){
 					var top = tops[xx][yy];
 					var tower = loc2lid[xx][yy];
@@ -60,7 +65,17 @@
 						}
 					}
 				}
+				//TODO this protection is insufficient
+				if( left === -1 && right === map.size[0] ) {
+										map.load = 'invalid';
+										gio.cons_add(	"Walled map but walless line " + yy + ".\n" +
+														"Map: " +  map.title
+										); //TODm Map validation must be separate from normilizer.
+										return false;
+				}
 			}
+
+
 			left_wall[yy] = left;
 			right_wall[yy] = right;
 		}
@@ -211,7 +226,7 @@
 
 		if(gm.load === 'invalid') {
 			gio.session.reinit.messages =
-				"Invalid gm.load\n" +
+				"Invalid \"gm.load\" flag\n" +
 				(gm.invalid_map_message || '') +
 				"\nMap board = \n" +
 				tp.core.dotify( gm.script.raw_board, 1000, "", "", "\n(....)" ) +

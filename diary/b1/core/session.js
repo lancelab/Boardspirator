@@ -1,21 +1,29 @@
-(function( $ ){ 	var tp   	=  $.fn.tp$      =  $.fn.tp$ || {};	
+(function( ){	 	var tp   	=  $.fn.tp$      =  $.fn.tp$ || {};	
 					var gio  	=  tp.gio        =  tp.gio   || {};
 					var ceach   =  tp.core.each;
 
 
 
 	
-	// ***	Returns:	state even for pased (unvalidated) game map
+	///		Returns:	state even for pased (unvalidated) game map
+	//		Possibly:	Poor design. TODM remove
 	//		Input:		all args are optional.
 	//					if collection is supplied, all state is derived
 	//					from it, not from current album.
 	gio.getUnfinishedState = function(callback, collection, no_map_requested){
 
+		var state = gio.session.state;
+
 		if(collection){
-			var playalb = collection.album;
+
+			var playalb = gio.session.procs.get_album( collection.lkey ); //TODO this album is last-current or current GUI album of this collection. Does this work in scroll_till_non_failed_collection ?
 			var colls	= playalb.collections;
 		}else{
-			var playalb	= gio.playalbs[gio.album_ix];
+			var playalb	= ( state.album_ix || state.album_ix === 0 ) &&  gio.session.alist[ state.album_ix ];
+
+			//. at core/entry.js, albumion is not established yet
+			if( !playalb ) return {};
+
 			var colls	= playalb.collections;
 			collection	= colls[colls.ix];
 		}
@@ -48,7 +56,7 @@
 			var playalb = collection.album;
 			var colls	= playalb.collections;
 		}else{
-			var playalb	= gio.playalbs[gio.album_ix];
+			var playalb	= gio.session.alist[ gio.session.state.album_ix ];
 			var colls	= playalb.collections;
 			collection	= colls[colls.ix];
 		}
@@ -87,8 +95,9 @@
 	// =============================================
 
 
+	gio.session.procs.get_album = function ( album_key ) {
+		return gio.session.alist_by_key[ album_key ];
+	};
 
 
-
-
-})(jQuery);
+})();

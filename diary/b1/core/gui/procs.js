@@ -86,14 +86,14 @@
 
 
 	// Makes and returns a combined title from current state gs
-	ggp.calculate_game_and_album_title=function(){
+	ggp.get_master_title_from_session_state = function () {
 		var gs = gio.getgs();
 		return ggp.calculate_game_titile_from_names(
-				gs.gm.game.nam, gs.coll.album.album_name);
+				gs.gm.game.nam, gs.playalb.album_name );
 	};
 
 	// Makes and returns a combined title of game and album
-	ggp.calculate_game_titile_from_names=function(game_name, album_name){
+	ggp.calculate_game_titile_from_names = function( game_name, album_name ) {
 		var w = game_name;
 		var title = w || '';
 		if(album_name){

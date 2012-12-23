@@ -1,77 +1,99 @@
-(function( $ ){ 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+(function() {	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
-					var cmd		=  gio.def.colorban_maps_decoder = gio.def.colorban_maps_decoder || {};
+					var cmd		=  gio.core.def.map_format;
 
 
-	// Too loose error-prone-format?:
-	var sokoban_playpath_line_match	=/^( |\t)*(l|r|u|d|\[|\]|\*|[0-9])*(l|r|u|d)(l|r|u|d|\[|\]|\*|[0-9])*\s*$/i;
+					//. TODM is this too loose error-prone-format?
+					var sokoban_playpath_line_match	= /^( |\t)*(l|r|u|d|\[|\]|\*|[0-9])*(l|r|u|d)(l|r|u|d|\[|\]|\*|[0-9])*\s*$/i;
+					var reg_ex_und = /_/g;		
 
 
-	// Returns:	true to continue loop caller
-	cmd.extract_to_playpaths=function(
-			current_pp,
-			com_trimmed,
+
+
+	///	Collects data to playpaths.
+	//	Directive :::playpath	does the job for both colorban and soko zones,
+	//							benefit: cb-format is available
+	//	Returns:	true to enforce caller to continue loop.
+	cmd.extract_to_playpaths = function (
+			playpath_tray,
+			master_line_trimmed,
 			pkey,
-			com,
+			master_line,
 			playpaths,
-			cbformat
+			cbzone_bf
 	){
-			var add_to_pp=false;
-			var initiate_pp=false;
+
+			var pptt			= playpath_tray;
+			var add_to_soko_pp	= false;
+			var initiate_pp		= false;
 			var playpath_title;
 
-			// ** Terminator or adder for cbpath
-			if(current_pp.cbflag){
-				if(com_trimmed.length === 0){
-					// Only empty line terminates pp
-					current_pp.pp=null;
-					current_pp.cbflag=false;
+			///	For colorban-style pp, terminates it or appends to it
+			if( pptt.cbflag ) {
+				//. only empty line terminates pp
+				if( master_line_trimmed.length === 0 ) {
+					//:: terminates pp
+					pptt.pp		= null;
+					pptt.cbflag	= false;
 				}else{
-					current_pp.pp.value +="\n"+com; //TODm why order is changed "\n"+com?
+					//.	adds continuation of pp separated
+					//	with \n for neatness
+					pptt.pp.value += "\n" + master_line;
 				}
-				return true; //continue;
+				//. enforces caller to continue loop
+				return true;
 			}
 
-			// ** Initiator for cbpath or soko-detector-initiator/adder
-			if(pkey[2]==='playpath'){
-				current_pp.cbflag =  true;
-				playpath_title= pkey[3] || '';
-				initiate_pp=true;
-//			}else if(pkey[2]==='sokoban_playpath'){
-	//			current_pp.cbflag = false;
-		//		playpath_title = pkey[3] || '';
-			//	initiate_pp=true;
-			}else if(!cbformat || (current_pp.pp && !current_pp.cbflag)){
-				// Allow "loosy" pp detection only in soko-maps or in scanning soko-paths
-				var w=com.match(sokoban_playpath_line_match);
-				if(w){
-					if(!current_pp.pp){
+			/// Initiates cbpath or soko-detector-initiator/adder
+			if( pkey[2] === 'playpath' ) {
+				//:: initiates cb-style pp
+				pptt.cbflag	= true;
+				playpath_title		= pkey[3] || '';
+				initiate_pp			= true;
+
+			//. means if we are in soko-zone or already collecting soko-style-pp
+			}else if( !cbzone_bf || (pptt.pp && !pptt.cbflag ) ) {
+
+				//. detects pp loosely in soko-maps or in scanning soko-paths
+				var ww = master_line.match( sokoban_playpath_line_match );
+				if( ww ) {
+					if( !pptt.pp ) {
+						//:: initiates soko-pp
 						playpath_title = '';
-						initiate_pp=true;
+						initiate_pp = true;
 					}
-					add_to_pp=true;
-				}else if(current_pp){
-					// c onsole.log('Play path is terminated by sokoban-non-playpath-line');
-					current_pp.pp=null;
+					//. sets flag to append to soko-pp
+					add_to_soko_pp = true;
+
+				}else if( pptt ) {
+
+					//.	comment
+					//	c onsole.log('Playpath is terminated by sokoban-non-playpath-line');
+
+					//. kills reference, but pp is already
+					//	collected in playpaths[ ww ]
+					pptt.pp = null;
 				}
 			}
 
-			if(initiate_pp){
-				w=playpaths.length;
-				playpath_title = playpath_title || 'Playpath '+w;
-				current_pp.pp = playpaths[w]=
+			if( initiate_pp ) {
+				var ww = playpaths.length;
+				playpath_title = playpath_title || 'Playpath ' + ww;
+				pptt.pp = playpaths[ ww ] =
 				{
-					title : tp.core.capitalizeFirstLetter(playpath_title.replace(/_/g,' ')),
+					title : tp.core.capitalizeFirstLetter( playpath_title.replace( reg_ex_und, ' ') ),
 					value : ''
 				};
 			}
 
-			if(add_to_pp)current_pp.pp.value +=com+"\n";
-			if(add_to_pp || initiate_pp) return true;
+			if( add_to_soko_pp ) pptt.pp.value += master_line + "\n";
+			if( add_to_soko_pp || initiate_pp) return true;
+
 			return false;
-	};
+	};	///	Collects data to playpaths
 
 
-})(jQuery);
+
+})();
 
 

@@ -44,7 +44,8 @@
 	//					evaluatable to false if move is forbidden
 	procs.do_interaction = function (
 			direction, unit, move, recursion_depth, forbid_contacts, step_length,
-			dropx, dropy, dropz
+			dropx, dropy, dropz, 
+			forbidden_interaction
 	){
 		// ** prepares to store virtual move messages
 		var log = gio.info.log;
@@ -69,9 +70,9 @@
 		}
 
 		// ** memorizes location of last step in sequence
-		var new_loc=new_steps[movers_number-1].new_loc;
-		var xx = new_loc[0];
-		var yy = new_loc[1];
+		var ww = new_steps[movers_number-1].new_loc;
+		var xx = ww[0];
+		var yy = ww[1];
 
 		// ** makes shortcuts
 		var gm = unit.gm;
@@ -182,8 +183,6 @@
 				}
 
 
-
-
 				if(int_act === 'pass') {
 					if(do_debug) gio.cons_add( 'Continue bs 	int_act = pass' );
 					//return new_move;
@@ -199,7 +198,11 @@
 					move.action.intact = int_act;
 				}
 
-
+				/// breaks process if wrongly interacting unit is met
+				if( forbidden_interaction === int_act ) {
+						if(verbose) log.move +=	"Cannot " + int_act + " with " + peer.hname + "\n";
+						return null;
+				}
 
 				// ///\\\ push
 				if(int_act === 'push'){
@@ -225,8 +228,24 @@
 						return null;
 					}
 
+
 					//.	moves actor in opposite direction   
-					new_move=gio.prepare_step(-direction, unit, move, 'dynamic_units_do_block');
+					//	faulty: climbs on wall
+					//new_move=gio.prepare_step(-direction, unit, move, 'dynamic_units_do_block');
+					//if(!new_move) return null;
+
+
+					//.	makes actor staying on own place by returning it back
+					new_move.steps.splice( new_move.steps.length - 2, 1 );
+
+					//. moves actor back and correctly interructs with units on back
+					//	by forbidding pull
+					new_move = procs.do_interaction(
+							-direction, unit, new_move,
+							recursion_depth+1,
+							undefined, undefined, undefined, undefined, undefined,
+							'pull'
+					);
 					if(!new_move) return null;
 
 					///	pulls the peer

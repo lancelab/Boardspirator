@@ -1,15 +1,9 @@
-(function( $ ){ 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
+(function(){	 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio  =  tp.gio    =  tp.gio   || {};
 
 
 
-	var visualize_collection_titles = function(collection, collections){
-
-			if(!collection){
-				var gs = gio.getUnfinishedState();
-				collection = gs.coll;
-				collections = gs.colls;
-			}
+	var visualize_collection_titles = function( collection, collections ) {
 
 			// c onsole.log('resetting non failed collection:',{options:collections},{choice_ix:collections.ix});
 			gio.domwrap.headers.collection_select_el.reset(
@@ -30,9 +24,7 @@
 					}}
 			);
 
-			collection.album.title = gio.gui.procs.calculate_game_and_album_title();
-
-			gio.domwrap.headers.title_select_el.reset(); // TODm do we need to shake options?:
+			gio.domwrap.headers.title_select_el.reset( {c:{choice_ix:gio.session.state.album_ix}} ); // TODm do we need to shake options?:
 
 			return true;
 	};
@@ -59,16 +51,15 @@
 
 			//	TODm q&d fix: instead of validation of the map, 
 			//	will revert back if map fails
-			var stash_album_ix		= gio.album_ix;
-			var stash_collection_ix	= current_playalb.collections.ix;
-			var stash_map_ix		= current_coll.map_ix;
+			var stash_album_ix		= current_playalb && gio.session.state.album_ix;
+			var stash_collection_ix	= current_playalb && current_playalb.collections.ix;
+			var stash_map_ix		= current_playalb && current_coll.map_ix;
 
 
 				
-			// ** establishes new game and collection in playsession:
-			gio.album_ix = album_ix;
-			var playalb = gio.playalbs[album_ix];
-
+			//: establishes new album and collection in playsession
+			gio.session.state.album_ix = album_ix;
+			var playalb = gio.session.alist[ album_ix ];
 			var colls = playalb.collections;
 			colls.ix = collection_ix;
 			var coll = colls[colls.ix];
@@ -87,29 +78,42 @@
 
 			
 
-			if(!gio.session.reinit.rounds()){
+			if( !gio.session.reinit.rounds() ) {
+
+				if( !current_playalb ) {
+					//:: possibly at entry.js, not yet landed on albumion
+					throw "No current album established";
+				}
+
 				//: reverts setting back
-				gio.album_ix						= stash_album_ix;
+				gio.session.state.album_ix					= stash_album_ix;
 				current_playalb.collections.ix	= stash_collection_ix;
 				current_coll.map_ix				= stash_map_ix;
+			
 
 				// 	all maps and all game can be broken, so dont unhide:
 				//	gio.gui.procs.unhide_current_dom_board();
 
-				gio.cons_add(	"Failed to land on map " + target_map_ix + "\n" +
-								gio.session.reinit.messages +
-								"Reverted to game, collection, map: " + 
-								gio.album_ix + ", " + 
+				gio.cons_add(	"Cannot land on map " + target_map_ix + 
+								" in collection: " + collection_ix + "\n" +
+								"in album: " + gio.session.alist[album_ix].key + "\n" +
+								(gio.session.reinit.messages || '' ) + "\n" +		//TODO why undefined? why to use it at all? 
+								"\nReverted to album, collection, map: \n" + 
+								current_playalb.key + ", " +
 								current_playalb.collections.ix + ", " + 
 								current_coll.map_ix
 							);
 				return false;
 			}
 
+			//: establishes back-reference from collection to
+			//	last-owning-listitem in album-list
+			coll.lkey		= playalb.key;
 
-			// * Revisualize titles:
-			gio.domwrap.headers.title_select_el.reset({c:{choice_ix:gio.album_ix}});
-			visualize_collection_titles(coll,colls);
+			playalb.title	= gio.gui.procs.get_master_title_from_session_state();
+
+			//. revisualizes titles
+			visualize_collection_titles( coll, colls );
 			return true;
 	};
 
@@ -119,24 +123,28 @@
 	// Behaviour:	finds first game with collection with valid current map, and
 	//				lands there, and
 	//				refreshesh GUI
-	gio.scroll_till_valid_game = function(){
+	// Layer:		GUI and Session
+	gio.scroll_till_valid_albumion = function(){
 
 		gio.gui.procs.lock_controls('Loading a Game ... '); //TODm too late here? .... move it to event handler? ...
-		var len = gio.playalbs.length;
-		var start_album_ix = gio.album_ix;
+		var len = gio.session.alist.length;
+		var start_album_ix = gio.session.state.album_ix;
 		for(var i=0; i<len; i++){
-			gio.album_ix		= (start_album_ix + i)%len;
-			playalb			= gio.playalbs[gio.album_ix];
-			if(gio.debug) gio.cons_add("Landing on album " + gio.album_ix + " " + playalb.title);
+			gio.session.state.album_ix		= (start_album_ix + i)%len;
+			playalb			= gio.session.alist[gio.session.state.album_ix];
+
+			if( gio.debug ) gio.cons_add( "Landing on album " + gio.session.state.album_ix + " " + playalb.title );
 			var found_coll_ix1	= gio.scroll_till_non_failed_collection( playalb.collections, !i );
-			if(found_coll_ix1){
-				// * don't do this, landing already did this:
-				// gio.gui.procs.refresh();
+			if( found_coll_ix1 ) {
+
+				//.	don't do this, landing already did this:
+				//	gio.gui.procs.refresh();
+
 				gio.gui.procs.unlock_controls();
 				return true;
 			}
 			if(gio.debug) {
-				gio.cons_add(	'When scrolling valid games: Missed album: index=' + gio.album_ix +
+				gio.cons_add(	'When scrolling valid games: Missed album: index=' + gio.session.state.album_ix +
 								' title=' + playalb.title);
 			}
 		}
@@ -173,7 +181,7 @@
 
 			if(!coll.maps_loaded){
 				//:: avoids external collection because not sure will it download
-				if( !coll.external || (download_external_if_first && !i) ) {
+				if( !coll.ref.link.link || (download_external_if_first && !i) ) {
 					gio.download_collection(coll);
 				}else{
 					if( gio.debug ) {
@@ -195,7 +203,9 @@
 				}
 			}
 		}
-		gio.cons_add("No collections available when scrolling via album. album key = \"" + collections[0].album.key + "\"");
+		
+		gio.cons_add(	"No collections available when scrolling via album. album key = \"" +
+						collections[0].lkey + "\"" );
 		return false;
 	};
 	
@@ -220,7 +230,7 @@
 		// Tries to set akey if requested:
 		if( akey ){
 			var album_ix = -1;
-			tp.core.each( gio.playalbs, function(ix, playalb){
+			tp.core.each( gio.session.alist, function(ix, playalb){
 				if(playalb.key === akey){
 					album_ix = ix;
 					return false;
@@ -228,22 +238,22 @@
 			});
 			if(album_ix < 0) {
 				if(gio.debug) {
-					gio.cons_add( 'Missed akey ' + akey + ' in GUI-album-set, gio.playalbs.');
+					gio.cons_add( 'Missed akey ' + akey + ' in GUI-album-set, gio.session.alist.');
 				}
 				return false;
 			}
 		}else{
-			album_ix = gio.album_ix;
+			album_ix = gio.session.state.album_ix;
 		}
 
-		var playalbs = gio.playalbs[album_ix];
+		var list_album = gio.session.alist[ album_ix ];
 
 		if(collection_is_requested){
-			if( playalbs.collections.length <= collection_ix || collection_ix < 0) return false;
+			if( list_album.collections.length <= collection_ix || collection_ix < 0) return false;
 		}else{
-			collection_ix = playalbs.collections.ix;
+			collection_ix = list_album.collections.ix;
 		}
-		var coll = playalbs.collections[collection_ix];
+		var coll = list_album.collections[collection_ix];
 
 
 		if(!coll.maps_loaded) gio.download_collection(coll);
@@ -265,9 +275,9 @@
 
 
 	// Returns: false is cannot position game and collection
-	gio.navig.select_album_map = function(gm){
+	gio.navig.do_return_sess_state_from_map = function( gm ) {
 		return gio.navig.select_album_and_collection(
-			gm.collection.album.key,
+			gm.collection.lkey,
 			gm.collection.coll_ix,
 			gm.ix
 		);
@@ -275,4 +285,4 @@
 
 
 
-})(jQuery);
+})();

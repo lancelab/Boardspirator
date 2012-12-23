@@ -30,10 +30,10 @@
 								"font-size : 10px; width : 460px; height : 450px; overflow : auto; " +
 								"border-radius : 7px; ";
 
-		var about	= "<h2>C r e d i t s</h2>";
+		var about	= "<h1>C r e d i t s</h1>";
 		about		+= collection.credits_table;
 
-		if( collection.external ) {
+		if( collection.ref.link ) {
 			about += 		"<br>External contents can be changed unexpectedly and\n" +
 							"are out of " + gio.description.title + " control.<br><br>\n";
 		}
@@ -41,12 +41,12 @@
  		about += gworkers.get_map_credits().credits_table;
 		about += gm.game.credits_table;
 		about += gm.dresses_wrap.chosen_dress.credits_table;
-		about += anchor_stub + gio.config.links.credits + "\"><br>I m a g e s</a><br><br>\n";
-		about += gio.description_table;
-			
-		if(collection.parsed.file_header.raw){
+		about += "<br>" + anchor_stub + gio.config.links.credits + "\"><h2>S k i n s</h2></a><br>\n";
+		about += gio.description_table; //TODM move to About Engine button
+
+		if( collection.script.parsed.file_header.raw ) {
 			var flines = collection.script.flines;
-			var ww = collection.parsed.file_header.raw;
+			var ww = collection.script.parsed.file_header.raw;
 			ww = core.joinRange(flines, ww.start, ww.end - ww.start);
 			var style = "font-size : 10px; width : 420px; overflow : auto; border-radius : 7px;";
 			about +=	"<div style=\"" + style + "\"><pre>" + 
@@ -54,10 +54,16 @@
 							core.htmlencode(ww) +
 						"</pre></div>";
 		}
+
+		//.	TODQ&D Apparently Galaxy, Android player lost zIndex here
+		//	by unknown reason ... this line makes a temporary fix
+		gio.common_popup.popup_el.style.zIndex = gio.config.style.popups.zIndex;
+ 
 		gio.common_popup.dotoggle({
 				owner:'about', innerHTML: "<div style=\"" +
 				shell_div_style + "\">" + about + "</div>" });
 		gio.gui.procs.prolong_common_popup();
+
 	};
 
 
@@ -73,6 +79,15 @@
 							(  gs.round && gs.round.gm.solver.browser_mode ? gio.solver.config.help : gio.info.help.main  ) +
 							"\n"+'</pre>'
 		}); //TODM hell. gs.round.gm.solver ... when popup can happen??
+
+		//.	TODQ&D Apparently Galaxy, Android player lost zIndex here
+		//	by unknown reason ... this line makes a temporary fix
+		gio.common_popup.popup_el.style.zIndex = gio.config.style.popups.zIndex;
+
+		//.	TODQ&D Apparently Galaxy, Android player lost zIndex here
+		//	by unknown reason ... this line makes a temporary fix
+		gio.common_popup.popup_el.style.zIndex = gio.config.style.popups.zIndex;
+
 		gio.gui.procs.prolong_common_popup();
 	};
 
@@ -84,10 +99,11 @@
 		var res = '';
 		var gs = gio.getgs();
 		var gm = gs.gm;
+		var dsmap = gm.script.data_source_map;
 
-		if( gm.script.original_map ) {
+		if( dsmap ) {
 			res +=	"<pre>\nO r i g i n a l    B o a r d:\n\n" + 
-					core.htmlencode(gm.script.original_map.script.raw_board) +
+					core.htmlencode(dsmap.script.raw_board) +
 					"</pre>";
 		}else{
 			if( gm.script.raw_board) {
@@ -101,9 +117,9 @@
 		res += gworkers.get_map_credits('with_externals').description_table; //credits_table;
 
 
-		if( gm.script.original_map ) {
+		if( dsmap ) {
 			res +=	"<pre>\nO r i g i n a l    M a c r o s - D e c o d e d    P o s t - B o a r d:\n\n" + 
-					core.htmlencode(gm.script.original_map.parsed.macrosed_postboard) +
+					core.htmlencode(dsmap.parsed.macrosed_postboard) +
 					"</pre>";
 		}else{
 			res +=	"<pre>\nM a c r o s - D e c o d e d     P o s t - B o a r d:\n\n" + 
@@ -120,17 +136,21 @@
 					"</pre>";
 		}
 
-		if( gm.script.original_map ) {
-			if( core.get_first_or_null( gm.script.original_map.collection.macros ) ) {
+		if( dsmap ) {
+			if( core.get_first_or_null( dsmap.collection.macros ) ) {
 				//. shows raw because macrosed is possibly different
 				//	TODM remove board bs it is redundant
 				res +=	"<pre>\nO r i g i n a l    M a p    R a w    T e x t:\n\n" + 
-						core.htmlencode(gm.script.original_map.script.raw_map) +
+						core.htmlencode(dsmap.script.raw_map) +
 						"</pre>";
 			}
 		}
 
 		gio.common_popup.dotoggle( { owner:'map_comments', innerHTML : res } );
+
+		//.	TODQ&D Apparently Galaxy, Android player lost zIndex here
+		//	by unknown reason ... this line makes a temporary fix
+		gio.common_popup.popup_el.style.zIndex = gio.config.style.popups.zIndex;
 
 		gio.gui.procs.prolong_common_popup(); //don't close now by own click
 	};
@@ -144,10 +164,10 @@
 		var result	= '';
 		var credits = core.clone_many(gm.credits);
 
-		var external = gm.original_coll.external;
-		if( external && with_external) {
-			credits.web_site = gm.original_coll.credits.web_site;
-			credits.source = gm.original_coll.external.link;
+		var external = gm.coll__eff.ref.link;
+		if( external.link && with_external) {
+			credits.web_site = gm.coll__eff.credits.web_site;
+			credits.source = gm.coll__eff.ref.link.link;
 		}
 		var stub_obj = {};
 		core.tooltipify(stub_obj, "Map", credits );
@@ -164,6 +184,11 @@
 			owner:'help',
 			innerHTML:"<pre>R u l e s\n\n" + gio.getgs().gm.dresses_wrap.chosen_dress.rules + '</pre>'
 		});
+
+		//.	TODQ&D Apparently Galaxy, Android player lost zIndex here
+		//	by unknown reason ... this line makes a temporary fix
+		gio.common_popup.popup_el.style.zIndex = gio.config.style.popups.zIndex;
+
 		gio.gui.procs.prolong_common_popup(); //don't close now by own click
 	};
 
@@ -172,6 +197,11 @@
 			owner:'help',
 			innerHTML:"<pre>O b j e c t i v e\n\n" + gio.getgs().gm.dresses_wrap.chosen_dress.objective + '</pre>'
 		});
+
+		//.	TODQ&D Apparently Galaxy, Android player lost zIndex here
+		//	by unknown reason ... this line makes a temporary fix
+		gio.common_popup.popup_el.style.zIndex = gio.config.style.popups.zIndex;
+
 		gio.gui.procs.prolong_common_popup(); //don't close now by own click
 	};
 
@@ -180,6 +210,11 @@
 			owner:'help',
 			innerHTML:"<pre>S t o r y\n\n" + gio.getgs().gm.dresses_wrap.chosen_dress.story + '</pre>'
 		});
+
+		//.	TODQ&D Apparently Galaxy, Android player lost zIndex here
+		//	by unknown reason ... this line makes a temporary fix
+		gio.common_popup.popup_el.style.zIndex = gio.config.style.popups.zIndex;
+
 		gio.gui.procs.prolong_common_popup(); //don't close now by own click
 	};
 

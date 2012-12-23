@@ -1,6 +1,8 @@
 (function() { 	var tp			= $.fn.tp$  =  $.fn.tp$ || {};	
 				var gio			= tp.gio    =  tp.gio   || {};
-				var cmd			= gio.def.colorban_maps_decoder = gio.def.colorban_maps_decoder || {};
+				var cmd			= gio.core.def.map_format;
+				var propertify	= tp.core.propertify;
+				var tooltipify_data	= tp.core.tooltipify_data;
 
 
 
@@ -8,30 +10,31 @@
 
 
 
-
-	/// Returns:	true to continue to loop caller
-	cmd.extract_to_dresses = function(
-			dress_wrap,		// possibly in:	cmd.finalize_map=function(
-			com_trimmed,
-			pkey,			// was or is:	pkey=colorbanKV(com)
-			com,			// was or is:	com=flines[master_y].replace(/\r/g,'')
-			dtable 			// was or is:	original_map.script.decoder_table 
+	///	Parses or initiates parsing of dress
+	//	Returns:	true to continue to loop caller
+	cmd.extract_to_dresses = function (
+			dress_tray,			// dress wrap established in finalize_map.js
+			master_line_trimmed,
+			pkey,				// colorbanKV(master_line)
+			dummy_master_line,
+			dtable 				// map__eff.script.decoder_table
 	){
 
-			var ddww = dress_wrap;
-			var add_to_dress=false;
-			var initiate_dress=false;
+			var ddtt			= dress_tray;
+			var add_to_dress	= false;
+			var initiate_dress	= false;
+			var dresses			= ddtt.dresses;
+			var map				= ddtt.map;
+			var trim_match		= cmd.trim_match;
 			var dkey;
-			var dresses = ddww.dresses;
-			var map = ddww.map;
-			var trim_match = cmd.trim_match;
+
 
 			//: terminates or adds dress
-			if(ddww.zoneon_flag){
-				if(com_trimmed.length === 0){
+			if( ddtt.zoneon_flag ) {
+				if( master_line_trimmed.length === 0 ) {
 					//:	terminates zone by encountering empty line
-					ddww.dr				= null;
-					ddww.zoneon_flag	= false;
+					ddtt.dr				= null;
+					ddtt.zoneon_flag	= false;
 					//. continues to loop a caller
 					return true;
 				}
@@ -40,31 +43,34 @@
 			}
 
 
+			var lcasekey	= ( pkey[2] && pkey[2].toLowerCase() ) || '';
+			var pkeym		= ( lcasekey && pkey[3] && tp.core.str2mline( pkey[3] ) ) || '' ;
 
 			/// initiates new dress-parsing-zone
-			if(pkey[2]==='dress'){
+			if( lcasekey === 'dress' ) {
 
-				ddww.zoneon_flag		= true;
-				dkey				= pkey[3] || map.game.dresses_chosen_key;
-				ddww.common_skin_key	= dkey;
-				setup_img_path( ddww );
+				ddtt.zoneon_flag		= true;
+				dkey					= pkeym || map.game.dresses_chosen_key;
+				ddtt.common_skin_key	= dkey;
+				setup_img_path( ddtt );
 
 	
-				ddww.dr = dresses[dkey]=
+				ddtt.dr = dresses[dkey] =
 				{
 					//. knows ownself
 					key : dkey,
-					inherit_from : dkey,
-					title : tp.core.capitalizeFirstLetter(dkey.replace(/_/g,' ')),
 					style : { play : {}, parent : {} },
 					image_decoder : {},
 					skip : false
 				};
-				ddww.counter += 1;
+				ddtt.counter += 1;
 				return true;
-			}
+			} /// initiates new dress-parsing-zone
 
-			if(!add_to_dress) return false;
+
+
+
+			if( !add_to_dress ) return false;
 
 
 
@@ -72,20 +78,22 @@
 			// //\\ COLLECTS DIRECTIVES FOR DRESS
 			//		Syntax:	pkey[2] is a directive
 			// 		Any enabled :::key=value pair will contribute to dress now.
-			var dress = ddww.dr;
+			var dress = ddtt.dr;
 
-			if(pkey[2]==='image' || pkey[2] === 'back_image' || pkey[2] === 'center_image' ){
 
-				// //\\	modifies image
+
+			if( lcasekey === 'image' || lcasekey === 'back_image' || lcasekey === 'center_image' ) {
+
+				// //\\	MODIFIES IMAGE
 					//: extracts	image path, imagep.
-					//				If pkey[2]==='image', then extracts unit-char, reskin[0].
-					if(pkey[2]==='image'){
-						var reskin = pkey[3].split('=');
+					if( lcasekey === 'image' ) {
+						//::	extracts reskin[0], unit-char or unit_token
+						var reskin = pkeym.split('=');
 						var imagep = reskin[1] && reskin[1].replace(trim_match,'');
 					}else{
-						imagep = pkey[3];
+						imagep = pkeym;
 					}	
-					if(!imagep){
+					if( !imagep ) {
 						throw 'Invalid skin image assignment '+ pkey[0];
 					}
 
@@ -95,68 +103,65 @@
 
 					if(imagep.indexOf('//') === 0 ) {
 						//. ties imagep to a parent: to external collection or given site
-						imagep = gio.def.procs.expand_to_parent( imagep, map.collection.external && map.collection.external.link );
+						imagep = tp.core.expand_to_parent ( imagep, map.collection.ref.link.link );
 					}else{
 						//. preserves full path if any in imagep
 						imagep =	imagep.indexOf('/') > -1 ? 
 									imagep : 
-									ddww.current_img_path + '/' + imagep;
+									ddtt.current_img_path + '/' + imagep;
 					}
-					if(pkey[2]==='image'){
-							//. dtable is apparently decoder_table from map_tables.js
-							dress.image_decoder[dtable[reskin[0]]] = imagep;
-					}else if(pkey[2] === 'back_image'){
+					if( lcasekey === 'image' ) {
+							var w_key = reskin[0];
+							w_key = w_key.length > 1 ? w_key : dtable[ w_key ];
+							//. dtable is decoder_table from map_tables.js
+							dress.image_decoder[ w_key ] = imagep;
+					}else if( lcasekey === 'back_image' ) {
 							dress.style.play.backgroundImage = imagep;
 					}else{	
 							dress.style.parent.backgroundImage = imagep;
 					}
 					// \\// FORMAT OF DIRECTIVE :::image=...
 
-
-				// \\//	modifies image
+				// \\//	MODIFIES IMAGE
 
 
 
 			// /\	modifies collection of directives
-			}else if(pkey[2]==='title'){
-				dress.title = pkey[3];
-			}else if(pkey[2]==='rules'){
-				dress.rules = pkey[3];
-			}else if(pkey[2]==='objective'){
-				dress.objective = pkey[3];
-			}else if(pkey[2]==='links'){
-				dress.rules = pkey[3];
-			}else if(pkey[2]==='skip'){
-				dress.skip = true;
-			}else if(pkey[2]==='inherit_from'){
-				dress.inherit_from = pkey[3];
-			}else if(pkey[2]==='credits'){
-				dress.credits = pkey[3];
-			}else if(pkey[2]==='author'){
-				dress.author = pkey[3];
-			}else if(pkey[2]==='copyright'){
-				dress.copyright = pkey[3];
-			}else if(pkey[2]==='skin'){
+
+			}else if( lcasekey === 'skin' ) {
 				//: resets current skins path
-				ddww.common_skin_key = pkey[3];
-				setup_img_path(ddww);
+				ddtt.common_skin_key = pkeym;
+				setup_img_path(ddtt);
 				//.	affects all other maps and following execution: avoid this:
-				//ddww.dr.skin_key = pkey[3];
-			}else if(pkey[2]==='chosen'){
-				dress.chosen = true;
+				//ddtt.dr.skin_key = pkeym;
+
+			}else if( lcasekey === 'chosen' ) {
+				dress.chosen = ( pkeym.toLowerCase() !== 'false' );
+
+			}else if( lcasekey === 'skip' ) {
+				dress.skip = ( pkeym.toLowerCase() !== 'false' );
+
+
+			}else if( tooltipify_data.indexOf('=' + lcasekey + '=' ) > -1 ) {
+					propertify( dress, 'credits', lcasekey, pkeym );
+			}else{
+					propertify( dress, lcasekey, pkeym );
 			}
+
 			// \/	modifies collection of directives
 			// \\// COLLECTS DIRECTIVES FOR DRESS
+
 			return true;
-	};
+	}; ///	Parses or initiates parsing of dress
+
 
 
 
 	/// sets current image path
-	var setup_img_path = function(ddww){
-			var map = ddww.map;
-			ddww.current_img_path =	gio.config.defpaths.SKINS_DEF_PATH + 
-									'/'+ ddww.common_skin_key;
+	var setup_img_path = function( ddtt ) {
+			var map = ddtt.map;
+			ddtt.current_img_path =	gio.config.defpaths.SKINS_DEF_PATH + 
+									'/'+ ddtt.common_skin_key;
 	};
 
 })();

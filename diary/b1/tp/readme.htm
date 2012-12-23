@@ -49,7 +49,7 @@ C O D I N G    S T Y L E
 
 
 <a name="comments"></a>
-C o m m e n t s
+A b o u t    C o m m e n t s
 
 	This style targets using key-based project text search like grep or regexxer GUI.
 
@@ -118,10 +118,18 @@ C o m m e n t s
 		//|				for //::
 
 
-F l a g s
-	name_bflag	-	has boolean values
-	name_flag	-	has specified values, like VALUE1, VALUE2, ...
-	name_raised -	flag with life-scope inside the loop
+P o s t f i x e s
+
+	__eff		- effective
+	__own		- own
+	__cur		- current
+
+
+	F l a g s
+		name_bflag	-	has boolean values
+		name_flag	-	has specified values, like VALUE1, VALUE2, ...
+		name_raised -	flag with life-scope inside the loop
+
 
 
 T a b ..
@@ -133,9 +141,12 @@ W o r k    v a r i a b l e s
 
   Variables w, ww are reserved for short-living variables.
   The same way, variables beginning with w are shortcuts for short-livers.
+  "Long living variables should not begin with "w".
 
+R e s t r i c t i o n s    o n   c o d i n g
 
-
+	"length" is a "reserved" property. Nothing should be explicitly assigned to this property.
+	It is used in arrays and as an indicator of object beeng an array.
 
 
 H I N T S

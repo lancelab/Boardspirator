@@ -1,5 +1,6 @@
-(function( $ ){ 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
-					var gio  =  tp.gio    =  tp.gio   || {};
+(function( $ ){ 	var tp		= $.fn.tp$  =  $.fn.tp$ || {};	
+					var gio		= tp.gio    =  tp.gio   || {};
+					var cpaste	= tp.core.paste_non_arrays;
 
 
 
@@ -10,22 +11,23 @@
 		if(!JSON || !JSON.stringify) return '{ "alert" : "no JSON found" }';
 		
 		var res = [];
-		var len=gio.playalbs.length;
+		var len=gio.session.alist.length;
 		for(var alix=0; alix<len; alix++){
 
-			var alb=gio.playalbs[alix];
+			var alb=gio.session.alist[alix];
 			for(var collix=0; collix<alb.collections.length; collix++){
 
 				var coll = alb.collections[collix];
-				if( coll.external ) continue;
+				if( coll.ref.link.link ) continue;
 				if( !coll.maps_loaded ) gio.download_collection(coll);
 				if( coll.maps_loaded !== 'success' ) continue;
-				var scoll = res[res.length] = {};
-				var adr = coll.address;
-				scoll.akey = adr.akey;
-				scoll.ckey = adr.ckey;
-				scoll.file_key = adr.fkey;
-				scoll.source_text = coll.source_text;
+				var scoll = res[res.length] = 
+					cpaste( {}, gio.def.templates.play.coll );
+				var folder = coll.ref.folder;
+				scoll.akey = folder.akey;
+				scoll.ckey = folder.ckey;
+				scoll.file_key = folder.fkey;
+				scoll.script.source_text = coll.script.source_text;
 			}
 		}
 		return JSON.stringify(res,null,'\t');

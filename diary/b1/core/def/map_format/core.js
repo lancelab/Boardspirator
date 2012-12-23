@@ -1,11 +1,13 @@
-(function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
-					var gio		=  tp.gio    =  tp.gio   || {};
-					var ceach	=  tp.core.each;
-					var cmd				=  gio.def.colorban_maps_decoder = gio.def.colorban_maps_decoder || {};
-					var str2multiline	= tp.core.str2multiline;
+(function(){	 	var tp			=  $.fn.tp$  =  $.fn.tp$ || {};	
+					var gio			=  tp.gio    =  tp.gio   || {};
+					var ceach		=  tp.core.each;
+					//.	core-map-decoder container
+					var cmd			=  gio.core.def.map_format;
+					var str2mline	=  tp.core.str2mline;
 
 					//. this line is sufficient to enable this regex in all cmd subroutines
 					var trim_match	= cmd.trim_match = /^\s*|\s*$/g;
+					var reg_ex_r	= /\r/g;
 
 					var conf		={ 
 										// How far above a board does sokoban-backward-from-board-title
@@ -44,56 +46,55 @@
 	//					a. top detects a change and sets ...-raised flags and flags, 
 	//					b. set continue in master loop only if there are no flags raised, or
 	//					postboard tip and soko-pretitle edit can be skipped
-	cmd.decode=function(maps_text, colln){
+	cmd.decode = function ( colln ) {
 
-		/// builds decoder table once per application
-		if( !cmd.colorban_decoder_table.is_finished ) {
-			cmd.finalize_colorban_decoder_table(colln.game);
-		}
-
-
-		var w;
 
 		//: defines parser zone's flags
 		var MAP_LOOKUP	= 0;	// Map-ended		zone	is entered.
 		var BOARD		= 1;	// Map's board		zone	is entered.
 		var AFTER_BOARD	= 2;	// Map's postboard	zone	is entered.
 
-		//: TODM coll def must have own place
-		colln.reference				= colln.reference || {};
-		colln.parsed				= colln.parsed || {};
-		colln.parsed.lines_number	= colln.parsed.lines_number || 0;
-		colln.script				= colln.script || {};
+		var script				= colln.script;
+		var parsed				= script.parsed;
+		parsed.lines_number		= parsed.lines_number || 0;
+
+
 
 		//: sets flags
 		var area_flag					= MAP_LOOKUP;					// file is entered or map completed
-		var rescan_bflag				= !!colln.parsed.lines_number;
-		var parsed_file_header_bflag	= !!colln.parsed.file_header;
+		var rescan_bflag				= !!parsed.lines_number;
+		var parsed_file_header_bflag	= !!parsed.file_header;
 		//.	keeps colorban state,
 		//	entered only by :::map and
 		//	left only by :::map_end,
 		//	very strict. Placing sokoban maps after colorban map
 		//	requires :::map_end
-		var cb_bflag					= false;
+		var cbzone_bf					= false;
 
 
 		var map_ix=-1;
 
 
 		// //\\ validates maps_text
-		colln.source_text = maps_text;  //TODm colln.script.source_text
-		if(maps_text.indexOf('\n') > -1) {
+		var maps_text = script.source_text;
+		if( maps_text.indexOf('\n') > -1 ) {
 
-			var flines=colln.script.flines = maps_text.split("\n");
-			//.	Hopes this is a faster way to reserve the memory
-			//	instead of adding elements to this array while parsing "flines":
-			//	Source array with no white spaces at ends:
-			var trimmed_lines = colln.script.trimmed_lines = maps_text.split("\n");
-		}else if(maps_text.indexOf('\r') > -1){
+			var flines = script.flines = maps_text.split( "\n" ); //TODM wastes performance when appending text to collection; don't do split again;
 
-			if(gio.debug) gio.cons_add("Rare case ... CR is a map line delimiter");
-			var flines=colln.script.flines = maps_text.split("\r");
-			var trimmed_lines = colln.script.trimmed_lines = maps_text.split("\r");
+			//. Sets memory for future trimmed lines.
+			//	Be careful when using them not as a flag of empty lines:
+			//	they are not macrosed and are raw.
+			//
+			//	Hopes this is a faster way to reserve the memory
+			//	instead of adding elements to this array while parsing "flines".
+			var trimmed_lines = script.trimmed_lines = maps_text.split("\n");
+			//	TODM script.trimmed_lines is possibly huge waste of memory
+
+		}else if( maps_text.indexOf( '\r' ) > -1 ) {
+
+			if( gio.debug ) gio.cons_add( "Rare case ... CR is a map line delimiter" );
+			var flines = script.flines = maps_text.split( "\r" );
+			var trimmed_lines = script.trimmed_lines = maps_text.split( "\r" );
 		}else{
 
 			colln.maps_loaded += "No line delimter \\r or \\n is found.\nNo maps exist in collection.";
@@ -104,25 +105,30 @@
 
 
 
-		if(rescan_bflag){
+		if( rescan_bflag ) {
 
-			map_ix=colln.maps.length-1;
-			var ww = '.. rescan began for map ix ' + (map_ix + 1);
+			map_ix = colln.maps.length-1;
+			var ww = '.. rescan began for map ix ' + ( map_ix + 1 );
 			colln.maps_loaded += ww;
-			if(gio.debug) gio.cons_add(ww);
+			if( gio.debug ) gio.cons_add(ww);
 		}else{
 
 			//: begins parsing yet empty collection
-			colln.maps=[];
-			map_ix=-1;
+			colln.maps = [];
+			map_ix = -1;
 			//. sets default map for gameplay
-			colln.map_ix=0;
-			colln.maps_loaded +='..decoding began..';
+			colln.map_ix = 0;
+			colln.maps_loaded += '..decoding began..';
 		}
 
 
+		//. recreates jwon every time when reparsing
+		script.proc.jwon	= cmd.CreateJwon( colln );
+		var jwon			= script.proc.jwon;	
+		var parse_jwon		= jwon.parse;
+
 		//.	lim is a flag, -1 means no postboard collection began
-		var postboard = { start : colln.parsed.lines_number, lim : -1 };
+		var postboard = { start : parsed.lines_number, lim : -1 };
 
 		var map = null;
 		var raw_board_lines;
@@ -136,26 +142,34 @@
 
 
 		///	Master loop via colln lines
-		for( var yy=colln.parsed.lines_number; yy<flines.length; yy++ ) {
+		for( var yy = parsed.lines_number; yy < flines.length; yy++ ) {
 
-			master_line=flines[yy].replace(/\r/g,'');
-			trimmed_lines[yy]=flines[yy].replace(trim_match,'');
+			var master_line		= flines[yy] = flines[yy].replace(reg_ex_r, '');
+			trimmed_lines[yy]	= master_line.replace( trim_match, '' );
+
+			if( !jwon.parser_disabled_bf && parse_jwon( yy ) ) {
+				//.	slowly "recuts" beginning of the file
+				//	can be done faster, as in callback when jwon is closing,
+				//	but this will be too hidden
+				postboard.lim = -1;
+				continue;
+			}
 
 			// gio.cons('current master_line=="'+master_line+'"'+yy);
 
 			//: initializes cycle-scope binary-flags,
 			//	they have postfix "raised"
-			var map_fin_raised = false;
-			var header_raised = false;
-			var board_line_raised = false;
-			var map_init_raised = false;
+			var map_fin_raised		= false;
+			var header_raised		= false;
+			var board_line_raised	= false;
+			var map_init_raised		= false;
 
 			//.	detects coloban directive
-			var cb_match = colorbanKV(master_line);
+			var cb_match = colorbanKV( master_line );
 
 			///	:::-directive came
 			//	if(cb_match.length && cb_match[2]){
-			if(cb_match[2]){
+			if( cb_match[2] ) {
 				var cb_detector = cb_match[2];
 				//.. directive came
 
@@ -165,18 +179,18 @@
 					//:: enters colorban zone and raises soko-finalizers flags
 
 					if( !parsed_file_header_bflag )				header_raised = true;
-					if( cb_bflag || area_flag !== MAP_LOOKUP )	map_fin_raised = true;
+					if( cbzone_bf || area_flag !== MAP_LOOKUP )	map_fin_raised = true;
 	
 					//. completes zone for file-header or previous map
 					if( postboard.lim > -1 ) postboard.lim = yy;
 
-					cb_bflag = true;
+					cbzone_bf = true;
 					map_init_raised = true;
 					area_flag = BOARD;
 					var map_key = cb_match[3] || '';
 
 
-				}else if( cb_bflag ) { 
+				}else if( cbzone_bf ) { 
 					//::	does colorban-zone-ending or board-ending flags or
 					//		sets generic colorban-data if any
 
@@ -185,7 +199,7 @@
 						map_fin_raised = true;
 						if( postboard.lim > -1 ) postboard.lim = yy;
 						area_flag = MAP_LOOKUP;
-						cb_bflag = false;
+						cbzone_bf = false;
 
 					}else if( cb_detector === 'board_end' ) {
 						area_flag = AFTER_BOARD;
@@ -193,40 +207,46 @@
 
 
 					//::	sets generic colorban-data if any
-					//		must be must be board zone. TODM set if( area_flag === BOARD ...
 
 					// //\\ dereferences map to map in another album or collection or game context
 					}else if(cb_detector === 'akey'){
-						if( area_flag === BOARD ) map.reference.akey = cb_match[3];
+						if( area_flag === BOARD ) map.bundled__ref.akey = cb_match[3];
 						continue;
 					}else if(cb_detector === 'collection_index'){
-						if( area_flag === BOARD ) map.reference.collection_index = cb_match[3];
+						if( area_flag === BOARD ) map.bundled__ref.collection_index = cb_match[3];
 						continue;
 					}else if(cb_detector === 'map_index'){
-						if( area_flag === BOARD ) map.reference.map_index = cb_match[3];
+						if( area_flag === BOARD ) map.bundled__ref.map_index = cb_match[3];
 						continue;
 
-					///	dereferences map.game to game from another album
+					///	dereferences map.game to dressed game from another album
+					// //.\\	context_akey means "dgame_akey" : sets dress and game context,
+					//			points to album which will supply game-definition-context and
+					//			dress-context for this map.
+
+
 					}else if( cb_detector === 'context_akey' ){
 
 						if( area_flag === BOARD ) {
-							var ww = gio.def.procs.derive_album(cb_match[3]);
-							if(ww){
-								map.game = ww.game;
+							var ww = gio.def.procs.derive_album( cb_match[3] );
+							if( ww ) {
+								//. assigns dressed game
+								map.game = ww.dgame;
 							}else{
-								var ww = "Failed to find game context " +
+								var ww = "Failed to find dressed game context " +
 									cb_match[3]+ "\nfor map "+map.ix;
 								colln.maps_loaded += ww;
-								gio.cons(ww);
+								gio.cons( ww );
 								return; //failed collection
 							}
 						}
 						continue;
 					}
+					// \\.// context_akey means dgame_akey : sets dress and game context
 					// \\// dereferences map to map in another album or collection or game context
 
 
-				}//.. else cb_bflag
+				}//.. else cbzone_bf
 				// \\\/// Digests :::-directive
 
 
@@ -234,7 +254,7 @@
 				//		It is good to not put here "continue" statement, because
 				//		we can add an extension of directive inside Sokoban-postboard zone or in MAP_LOOKUP zone.
 
-			}else if( cb_bflag ) {
+			}else if( cbzone_bf ) {
 				//:: No :::-directive
 
 				if( area_flag === BOARD ) board_line_raised=true;
@@ -271,7 +291,7 @@
 
 
 			if( header_raised ) {
-				cmd.finalize_file_header( postboard,  colln);
+				cmd.finalize_file_header( postboard, colln );
 				parsed_file_header_bflag = true;
 			}
 
@@ -298,23 +318,23 @@
 						ix : map_ix,
 						key : map_key,
 						// parents:
-						game : colln.game,
+						game : colln.dgame,
 						collection : colln,
 						// children:
 						skin:{},
-						parsed : { backward_soko_title : str2multiline( backward_soko_title ) },
+						parsed : { backward_soko_title : str2mline( backward_soko_title ) },
 
 						// Stashes board info
-						script : {	cbformat : !!cb_bflag,
-									symbol2breed : !!cb_bflag && cmd.symbol2breed,
-									breed2symbol : !!cb_bflag && cmd.breed2symbol,
-									decoder_table : cb_bflag ? cmd.colorban_decoder_table : cmd.sokoban_decoder_table,
+						script : {	cbzone_bf : !!cbzone_bf,
+									symbol2breed : !!cbzone_bf && cmd.symbol2breed,
+									breed2symbol : !!cbzone_bf && cmd.breed2symbol,
+									decoder_table : cbzone_bf ? cmd.colorban_decoder_table : cmd.sokoban_decoder_table,
 									flines : flines,
 									first_map_line : ( postboard.lim > -1 ? postboard.lim : yy ), 
 									raw_board_lines : []
 						},
 
-						reference : {},
+						bundled__ref : {},
 
 
 						// Generated by board-line-parser later or by reference:
@@ -366,19 +386,20 @@
 			}
 
 
-			/// collects backward comment containing map's title for soko-maps and
+			/// collects preboard containing map's title for soko-maps and
 			//	shifts post-board directives
 			if( area_flag !== BOARD ) {
 
 				/// recreates top of postboard
 				if( postboard.lim === -1) {
 					postboard.lim = yy + 1;
+					//. automatically skips jwon-header
 					postboard.start = yy;
 				}
 
-				if(	!cb_bflag ) {
+				if(	!cbzone_bf ) {
 					if( trimmed_lines[yy].length > 0 ) {
-						backward_soko_title = trimmed_lines[yy].replace(comment_escape_char,'');
+						backward_soko_title = trimmed_lines[yy].replace( comment_escape_char, '' );
 						postboard.lim = yy;
 					}else if( postboard.lim + conf_bt < yy ) {
 						//: destroys title if it is too high from the board

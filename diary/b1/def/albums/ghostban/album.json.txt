@@ -1,21 +1,22 @@
+::://
+{ "albums" :
+
 { "ghostban" :
 
 	{
 		"album_name": "",
+
 		"collections": [
-			{
-				"credits" : { "author"	: "Konstantin Kirillov",
-							"title"		: "Beginner",
-							"license"	: ""
-				}
-			}
+			{ "credits" : { "title"		: "Beginner" } 	}
 		],
+
 		"dresses": {
 			"default": {
 				"tile": {
 					"width": 30,
 					"height": 30
 				},
+				"playvigation"	:{	"UNIT_IS_UNSELECTABLE" : false },
 				"rules": "Heros push color-matching boxes. Green hero swaps with blue things.",
 				"objective": "Put blue boxes to blue targets."
 			},
@@ -23,10 +24,10 @@
 			"ghostban": {
 				"chosen"	: true,
 				"skin_key": "ghostban",
-				"title": "Courtesy",
+				"playvigation"	:{	"UNIT_IS_UNSELECTABLE" : false },
 
 							"credits" : {
-								"author"	: "Konstantin Kirillov",
+								"title"		: "Courtesy",
 								"copyright"	: "Copyright (C) 2012 Konstantin Kirillov",
 								"license"	: "host-based",
 								"web_site"	: "http://landkey.net/gio/gio/play",
@@ -45,7 +46,7 @@
 				},
 				"focuser" : "ghostban",
 
-				"rules": "Master and Avatars do push own pizza.\nThe Avatars do swap with real things\n, but not vice versa ... ",
+				"rules": "Master and Avatars do push own pizza. \nThe Avatars do swap with real things, \nbut not vice versa ... ",
 				"objective": "Deliver pizza to dishes",
 				"story": "Master is desperate to serve dinner ...\nbut not aware about Avatars who are desperate to help ...\nand after all, ghost-pizza has little nutritional value ...",
 
@@ -61,4 +62,5 @@
 		}
 	}
 	
+}
 }

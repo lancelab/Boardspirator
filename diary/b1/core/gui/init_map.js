@@ -21,14 +21,14 @@
 		var game		= gm.game;		
 		var album		= gs.playalb;
 		var dress		= gm.dresses_wrap.chosen_dress;
+		var img_dec		= dress.image_decoder;
 		var dstyle		= dress.style;
 		var parstyle	= dstyle.parent || {};
 		var plstyle		= dstyle.play || {};
 		var gboard_stl	= gm.board.style;
 		var dcenter_stl	= gdr.dcenter.style;
 		var BCOLOR		= 'transparent';
-
-		document.title = gio.gui.procs.calculate_game_and_album_title();
+		document.title = gio.gui.procs.get_master_title_from_session_state();
 
 		// * apparently IE 8 looses style.position='absolute', readd this here:
 		gboard_stl.position='absolute';
@@ -116,17 +116,16 @@
 					ss.height = theight + 'px';
 
 					var img = unit.tile.img;
-					//if( unit.src ){
-					var ww = dress.image_decoder[cname];
-					if(ww){
-							//. blocks prepending a path if it already has a slash
-							img.src		= ww.indexOf('/') > -1 ? ww : (skin_standard_path + '/' + ww);
-							img.width	= twidth;
-							img.height	= theight;
-							img.style.visibility='visible';
-					}else{
-						img.style.visibility='hidden'; //src = '';
-					}
+
+					var w_key = cname + '_' + xx + '_' + yy;
+					//. instead of wasting decoder, pollutes hard-code here
+					var w_img = img_dec[ w_key ] || img_dec[ cname ] || (cname + '.png');
+					//. blocks prepending a path if it already has a slash
+					img.src		= w_img.indexOf('/') > -1 ? w_img : (skin_standard_path + '/' + w_img);
+					img.width	= twidth;
+					img.height	= theight;
+					img.style.visibility='visible';
+
 			});
 		});
 		// Static-per-play-size in pixels:
@@ -234,30 +233,42 @@
 
 
 
-	/// Produces:
-	//	gm.dresses_wrap.arr = arr;
-	//	gm.dresses_wrap.chosen_ix = chosen_ix;
-	//	gm.dresses_wrap.chosen_dress = arr[chosen_ix].dress;
-	var finalize_dresses_for_board=function(gm){
+	/// Produces
+	//
+	//	1.	takes dresses parsed from postboard which are stored in
+	//		map.dresses where map.dresses is created in "finalize_map.js",
+	//	2.	does inherit by dkey by inherit_from from 
+	//		dresses from game or context_akey::game
+	//	3.	clones all the job in array "all" and drops "all" into property
+	//		gm.dresses_wrap = { all : all }
+	//	4.	further: does mapDresserArray
+	//
+	var finalize_dresses_for_board = function( gm ) {
 
 		var chosen_map_dkey = '';
-		if(gm.dresses){
+		if( gm.dresses ) {
 
-			/// establishes chosen_dkey or as first if none
-			ceach(gm.dresses, function(dkey, dress){
-				if(dress.chosen) chosen_map_dkey = dkey;
+			///	if parsed dresses have chosen key, establishes it,
+			//	otherwise, keeps chosen_map_dkey empty
+			ceach( gm.dresses, function( dkey, dress ) {
+				if( dress.chosen ) chosen_map_dkey = dkey;
 			});
 
-			/// inherits from defaul or from co-named parent
-			ceach(gm.dresses, function(dkey, dress){
-				if( gm.game.dresses[dress.inherit_from] ){
-					var ww = clonem(gm.game.dresses[dress.inherit_from],dress);
-				}else{
-					var ww = clonem(gio.def.default_dress,dress);
-				}
-				tp.core.paste_non_arrays(dress, ww);
+			// //.\\ inherits from defaul or from co-named parent
+			ceach( gm.dresses, function( dkey, dress ) {
+				var inherit_from = dress.inherit_from || dkey
+				var ww = gm.game.dresses[ inherit_from ] || gio.def.default_dress;
+				//::	we must do this job in two steps because dress must override  //TODM slow
+				//		parent properties
+				//.	step 1
+				var ww = clonem( ww, dress );
+				//.	step 2:	stores collected tree in dress
+				tp.core.paste_non_arrays( dress, ww );
 			});
-			var all =  clonem(gm.game.dresses, gm.dresses);
+			var all =  clonem( gm.game.dresses, gm.dresses );
+			// \\.// inherits from defaul or from co-named parent
+
+
 		}else{
 
 			//. does not waste space if no map-dress
@@ -271,27 +282,21 @@
 		}
 
 		gm.dresses_wrap = { all : all };
-
-		/// sets album context
-		ceach(all, function(dkey, dress){
-			dress.akey = gm.game.akey;
-			// c onsole.log('possibly board init.; key added. dress=',dress);
-		});
+		//..	at this moment gm.dresses_wrap.all contains all possible merges of dresses
+		//		known for this map 
 
 		mapDresserArray( gm, chosen_map_dkey || gm.game.dresses_chosen_key );
 
 	};
 
 
-
-
-	//=========================================
-	// Produces:
-	//	gm.dresses_wrap.arr = arr;
-	//	gm.dresses_wrap.chosen_ix = chosen_ix;
-	//	gm.dresses_wrap.chosen_dress = arr[chosen_ix].dress;
-	//	makes tooltipifies for non-skipped dresses
-	//=========================================
+	///	Produces final wrapper for map's dresses
+	//		gm.dresses_wrap.arr
+	//			1. skips all dresses which must be skipped
+	//			2. tooltipifies
+	//			3. establishes chosen dress
+	//			4. establishes array of dreesses for GUI: gm.dresses_wrap.arr
+	//
 	var mapDresserArray = function(gm, initial_dkey){
 
 		var dresses		= gm.dresses_wrap.all;
@@ -304,7 +309,7 @@
 				if(dress.skip) return true;
 				counter +=1;
 
-				var title = dress.title || tp.core.capitalizeFirstLetter(dkey.replace(/_/g,' '));
+				var title = dress.credits.title || tp.core.capitalizeFirstLetter(dkey.replace(/_/g,' '));
 
 				//: makes an array for GUI select element
 				arr[counter] = { 
@@ -316,8 +321,7 @@
 				} 
 
 				//. makes tooltip and credit html-table
-				dress.credits.title = title; 
-				tp.core.tooltipify(dress, "Dress");
+				tp.core.tooltipify( dress, "Dress" );
 				// c onsole.log('guified credits. key, credits_table='+dkey,dress.credits_table);
 		});
 

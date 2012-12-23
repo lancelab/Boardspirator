@@ -3,79 +3,78 @@
 
 
 	
-	gio.def.albums['sokoban'] =
+	gio.def.albums[ 'sokoban' ] =
 	{
 			collections :[
 
-				{	"title"	: "David Holland. dh1.", "address"		:{ "fkey": "authentic_David_Holland_dh1.txt",	"ckey": "holland",  }, 	"map_title_source"	: "title"  },
+				{	"list_title"	: "David Holland. dh1.",					"ref" : { "folder" : { "fkey": "authentic_David_Holland_dh1.txt",	"ckey": "holland" } }, 	"map_title_source"	: "comment" },
 
-				{	"title"	: "David W Skinner. Microban.", "address"		:{ "fkey": "microban1.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "David W Skinner. Microban II.", "address"	:{ "fkey": "microban2.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "David W Skinner. Microban III.", "address"	:{ "fkey": "microban3.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "David W Skinner. Microban IV.", "address"	:{ "fkey": "microban4.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "David W Skinner. Microban V.", "address"		:{ "fkey": "microban5.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-
+				{	"list_title"	: "David W Skinner. Microban.",				"ref" : { "folder" : { "fkey": "microban1.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Microban II.",			"ref" : { "folder" : { "fkey": "microban2.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Microban III.",			"ref" : { "folder" : { "fkey": "microban3.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Microban IV.",			"ref" : { "folder" : { "fkey": "microban4.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Microban V.",			"ref" : { "folder" : { "fkey": "microban5.txt",	"ckey": "skinner"  } } },
 
 				{	
+					"ref" :
+					{ 
+						link :
+						{	
+							link : 'http://users.bentonrea.com/~sasquatch/sokoban/m5'
+						}
+					},
 					credits : { "author"	: "David W Skinner",
 								"title"		: "Microban V (26 puzzles, October 2010, this set is unfinished)",
 								"copyright" : "Copyright (c) 2010 David W Skinner",
 								"license"	: "The sets Sasquatch and Microban may be freely distributed provided they remain properly credited.",
 								"web_site"	: "http://users.bentonrea.com/~sasquatch/sokoban/",
 								"email"		: "s a s q u a t c h (a) b e n t o n r e a . c o m"
-							  },
-					external			:{	
-											link : 'http://users.bentonrea.com/~sasquatch/sokoban/m5'
-										},
-					map_title_source	: 'title'
+							  }
 				},
 
 
 
-				{	"title"	: "David W Skinner. Sasquatch.", "address"	:{ "fkey": "sasquatch1.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "David W Skinner. Sasquatch II.", "address"	:{ "fkey": "sasquatch2.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "David W Skinner. Sasquatch III.", "address"	:{ "fkey": "sasquatch3.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "David W Skinner. Sasquatch IV.", "address"	:{ "fkey": "sasquatch4.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "David W Skinner. Sasquatch V.", "address"	:{ "fkey": "sasquatch5.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "David W Skinner. Sasquatch VI.", "address"	:{ "fkey": "sasquatch6.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "David W Skinner. Sasquatch VII.", "address"	:{ "fkey": "sasquatch7.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "David W Skinner. Sasquatch VIII.", "address"	:{ "fkey": "sasquatch8.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "David W Skinner. Sasquatch IX.", "address"	:{ "fkey": "sasquatch9.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "David W Skinner. Sasquatch X.", "address"	:{ "fkey": "sasquatch10.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "David W Skinner. Sasquatch XI.", "address"	:{ "fkey": "sasquatch11.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
-				{	"title"	: "David W Skinner. Sasquatch XII.", "address"	:{ "fkey": "sasquatch12.txt",	"ckey": "skinner",  }, 	"map_title_source"	: "title"  },
+				{	"list_title"	: "David W Skinner. Sasquatch.",			"ref" : { "folder" : { "fkey": "sasquatch1.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch II.", 		"ref" : { "folder" : { "fkey": "sasquatch2.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch III.", 		"ref" : { "folder" : { "fkey": "sasquatch3.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch IV.", 		"ref" : { "folder" : { "fkey": "sasquatch4.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch V.", 			"ref" : { "folder" : { "fkey": "sasquatch5.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch VI.", 		"ref" : { "folder" : { "fkey": "sasquatch6.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch VII.", 		"ref" : { "folder" : { "fkey": "sasquatch7.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch VIII.", 		"ref" : { "folder" : { "fkey": "sasquatch8.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch IX.", 		"ref" : { "folder" : { "fkey": "sasquatch9.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch X.", 			"ref" : { "folder" : { "fkey": "sasquatch10.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch XI.", 		"ref" : { "folder" : { "fkey": "sasquatch11.txt",	"ckey": "skinner"  } } },
+				{	"list_title"	: "David W Skinner. Sasquatch XII.", 		"ref" : { "folder" : { "fkey": "sasquatch12.txt",	"ckey": "skinner"  } } },
 
 
 			{
+				"ref" : { "folder" : {	ckey: 'grigoriev', fkey: 'grigr2001.txt' } },
 				credits : { "title"		: "Evgeny Grigoriev. 2001." },
-				address	:{	ckey: 'grigoriev',
-							fkey: 'grigr2001.txt'
-						},
 				map_title_source	:'comment'
 			},
 
 			{
+				"ref" : { "folder" : {	ckey: 'grigoriev', fkey: 'grigr2002.txt' } },
 				credits : { "title"		: "Evgeny Grigoriev. 2002." },
-				address	:{	ckey: 'grigoriev',
-							fkey: 'grigr2002.txt'
-						},
 				map_title_source	:'comment'
 			},
 
 
 
 			{
+				"ref" : { "folder" : {	ckey: 'wierdy' } },
 				credits : { "title"		: "Weirdy" 	},
-				address	:{	ckey: 'wierdy' },
 				map_title_source	:'comment'
 			}
 
-			],
+		],
 
 
-		dresses  :  { 'default' :
+		/// dresses
+		dresses  :
+		{	'default' :
 			{
-
 
 				links	:	[
 					{title:'<a target="_blank" href="http://www.ne.jp/asahi/ai/yoshio/sokoban/handmade/index.html">Yoshio Murase and Masato Hiramatsu. Handmade.</a>'},
@@ -91,8 +90,48 @@
 				objective: 	"push all boxes into black cells",
 				story: 	"Our Hero, the robot, walks through the maze and pushes the boxes to dark cells."
 
-			}// default
-		}// dresses
+			}, // default
+
+			'pullpush' :
+			{
+
+					skin_key	: 'pullpush',
+
+					credits : {
+						"title"		: "Dinner",
+						"author"	: "Konstantin Kirillov",
+						"copyright"	: "Copyright (C) 2012 Konstantin Kirillov",
+						"license"	: "host-based",
+						"web_site"	: "http://landkey.net/gio/gio/play",
+						"date"		: "November 2 2012",
+						"email"		: "beaverscript (a) landkey (.) net"
+					},
+
+					tile	:{	width	: 40, height: 40 },
+					style	:{	play	:{	backgroundImage:'background.png',
+											backgroundColor:''
+										}
+							},			
+
+					rules 		: "Rabbit can push cabbage",
+					objective	: "Fill dishes with food",
+					story		: "It is already evening and hero is hungry.\nWho can help to serve the dinner?",
+
+
+					hname_table	:{
+							hero_b	: 'Rabbit',
+							box_b	: 'cabbage',
+							wall_x	: 'vase'
+					},
+
+					image_decoder	:{
+							hero_x		:	"hero_a_hat.png",
+							box_x		:	"box_b.png",
+							target_x	:	"target_b.png"
+					}
+			}
+
+		}/// dresses
 	};
 
 })();

@@ -1,6 +1,10 @@
 
-
-
+:::.  credits.title                 Beginner
+:::.  credits.version               1.1  
+:::.  credits.author                Konstantin Kirillov unless specific map has explicit own author
+:::.  credits.copyright             Copyright (c) 2012 Konstantin Kirillov unless specific map has explicit own copyright
+:::.  credits.license               This collection is free for distribution, modification, and use provided collection and map credits are not removed.
+:::.  credits.creation_date         December 4, 2012
 
 
 :::map
@@ -14,12 +18,11 @@
 # # # #
 :::board_end
 :::title=Clumsy Helper.
-:::author=Konstantin Kirillov. Derivative from David W. Skinner. Microban II, Map 1. Source: http://users.bentonrea.com/~sasquatch/sokoban/m2 Site: http://users.bentonrea.com/~sasquatch/sokoban/
+:::author=Konstantin Kirillov
+:::influenced_by=David W. Skinner. Microban II, Map 1. Source: http://users.bentonrea.com/~sasquatch/sokoban/m2 Site: http://users.bentonrea.com/~sasquatch/sokoban/
 :::date=October 31, 2012.
 
-
-84-30
-:::playpath=Optimal
+:::playpath=Opt. 84-30
 |a.0.U|a.0.U|a.0.U|b.0.L|b.0.r|b.0.d|b.0.l|b.0.l|a.0.l|a.0.d|b.0.u|b.0.r|b.0.D|b.0.u|b.0.l
 |b.0.d|b.0.d|b.0.r|a.0.r|a.0.r|b.0.U|b.0.l|b.0.u|b.0.u|b.0.r|a.0.r|a.0.d|a.0.L|a.0.L|a.0.r
 |b.0.D|b.0.l|b.0.d|b.0.r|a.0.u|a.0.l|a.0.l|a.0.u|a.0.u|a.0.u|a.0.r|a.0.D|a.0.D|a.0.l|a.0.d
@@ -30,15 +33,13 @@
 
 
 :::map
+:::context_akey=sokoban
+:::akey=sokoban
+:::collection_index=2
+:::map_index=0
 :::board_end
 :::title=Comparing GhostJump with Microban II Map 1
-:::author=David W. Skinner. Microban II, Map 1. Source: http://users.bentonrea.com/~sasquatch/sokoban/m2 Site: http://users.bentonrea.com/~sasquatch/sokoban/
-:::date=Downloaded: October 31, 2012.
-:::context_akey=sokoban
-:::subtitle=subtitle x
-:::akey=sokoban
-:::collection_index=4
-:::map_index=0
+:::comments=this map is included solely for comparision purpose which we consider a fair use
 
 :::playpath=Opt.44-16.
 dllUdrruLLUluurDDlDRdrruLdldlUUUrDldRuuu
@@ -57,12 +58,13 @@ ulDD
 # # # #
 :::board_end
 :::title=Triangle Table
-:::author=Konstantin Kirillov. Derivative from David W. Skinner. Microban II, Map 1. Source: http://users.bentonrea.com/~sasquatch/sokoban/m2 Site: http://users.bentonrea.com/~sasquatch/sokoban/
+:::author=Konstantin Kirillov
+:::influenced_by=David W. Skinner. Microban II, Map 1. Source: http://users.bentonrea.com/~sasquatch/sokoban/m2 Site: http://users.bentonrea.com/~sasquatch/sokoban/
 :::data=October 31, 2012
 
 
-121-40
--:::playpath=Solution
+
+:::playpath=Sol. 121-40
 |a.0.l
 |a.0.u|b.0.l|b.0.d|b.0.d|b.0.d|b.0.d|b.0.r|a.0.R|a.0.l|a.0.u|a.0.u|a.0.R|a.0.D|a.0.l|a.0.d
 |a.0.d|b.0.u|a.0.r|b.0.l|b.0.u|b.0.u|b.0.u|b.0.r|b.0.D|b.0.D|b.0.l|b.0.d|b.0.R|b.0.l|a.0.U
@@ -86,11 +88,11 @@ ulDD
 # # # #
 :::board_end
 :::title=No Dish for Ghost
-:::author=Konstantin Kirillov. Derivative from David W. Skinner. Microban II, Map 1. Source: http://users.bentonrea.com/~sasquatch/sokoban/m2 Site: http://users.bentonrea.com/~sasquatch/sokoban/
+:::author=Konstantin Kirillov
+:::influenced_by=David W. Skinner. Microban II, Map 1. Source: http://users.bentonrea.com/~sasquatch/sokoban/m2 Site: http://users.bentonrea.com/~sasquatch/sokoban/
 :::data=October 31, 2012
 
-106-37
--:::playpath=Optimal
+:::playpath=Opt. 106-37
 |a.0.l|a.0.u|a.0.R|a.0.l|a.0.u|a.0.u|a.0.R|a.0.D|b.0.D|a.0.l|b.0.D|b.0.l|a.0.d|b.0.d|b.0.R
 |b.0.l|a.0.d|b.0.d|a.0.r|a.0.U|a.0.U|b.0.r|b.0.r|b.0.u|a.0.U|b.0.L|b.0.r|b.0.d|b.0.l|b.0.l
 |a.0.l|a.0.d|b.0.u|b.0.r|b.0.D|b.0.u|b.0.l|b.0.d|b.0.d|b.0.r|a.0.r|a.0.r|b.0.U|b.0.l|b.0.u
@@ -117,8 +119,8 @@ ulDD
 :::author=Konstantin Kirillov
 :::data=November 9 2012
 
-79-27
--:::playpath=Opt
+
+-:::playpath=Opt. 79-27
 |a.0.l|a.0.u|a.0.R|a.0.l|a.0.u|a.0.u|a.0.R|a.0.D|b.0.D|a.0.l|b.0.D|b.0.l|a.0.d|b.0.d|b.0.R
 |b.0.u|b.0.r|b.0.d|a.0.d|a.0.r|a.0.U|a.0.U|a.0.U|b.0.L|b.0.r|b.0.u|a.0.l|b.0.l|b.0.D|b.0.l
 |b.0.d|b.0.d|b.0.r|a.0.d|a.0.r|a.0.r|b.0.U|b.0.l|b.0.u|a.0.r|b.0.R|b.0.l|b.0.u|a.0.d|a.0.L
@@ -143,8 +145,8 @@ ulDD
 :::author=Konstantin Kirillov
 :::data=November 9 2012
 
-94-30
--:::playpath=Hint
+ 94-30
+:::playpath=Hint
 |a.0.l|a.0.u|a.0.R|a.0.l|a.0.u|a.0.u|a.0.R|a.0.D|b.0.D|a.0.l|b.0.D|b.0.l|a.0.d|b.0.d|b.0.R
 |b.0.u|b.0.r|b.0.d|a.0.d|a.0.r|a.0.U|a.0.U|a.0.U|b.0.L|b.0.r|b.0.u|a.0.l|b.0.l|b.0.D|b.0.l
 |b.0.d|b.0.d|b.0.r|a.0.d|a.0.r|a.0.r|b.0.U|b.0.l|b.0.u|a.0.r|b.0.R|b.0.l|b.0.u|a.0.d|a.0.L

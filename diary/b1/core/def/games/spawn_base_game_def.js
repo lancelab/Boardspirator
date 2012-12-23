@@ -7,12 +7,15 @@
 
 
 
-	///	Derives base-game with dress from base-definition-seed and seed dress.
-	//	Results in bichrome game - alien colors do not recognized.
-	gdf.procs.spawn_base_game_and_dress=function(){
-		gdf.procs.spawn_base_game_def();
-		gdf.procs.spawn_base_game_dress();
-		// c onsole.log('gdf.games[gdf.base_game.basekey]=', gdf.games[gdf.base_game.basekey]);
+	///	Derives base-game from base-dress and seed-dress and 
+	//	builds default maps decoder.
+	//	Results in bimatch game - alien colors do not recognized.
+	gdf.procs.spawn_base_game_and_dress = function () {
+		spawn_base_game_def();
+		spawn_base_game_dress();
+		gio.core.def.map_format.finalize_colorban_decoder_table( 
+			gdf.games[ gdf.base_game.basekey ]
+		);
 	};
 
 
@@ -20,25 +23,23 @@
 
 
 	///	Derives base-game from base-definition-seed.
-	//	Results in bichrome game - alien colors do not recognized.
-	gdf.procs.spawn_base_game_def=function(){
+	//	Results in bimatch game - alien colors do not recognized.
+	var spawn_base_game_def = function () {
 
-		var game							= tp.core.clone_many(gdf.base_game);
-		gdf.games[gdf.base_game.basekey]	= game;
+		var game							= tp.core.clone_many( gdf.base_game );
+		gdf.games[ gdf.base_game.basekey ]	= game;
 
 
-		game.maps_decoder		=	function(data, collection){ return gio.def.colorban_maps_decoder.decode(data, collection); },
 		game.won_or_not			=	function(gm, pos){ return gio.colorban_is_game_won(gm, pos); };
 
 
-	  ///////////////////////////////////////////////////////////////////////
-	  //Extra Rules. Make this game "herdy" - dependent on sheep leadership
-	  //=====================================================================
-	  game.herd_rules=function(move,gm){
+
+
+	  /// Extra Rules. Make this game "herdy" - dependent on sheep leadership
+	  game.herd_rules = function( move, gm ) {
 
 		var verbose = gio.modes.dynamic.verbose || gio.debug;
 		var log = gio.info.log;
-		var w;
 		var game=this;
 		var steps = move.steps;
 		// Original step:
@@ -130,24 +131,19 @@
 			}
 		}
 		return move;
-	  };
-	  //=====================================================================
-	  //Extra Rules. Make this game "herdy" - dependend on box leadership
-	  ///////////////////////////////////////////////////////////////////////
+	  };  /// Extra Rules
 
 
 
 
 
 
-	  // ================================================
-	  // This function automates colonies definition.
-	  // It is executed immediately.
-	  // It applies colors to races.
-	  // We could make these definitions by hand,
-	  // but opted use this function.
-	  // ================================================
-	  (function(game){
+	  ///	Automates colonies definition.
+	  //	This function is executed immediately.
+	  //	It applies colors to races.
+	  //	We could make these definitions by hand,
+	  //	but opted use this function.
+	  ( function( game ) {
 	
 		var w;
 
@@ -156,16 +152,20 @@
 		var colors = game.colors;
 		var itr = game.interact;
 		var itrr = game.interact_rules;
+
+		//. game.cnames will be game.cnames = [ hero	: [ "hero_x", "hero_a", ... ],
+		//										box		: [ "box_x", "box_a", ...																
 		game.cnames = {};
 
 
 		for(var color_ix=0; color_ix<colors.length; color_ix++){
 			var color = colors[color_ix];
+
 			tp.core.each(game.races, function( race_name, race ){
 
 						var cnames = game.cnames[race_name] = game.cnames[race_name] || [];
 
-						//init colony name:
+						//. inits cnames, colony-names: hero_x, hero_a, ... box_x, ...
 						var cname = cnames[color_ix] = race_name + '_'+ color;	
 						if(race.pass) itrr.pass[cname]=true;
 
@@ -238,35 +238,31 @@
 		//c onsole.log(game.cols);
 
 	  })(game);
-	}; //spawn_base_game_def
+	}; /// Derives base-game from
 
 
 
 
-
-
-	gdf.procs.spawn_base_game_dress=function(){
+	/// finalizes base_game_dress
+	var spawn_base_game_dress = function () {
 
 		var bgame = gdf.games[gdf.base_game.basekey];
-		var dress = gio.def.default_dress;
+		var ddress = gio.def.default_dress;
+		var hname = ddress.hname_table;
+		var colors = bgame.colors;
 
-		var idec	= dress.image_decoder = dress.image_decoder || {};
-		var hero	= bgame.cnames['hero'];					
-		var box		= bgame.cnames['box'];
-		var target	= bgame.cnames['target'];
-		var wall	= bgame.cnames['wall'];
+		for( var color_ix=0; color_ix < colors.length; color_ix++ ) {
+			tp.core.each(bgame.races, function( race_name, race ) {
 
-		for(var i=0; i<bgame.colors.length; i++){
-					var ch=hero[i];
-					var uch=ch.toUpperCase();
-					idec[hero[i]]		=idec[hero[i]]		|| hero[i]+'.png';
-					idec[box[i]]		=idec[box[i]]		|| box[i]+'.png';
-					idec[target[i]]		=idec[target[i]]	|| target[i]+'.png';
-					idec[wall[i]]		=idec[wall[i]]		|| wall[i]+'.png';
+				var cname = bgame.cnames[race_name][color_ix];
+				//. wastes space by establishing hnames right in default dress
+				hname[ cname ] = color_ix ? race_name : cname;
+			});
 		}
 
-		dress.human_name	= function(internal){	return this.hname_table[internal] || internal;   };
-		bgame.dresses = { "default" : dress };
+		//. defines sugar function
+		ddress.human_name = function( nkey ) { return this.hname_table[ nkey ] || nkey; };
+		bgame.dresses = { "default" : ddress };
 	};
 
 

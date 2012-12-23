@@ -6,9 +6,10 @@ Boardspirator is a Boardspirator (Boardy). Tool
 In other words, it is wrapped into a jQuery plugin, tp.
 The files are spread via directory tree, but can be assembled in one file.
 
-Version:				0.1.166
+
+Version:				0.1.169
+Date:					December 23, 2012
 Maturity:               Draft
-Date:					December 3, 2012
 License:				Dual licensed under the MIT or GPL Version 2
                         except items in "def/albums", "def/skins", and  "doc/research"
                         when they explicitly have own lincense.
@@ -17,8 +18,6 @@ Language:				JavaScript
 System Requirements:	2012-modern browser (on-line) or FireFox 3.6+ or IE 8+ (from harddrive).
 WebSite:				http://landkey.net/gio/
 EMail:					beaverscript(a)landkey(.)net
-Developer Comment:		stand-alone versions do coexist as subfolders of folder "diary". Run them usually by landing on index.htm;
-                        the most recent version is in folder diary/b1
 
 
 O v e r v i e w

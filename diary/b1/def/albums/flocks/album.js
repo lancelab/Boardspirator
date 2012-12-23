@@ -2,148 +2,103 @@
 				var gio =  tp.gio    =  tp.gio   || {};
 
 
+
+
 	
-	gio.def.albums['flocks']={
+gio.def.albums['flocks']={
 
-		gkey : 'flocks',
-		collections : 
+	gkey : 'flocks',
+
+	collections : 
 			[
-				{
-					address	:
-					{
-						fkey: 'intro.txt'
-					},
-					title	:'Intro'
-				},
+				{ credits : { title	: "Beginner" } },
 
-				{
-					address	:
-					{
-						fkey: 'wells.txt'
-					},
-					title	:'Wells'
+				{ 	"ref" : { "folder" : { fkey	: 'wells.txt' } },
+					credits : { title	: "Wells" }
 				}
-
-
 			],
 
 
 
-		dresses  :{
+	dresses  :{
 
 
-			'default' :{	tile	:{	width : 45, height: 45 },
-							rules	:	"Heros push boxes of matching-color ...\nBlack matches any other color ...\nBoxes are sticky: moved box moves its neighbours ...\n",
-
-							image_decoder	:{
-								'ground_a' : 'ground_x.png',
-								'ground_b' : 'ground_x.png',
-								'wall_a' : 'wall_x.png',
-								'wall_b' : 'wall_x.png'
-							},
-			},
+		"default"	:{	tile	:{	width : 60, height: 60 },
+						rules	:	"Heros push boxes of match-color ...\nBlack matches own and any color ...\nBoxes are sticky: moved box moves its neighbours ...\n"
+					},
 
 
-			flocks :{
-							skin_key : 'flocks',
-							title	:   'Zoo',
-							chosen : true,
+		flocks :{
 
-							credits : {
+			skin_key : 'flocks',
+			chosen : true,
+
+			credits : {
+								"title"		: "Flocks",
 								"author"	: "Konstantin Kirillov",
 								"copyright"	: "Copyright (C) 2012 Konstantin Kirillov",
 								"license"	: "host-based",
 								"web_site"	: "http://landkey.net/gio/gio/play",
-								"date"		: "November 2 2012"
-							},
-
-			
-							links	:	[],
-
-							//////////////////////// GUI /////////////////////////////////
-							tile	:{	width : 45, height: 45 },
-							style	:{	play:{
-										backgroundImage : 'background.png'
-									},
-							},			
-							//////////////////////// GUI END /////////////////////////////////
+								"date"		: "November 2, 2012"
+			},
+			tile	:{	width : 60, height: 60 },
+			style	:{	play:{ backgroundImage : 'background.png' } },			
 
 
-			//////////////////////// INFO /////////////////////////////////
 			rules	:
 				"When fellow is pushed, fellows nearby\n"+
 				"mock its move if space allows.\n"+
 				"Each breed pushed by own teacher.\n",
 
 			objective:
-				"Fill out all available targets. Each breed has own targets to occupy.",
+				"Fill out all available targets. \nEach breed has own targets to occupy.",
 
 			story:
 				"The Law of school says: the pupil can only be taught\n" +
 				"when it is in his chair or egg\n" +
-				"It is permittable, in break time to leave own place\n" + 
-				"but be sure to get back when classes begin ...\n" +
+				"It is permittable to leave own place\n" + 
+				"in break time, but be sure to get back\n" +
+				"when classes begin ...\n" +
 				"One who has lost its furniture, no longer can be taught...\n" +
 				"....\n" +
-				"When Teachers woke up afte a nap, they found themselves at difficult task ...\n",
-			//////////////////////// INFO END /////////////////////////////////
+				"When Teachers woke up afte a nap, \nthey found themselves at difficult task ...\n",
 
 
-
-			/// masks with human names ... 
-			hname_table	:{ //optional
-				hero_x	: 'teacher',
-				hero_a	: 'monkey`s shepherd',
-				hero_b	: 'chicken`s shepherd',
-				hero_c	: 'rabbit`s shepherd',
-				box_a	: 'fellow monkey',
-				box_b	: 'fellow chick',
-				box_c	: 'fellow rabbit',
-				box_x	: 'monkey'
-			},
-
-
-				/// mask with human images ... 
-				image_decoder	:{
-					'ground_a' : 'ground_x.png',
-					'ground_b' : 'ground_x.png',
-					'wall_a'   : 'wall_x.png',
-					'wall_b'   : 'wall_x.png'
-				}
-
-			}, //flocks
+			hname_table	:{
+				hero_x	: 'Teacher',
+				hero_a	: 'Monkey shepherd',
+				hero_b	: 'Chicken shepherd',
+				hero_c	: 'Rabbit shepherd',
+				box_a	: 'Fellow monkey',
+				box_b	: 'Fellow chick',
+				box_c	: 'Fellow rabbit',
+				box_x	: 'Monkey'
+			}
+		}, ///flocks
 
 
 
 
-
-			forest :{
-							skin_key : 'forest',
-							title	:   'Forest',
-							skip : true,
+		forest :{
+			skin_key : 'forest',
+			skip : true,
 
 							
-							credits : {
+			credits : {
+								"title"		: "Forest",
 								"author"	: "Konstantin Kirillov",
 								"copyright"	: "Copyright (C) 2012 Konstantin Kirillov",
 								"license"	: "host-based",
 								"web_site"	: "http://landkey.net/gio/gio/play",
 								"date"		: "November 2 2012"
-							},
+			},
 
-			
-							links	:	[],
+			tile	:{	width : 80, height: 80 },
+						style	:{	play:{
+									backgroundImage : 'background.png'
+					},
+			},
 
-							//////////////////////// GUI /////////////////////////////////
-							tile	:{	width : 80, height: 80 },
-							style	:{	play:{
-										backgroundImage : 'background.png'
-									},
-							},			
-							//////////////////////// GUI END /////////////////////////////////
-							
-
-			// //\\ INFO /////////////////////////////////
 			rules	:
 				"Hunter pushes monkeys and birds.\n"+
 				"Pushed fellow entails own-breed neighbours " +
@@ -168,38 +123,20 @@
 				"Back to place from where I went.\n" +
 				"Am I first here lost impaired,\n" +
 				"Can one stretch a hand of lead ...\n",
-			// \\// INFO /////////////////////////////////
 
 
-
-			/// masks with human names ... 
-			hname_table	:{ //optional
+			hname_table	:{
 				hero_x	: 'hunter',
 				box_a	: 'fellow monkey',
 				box_b	: 'fellow chick'
-			},
-
-			/// mask with human images ... 
-			image_decoder	:{
-					'ground_a' : 'ground_x.png',
-					'ground_b' : 'ground_x.png'
 			}
 
 
+		}///forest
+	}//dresses
 
 
-
-			}//flocks
-
-
-
-
-
-
-		}//dresses
-	};
-
-
+};
 })();
 
 

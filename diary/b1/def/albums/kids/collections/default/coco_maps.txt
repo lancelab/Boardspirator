@@ -1,0 +1,59 @@
+:::.  credits.title       Beginner
+:::.  credits.copyright   Copyright (c) 2012 Konstantin Kirillov
+:::.  credits.license     Free for use, distribution, and modification as long as these credits retained.
+:::.  credits.date        December 15, 2012
+
+
+
+
+:::map
+######
+#-a--#
+#-A--#
+#--1-#
+#----#
+######
+:::board_end
+:::title=Warm Up
+
+
+
+:::map
+#######
+#-a---#
+#-A---#
+#-A11-#
+#-----#
+#######
+:::board_end
+:::title=Two Baskets
+
+
+
+:::map
+#######
+#-a---#
+#-Aj--#
+#-A11-#
+#-----#
+#######
+:::board_end
+:::title=Around Muhomors
+
+
+:::map
+# # # #  # # #
+# - - a  - - #
+# A - j  - A #
+# - 1 1A 1 - #
+# - - j  - - #
+# - - -  - - #
+# # # #  # # #
+:::board_end
+:::title=Baskets in a Line
+
+
+:::playpath=Opt. 36.12
+lddRUrUrruullLLLUlUllluurrrRRDurrddD
+
+

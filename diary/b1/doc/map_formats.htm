@@ -24,6 +24,9 @@
 	<!-- :: must be before others in gio: -->
 	<script type="text/javascript" src="../core/config.js"></script>
 	<script type="text/javascript" src="../core/config_gui.js"></script>
+	<script type="text/javascript" src="../core/config_description.js"></script>
+	<script type="text/javascript" src="../core/config_spawner.js"></script>
+
 
 	<script type="text/javascript" src="../core/entry.js"></script>
 	<script type="text/javascript" src="js/macrify.js"></script>
@@ -52,6 +55,11 @@ To display a readme, turn JavaScript on.
 		req		- required
 		scode	- application-source-code
 		def		- definition
+
+	P r e c e d e n c e
+
+			<a href="../core/def/map_format/file_header_finalizer.js">//.\\	this statement is skipped for speed purposes, but</a>
+
 
 	C o l l e c t i o n   f i l e   f o r m a t
 
@@ -131,8 +139,7 @@ To display a readme, turn JavaScript on.
 
 		:::context_akey
 
-			points to album which will supply game-definition context and dress context for this map
-			This directive must happen before begining of a board.
+			<a href="../core/def/map_format/core.js">//.\\ context_akey means ... </a>
 
 		When crafting own maps, pay attention when mixing different games in one album.
 
@@ -154,10 +161,13 @@ To display a readme, turn JavaScript on.
 
 		Dress can be specified right in a map script. In this case it overrides properties of it's
 		parent dress in album or adds an extra dress to dresses if no parent with the same name is in album.
-		Parent dress is referred by the name of the map's dress
-			:::dress=...
+		PARENT_DRESS is referred by the name of the map's dress
+			:::dress=PARENT_DRESS_1
 		or by directive 
-			:::inherit_from=...
+			:::inherit_from=PARENT_DRESS_X
+				this directive is used when we create two dresses PARENT_DRESS_1, PARENT_DRESS_2 for the same map and
+				these dresses do inherit from the same PARENT_DRESS_X
+				see <a href="../core/gui/init_map.js">//.\\ inherits from defaul or from co-named parent</a>:
 
 		Get an indea from source code section <a href="../core/def/map_format/collect_dresses.js">//\\ COLLECTS DIRECTIVES FOR DRESS</a>.
 

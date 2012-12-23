@@ -1,15 +1,15 @@
-(function( $ ){ 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
+(function( ){	 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio  =  tp.gio    =  tp.gio   || {};
 
 
 
 	///	Resets gm.playpaths control on GUI.
 	//	Apparently does nothing to change "round.path"
-	gio.gui.reset_playpaths=function(){
+	gio.gui.reset_playpaths = function () {
 		var gm = gio.getgs().gm;
 		//TODm check this ... we should be ready to set bundled playpaths now:
-		if(gm.playpaths){
-				gio.domwrap.cpanel.controls.bundles_path_select_el.reset(
+		if( gm.playpaths ) {
+				gio.domwrap.cpanel.cont_rols.playpaths.reset(
 					{r:{
 						options		:gm.playpaths,
 						callback	:function(i,v){
@@ -18,9 +18,9 @@
 										/*
 										/// suggests curious people to login
 										if(	!gio.session.server.message.loggedin && 
-											!gio.config.query.debugging &&
+											!gio.config.query.luckedin &&
 											gm.ix &&
-											!gm.collection.external &&
+											!gm.collection.ref.link.link &&
 											!gio.getgs().playalb.from_external_url){ //TODM messy gm, gs ... get them at once inside of callback
 											alert('Available for logged-in users');
 											return false;
@@ -43,14 +43,15 @@
 									}
 					},
 					c:{	dont_reset_styles	:false,
-						choice_ix			:0,
-						gui					:{style:{wrapper:{display:'block'}}}
+						choice_ix			:0  //,
+						//gui					:{style:{wrapper:{display:'block'}}}
 					}}
 				);
-		}else{
-			gio.domwrap.cpanel.controls.bundles_path_select_el.reset(
-				{c:{gui:{style :{wrapper:{display:'none'}}}}});
 		}
+		//else{
+		//	gio.domwrap.cpanel.cont_rols.playpaths.reset(
+		//		{c:{gui:{style :{wrapper:{display:'none'}}}}});
+		//}
 	};//reset_playpaths
 
 
@@ -58,7 +59,8 @@
 
 	var do_reset_rounds_select_el = function(){
 		var gm = gio.getgs().gm;
-		gio.domwrap.cpanel.controls.rounds_select_el.reset(
+
+		gio.domwrap.cpanel.cont_rols.rounds.reset(
 					{r:{
 						options		:gm.rounds,
 						callback	:function(i,v){
@@ -75,16 +77,21 @@
 	};
 	
 
+
+
 	gio.gui.reset_rounds_select_el=function(){
+
 		var gm = gio.getgs().gm;
 		if(gm.rounds.length > 1){
+
 			do_reset_rounds_select_el();
 		}else{
-			gio.domwrap.cpanel.controls.rounds_select_el.reset(
+
+			gio.domwrap.cpanel.cont_rols.rounds.reset(
 				{c:{gui:{style :{wrapper:{display:'none'}}}}});
 		}
 	};//reset_rounds
 
 
 
-})(jQuery);
+})();
