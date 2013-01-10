@@ -1,10 +1,16 @@
+/:
+{ "credits" :
+	{
+		/,	title                 	Wells
+		/,	author                	Konstantin Kirillov
+		/,	copyright             	Copyright (c) 2012 Konstantin Kirillov
+		/,	creation_date         	November 5 - November 29, 2012
+		/,	version               	1.1
+		/.	license               	Free for use, distribution, and modification as long as these credits retained.
 
-:::.  credits.title                 Wells
-:::.  credits.author                Konstantin Kirillov
-:::.  credits.copyright             Copyright (c) 2012 Konstantin Kirillov
-:::.  credits.creation_date         November 5 - November 29, 2012
-:::.  credits.version               1.1
-:::.  credits.license               Free for use, distribution, and modification as long as these credits retained.
+	}
+}
+/\\
 
 
 
@@ -34,7 +40,7 @@ UrruuLDldllUluRddrrD
 :::map
 - - 0 0 -
 - A y - -
-A - 9B 0B 0i
+A - h1.B 0B 0a
 - A y - -
 - - - 0 y
 :::board_end
@@ -45,19 +51,22 @@ A - 9B 0B 0i
 :::objective=Put boxes and hero to matching targets. Grey matches any color.
 
 :::dress=flocks
-:::objective=Put monkeys to white chairs and klasskeeper to blue
+:::objective=Put monkeys to white chairs and klasskeeper to a blue
 :::image=wall_x_2_1=wall_a.png
 :::image=wall_x_2_3=wall_c.png
 :::image=wall_x_4_4=wall_b.png
 
 :::dress=forest
 :::chosen=true
-:::objective=Give monkeys apples and Hunter a hat
+:::objective=Bring monkeys back to their apples \nand Hunter to his hat ...
+:::story=Everyone lost own things at night in the forest ...
 :::image=wall_x_2_1=wall_a.png
 :::image=wall_x_2_3=wall_c.png
 :::image=wall_x_4_4=wall_b.png
+:::image=a=hero_a_hatless.png
 
-:::playpath=Opt. 191.64
+191.64
+:::playpath=Opt
 ulDllldDuurrrrddlLdlUlLuUrrDDllldDRRRdrU
 lUUllUUrrDullDDrRRurDrrddddllUdlUURUUluu
 rRlDDlDDDrdrruruLLLUdrruulLLdlUlluuulDuu
@@ -83,14 +92,16 @@ A - B 2B 2a
 
 :::dress=forest
 :::chosen=true
-:::objective=Give Monkeys apples and Hunter - lost Hat 
+:::objective=Guide each Monkey banana of its color
 :::image=wall_x_2_1=wall_a.png
 :::image=wall_x_2_3=wall_c.png
 :::image=wall_x_4_4=wall_b.png
 
-:::playpath=328.87
+328.87
+:::playpath=Hint
 ulDllldDuurrrrddlLdlUlLuUrrDDllldDRRRdrU
 lUUllUUrrDullDDrRRurDrrddddllUdlUUUdRRld
+
 drruruLLLUUluUruurrDrdLLrddllluuRlddrrru
 uuullDulDurrrddddllluUddrrruuLruulllDDDu
 RRlluurrrdrUUlURRRDDrrrrddllLddlluluUrdr
@@ -117,35 +128,55 @@ A - B B a
 
 :::dress=forest
 :::chosen=true
+:::objective=Guide each Monkey to banana of its color
 :::image=wall_x_2_1=wall_a.png
 :::image=wall_x_2_3=wall_c.png
 :::image=wall_x_4_4=wall_b.png
 
 
-:::playpath=316.86
-ulDllldDuurrrrddlLdlUlLuUrrDDllldDRRRdrU
-lUUllUUrrDullDDrRRurDrrddddllUdlUUUdRRld
-drruruLLLUUluUruurrDrdLLrddllluuRlddrrru
-uuullDulDurrrddddllluUddrrruuLruulllDDDu
-RRlluurrrdrUUlURRRDDrrrrddllLddlluluUrdr
-ruuLuulllDDuurrrdddlUllUULLLuullllddrddr
-ruUlluuluurrrDrdLDDlllddrUluRRlddddlUUdd
-rrruuLrddllluuRUluRddddrruuLrUUlluUU
-
-
+-:::playpath=Solution 316.86
 
 
 
 :::map
 - - 1 1 -
-- A # 2 -
+- A y 2 -
 A - 1B 2B a
-- A # - -
+- A y - -
 - - - - C
 :::board_end
 :::class=R2.3.2
 :::title=Notch Stone :: To Anti Well
 
+:::dress=forest
+:::chosen=true
+:::objective=Guide each Monkey to banana of its color
+:::image=wall_x_2_1=wall_a.png
+:::image=wall_x_2_3=wall_c.png
+
+
+:::map
+-  -  - 2  -
+-  2A y -  -
+1A -  B 1B a
+-  A  y 3  -
+-  -  - -  1C
+:::board_end
+:::class=R2.3.2
+:::title=Notch Stone :: To Anti Well :: Random
+
+:::dress=forest
+:::chosen=true
+:::objective=Guide each Monkey to banana of its color
+:::image=wall_x_2_1=wall_a.png
+:::image=wall_x_2_3=wall_c.png
+
+
+:::playpath=131.43
+ulDrddlLdldllluURluuRRRdDllDDRRUdllUUrRR
+drUrrurUlUdRlluurrRRDDrrrdddDrddllluUrrr
+uuluullDlDrrrddrddlllluuRRllddrrrruuLLLD
+DLLDuLDDDuu
 
 
 
@@ -223,7 +254,7 @@ drUdR
 # # # # # #
 # - - - - # 
 # - A # 1 - # 
-# A 1 B i - # 
+# A 1 B a - # 
 # - 2A # - - # 
 # 1 - - - #  
 # # # # # #  
@@ -237,13 +268,13 @@ DldDrUrruruLL
 
 
 :::map
-# # # # # #
-# - - - - # 
-# - 9A # 1 - # 
-# A 1 B i - # 
-# - 2A # - - # 
-# 1 - - - #  
-# # # # # #  
+# # #    # # #
+# - -    - - # # 
+# - h1.A # 1 - # 
+# A 1    B a - # 
+# - 2A   # - - # 
+# 1 -    - - #  
+# # #    # # #  
 :::board_end
 :::class=D2.3.1
 :::title=BWells :: Throne for Klasskeeper
@@ -253,6 +284,14 @@ LdlUllUluRRRDullDDrRRurDrrdrDlddlllUURRl
 UluUrDrrdrdLLLUlUdrUrrUruLLrddllluuRlddr
 rruuuullDulDurrrddddllluUddrrruuLruulllD
 DDuRRlluurrrdrddlUllluurD
+
+
+:::dress=flocks
+:::objective=Bring each creature to chair of its color
+:::image=wall_x_3_2=wall_a.png
+:::image=wall_x_3_4=wall_c.png
+
+
 
 
 :::map
@@ -356,47 +395,5 @@ A - B B a
 10626000 = pstates ix upper bound
 6 = pstate dimension
 25 = hids, ms=446994, ms/step=1327, mks/pstate=276
-
-
-:::map
-- - 1 1 -
-- A Jj 2 -
-A - 1B 2B a
-- A Ll - -
-- - - - Kk
-:::board_end
-:::class=R2.3.2
-:::title=Unexplored :: Notch Stone :: To Alive Well :: No Soulution. Apparently only for climbing-on-walls hero
-
-:::dress=default
-:::note=Rules twist: maps may have cells Jj, Kk, ...: \nThis is reflected in images change
-:::image=j=wall_x.png
-:::image=k=wall_x.png
-:::image=l=wall_x.png
-:::image=J=ground_x.png
-:::image=K=ground_x.png
-:::image=L=ground_x.png
-
-:::dress=flocks
-:::skip
-
-:::dress=forest
-:::title=Forest
-:::chosen=true
-
-
-:::playpath=Opt. 323.88
-ulDllldDuurrrrddlLdlUlLuUrrDDllldDRRRdrU
-lUUllUUrrDullDDrRRurDrrddddllUdlUURRlUUr
-ruruLLrddllluuRluurrrDDDuuulllddrRlluurr
-rdrUUULuUrDullllddrrrRRRDDrrrrddllLddLLu
-luUrdrruuLuulllDDuurrrdddlUllUULLLDDllll
-ddrrRddrruurUUluuruulDDLulDlllddrddrrUrU
-llluuluurrrrddLrDullllddrUluRRlddddlUUdd
-rrruuLrddllluuRUdddrruuLrddlluUrrRlluuRD
-ldR
-
-323.36 = pstates = sphere.angles
-1621985.1621949.49 = total.ball.layer
 
 

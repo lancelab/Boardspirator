@@ -1,8 +1,15 @@
-:::.  credits.title              Intro
-:::.  credits.author             Konstantin Kirillov
-:::.  credits.copyright          Copyright (c) 2012 Konstantin Kirillov
-:::.  credits.license            Free for use, distribution, and modification as long as these credits retained.
-:::.  credits.creation_date      November 29, 2012
+/:
+{ "credits" :
+	{
+		/,	title              	Beginner
+		/,	author             	Konstantin Kirillov
+		/,	copyright          	Copyright (c) 2012 Konstantin Kirillov
+		/,	license            	Free for use, distribution, and modification as long as these credits retained.
+		/.	creation_date      	November 29, 2012
+
+	}
+}
+/\\
 
 
 
@@ -59,9 +66,10 @@ lLdlUrrruulDLdLdRRuRRUUruUlDDrDDrdLdlU
 # # - - - # # 
 - # # # # # -
 :::board_end
-:::title=Unexplored. Get them Home // O.3.2.II
+:::title=Get them Home
+:::class=O.3.2.II
 
-:::playpath=Opt. 38.14
+:::playpath=Opt.38.14
 dlluUrruULuLullddRurRDrDrddlULUlLLruuL
 
 :::dress=flocks
@@ -69,16 +77,19 @@ dlluUrruULuLullddRurRDrDrddlULUlLLruuL
 
 
 :::dress=chicken_garden
-:::title=Chicken Garden
-:::inherit_from=flocks
-:::skin=flockgarden
-:::image=f=blue_man2.png
-:::image=F=blue_chick.png
-:::image=6=blue_target.png
-:::image=g=red_man2.png
-:::image=G=red_chick.png
-:::image=7=red_target.png
-:::image=Y=egg_ground.png
+:::chosen
+-:::title=Chicken Garden
+-:::inherit_from=flocks
+-:::skin=flockgarden
+-:::rules=Each bread has own Master to push.\nMaster's of other breed pull its species.
+-:::objective=Put all breed to own chairs.
+-:::image=f=blue_man2.png
+-:::image=F=blue_chick.png
+-:::image=6=blue_target.png
+-:::image=g=red_man2.png
+-:::image=G=red_chick.png
+-:::image=7=red_target.png
+-:::image=Y=egg_ground.png
 
 :::dress=night
 :::title=Night
@@ -106,7 +117,8 @@ dlluUrruULuLullddRurRDrDrddlULUlLLruuL
 # # - - - # #
 - # # # # # -
 :::board_end
-:::title=Unexplored. No Black Manager Squeezed // O.3.3.IIO
+:::title=Unexplored. No Black Manager Squeezed
+:::class=O.3.3.IIO
 
 :::dress=flocks
 :::skip
@@ -151,17 +163,7 @@ dlluUrruULuLullddRurRDrDrddlULUlLLruuL
 
 
 :::dress=chicken_garden
-:::title=Chicken Garden
-:::inherit_from=flocks
-:::skin=flockgarden
-:::image=f=blue_man2.png
-:::image=F=blue_chick.png
-:::image=6=blue_target.png
-:::image=g=red_man2.png
-:::image=G=red_chick.png
-:::image=7=red_target.png
-:::image=Y=egg_ground.png
-
+:::chosen
 
 
 :::playpath=solution

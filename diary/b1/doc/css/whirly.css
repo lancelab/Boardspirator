@@ -1,0 +1,27 @@
+		body		{	background-color:#002244;
+						color:#FFEEFF;
+					}
+		a			{	color: #8888FF;
+						text-decoration:none; 
+						border:none; 
+					}
+		a:visited	{ color: #FFBBBB; }
+		a:hover		{ color: #fff;			background-color:transparent; }
+
+		td, th		{ font-family : Arial, Helvetica; }
+
+		td
+		{
+			background-color:#333333;
+			vertical-align:top;
+			padding:0px 10px 10px 10px;
+			font-size:10px;
+		}
+
+		tr.middle_header td,
+		th			{ background-color:#666666; padding:15px; text-align: center; font-size:10px; }
+
+		tr.middle_header td		{ padding:5px; }
+
+		tr.whirly td  { background-color:#333366; }
+		tr.no_color_match td  { background-color:#335555; }

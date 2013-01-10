@@ -222,4 +222,10 @@
 	// E x t e r n a l   c a l l s
 	//==============================================================
 
+
+	/// reduces annoying name console.log to shorter
+	window.ccc = function () {
+		for( var ii=0; ii < arguments.length; ii++) console.log( arguments[ ii ] ); 	
+	}
+
 })();

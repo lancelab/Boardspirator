@@ -1,43 +1,141 @@
+/:
+{	"credits" :
+	{
 
-Live Maze
-License: MIT
-Copyright (c) 2011 Konstantin Kirillov
+		/, title       Beginner
+		/, copyright   Copyright (c) 2012 Konstantin Kirillov
+		/, license     Free for use, distribution, and modification as long as these credits retained.
+		/. date        January 6, 2013
+	}
+}
 
-
-:::map
-##########
-#111111--#
-#b-------#
-#-ABABAB-#
-#--------#
-#-BABABA-#
-#-------a#
-#--222222#
-##########
-:::board_end
-:::title=6 pieces
-:::multiplayer=2
-
-
-rlrlDlulrlrlrlrurudrdUlUldDdDlududrrrrur
-urlrDuuulllllrlrdUlddlRDRrldururrurLDdrl
-rUDUDrDuuulLurLdLdLluUlUDdDluUrdrLDdDluU
-RURdRdurrdDrDDlllllUlUlUullulRdddrR
+/\\
 
 
 :::map
-##########
-#1111----#
-#b-------#
-#-BABA---#
-#--------#
-#---ABAB-#
-#-------a#
-#----2222#
-##########
+# # # # #  # #
+# - - - -  - # 
+# - A # A  - # 
+# 1 A 1 1x 1 # 
+# 1 A # A  - # 
+# - - - -  - #  
+# # # # #  # # 
 :::board_end
-:::title=4 pieces
-:::multiplayer=2
+:::title=Sokostrong :: Square :: To Line
+
+66.17
+:::playpath=Opt
+lLrrrddlllUlURddrrruuuulllDulDDRRluurrrd
+DLLLuurrDrdLuullddddrrUdrU
+
+
+
+
+:::map
+# # # # # # #
+# 1 - - 1 - # 
+# - A # B - # 
+# 2x A - 1 - # 
+# - A # B - # 
+# - 2 - - - #  
+# # # # # # # 
+:::board_end
+:::title= BiWells :: Angle Swap
+:::class=X2.3.2
+
+132.27
+:::playpath=Sol
+uurrrrddllLrrrddlllluUUdddrrrUruLLLrrruu
+lllDlDRuurrDDrddlllUdrrruulDuuulldldRuur
+rdDuullddddlUruRluurrdrdddLLrUUruuLDDllu
+uRlddrrrddlU
+
+
+
+
+:::map
+# # # # #  # #
+# - - - 1  - # 
+# 1 A # A  - # 
+# - A - x  1 # 
+# - A # A  - # 
+# 1 - 1 -  # #  
+# # # # #  # # 
+:::board_end
+:::title=Sokostrong :: Notch :: Spread
+:::comment=Sokoban has no solution in this map.
+
+91.18
+:::playpath=Sol
+ruulDrdLuulllddddrrrUdllluuRlddrrrurULuu
+llDldddRUluuurrrddLruullldDDuuurrrrDldlL
+UluRRldddlU
+
+
+
+
+:::map
+# # # # #  # #
+# 1 - 1 -  1 # 
+# 1 A # A  - # 
+# - A - 1x - # 
+# - A # A  - # 
+# - - # -  - #  
+# # # # #  # # 
+:::board_end
+:::title=Train :: Three at Wall
+
+93.26
+:::playpath=Sol.
+ruullllddRlddrUluRluurDurrrddLUruLLLdlDR
+ddlUUruurrdrdLrddlUUruullldDRRUruLdddrUU
+ldlllddrUluRR
+
+
+
+:::map
+# # # # # # #
+# 2 - 1 - - # 
+# - A # B 1 # 
+# - A - x - # 
+# 2 A # B - # 
+# 1 - # - - #  
+# # # # # # # 
+:::board_end
+:::title= Boundary :: Hard Path
+:::class=X3.3.2
+
+
+127.36
+:::playpath=Sol
+ruullllddRluurrrDrdddlUUruuLLLDldRlddrUl
+uRuurrrdDLLrruullldlDDrUrrruulDrdLLLrrdd
+rUUluullDlDRRluurrdDrddlUUlluurrrDDlUruL
+ddddrUU
+
+
+
+
+
+
+:::map
+# # # # # # #
+# 1 - 2 - 1 # 
+# - A # B - # 
+# - A - x - # 
+# - A # B - # 
+# - - 2 1 # #  
+# # # # # # # 
+:::board_end
+:::title=Notch Train
+
+144.35
+:::playpath=Hint
+ruullllddRlddrUluuurrrrddlLrruulllldDRRR
+
+llddrrUrUUdLddlluuluurDDuurrDrdLddlllUUR
+DldRRluuuurrdrdLuulldDuurrddLruulldDlddR
+UUrruulllDDrUluRddddlUUU
 
 
 

@@ -1,0 +1,254 @@
+/:
+
+{	"games" :
+	{
+		"ghostjump_demo":
+		{
+			"nam"		: "GhostJump Demo",
+			"basekey"	: "colorban",
+			"credits"	: {	"author" : "Ghosthor" },
+			"interact"	:
+			{
+				"hero_b" :
+				{	
+						"box_a" : "jump",
+						"hero_a" : "jump"
+				}
+			}
+		}
+	},
+
+
+
+	"albums" :
+	{
+		"ghostjump_demo" :
+		{
+			"dresses":
+			{
+
+				"default":
+				{
+					"playvigation" : {	"UNIT_IS_UNSELECTABLE" : false },
+					"rules" : "Heros push own-color boxes. Green hero jumps over with blue things.",
+					"objective" : "Put blue boxes to blue targets."
+				}
+			}
+		}
+	},
+
+	"collection" :
+	{
+		"akey" : "ghostjump_demo",
+		"credits" : { "title" : "Simple Collection" }
+	}
+
+}
+
+/\\
+
+
+
+
+:::map
+# # # #
+# - - #
+# - - #
+# - - # # #
+# 1 - B b #
+# - A 1A - #  
+# - a # # #
+# # # #
+:::board_end
+:::title=Clumsy Helper.
+:::author=Konstantin Kirillov
+:::influenced_by=David W. Skinner. Microban II, Map 1. Source: http://users.bentonrea.com/~sasquatch/sokoban/m2 Site: http://users.bentonrea.com/~sasquatch/sokoban/
+:::date=October 31, 2012.
+
+:::playpath=Opt. 84-30
+|a.0.U|a.0.U|a.0.U|b.0.L|b.0.r|b.0.d|b.0.l|b.0.l|a.0.l|a.0.d|b.0.u|b.0.r|b.0.D|b.0.u|b.0.l
+|b.0.d|b.0.d|b.0.r|a.0.r|a.0.r|b.0.U|b.0.l|b.0.u|b.0.u|b.0.r|a.0.r|a.0.d|a.0.L|a.0.L|a.0.r
+|b.0.D|b.0.l|b.0.d|b.0.r|a.0.u|a.0.l|a.0.l|a.0.u|a.0.u|a.0.u|a.0.r|a.0.D|a.0.D|a.0.l|a.0.d
+|a.0.R|a.0.l|b.0.U|b.0.U|b.0.U|b.0.l|b.0.u|b.0.u|b.0.r|a.0.r|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L
+|a.0.d|a.0.l|a.0.d|a.0.l|a.0.U|a.0.U|a.0.U|a.0.r|a.0.D|b.0.D|a.0.l|b.0.D|a.0.d|a.0.R|a.0.l
+|b.0.D|a.0.u|a.0.u|a.0.r|a.0.u|a.0.u|a.0.l|a.0.D|a.0.D
+
+
+
+:::map
+:::context_akey=sokoban
+:::akey=sokoban
+:::collection_index=2
+:::map_index=0
+:::board_end
+:::title=Comparing GhostJump with Microban II Map 1
+:::comments=this map is included solely for comparision purpose which we consider a fair use
+
+:::playpath=Opt.44-16.
+dllUdrruLLUluurDDlDRdrruLdldlUUUrDldRuuu
+ulDD
+
+
+
+:::map
+# # # #
+# - b #
+# - B # #
+# - A 1 # #
+# 1 2A - - #
+# - A 1 - #  
+# - a # # #
+# # # #
+:::board_end
+:::title=Triangle Table
+:::author=Konstantin Kirillov
+:::influenced_by=David W. Skinner. Microban II, Map 1. Source: http://users.bentonrea.com/~sasquatch/sokoban/m2 Site: http://users.bentonrea.com/~sasquatch/sokoban/
+:::data=October 31, 2012
+
+
+
+:::playpath=Sol. 121-40
+|a.0.l
+|a.0.u|b.0.l|b.0.d|b.0.d|b.0.d|b.0.d|b.0.r|a.0.R|a.0.l|a.0.u|a.0.u|a.0.R|a.0.D|a.0.l|a.0.d
+|a.0.d|b.0.u|a.0.r|b.0.l|b.0.u|b.0.u|b.0.u|b.0.r|b.0.D|b.0.D|b.0.l|b.0.d|b.0.R|b.0.l|a.0.U
+|a.0.U|a.0.U|a.0.l|b.0.d|a.0.d|b.0.r|b.0.r|b.0.u|b.0.L|b.0.r|b.0.d|b.0.l|b.0.l|b.0.u|b.0.r
+|b.0.D|b.0.r|a.0.r|b.0.l|a.0.r|a.0.r|a.0.d|b.0.d|b.0.d|b.0.r|b.0.U|b.0.l|a.0.L|b.0.u|a.0.L
+|a.0.r|a.0.u|b.0.u|b.0.r|b.0.D|b.0.l|a.0.l|a.0.u|a.0.l|a.0.u|a.0.u|a.0.r|a.0.D|a.0.D|a.0.l
+|b.0.d|a.0.d|a.0.R|a.0.l|b.0.r|b.0.U|b.0.U|b.0.U|a.0.r|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.d
+|a.0.l|a.0.d|a.0.l|a.0.U|b.0.l|b.0.u|a.0.U|b.0.u|a.0.U|a.0.r|a.0.D|a.0.l|a.0.d|a.0.R|a.0.l
+|a.0.u|b.0.r|b.0.D|b.0.D|b.0.l|b.0.d|a.0.u|a.0.r|a.0.u|a.0.u|a.0.l|a.0.D|a.0.D|a.0.r|b.0.u
+
+
+
+:::map
+# # # #
+# - b #
+# - B # #
+# - A 1 # #
+# 1 A - - #
+# - A 1 - #  
+# - a # # #
+# # # #
+:::board_end
+:::title=No Dish for Ghost
+:::author=Konstantin Kirillov
+:::influenced_by=David W. Skinner. Microban II, Map 1. Source: http://users.bentonrea.com/~sasquatch/sokoban/m2 Site: http://users.bentonrea.com/~sasquatch/sokoban/
+:::data=October 31, 2012
+
+:::playpath=Opt. 106-37
+|a.0.l|a.0.u|a.0.R|a.0.l|a.0.u|a.0.u|a.0.R|a.0.D|b.0.D|a.0.l|b.0.D|b.0.l|a.0.d|b.0.d|b.0.R
+|b.0.l|a.0.d|b.0.d|a.0.r|a.0.U|a.0.U|b.0.r|b.0.r|b.0.u|a.0.U|b.0.L|b.0.r|b.0.d|b.0.l|b.0.l
+|a.0.l|a.0.d|b.0.u|b.0.r|b.0.D|b.0.u|b.0.l|b.0.d|b.0.d|b.0.r|a.0.r|a.0.r|b.0.U|b.0.l|b.0.u
+|b.0.u|b.0.r|a.0.r|a.0.d|a.0.L|a.0.L|a.0.r|b.0.D|b.0.l|b.0.d|b.0.r|a.0.u|a.0.l|a.0.l|a.0.u
+|a.0.u|a.0.u|a.0.r|a.0.D|a.0.D|a.0.l|a.0.d|a.0.R|a.0.l|b.0.U|b.0.U|b.0.U|b.0.l|b.0.u|b.0.u
+|b.0.r|a.0.r|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.d|a.0.l|a.0.d|a.0.l|a.0.U|a.0.U|a.0.U|a.0.r
+|a.0.D|b.0.D|a.0.l|b.0.D|a.0.d|a.0.R|a.0.l|b.0.D|a.0.u|a.0.u|a.0.r|a.0.u|a.0.u|a.0.l|a.0.D
+|a.0.D
+
+
+
+
+:::map
+# # # #
+# - b #
+# - B # # #
+# - 1A 1 - #
+# - 2A 1 - #
+# - A - - #  
+# - a # # #
+# # # #
+:::board_end
+:::title=Departured Micro. Get Together.
+:::author=Konstantin Kirillov
+:::data=November 9 2012
+
+
+-:::playpath=Opt. 79-27
+|a.0.l|a.0.u|a.0.R|a.0.l|a.0.u|a.0.u|a.0.R|a.0.D|b.0.D|a.0.l|b.0.D|b.0.l|a.0.d|b.0.d|b.0.R
+|b.0.u|b.0.r|b.0.d|a.0.d|a.0.r|a.0.U|a.0.U|a.0.U|b.0.L|b.0.r|b.0.u|a.0.l|b.0.l|b.0.D|b.0.l
+|b.0.d|b.0.d|b.0.r|a.0.d|a.0.r|a.0.r|b.0.U|b.0.l|b.0.u|a.0.r|b.0.R|b.0.l|b.0.u|a.0.d|a.0.L
+|a.0.r|a.0.u|a.0.u|a.0.L|a.0.r|b.0.r|b.0.D|b.0.r|b.0.d|a.0.l|a.0.d|a.0.l|a.0.l|a.0.d|a.0.d
+|a.0.r|a.0.U|a.0.l|b.0.L|b.0.u|b.0.l|b.0.d|b.0.r|a.0.u|a.0.R|a.0.l|b.0.U|a.0.u|a.0.R|a.0.l
+|a.0.u|a.0.u|a.0.r|a.0.D
+
+
+
+:::map
+# # # #
+# - b #
+# - B # # #
+# - 1A - - #
+# - 1A - - #
+# - 1A - - #  
+# - 2a # # #
+# # # #
+:::board_end
+
+:::title=Departured Micro. Ghost to Bottom.
+:::author=Konstantin Kirillov
+:::data=November 9 2012
+
+ 94-30
+:::playpath=Hint
+|a.0.l|a.0.u|a.0.R|a.0.l|a.0.u|a.0.u|a.0.R|a.0.D|b.0.D|a.0.l|b.0.D|b.0.l|a.0.d|b.0.d|b.0.R
+|b.0.u|b.0.r|b.0.d|a.0.d|a.0.r|a.0.U|a.0.U|a.0.U|b.0.L|b.0.r|b.0.u|a.0.l|b.0.l|b.0.D|b.0.l
+|b.0.d|b.0.d|b.0.r|a.0.d|a.0.r|a.0.r|b.0.U|b.0.l|b.0.u|a.0.r|b.0.R|b.0.l|b.0.u|a.0.d|a.0.L
+
+
+
+:::map
+# #  #  #
+# -  -  #
+# -  -  #  #  #  # #
+# -  -  1  -  -  - #
+# 1A 2A #  -  A  - #
+# b  B  1  -  #  # # 
+# -  a  #  -  # 
+# #  #  #  #  #
+:::board_end
+:::title=Mirror Guest
+:::mark=direct-b4
+:::Optimal candidate 109.37
+
+:::playpath=Hint
+|b.0.R|b.0.u|b.0.r|b.0.r
+|b.0.d|b.0.d|a.0.u|a.0.U|b.0.L|b.0.r|b.0.u|b.0.u|b.0.l|b.0.l|b.0.d|b.0.d|b.0.r|a.0.U|b.0.U
+
+
+
+
+
+:::map
+# # # #
+# - - #
+# - B # # # # #
+# - - 1 - - - #
+# 2 2A # a A - #
+# - B 1b - # # # 
+# - - # - # 
+# # # # # #
+:::board_end
+:::title=Mockers
+
+:::playpath=Hint
+|a.0.u|a.0.l|a.0.l|b.0.r|b.0.u|b.0.u|b.0.l|b.0.l|b.0.u
+
+
+
+:::map
+# # # #
+# - - # # # #
+# - B # - - # #
+# - - 1 - - - #
+# 2 2A # A - b #
+# - B 1 - # # # 
+# - - # a # 
+# # # # # #
+:::board_end
+:::title=Free Mockers
+
+
+:::playpath=Hint
+|a.0.u|a.0.U|a.0.r|b.0.l|a.0.u|a.0.u|a.0.l|b.0.d|a.0.D
+
+

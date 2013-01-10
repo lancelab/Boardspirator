@@ -35,7 +35,7 @@
 		var play_area_width		= playboard_width;
 		var play_area_height	= playboard_height + dress.tile.height;
 
-		var adstyle				= ads.enabled ? ads.divs.wrap.style : null;
+		var adstyle				= ads.enabled && dress.features !== 'kids' ? ads.divs.wrap.style : null; //TODM 'kids' is hard coded. Not good. Ad is a policy. Kids-zone myst have subpolicy, not controlled by dress at all.
 		var ad_area_width		= ads.enabled ? ads.distanceFromGame + parseInt(adstyle.width) : 0;
 								
 

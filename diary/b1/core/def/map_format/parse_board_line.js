@@ -1,4 +1,4 @@
-(function( $ ){ 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+(function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var ceach	=  tp.core.each;
 					var cmd		=  gio.core.def.map_format;
@@ -15,8 +15,8 @@
 	var sugar;
 	var sugar_color;
 	var sugar_range;
-	var breed2symbol = cmd.breed2symbol;
-	var symbol2breed = cmd.symbol2breed;
+	var breed2color = cmd.breed2color;
+	var color2breed = cmd.color2breed;
 
 
 	/// enters? board lines parser
@@ -25,8 +25,8 @@
 		sugar_range	= sugar && sugar.do_colorize_randomly;
 		sugar_color	= map.sugar_color = map.sugar_color || {};
 
-		breed2symbol = cmd.breed2symbol;
-		symbol2breed = cmd.symbol2breed;
+		breed2color = cmd.breed2color;
+		color2breed = cmd.color2breed;
 
 		map.parsed.wall_boundary_encountered = false;
 		/// processes the job via board lines
@@ -55,7 +55,7 @@
 		if( cbzone_bf ) line=line.replace(reg_ex_cont_space, ' ');
 
 		//. applies sugar: slips to sokoban line if no blanks inside the walls
-		var oneSymbolPerCell = (!cbzone_bf) || unspased_board_match.test(line);
+		var oneSymbolPerCell = (!cbzone_bf) || unspased_board_match.test( line );
 
 		w	=	oneSymbolPerCell ? '' : ' ';
 		line_arr=line.split(w);
@@ -67,10 +67,9 @@
 		var ts = map.pos.tops;
 		
 
-		//===============================
-		// Loops via cells
-		//-------------------------------
+		/// Loops via cells
 		for(var x=0; x<line_arr.length; x++){
+
 			var locx = ll[x] = ll[x] || [];
 			var locy = locx[board_y] = locx[board_y] || [];
 			var tsx = ts[x] = ts[x] || [];
@@ -79,50 +78,60 @@
 			var units=[]; //array of units contained in one cell
 			//towers[x]=[]; //array, see towers[x].push below ...
 
-			//Here we further generilize (colorban) file format:
-			//Commas will separate names which are longer than 1.
-			//So, cell (cluster) can be: ab7 or a2,b,7
-			//Test for comma first:
-			var w= !oneSymbolPerCell && c.indexOf(',')>0 ? ',' : '';
-			var cluster =c.split(w); //fe: a1,b,- ...
+
+			//	//\\	Here we further generilize (colorban) file format:
+			//			Periods will separate names which are longer than 1.
+			//			So, cell (cluster) can be: ab7 or a2.b.7
+			//			c onsole.log( 'cbzone_bf=' + cbzone_bf + ' oneSymbolPerCell=' + oneSymbolPerCell );
+			if( cbzone_bf && !oneSymbolPerCell ) {
+				var wsplitter = c.indexOf( '.' ) > -1 ? '.' : '';
+			}else{
+				var wsplitter = '';
+			}
+			var cluster = c.split( wsplitter ); //fe: a1,b,- ...
+			if( !cluster[ cluster.length - 1 ] ) cluster.pop();
+			//. replaces empty unit with zero-ground
+			if( !cluster[ 0 ] ) cluster[ 0 ] = 'Y';
+			// c onsole.log('cluster=', cluster);
+			//	\\//	Here we further generilize (colorban) file format:
 
 
-			//===============================
-			// Loops trough cluster (tower)
-			//-------------------------------
-			//var dtable = map.script.decoder_table;
-			var sugar_wall_encountered = false;
+
+			/// Loops trough cluster (tower)
 			for(i=0, len=cluster.length; i<len; i++){
-				unit_char=cluster[i];
+
+				var utoken = cluster[i];
+				var ranked_unit = false;
 
 				//Before look in decoder table, extract unit's rank if any:
-				if(cluster[i].length>1){
-					rank=parseInt(unit_char.substr(1));
-					unit_char=unit_char.charAt(0);
+				if( utoken.indexOf( ':' ) > 1 ) {
+					ranked_unit = true;
+					var ww = utoken.split( ':' );
+					rank=parseInt( ww[1] );
+					utoken = ww[0];
 				}				
 
-				if( unit_char === sugar_speed_map_boundary ) {
+				if( utoken === sugar_speed_map_boundary ) {
 					mparsed.wall_boundary_encountered =
 						mparsed.wall_boundary_encountered || [x, board_y];
 				}
 
 
-				w=dtable[unit_char]; //.charAt(i)]; //c[i]
+				var ww = dtable[ utoken ]; //.charAt(i)]; //c[i]
 				//assume wall. no validation for wrong char
-				if(!w) w=dtable['#'];
-				if(typeof w === 'object'){
-						//array:
-						units=units.concat(w);
+				if( !ww ) ww = dtable[ '#' ];
+				if( typeof ww === 'object' ) {
+						//.. dtable maps utoken to array of units
+						units = units.concat( ww );
 				}else{
 						// Until map does not really have ranks,
 						// this "if" is idle:
-						if(cluster[i].length>1)	w=[w,rank];
-						units.push(w);
+						if( ranked_unit )	ww = [ ww, rank ];
+						units.push( ww );
 				}
-			}
-			//-------------------------------
-			// Loops trough cluster (tower)
-			//===============================
+			} /// Loops trough cluster
+
+
 
 
 
@@ -140,12 +149,12 @@
 
 
 
-			//=================================================
-			// Loops trough normalized cluster in single cell.
-			// Adds colonies. Builds towers.
-			//-------------------------------------------------
+			///	Loops trough normalized cluster in single cell.
+			//	Adds colonies. Builds towers.
+			//	c onsole.log('units in cell=', units);
 			tsx[board_y] = units.length-1;
 			for(var zz=0; zz<units.length; zz++){
+
 				// Do index location:
 				var lid=map.locs.length;
 				locy[zz] = lid;
@@ -225,10 +234,6 @@
 
 						//view:
 						colony.focused = true;
-						//. collects targets for map's winning criteria
-						if(colony.target) map.target_cols.push(colony);
-						//. collects batons for map's winning criteria
-						if(colony.baton) map.baton_cols.push(colony);
 
 						if(activity.active){
 							map.actor_cols.push(colony);
@@ -268,11 +273,12 @@
 						pass : colony.pass,
 						block : colony.block,
 						target : colony.target,
+						baton : colony.baton,
 						activity : activity, //sugar
 
 						col : colony, 
 						gm : map,
-						cname : colony.nam, //sugar
+						cname : colony.nam,
 						uname : colony.nam + '_' + unit_ix + '_' + unit_id,						
 
 						src : u				// for delayed decoding TODm rid?
@@ -282,6 +288,16 @@
 				if(activity.active || activity.passive){
 					map.dynamic_units.push(unit);
 				}
+
+				// //\\ Making motivations
+				if( colony.target ) {
+					unit.motive_name = colony.nam.replace( 'htarget', 'hero' ).replace( 'target', 'box' ); //TODQ 
+					unit.motive_race = colony.race.replace( 'htarget', 'hero' ).replace( 'target', 'box' );
+					map.objective.target_units.push( unit );
+				}
+				if( colony.baton ) map.objective.baton_units.push( unit );
+				// \\// Making motivations
+				
 
 				colony.units[unit_ix] = unit;
 				map.pos.lid2uid[lid] = unit_id;
@@ -293,11 +309,10 @@
 
 
 
-			}
-		}//x loop
-		//-------------------------------
-		// Loops via cells
-		//===============================
+			} /// Loops trough normalized cluster in single cell
+
+		}/// Loops via cells
+
 		return true;
 	};
 	//============================
@@ -317,6 +332,6 @@
 
 
 
-})(jQuery);
+})();
 
 

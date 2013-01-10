@@ -1,10 +1,16 @@
+/:
+{ "credits" :
+	{
+		/,	title                 	Beginner
+		/,	version               	1.1  
+		/,	author                	Konstantin Kirillov unless specific map has explicit own author
+		/,	copyright             	Copyright (c) 2012 Konstantin Kirillov unless specific map has explicit own copyright
+		/,	license               	This collection is free for distribution, modification, and use provided collection and map credits are not removed.
+		/.	creation_date         	December 4, 2012
 
-:::.  credits.title                 Beginner
-:::.  credits.version               1.1  
-:::.  credits.author                Konstantin Kirillov unless specific map has explicit own author
-:::.  credits.copyright             Copyright (c) 2012 Konstantin Kirillov unless specific map has explicit own copyright
-:::.  credits.license               This collection is free for distribution, modification, and use provided collection and map credits are not removed.
-:::.  credits.creation_date         December 4, 2012
+	}
+}
+/\\
 
 
 :::map
@@ -150,6 +156,167 @@ ulDD
 |a.0.l|a.0.u|a.0.R|a.0.l|a.0.u|a.0.u|a.0.R|a.0.D|b.0.D|a.0.l|b.0.D|b.0.l|a.0.d|b.0.d|b.0.R
 |b.0.u|b.0.r|b.0.d|a.0.d|a.0.r|a.0.U|a.0.U|a.0.U|b.0.L|b.0.r|b.0.u|a.0.l|b.0.l|b.0.D|b.0.l
 |b.0.d|b.0.d|b.0.r|a.0.d|a.0.r|a.0.r|b.0.U|b.0.l|b.0.u|a.0.r|b.0.R|b.0.l|b.0.u|a.0.d|a.0.L
+
+
+
+:::map
+:::context_akey=ghostjump
+# #  #  #
+# -  -  #
+# -  -  #  #  #  # #
+# -  -  1  -  -  - #
+# 1A 2A #  -  A  - #
+# b  B  1  -  #  # # 
+# -  a  #  -  # 
+# #  #  #  #  #
+:::board_end
+:::title=Mirror Guest
+:::mark=direct-b4
+:::Optimal candidate 109.37
+
+:::playpath=Hint
+|b.0.R|b.0.u|b.0.r|b.0.r
+|b.0.d|b.0.d|a.0.u|a.0.U|b.0.L|b.0.r|b.0.u|b.0.u|b.0.l|b.0.l|b.0.d|b.0.d|b.0.r|a.0.U|b.0.U
+
+
+
+
+:::map
+:::context_akey=ghostjump
+# #   #  #  #
+# -   -  #  #  #   # 
+# -   -  #  -  -   # #
+# -   B  1a B  -   - #
+# -   2A 2b 2A -   - #
+# -   -  1B -  #   # # 
+# -   -  #  -  # 
+# #   #  #  #  #
+:::board_end
+:::title=Live Wall
+
+116.39
+:::playpath=Hint
+|b.0.r|a.0.d|b.0.r|a.0.R|a.0.l|b.0.l|b.0.d|b.0.L|b.0.u|b.0.R|b.0.d
+|b.0.r|b.0.u|a.0.u|a.0.r|a.0.u|b.0.L|b.0.r|b.0.d|b.0.l|b.0.l|b.0.u|a.0.r|a.0.d|a.0.r|b.0.R
+
+|b.0.u|b.0.r|a.0.d|a.0.L|a.0.r|b.0.D|b.0.l|a.0.u|a.0.l|b.0.r|b.0.d|a.0.l|a.0.l|a.0.d|a.0.d
+|a.0.r|a.0.U|a.0.l|b.0.L|a.0.u|b.0.L|b.0.u|a.0.R|a.0.d|b.0.d|b.0.l|b.0.D|b.0.l|b.0.u|b.0.R
+|b.0.R|b.0.d|b.0.l|b.0.d|b.0.d|b.0.r|a.0.l|a.0.u|a.0.l|a.0.l|a.0.d|a.0.R|a.0.u|b.0.U|a.0.r
+|b.0.U|b.0.r|b.0.d|b.0.L|b.0.r|b.0.u|b.0.r|b.0.u|b.0.l|a.0.D|a.0.r|a.0.r|b.0.D|b.0.l|b.0.d
+|a.0.r|b.0.R|b.0.l|b.0.l|b.0.l|b.0.d|b.0.d|b.0.r|a.0.u|a.0.L|a.0.L|a.0.d|a.0.l|a.0.l|a.0.l
+|b.0.U|b.0.l|a.0.u|b.0.u|b.0.R|b.0.l|b.0.u|b.0.r|b.0.D|b.0.r|b.0.r|b.0.r|b.0.d|b.0.L|a.0.d
+
+
+
+
+:::map
+:::context_akey=ghostjump
+# #   #  #  #
+# -   -  #  #  #   # 
+# -   -  #  -  -   # #
+# -   B  1a B  -   - #
+# h1. 2A 2b 2A h2. - #
+# -   -  1B -  #   # # 
+# -   -  #  -  # 
+# #   #  #  #  #
+:::board_end
+:::title=Live Wall Exits
+
+:::dress=default
+:::objective=Deliver boxes to their color-matched targets \nand heros to their exits.
+
+:::dress=ghostban
+:::objective=Deliver pizza to dishes and cooks to their chairs
+
+
+116.39
+:::playpath=Hint
+|b.0.r|a.0.d|b.0.r|a.0.R|a.0.l|b.0.l|b.0.d|b.0.L|b.0.u|b.0.R|b.0.d
+|b.0.r|b.0.u|a.0.u|a.0.r|a.0.u|b.0.L|b.0.r|b.0.d|b.0.l|b.0.l|b.0.u|a.0.r|a.0.d|a.0.r|b.0.R
+|b.0.u|b.0.r|a.0.d|a.0.L|a.0.r|b.0.D|b.0.l|a.0.u|a.0.l|b.0.r|b.0.d|a.0.l|a.0.l|a.0.d|a.0.d
+
+|a.0.r|a.0.U|a.0.l|b.0.L|a.0.u|b.0.L|b.0.u|a.0.R|a.0.d|b.0.d|b.0.l|b.0.D|b.0.l|b.0.u|b.0.R
+|b.0.R|b.0.d|b.0.l|b.0.d|b.0.d|b.0.r|a.0.l|a.0.u|a.0.l|a.0.l|a.0.d|a.0.R|a.0.u|b.0.U|a.0.r
+|b.0.U|b.0.r|b.0.d|b.0.L|b.0.r|b.0.u|b.0.r|b.0.u|b.0.l|a.0.D|a.0.r|a.0.r|b.0.D|b.0.l|b.0.d
+|a.0.r|b.0.R|b.0.l|b.0.l|b.0.l|b.0.d|b.0.d|b.0.r|a.0.u|a.0.L|a.0.L|a.0.d|a.0.l|a.0.l|a.0.l
+|b.0.U|b.0.l|a.0.u|b.0.u|b.0.R|b.0.l|b.0.u|b.0.r|b.0.D|b.0.r|b.0.r|b.0.r|b.0.d|b.0.L|a.0.d
+
+
+
+
+
+
+
+:::map
+:::context_akey=ghostjump
+# # # #
+# - - #
+# - B # # # # #
+# - - 1 - - - #
+# 2 2A # a A - #
+# - B 1b - # # # 
+# - - # - # 
+# # # # # #
+:::board_end
+:::title=Mockers
+
+144.48?
+:::playpath=Hint
+|a.0.u|a.0.l|a.0.l|b.0.r|b.0.u|b.0.u|b.0.l|b.0.l|b.0.u
+
+
+
+:::map
+:::context_akey=ghostjump
+# # # #
+# - - # # # #
+# - B # - - # #
+# - - 1 - - - #
+# 2 2A # A - b #
+# - B 1 - # # # 
+# - - # a # 
+# # # # # #
+:::board_end
+:::title=Free Mockers
+
+189.64?
+:::playpath=Hint
+|a.0.u|a.0.U|a.0.r|b.0.l|a.0.u|a.0.u|a.0.l|b.0.d|a.0.D
+
+
+
+
+
+:::map
+:::context_akey=ghostjump
+# # #    #  #
+# - -    #  #  #    # 
+# B b    #  -  -    # #
+# - B    1  B    - - #
+# 2 2A   2  2A -    a #
+# - -    1B -  #    # # 
+# - -    #  -  # 
+# # #    #  #  #
+:::board_end
+:::title=Monster Wall
+:::comment=This "exits" string makes solution harder: # - B.h1    1  B.h2 - - #
+
+193.69
+:::playpath=Hint
+|b.0.u|b.0.l|b.0.D|b.0.D|b.0.D|b.0.r|b.0.u|a.0.l|a.0.u|a.0.u|b.0.R|b.0.l|b.0.d
+|b.0.l|b.0.u|a.0.l|a.0.d|a.0.l|a.0.d|b.0.R|b.0.d|b.0.d|b.0.l|b.0.U|b.0.U|a.0.R|b.0.r|a.0.u
+|b.0.r|a.0.u|b.0.u|b.0.L|b.0.d|b.0.r|b.0.r|b.0.u|b.0.L|b.0.r|b.0.d|b.0.l|b.0.d|b.0.L|b.0.u
+
+|b.0.u|a.0.r|a.0.d|a.0.r|b.0.R|b.0.u|b.0.r|a.0.d|a.0.L|a.0.r|b.0.D|b.0.l|a.0.u|a.0.l|b.0.r
+|b.0.d|a.0.l|a.0.l|a.0.d|a.0.d|a.0.r|a.0.U|a.0.l|b.0.L|a.0.u|b.0.L|a.0.R|a.0.u|b.0.u|b.0.l
+|b.0.D|b.0.l|b.0.U|b.0.R|a.0.r|a.0.D|a.0.l|a.0.d|b.0.R|b.0.d|b.0.l|b.0.d|b.0.d|b.0.r|a.0.l
+|a.0.u|a.0.l|a.0.l|a.0.d|a.0.R|a.0.u|b.0.U|b.0.l|b.0.u|b.0.u|b.0.r|b.0.R|b.0.d|b.0.d|b.0.L
+|b.0.u|b.0.l|b.0.d|a.0.r|a.0.r|a.0.d|a.0.d|a.0.l|a.0.U|a.0.r|b.0.R|b.0.l|b.0.u|a.0.u|a.0.L
+|a.0.r|b.0.r|b.0.D|b.0.r|b.0.r|b.0.u|a.0.d|b.0.L|b.0.L|a.0.l|b.0.d|b.0.l|b.0.l|b.0.d|b.0.d
+|b.0.r|a.0.l|a.0.U|a.0.d|a.0.r|b.0.U|b.0.l|b.0.u|b.0.u|b.0.r|a.0.r|a.0.u|a.0.r|b.0.R|a.0.r
+|b.0.R|a.0.d|a.0.L|b.0.d|b.0.L|a.0.L|b.0.u|b.0.l|b.0.l|b.0.d|a.0.u|a.0.l|a.0.D|a.0.u|b.0.R
+|b.0.l|b.0.d|b.0.d|b.0.r|b.0.U|b.0.r|b.0.u|b.0.r|b.0.r|b.0.u|b.0.L|b.0.u|b.0.l|b.0.D|b.0.l
+|b.0.u|b.0.l|b.0.D|b.0.D|b.0.r|b.0.r|a.0.l|a.0.l|a.0.u|a.0.u|a.0.r|a.0.D|a.0.l|a.0.d|a.0.R
 
 
 

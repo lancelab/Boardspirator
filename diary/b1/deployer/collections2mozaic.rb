@@ -8,7 +8,9 @@
 	#	like this
 	#test_folder			= source_folder + '/tp/test_folder'
 
-	whirly_mark				= /^\s*:::\/\/definitions/
+	#.						token /:sa forces file to be collected as a stand-alone scrith
+	whirly_mark				= /^\s*\/:\s*sa/
+
 	placer_match			= /albums\/([^\/]+)\/collections\/([^\/]+)\/([^\/]+)$/
 
 	test_folder				= source_folder + '/..'

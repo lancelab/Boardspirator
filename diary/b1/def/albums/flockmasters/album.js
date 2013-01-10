@@ -6,7 +6,7 @@
 gio.def.albums['flockmasters']={
 
 	gkey : 'flockmasters',
-	dress_parent_akey : "flocks",
+	"ref" : { "env" : { dgkey : "flocks" } },
 
 	
 	collections : 
@@ -33,9 +33,11 @@ gio.def.albums['flockmasters']={
 			credits : { "date"		: "November 6, 2012" },
 
 			rules	:
-				"When fellow is pushed or pulled, fellows nearby\n"+
-				"mock its move if space allows.\n"+
-				"Teachers push own breed and pull others.\n",
+				"Teacher pushes brown Monkeys and pulls Antimonkeys.\n" +
+				"When fellow is pushed or pulled, fellows of similar breed nearby\n"+
+				"mock its move (if no obstacles prevent this).",
+
+			objective : "Bring Monkeys to chairs of their color or to white or black color.",
 
 			story:
 				"The Law of school says: the pupil can only be taught\n" +
@@ -60,10 +62,15 @@ gio.def.albums['flockmasters']={
 			image_decoder	:{
 					"box_b"		: "box_b_anti.png",
 					"wall_b"	: "wall_b_anti.png",
+					"target_a"	: "target_a_anti.png",
 					"target_b"	: "target_b_anti.png"
 			}
 		}, //flocks
 
+		chicken_garden :
+		{
+			rules : "Each bread has own Master to push.\nMaster's of other breed pull its species"
+		},
 
 
 
@@ -80,6 +87,8 @@ gio.def.albums['flockmasters']={
 			objective:
 				"Bring monkeys to bananas",
 
+			story : "Everyone is lost and lost own things ... ",
+
 			hname_table	:{
 				hero_a	: 'Hunter',
 				hero_i	: 'Hunter',
@@ -90,6 +99,7 @@ gio.def.albums['flockmasters']={
 			image_decoder	:{
 					"box_b"		: "box_b_anti.png",
 					"wall_b"	: "wall_b_anti.png",
+					"target_a"	: "target_a.png",
 					"target_b"	: "target_b_anti.png"
 			}
 		}///forest

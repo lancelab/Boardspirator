@@ -7,8 +7,8 @@ In other words, it is wrapped into a jQuery plugin, tp.
 The files are spread via directory tree, but can be assembled in one file.
 
 
-Version:				0.1.169
-Date:					December 23, 2012
+Version:				0.1.181
+Date:					January 9, 2013
 Maturity:               Draft
 License:				Dual licensed under the MIT or GPL Version 2
                         except items in "def/albums", "def/skins", and  "doc/research"

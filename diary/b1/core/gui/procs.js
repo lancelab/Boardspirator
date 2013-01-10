@@ -1,5 +1,6 @@
-(function( $ ){ 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+(function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
+
 					var gstyle	=  gio.config.style;
 					var gde		=  gio.domwrap.elems;
 					var ggp		=  gio.gui.procs;
@@ -11,11 +12,14 @@
 	var unlock_popup=function(){gio.gui.modes.common_popup_shown=true;};
 
 
-	// Refresh gui, but don't if 
-	// gm is supplied and not current in gui.
-	ggp.refresh=function(gm){
-		var gs = gio.getUnfinishedState();
-		if(!gm || gs.gm === gm){
+
+
+	///	Refreshes gui, but don't if 
+	//	gm is supplied and not current in gui.
+	ggp.draw_status_and_scene = function ( gm ) {
+
+		var gs = gio.getgs();
+		if( !gm || !gs.gm || gs.gm !== gm ) {
 			gio.draw_scene();
 			gio.draw_status();
 		}
@@ -35,22 +39,21 @@
 				gio.gui.procs.do_manage_round(null,'to beginning');
 			}
 		}
-		ggp.refresh();
+		ggp.draw_status_and_scene();
 		ggp.unlock_controls();
 	};
 
 
 	// Auxiliary
-	ggp.hide_current_board=function(){
-		gio.getgs(function(gs){
-				if(gs.gm.board) gs.gm.board.style.display='none'; // TODm rid of "if(gs.gm.board
-		});
-	};
-
-	ggp.unhide_current_dom_board=function(){
-		gio.getgs(function(gs){
-				if(gs.gm.board) gs.gm.board.style.display='block'; // TODm rid of "if(gs.gm.board
-		});
+	ggp.do_display_curr_board = function ( do_display ) {
+		var gs = gio.getgs();
+		var gm = gs.gm;
+		var board = gm && gm.board;
+		if( board ) {
+			var mess	=  do_display ? 'Displaying ' : 'Hiding ';
+			mess		+= ' current board. a,c,m = ' + gs.playalb.key + ', ' + gs.coll.ref.list.ix + ', ' + gm.ix;
+			board.style.display = do_display ? 'block' : 'none';
+		}
 	};
 
 
@@ -104,4 +107,42 @@
 	};
 
 
-})(jQuery);
+
+
+	ggp.visualize_collection_titles = function( collection, collections ) {
+
+			gio.domwrap.headers.collection_select_el.reset(
+						{r:{
+							options				:collections
+						},
+						c:{	dont_reset_styles	:false,
+							choice_ix			:collections.ix
+						}}
+			);
+
+			gio.domwrap.headers.map_select_el.reset(
+					{r:{
+						options				:collection.maps
+					},
+					c:{	dont_reset_styles	:false,
+						choice_ix			:collection.map_ix
+					}}
+			);
+
+			var state = gio.session.state;
+			gio.domwrap.headers.title_select_el.reset( {c:{choice_ix:state.album_ix}} ); // TODm do we need to shake options?:
+
+			return true;
+	};
+
+
+
+
+
+
+
+
+
+
+
+})();

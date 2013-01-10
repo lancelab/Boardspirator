@@ -51,7 +51,7 @@
 		var startPos;
 		//. state. Where to start next spawning after timeout.
 		var phase;
-		var solutions;
+		var solutions = self.solutions = [];
 		//. statistics
 		var stat;
 		var spawned_states_number;
@@ -75,6 +75,7 @@
 		self.inactive_bf = true;
 		self.stopped_bf = false;
 		self.browser_mode = false;
+		self.never_ran = true;
 		var adapter = self.adapter = solver.Adapter( self, gm );
 
 
@@ -104,6 +105,7 @@
 			self.inactive_bf	= false;
 			self.stopped_bf		= false;
 			self.browser_mode	= false;
+			self.never_ran		= false;
 
 			if( !startPos_ && !( phase.sphere === 0 && phase.angle === 0 ) ) {
 				self.do_searches();
@@ -158,9 +160,9 @@
 
 
 			/// skips calculations if winning initial state is not allowed
-			if( game.won_or_not(gm, startPos) ) {
+			if( game.won_or_not( gm, startPos ) ) {
 				if( stop_when_solution_found ) {
-					gio.solver_cons('Already on solution'); //TODM this message is hidden
+					gio.solver_cons( 'Already on solution' );
 					self.inactive_bf = true;
 					return;
 				}
@@ -177,12 +179,14 @@
 		/// initiate garbage collector to "wipe out" shperes, alive_nodes, and
 		//	browser's stuff
 		self.resume_memory = function () {
+
 			spheres = self.spheres = [];
 			alive_nodes = [];
 			gio.solver.create_browser( self, gm );
 			phase = { sphere : 0, angle : 0 };	
 			solutions = self.solutions = [];
 			stat = self.stat = {};
+			gio.debsol( "Memory resumed" );
 		}
 
 
@@ -234,7 +238,7 @@
 				print_messages();
 				self.stopped_bf		= false;
 				self.inactive_bf	= true;
-				gio.gui.procs.refresh(gm);
+				gio.gui.procs.draw_status_and_scene();
 				return;
 			}
 
@@ -493,19 +497,19 @@
 			var 	last_move_count = spheres.length-1;
 			if(		!spheres[last_move_count].length  ) last_move_count -= 1;
 			if(		last_move_count > 0 ) {
-					res += last_move_count + " = arrival move.\n";
+					res += last_move_count + " = arrival_move.\n";
 			}
 
 			res		+=	stat.total_states + '.' +
 						stat.completed_ball_size + '.' +
 						spheres[spheres.length-1].length  + 
-						" = total.departure ball.arrival sphere"+ "\n";
-			res 	+=	stat.flat_dynamics_top_nodes_estimation + " = total boundary\n";
-			res 	+=	stat.node_dimension	+ " = canon dimension\n";
+						" = total.departure ball.arrival_sphere"+ "\n";
+			res 	+=	stat.flat_dynamics_top_nodes_estimation + " = boundary\n";
+			res 	+=	stat.node_dimension	+ " = canon_dimension\n";
 			res 	+=	stat.hids_number	+ " = hids, ";
 			res 	+=	"ms="				+ stat.total_milliseconds + ", ";
-			res 	+=	"ms/(total moves)="	+ stat.ms_per_last_step + ", ";
-			res 	+=	"mks/(total pos)="	+ stat.mks_per_state + "\n";
+			res 	+=	"ms/total_moves="	+ stat.ms_per_last_step + ", ";
+			res 	+=	"mks/total_pos="	+ stat.mks_per_state + "\n";
 			res		+=	"moves:\n";
 			for( var ss = 1; ss < spheres.length; ss++ ) {
 				res += ss + '.' + spheres[ss].length + "\n";

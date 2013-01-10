@@ -4,10 +4,14 @@
 					var ceach	=  core.each;
 					var cpaste	=  core.paste_non_arrays;
 					var clonem	=  core.clone_many;
-					var giodf	=  gio.def;
-					var defp	=  giodf.procs;
 					var dotify	=  core.dotify;
-					var exp_url	= tp.core.expand_to_parent;
+					var exp_url	=  core.expand_to_parent;
+
+
+					var gdef	=  gio.def;
+					var gdp		=  gdef.procs;
+					var tcoll	=  gio.def.templates.def.coll;
+
 					var do_debug = gio.debug && !isNaN(gio.debug) &&  gio.debug % 7 === 0;
 
 
@@ -18,75 +22,73 @@
 
 
 
-	/// Attaches and loads external collection from coll_url
+	/// Attaches and loads external collection from presc.ref.link.link
 	//	Makes it chosen.
 	//	Input:		query - opt, used as a flag of request from URL
 	//	Returns:	loaded-collection in success, othewise false-eqv
 	//
-	defp.attach_external_collection = function ( coll_url, akey, query ) {
-
-		//. creates cseed
-		var new_cseed				=	clonem ( gio.def.templates.def.coll );
-		new_cseed.chosen			=	true
-		new_cseed.ref.link			=
-		{								link		: coll_url,
-										list_title	: 'External'
-		};
-		new_cseed.akey				=	akey;
+	gdp.download_scriptio = function ( presc ) {
 
 
-		if( !query ) {
+		var der_alb		= gdef.procs.derive_album;
+		var down_coll	= gio.download_collection;
+		var tdef		= gdef.templates.def;
+		var tplay		= gdef.templates.play;
 
-			if( !akey ) return null;
+		var query		= presc.env.query;
+		var link		= presc.link.link;
+		var link		= presc.album ? exp_url ( link ) : exp_url ( link, query && query.aurl );
+		presc.link.link = link;
+		
 
-			//.. request is came from link entered by user
-			var w_album = gio.def.procs.derive_album ( akey, new_cseed );
-			var new_collection = w_album.collections[ w_album.collections.length - 1 ]
-			var success = gio.download_collection ( new_collection );
-			return success ? new_collection : null;
+		//. creates collection seed
+		var cseed					= gdp.normalize_cseed();
+		cseed.ref.list.chosen		= presc.list.chosen;
+		cseed.ref.link.link			= link;
+		cpaste( cseed.script.presc, presc );
+
+
+		var akey = presc.env.akey_master || presc.env.akey_advice;
+		var album_def = gio.def.albums[ akey ];
+		var do_merge_to_album = !!album_def;
+
+		gio.debly( "Going to download scrith: akey, link = " + akey + ", " + link );
+
+		if( query ) {
+
+			/// takes credits from query if any
+			var ww = cseed.credits;
+			ceach( core.tooltipify_array, function (index, key) {
+				core.propertify( ww, key, query[ key ] );
+			});
+
+			cseed.ref.list.title = presc.list.title || "From Query";
+			if( presc.album ) {
+				do_merge_to_album = false;
+			}else if( !presc.coll ) {
+				throw "Fatal. Query. Neither aurl, nor curl."; //TODO
+			}
+		}
+
+		if( do_merge_to_album ) {
+
+			//. prevents state change for middle-play downloads
+			var merged_album = der_alb ( akey, cseed, !query );
+			if( !merged_album )
+			{	gio.cons_add( "Failed add cseed to akey " + akey );
+				return false;
+			}
+			var ww = merged_album.collections;
+			var downcoll = ww[ ww.length - 1 ];
 
 		}else{
 
-			//.. request is came from URL ... trying to fullfill it
+			var downcoll = cpaste( cseed, tplay.coll );
+		}
 
-			var credits = new_cseed.credits;
-			//. imports query key.values filtered by tooltipify_array into new_cseed.credits
-			ceach( core.tooltipify_array, function (index, key) {
-				core.propertify( credits, key, query[key] );
-			});
-
-			new_cseed.akey = query.akey || new_cseed.akey;
-
-//			if( query.cscript ) {
-				//::	lets cscript load and decide ...
-				var new_collection = cpaste( new_cseed, gio.def.templates.play.coll );
-				//.	fixes link
-				new_collection.ref.link.link = exp_url ( new_collection.ref.link.link );
-				var success = gio.download_collection ( new_collection );
-				return success ? new_collection : null;
-/*
-			}else{
-
-				var w_album = gio.def.procs.derive_album ( new_cseed.akey, new_cseed );
-				if( w_album ) {
-					//..	collection is successfully attached, but not loaded yet
-					var new_collection = w_album.collections[ w_album.collections.length - 1 ];
-					//.	downloads collection ... this can be done later
-					var success = gio.download_collection ( new_collection );
-					return success ? new_collection : null;
-				}else{
-					gio.cons_add(	"Album \"" + new_cseed.akey +
-									"\" derivation is failed for query.akey " + query.akey );
-				}
-
-
-			}
-*/
-
-			//..	either album-def is missed, or problems, or album-def is inside of cscript
-			return null;
-
-		}	
+		//. dowloads coll
+		var success		= down_coll ( downcoll );
+		return			success ? downcoll : false;
 	};
 
 
@@ -95,27 +97,31 @@
 
 	/// sets coll title
 	//	This is an annoying procedure. Trace its logic from the code below.
-	defp.assembly_coll_title = function ( colln ) {
+	gdp.assembly_coll_title = function ( colln ) {
 			
 			//. relies on title assigned in externifier
-			if( colln.ref.link.link ) return;
+			if( !gdp.detect_ownhost_url( colln ) ) return;
 
 			var dotify			= tp.core.dotify;
-			var dumb_title		= "Collection " + colln.coll_ix;
+			var dumb_title		= "Collection " + colln.ref.list.ix;
 
-			var list_title_r	= ( colln.list_title && ( ' ::: ' + colln.list_title ) ) || '';
-			var list_title_l	= ( colln.list_title && ( colln.list_title + ' :: ' ) ) || '';
+			var l_title		= colln.ref.list.title || colln.list_title;
+			var l_title_r	= ( l_title && ( ' ::: ' + l_title ) ) || '';
+			var l_title_l	= ( l_title && ( l_title + ' :: ' ) ) || '';
 
 			var title			= colln.title_compiled_from_credits;
+			// c onsole.log( "Assembling coll-title: t from_credits = " + title +
+			// " cix " + colln.coll_ix  + " colln.l_title = " + l_title );
+
 			if( !title ) {
-				var title		= colln.list_title;
+				title		= l_title;
 			}else{
-				var title		= title && ( title + list_title_r );
+				title		+= l_title_r;
 			}
 
 			if( !title	) {
 				var title		=	dotify( colln.ref.link.link, -50 );
-				var title		=	title && ( title + list_title_r );
+				var title		=	title && ( title + l_title_r );
 				//. for case of: dotify( colln.ref.folder.full, -50 )
 				var title 		=	title || colln.list_title; 
 			}
@@ -125,41 +131,39 @@
 	};
 
 
-
-
-
-
-
 	/// spawns collection-seed
 	//	"up" and "down" mean:
 	//		"down" -	do point to physical location: like to hard-drive folder or
 	//					to url on Internet
 	//		"up"	-	do point to "parents" like contaning album, game-context,
 	//					dresses context ...
-	defp.spawn_coll_up_down_links = function( album, cix ) {
+	gdp.spawn_coll_up_down_links = function( album, cix, externified ) {
 
 
 		var coll			= album.collections[ cix ];
+		gdp.normalize_cseed( coll );
 
 
 		// //\\ "up-links"
 
 		//: makes list-links
-		coll.coll_ix		= cix;
-		var akey = coll.lkey = album.key;
+		var akey			= album.key;
+		coll.ref.list.akey	= akey;
+		coll.ref.list.ix	= cix;
+		
 
 
 		//. dgame links
-		coll.dgame_akey		= coll.dgame_akey || akey;
+		coll.ref.env.dgkey = coll.ref.env.dgkey || coll.ref.env.akey || akey;
 
 
 		// //\\ establishes dgame context
 		var cgame			= album.dgame;
 		/// finds collection redresser //TODM remove this feature if found useless
-		if( coll.dgame_akey !== akey ) {
-			cgame = defp.dress_game( coll.dgame_akey );
+		if( coll.ref.env.dgkey !== akey ) {
+			cgame = gdp.dress_game( coll.ref.env.dgkey );
 			if( !cgame ) {
-				gio.cons_add(	'Missed game context for key ' + coll.dgame_akey +
+				gio.cons_add(	'Missed game context for key ' + coll.ref.env.dgkey +
 								' for collection ' + cix );
 				return false;
 			}
@@ -171,40 +175,66 @@
 		// \\// establishes dgame context
 		// \\// "up-links"
 
-
-
-		// //\\ establishes "down-links", credits, dom-title
-		//		non-external collections set relative to albums tree on player server
-		//		external collection referenced more complex way: see externify function.
-		if( coll.ref.link.link ) {
-
-				//: prepares external collection
-				externify( coll, album.from_external_url );
-				coll.credits.source = coll.ref.link.link;
-
-		}else{
-				spawn_coll_folder_address( coll, akey );
-		}
-		// \\// establishes "down-links"
-
+		if( !externified) gdp.externify_and_hostify( coll, album );
 
 
 		//. makes tooltip and credit html-table
 		core.tooltipify( coll, "Collection" );
-		giodf.procs.assembly_coll_title( coll );
+		gdef.procs.assembly_coll_title( coll );
 
 
+		coll.state.shellified = true;
 
 		if(do_debug)
 		{
-			gio.cons_add(	'Seed assembled for coll ' + dotify( coll.title, 50 ) +
-							' akey=' + album.key + '.');
+			var ww = dotify( coll.title, 50 );
+			gio.cons_add(	'"' + ww + '" cshell filled for akey ' + album.key + '.');
 		}
 
 		return true;
 
 	}; /// spawns collection-seed and mutifies
 
+
+
+
+	/// Sets proper flags to false if collection link is from foreign host.
+	gdp.detect_ownhost_url = function ( coll ) {
+
+		var link = coll.ref.link.link;
+		if( link ) {
+			if( !core.do_match_own_host( link ) ) {
+				coll.ref.link.ownhost	= false;
+				// c onsole.log( "Outhost detected: link = " + link );
+				return false
+			}
+		}
+		coll.ref.link.ownhost = true;
+		return true;
+	};
+
+
+
+
+	/// Externifies and detects own host
+	gdp.externify_and_hostify = function ( coll, album ) {
+
+		gdp.normalize_cseed( coll );
+
+		// //\\ establishes "down-links", credits, dom-title
+		//		non-external collections set relative to albums tree on player server
+		//		external collection referenced more complex way: see externify function.
+		if( coll.ref.link.link ) {
+				//: prepares external collection
+				externify( coll, album.ref.link.link );
+				coll.credits.source = coll.ref.link.link;
+		}else{
+				spawn_coll_folder_address( coll, album.key );
+		}
+		gdp.detect_ownhost_url( coll );
+		// \\// establishes "down-links"
+
+	}; 	/// Externifies and detects own host
 
 
 
@@ -220,6 +250,10 @@
 
 		ext.link		= exp_url( ext.link,		xurl );
 		cred.web_site	= exp_url( cred.web_site,	xurl );
+
+		if( gdp.detect_ownhost_url( external_collection ) ) {
+			return;
+		}
 
 		// //\\ retitlifies
 		//TODm how to do both: set a location and open new tag by js
@@ -257,7 +291,7 @@
 	var spawn_coll_folder_address =  function ( coll, akey ) {
 
 			// we don't need folder at all
-			if( coll.ref.self ) return;
+			if( coll.ref.already_downloaded ) return;
 
 			var ff	= coll.ref.folder;
 			ff.akey	= ff.akey	|| akey;
@@ -271,6 +305,18 @@
 	};
 
 
+	/// Normalizes or creates normal collection seed.
+	//	Input:	coll - opt. I omitted, then coll-seed is created.
+	gdp.normalize_cseed = function ( coll ) {
+
+		coll = coll || {};
+		cpaste( coll, tcoll );
+		coll.ref.env.akey = coll.akey || coll.ref.env.akey;
+		//. deletes sugar
+		if( coll.hasOwnProperty( 'akey') ) delete coll.akey;
+		return coll;
+
+	};
 
 })();
 

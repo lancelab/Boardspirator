@@ -10,8 +10,8 @@
 
 	// Inverse encoder for heros and boxes:
 	// Only for colorban map:
-	var breed2symbol = cmd.breed2symbol={};
-	var symbol2breed = cmd.symbol2breed={};
+	var breed2color = cmd.breed2color={};
+	var color2breed = cmd.color2breed={};
 
 
 
@@ -88,8 +88,8 @@
 
 			//Define path recognition chars only for heros:
 			//Breed to path-symbol:
-			breed2symbol[t[c]]=c;
-			symbol2breed[c]=t[c];
+			breed2color[t[c]]=c;
+			color2breed[c]=t[c];
 			/////////////////////////////////////////////////////////////
 			// ... only the map deviates from "canonical" breed names
 			//     images should "adhere" canonical ...
@@ -99,12 +99,13 @@
 			t[c.toUpperCase()]=cnames.box[i];
 
 			//Don't define path recognition chars for passive elements:
-			//breed2symbol[cnames.box[i]]=c.toUpperCase();
-			//symbol2breed[c.toUpperCase()]=cnames.box[i];	//X,A,B,C, ... 1X,...2B, - boxes 
+			//breed2color[cnames.box[i]]=c.toUpperCase();
+			//color2breed[c.toUpperCase()]=cnames.box[i];	//X,A,B,C, ... 1X,...2B, - boxes 
 
 			t[msw]=cnames.wall[i];							//y,j,k,l,  - walls
 			t[msw.toUpperCase()]=cnames.ground[i];			//Y,J,K, ... 1J,..2K, - grounds 
 			t[''+i]=cnames.target[i];						//0,1,2,3 --- for target_x, target_a, target_b ...
+			t['h'+i]=cnames.htarget[i];						//h0,h1,h2,h3 --- for htarget_x, htarget_a, htarget_b ...
 		}
 		//important: c onsole.log(t['y'],t['Y']); // this gives: wall_x ground_x
 

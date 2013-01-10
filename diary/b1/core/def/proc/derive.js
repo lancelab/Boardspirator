@@ -5,8 +5,9 @@
 					var tpaste	=  core.tpaste;
 					var cpaste	=  core.paste_non_arrays;
 					var clonem	=  core.clone_many;
-					var giodf	=  gio.def;
-					var defp	=  giodf.procs;
+
+					var gdef	=  gio.def;
+					var gdp		=  gdef.procs;
 					var dotify	=  core.dotify;
 					var exp_url	= tp.core.expand_to_parent;
 					var do_debug = gio.debug && !isNaN(gio.debug) &&  gio.debug % 7 === 0;
@@ -17,58 +18,72 @@
 
 
 
+	/// Templifies definition
+	gdp.normalize_album_defs = function ( album_defs ) {
+		ceach( album_defs, function( akey, ad ) {
+			cpaste( ad, gio.def.templates.def.album ); 
+			//. up-link
+			ad.key = akey;
+			//. "body-link"
+			ad.album_name = ad.album_name || '';
+		});
+	};
+
+
+
+
+
 	///	Derives game definition.
 	//	Gets own key, gekey from own index.
 	//	Derives	dress,
 	//			post_definition, and
 	//			sugar.
-	defp.derive_game = function( gkey ) {
-
+	gdp.derive_game = function( gkey ) {
 
 		//: verifies if job already done
-		var idef = giodf.inherited_games[gkey];
+		var idef = gdef.inherited_games[gkey];
 		if(idef) return clonem(idef);
 
 
 		//: verifies if own definition exists
-		var gdef = giodf.games[gkey];
-		if(!gdef){
+		var gdg = gdef.games[gkey];
+		if(!gdg){
 			gio.cons_add('Missed seed definition  for gkey "'+ gkey +'".');
 			return false;
 		}
 
 
 		// //\\ does the recursive inheritance job
-		gdef.basekey = gdef.basekey || giodf.base_game.basekey;
+		gdg.basekey = gdg.basekey || gdef.base_game.basekey;
 		
 
-		if( gdef.basekey === gkey ){
+		if( gdg.basekey === gkey ){
 
 			//.	no post-defs for self-referenced games  
 			//	this is just a funny way to protect mistakenly infinite-loop references
 			//	this also applies for gkey = whirly
-			//	bug?: idef = gdef;
-			idef = clonem(gdef);
+			//	bug?: idef = gdg;
+			idef = clonem(gdg);
 
 
 		}else{
-			idef=defp.derive_game(gdef.basekey);
+			idef=gdp.derive_game(gdg.basekey);
 			if(!idef)return false;
 
 
 			//	//\\ runs post-defs if any. changes idef
 			//	runs it BEFORE seed-definition is applied
-			var ww = gdef.post_definition;
+			var ww = gdg.post_definition;
 			if(ww && gio.def.post_definitions[ww]){
 				gio.def.post_definitions[ww](idef);
 				//.	cannot delete because reflection is used in friend rails project and
 				//	all properties are needed
-				//delete gdef.post_definition;
+				//delete gdg.post_definition;
 			}
 			//	\\// runs post-defs if any. changes idef
 
 
-			idef = clonem(idef,gdef);
+			idef = clonem(idef,gdg);
 		}
 
 
@@ -86,7 +101,7 @@
 
 
 		//. saves the job
-		giodf.inherited_games[gkey]=idef;
+		gdef.inherited_games[gkey]=idef;
 
 		//. returns the job
 		return clonem(idef);
@@ -100,37 +115,38 @@
 
 
 	/// Dresses game with dresses and credits from game, parent_album, and own_definition.
-	defp.dress_game = function ( akey ) {
+	gdp.dress_game = function ( akey ) {
 
 		//: vital: returns copy, to protect template intact
-		var dgame = giodf.dressed_games[ akey ];
+		var dgame = gdef.dressed_games[ akey ];
 		if( dgame ) return clonem( dgame );
 
 		/// verifies if own definition exists
-		var album_def = giodf.albums[ akey ];
+		var album_def = gdef.albums[ akey ];
 		if( !album_def ) {
 			gio.cons_add( 'Missed definition for album key "' + akey + '".');
 			return false;
 		}
 
+
 		/// derives the game
 		var gkey = album_def.gkey || akey;
-		dgame = defp.derive_game( gkey );
+		dgame = gdp.derive_game( gkey );
 		if( !dgame ) return false;
 
 
 		//	//.\\	collects 4 dresses from 
 		//			game, parent-album, album-definition, and default-dress
 		//: takes dressed parent album if any
-		var p_akey = album_def.dress_parent_akey;
-		var p_dgame = null;
-		if( p_akey ) {
-			p_dgame = defp.dress_game( p_akey );
-			if( !p_dgame ) return false;
+		var dgkey = album_def.ref.env.dgkey;
+		var w_dgame = null;
+		if( dgkey ) {
+			w_dgame = gdp.dress_game( dgkey );
+			if( !w_dgame ) return false;
 		}
 
 		/// inherites dresses from definitions
-		dgame.dresses = clonem( dgame.dresses, p_dgame && p_dgame.dresses, album_def.dresses );
+		dgame.dresses = clonem( dgame.dresses, w_dgame && w_dgame.dresses, album_def.dresses );
 
 		/// injects default dress
 		ceach(dgame.dresses, function(dkey, dress){
@@ -176,7 +192,7 @@
 
 		//: finalizes
 		dgame.akey = akey;
-		giodf.dressed_games[ akey ] = dgame;
+		gdef.dressed_games[ akey ] = dgame;
 
 		return clonem(dgame);
 	}; /// Dresses album ...
@@ -188,44 +204,55 @@
 
 
 
-	/// Spawns album from its definition and parents
-	defp.derive_album = function ( akey, cseed_to_add ) {
 
+
+
+	/// Spawns album from its definition and parents
+	gdp.derive_album = function ( akey, cseed_to_add, preserve_gui_state ) {
 
 		var album = gio.session.stemmed_albums[ akey ];
 		if( album ) {
 
 			//. returns album if already derived
 			if( !cseed_to_add ) return album;
+			if( do_debug ) gio.cons_add( 'Begins adding cseed to akey = "' + akey + '" ... ' );
+			// c onsole.log( "State snap = ", gio.session.get_state_snap() );
+
 		}else{
 
+
+			if( do_debug ) gio.cons_add( 'Begins deriving akey "' + akey + '". First time ... ' );
+
 			//. gets definition
-			var album_def = giodf.albums[ akey ];
+			var album_def = gdef.albums[ akey ];
 			if( !album_def ) return false;
-			//: templifies album
-			album				= clonem( album_def, gio.def.templates.play.album );
-			//. up-link
-			album.key			= akey;
-			//. "body-link"
-			album.album_name	= album_def.album_name || '';
+
+			//. templifies album
+			album = clonem( gio.def.templates.play.album, album_def );
 
 			//: does dressing
-			var dgame = defp.dress_game( akey );
+			var dgame = gdp.dress_game( akey );
 			if( !dgame ) return false;
 			album.dgame = dgame;
 
 			try{
 
+
+				for( var cix=0, wlen = album.collections.length; cix < wlen; cix++ ) {
+					gdp.externify_and_hostify( album.collections[ cix ], album )
+				};
+
+
 				/// removes external collections
 				if( !gio.config.feeder.exists ) {
-
-					if( do_debug ) gio.cons_add( 'Removing external collections from album: ' + akey );
-					var purged_collections = [];
+					if( do_debug ) gio.cons_add( 'Removing external colls from album: ' + akey );
+					var w_purged = [];
 					ceach( album.collections, function( i, coll ) {
-						if( !coll.ref.link.link ) purged_collections.push( coll );
+						if( coll.ref.link.ownhost ) w_purged.push( coll );
 					});
-					album.collections = purged_collections;
+					album.collections = w_purged
 				}
+
 
 
 				//: templifies collections,
@@ -233,9 +260,11 @@
 				for( var cix=0, wlen = album.collections.length; cix < wlen; cix++ ) {
 					var coll =  album.collections[ cix ];
 					cpaste( coll, gio.def.templates.play.coll );
-					if( cix === 0 || coll.chosen ) album.collections.ix = cix;
-					if( !defp.spawn_coll_up_down_links( album, cix ) ) return false;
+					if( cix === 0 || coll.ref.list.chosen ) album.collections.ix = cix;
+					if( !gdp.spawn_coll_up_down_links( album, cix, 'externified' ) ) return false;
 				}
+
+
 
 				//.	enables album for references from application
 				gio.session.stemmed_albums[ akey ] = album;
@@ -244,7 +273,7 @@
 				gio.cons_add(	"Error deriving akey " + akey + ".\n" +
 								( typeof error === 'object' && error !== null ? error.message : '' + error )
 				);
-				if( gio.debug ) tp$.deb( error );
+				gio.debtp( error );
 				return false;
 			}
 		}/// first time
@@ -255,19 +284,22 @@
 		if( cseed_to_add ) {
 			var coll_to_add = clonem( cseed_to_add, gio.def.templates.play.coll );
 			album.collections.push( coll_to_add );
-			if( coll_to_add.chosen ) album.collections.ix = album.collections.length - 1;
-			if( !defp.spawn_coll_up_down_links( album, album.collections.ix ) ) return false;
+			var cix = album.collections.length - 1;
+			/// preserves state ... is vital if middle-play-custom-landing-collection is non-validated yet
+			if( !preserve_gui_state ) {
+				if( !album.collections.ix || album.collections.ix !== 0 ) album.collections.ix = 0;
+				if( coll_to_add.chosen || coll_to_add.ref.list.chosen ) album.collections.ix = cix; //TODM sugar. rid
+			}
+			// do this: if( coll_to_add.ref.list.chosen ) album.collections.ix = cix;
+			if( !gdp.spawn_coll_up_down_links( album, cix ) ) return false;
 		}
 
 
-
 		/// enables album in GUI
-		if(		!gio.session.alist_by_key[ akey ] && 
-				album.collections.length > 0 &&
-				(	
-					!gio.config.query.asingle ||
-					album.from_external_url
-				)
+		if(		!gio.session.alist_by_key[ akey ]		&& 
+				album.collections.length > 0			&&
+				( !gio.config.query.asingle || album.ref.list.display_preordered ||
+				akey === gio.config.query.akey )
 		){
 				album.ix = gio.session.alist.length;
 				//. puts album to selection list in the game web-page header
@@ -283,12 +315,15 @@
 			album.title = gio.gui.procs.calculate_game_titile_from_names( coll.dgame.nam, album.album_name );
 		}
 
-		if( gio.debug ) tp$.deb( "Did derive akey " + akey );
+		if( do_debug ) tp$.deb( (cseed_to_add ? "Added cseed to" : "Derived") + " akey " + akey );
+		// c onsole.log( "At the ''derive'' subr. end. State snap = ", gio.session.get_state_snap() );
+
 		return album;
 
 
 
 	}; /// Spawns album from its definition and parents
+
 
 
 

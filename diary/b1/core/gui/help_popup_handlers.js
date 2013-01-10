@@ -1,10 +1,16 @@
 (function() { 	var tp   		=  $.fn.tp$  =  $.fn.tp$ || {};	
 				var core		=  tp.core;
 				var gio  		=  tp.gio    =  tp.gio   || {};
+
 				var gworkers	=  gio.gui.procs;
 
-	// The purpose of this file is to prepare handlers which
-	// are common for button-click or key-strike control events.
+
+				// //\\//	Prepares handlers which
+				//			are common for button-click or key-strike control events.
+
+
+
+
 
 
 
@@ -31,9 +37,18 @@
 								"border-radius : 7px; ";
 
 		var about	= "<h1>C r e d i t s</h1>";
+
+
+		/// Does mining of original collection credits
+		if( gm.coll__eff !== collection ) {
+			about		+= "<h2>Original Collection:</h2>";
+			about		+= gm.coll__eff.credits_table;
+			about		+= "<h2>Wrapping Collection:</h2>";
+		}
+
 		about		+= collection.credits_table;
 
-		if( collection.ref.link ) {
+		if( !collection.ref.link.ownhost ) {
 			about += 		"<br>External contents can be changed unexpectedly and\n" +
 							"are out of " + gio.description.title + " control.<br><br>\n";
 		}
@@ -161,16 +176,23 @@
 	gworkers.get_map_credits = function( with_external ) {
 		var gs		=	gio.getgs();
 		var gm		=	gs.gm;
-		var result	= '';
-		var credits = core.clone_many(gm.credits);
+		
+		var original_map = gm.script.data_source_map;
+		if( original_map ) {
+			var final_credits = core.clone_many( original_map.credits );
+			final_credits.credits = [ core.clone_many( gm.credits ) ];
+		}else{
+			var final_credits = core.clone_many( gm.credits );
+		}
 
 		var external = gm.coll__eff.ref.link;
 		if( external.link && with_external) {
-			credits.web_site = gm.coll__eff.credits.web_site;
-			credits.source = gm.coll__eff.ref.link.link;
+			final_credits.web_site = gm.coll__eff.credits.web_site;
+			final_credits.source = gm.coll__eff.ref.link.link;
 		}
 		var stub_obj = {};
-		core.tooltipify(stub_obj, "Map", credits );
+
+		core.tooltipify( stub_obj, "Map", final_credits );
 		return stub_obj;
 	};
 

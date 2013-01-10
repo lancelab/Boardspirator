@@ -379,7 +379,7 @@
 												gio.cons_add('Problems loading session');
 												return;
 											}
-											success = gio.navig.select_album_and_collection();
+											success = gio.navig.validate_coll_map( null, null, null, 'do_land' );
 											if(!success){
 												gio.cons_add('Problems loading session');
 												return;
@@ -411,15 +411,16 @@
 									{	title:'---'
 									}
 								],
-					callback :	function(dummy, item_option, select_el){
+					callback :	function( dummy, item_option, select_el ) {
 
+									gio.debly( "Ordered: " + item_option.title );
 									var gs = gio.getgs();
 									var gm = gs.gm;
 									var msol = gm.solver;
 									var options = select_el.arg.r.options;
 
 									var do_search = '';									
-									switch (item_option.title) {
+									switch ( item_option.title ) {
 									case 'Search First':
 											do_search = 'first';
 											break;
@@ -472,18 +473,27 @@
 								{	title:'Edit Playpath',
 									tooltip:'Edit or show playpath text. Key: w.'
 								},
-								{	title:'Albums Designer',
-									tooltip:'Show JSONed Albums'
+								{	title:'Album Definitions',
+									tooltip:'Shows Albums available to build upon.'
 								},
+
+								/*
+								//suspended
 								{	title:'Collection Designer',
 									tooltip:'Show JSONed Albums'
 								},
-								{	title:'Game Designer',
-									tooltip:'Show JSONed Game Definitions'
-								},
-								{	title:'Base Game Designer',
-									tooltip:'Show Base Game Definition'
+								*/
+
+								{	title:'Game Definitions',
+									tooltip:'Shows Game Definition Seeds available to build upon.'
 								}
+
+								/*
+								{	title:'Base Def Info',
+									tooltip:'Shows Base Game Definition'
+								}
+								*/
+
 							],
 				callback :	function(i,option){
 								switch(option.title){
@@ -493,18 +503,22 @@
 									case 'Edit Playpath' :
 											gio.map_editors.display_game_path();
 											break;
-									case 'Albums Designer' :
+									case 'Album Definitions' :
 											gio.map_editors.display_albums();
 											break;
+									/*
 									case 'Collection Designer' :
 											gio.map_editors.display_collections();
 											break;
-									case 'Game Designer' :
+									*/
+									case 'Game Definitions' :
 											gio.map_editors.display_game_defs();
 											break;
-									case 'Base Game Designer' :
+									/*
+									case 'Base Def Info' :
 											gio.map_editors.display_base_game_inherited_def();
 											break;
+									*/
 								}
 							}
 		});
@@ -596,6 +610,9 @@
 					case 'About Map' :
 									gio.gui.procs.toggle_about_map_pane();
 									break;
+					case 'Credits' :
+									gio.gui.procs.toggle_about_pane();
+									break;
 				}
 			};
 			makeControl( {
@@ -614,6 +631,9 @@
 								},
 								{	title:'About Map',
 									tooltip:'About Map Information. Key x'
+								},
+								{	title:'Credits',
+									tooltip:'Credits for all game components. Shift + c.'
 								}
 							],
 				callback :	help_callback

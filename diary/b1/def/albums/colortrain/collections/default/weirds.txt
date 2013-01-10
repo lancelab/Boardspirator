@@ -1,0 +1,53 @@
+/:
+{	"credits" :
+	{
+
+		/, title       Weirds
+		/, copyright   Copyright (c) 2012 Konstantin Kirillov
+		/, license     Free for use, distribution, and modification as long as these credits retained.
+		/. date        January 6, 2013
+	}
+}
+
+/\\
+
+
+
+
+:::map
+##########
+#111111--#
+#b-------#
+#-ABABAB-#
+#--------#
+#-BABABA-#
+#-------a#
+#--222222#
+##########
+:::board_end
+:::title=6 pieces
+:::multiplayer=2
+
+
+rlrlDlulrlrlrlrurudrdUlUldDdDlududrrrrur
+urlrDuuulllllrlrdUlddlRDRrldururrurLDdrl
+rUDUDrDuuulLurLdLdLluUlUDdDluUrdrLDdDluU
+RURdRdurrdDrDDlllllUlUlUullulRdddrR
+
+
+:::map
+##########
+#1111----#
+#b-------#
+#-BABA---#
+#--------#
+#---ABAB-#
+#-------a#
+#----2222#
+##########
+:::board_end
+:::title=4 pieces
+:::multiplayer=2
+
+
+

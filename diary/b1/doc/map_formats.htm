@@ -22,10 +22,11 @@
 	<script type="text/javascript" src="../tp/form.js"></script>
 
 	<!-- :: must be before others in gio: -->
-	<script type="text/javascript" src="../core/config.js"></script>
-	<script type="text/javascript" src="../core/config_gui.js"></script>
-	<script type="text/javascript" src="../core/config_description.js"></script>
-	<script type="text/javascript" src="../core/config_spawner.js"></script>
+	<script type="text/javascript" src="../core/config/core.js"></script>
+	<script type="text/javascript" src="../core/config/gui.js"></script>
+	<script type="text/javascript" src="../core/config/description.js"></script>
+	<script type="text/javascript" src="../core/config/spawner.js"></script>
+
 
 
 	<script type="text/javascript" src="../core/entry.js"></script>
@@ -43,25 +44,68 @@ To display a readme, turn JavaScript on.
 <span style="visibility:hidden;">This token, #@title@#, is a necessary flag to unhide this page.</span>
 
 <pre>
-<h1>Scripting Maps</h1>
+<h1>Collection File Format. Draft.</h1>
 	
 
-	Collection file contains header and maps.
-	Collection can be scripted in either Sokoban, Colorban, or both formats. <a href="../def/albums/flocks/collections/default/intro.txt">Example.</a>
-	Here, "Sokoban format" is a partially compatible classic Sokoban file format. <a href="../def/albums/sokoban/collections/holland/2008_06_29.txt">Example.</a>
-
 	Legend:
-		opt		- optional
-		req		- required
-		scode	- application-source-code
-		def		- definition
+		cfile	- collection-file
+		opt     - optional
+		req     - required
+		scode   - application-source-code
+		def     - definition
 
-	P r e c e d e n c e
+<a name="cfile_example"></a>
 
-			<a href="../core/def/map_format/file_header_finalizer.js">//.\\	this statement is skipped for speed purposes, but</a>
+	Collection-file is a main tool to script final games.
+	Cfile can be sell-sufficient: it can contain full information to
+	define invented-in-place-games, albums, and maps-script.
+
+	Examples: <a href="whirly.htm#deriving">scripting and deriving in cfile</a>.
+
+	Cfile format:
+
+		<a href="../core/def/map_format/jwon.js">jwon</a>-header - opt
+		maps-script - opt
+	
+
+	Jwon-header is a wrapper for json format.
+	Maps-script is either <a href="../def/albums/flocks/collections/default/maps.txt">Colorban-script</a> or script in <a href="http://sokobano.de/wiki/index.php?title=Sok_format">sok-format (External link).</a>
+
+	Without maps-script, cfile can serve like add-on to core games and albums.
+	Without jwon-header, cfile can be just a plain Colorban or Sokoban maps file.
+
+	Jwon-header can contain game-definitions, album-definitions, collection-seed, and credits.
+		In plain words, this is a json-formatted-text wich opens up with the token /: and has insertions of
+		<a href="http://en.wikipedia.org/wiki/Here_document">"here-document"</a> fragments,
+		single-line-comments,
+		and single-line property assignments.
+
+	In plain words, here is how cfile can look:
+			/: 
+				{
+					"games" :
+					{ 
+						// new game
+						"my_game" : "sample"
+						...
+					},
+					"albums" :
+					{
+						...
+					},
+					"collection" :
+					{
+						....
+					}
+				}
+			/\\	
+			#######
+			# @$. #	
+			#######
 
 
-	C o l l e c t i o n   f i l e   f o r m a t
+
+	M a p s - s c r i p t   f o r m a t
 
 		MAP_LOOKUP - opt
 			colorban directives - opt
@@ -109,24 +153,24 @@ To display a readme, turn JavaScript on.
 
 
 
-	B a s i c    d i r e c t i v e s (draft)
+	B a s i c    d i r e c t i v e s
 
 		Get an indea from source code section <a href="../core/def/map_format/core.js">///\\\ Digests :::-directive and runs short code</a>.
 
 		Map sugar: colorban board lines can be inserted like here:
 
 			:::map
-			-$-@-
+			-$-@-y-
 			:::board_end
 
-		Above map is "wallless". It has no "#" symbol which stands for colorless wall. If your map has at least one line with
-		colorless wall, then each line of this map must have opening and closing wall, as in Sokoban map.
+		Above map has no "#" symbol which stands for colorless wall. If your map has at least one line with
+		"#", then each line of this map must have opening and closing wall, as in Sokoban map.
 
 		Browse site's games, click on "About Map", "Edit Map Scripts", or "Collection Designer" buttons to learn from examples. 
 
 
 
-	D e r e f e r e n c i n g (draft)
+	D e r e f e r e n c i n g
 
 		Board in map can be omitted in case if map refers to map located in another album or collection.
 		Directives in preboard-zone are: 
@@ -141,15 +185,39 @@ To display a readme, turn JavaScript on.
 
 			<a href="../core/def/map_format/core.js">//.\\ context_akey means ... </a>
 
-		When crafting own maps, pay attention when mixing different games in one album.
-
-			Explicit :::context_akey directive should solve inconsistencies.
-			For example, as in "Hello Album", Doubleban and Flocks do coexist.
 
 
+	B o a r d
+
+		In map-script, sequence of symbols describing units in one x,y-planar-location is called "cell".
+
+		Row examples:
+
+			sok-format compatible:			
+			#-.$@#
+			# . * + #
+
+			Sokoban non-compatible:
+			#   .h2     X #       #
+			#   h2:3.x  X # .h1   #
+			    h2:3.x  X y .h1   
+				.h2:3   X y .h1   	
+
+			Cells longer than one char must be separated with spacers.
+			Symbols longer than 1-char require presense of "." which separates them.
+
+			: - feature is not ready
+				Number after :-character will be parsed to rank of unit h2.
+				Rank is not yet implemented	in the application.
+				The :-feature waits for this implementation.
+			
+
+		Crafter must know characters which are used in map script.
+		(Map characters mapper is built by <a href="../core/def/map_format/map_tables.js">this code</a>).
+		
 
 
-	D r e s s   . . (draft)
+	D r e s s   . . 
 
 		.. is Game's Skin and Meaning.
 
@@ -161,13 +229,12 @@ To display a readme, turn JavaScript on.
 
 		Dress can be specified right in a map script. In this case it overrides properties of it's
 		parent dress in album or adds an extra dress to dresses if no parent with the same name is in album.
-		PARENT_DRESS is referred by the name of the map's dress
-			:::dress=PARENT_DRESS_1
+		parent DRESS is referred by the name of the map's dress
+			:::dress=DRESS
 		or by directive 
-			:::inherit_from=PARENT_DRESS_X
-				this directive is used when we create two dresses PARENT_DRESS_1, PARENT_DRESS_2 for the same map and
-				these dresses do inherit from the same PARENT_DRESS_X
-				see <a href="../core/gui/init_map.js">//.\\ inherits from defaul or from co-named parent</a>:
+			:::inherit_from=DRESS_X
+				to make map's-DRESS inherit from DRESS_X
+				see <a href="../core/gui/create_map.js">//.\\ inherits from defaul or from co-named parent</a>:
 
 		Get an indea from source code section <a href="../core/def/map_format/collect_dresses.js">//\\ COLLECTS DIRECTIVES FOR DRESS</a>.
 
@@ -209,6 +276,8 @@ To display a readme, turn JavaScript on.
 																					for bundled-to-player-collection
 					:::image=f=http://here-we-are.com/tile.png		...		result: image_url = http://here-we-are.com/tile.png
 
+					:::image=ground_x_3_1=ground_x_in_scene.png     ...     result: only ground_x with x,y = 3,1 is set to this picture
+
 				Similar path conversions are true for
 					:::back_image=transparent.png
 					:::center_image=//transparent.png
@@ -217,7 +286,7 @@ To display a readme, turn JavaScript on.
 
 
 
-	E x a m p l e s (draft)
+	E x a m p l e s
 
 		:::dress=flocks
 		:::skip

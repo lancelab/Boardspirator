@@ -60,7 +60,7 @@
 
 	{
 		"album_name": "",
-		"dress_parent_akey":"leappush",
+		"env" : { "dgkey":"leappush" },
 		"collections": [
 			{
 				"credits" : { 

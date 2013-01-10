@@ -1,11 +1,16 @@
-
-:::. credits.title			:	Sasquatch IV (March, 2001)
-:::. credits.copyright		:	Copyright (c) 2001 David W Skinner
-:::. credits.license		:	The sets Sasquatch and Microban may be freely distributed provided they remain properly credited.
-:::. credits.web_site		:	http://users.bentonrea.com/~sasquatch/sokoban/
-:::. credits.email			:	sasquatch (a) bentonrea (.) com
-:::. credits.copied_from	:	http://users.bentonrea.com/~sasquatch/sokoban/s4
-:::. credits.copied_on		:	November 14, 2012
+/:
+{	"credits" :
+	{
+		/, title			Sasquatch IV (March, 2001)
+		/, copyright		Copyright (c) 2001 David W Skinner
+		/, license			The sets Sasquatch and Microban may be freely distributed provided they remain properly credited.
+		/, web_site			http://users.bentonrea.com/~sasquatch/sokoban/
+		/, email			sasquatch (a) bentonrea (.) com
+		/, copied_from		http://users.bentonrea.com/~sasquatch/sokoban/s4
+		/. copied_on		November 14, 2012
+	}
+}
+/\\
 
 
 ; 1

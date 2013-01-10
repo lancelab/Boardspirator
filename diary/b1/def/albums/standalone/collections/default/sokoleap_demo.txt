@@ -1,0 +1,83 @@
+/:
+
+{	"games" :
+	{
+		"sokoleap_demo":
+		{
+			"nam"		: "SokoLeap Demo",
+			"basekey"	: "sokoban",
+			"credits"	: {	"author" : "L. Eap" },
+
+			/// In this demo-game, only one interaction is changed from "push" to "leap"
+			"interact"	:
+			{
+				"hero_x" :
+				{	
+						"box_x" : "leap"
+				}
+			}
+		}
+	},
+
+
+
+
+	"albums" :
+	{
+		"sokoleap_demo" :
+		{
+			"dresses" :
+			{
+
+				"default" :
+				{
+					"rules" : "When hero advances to a box, box leaps over hero if space allows.",
+					"objective" : "Fill the targets."
+				}
+			}
+		}
+	},
+
+	"collection" :
+	{
+		"akey" : "sokoleap_demo",
+		"credits" :
+		{
+			"title" : "Demo Collection",
+			"author" : "L. Eap"
+		}
+	}
+/:
+}
+
+/\\
+
+Leap the L
+
+#######
+#.-#-$#
+#.---$#
+#..@$$#
+#--#--#
+#######
+
+:::playpath=Solution 35.13
+rrrurrullllddrrrrulllddrrurrrdlluur
+
+
+Not too Far
+
+####
+#--###
+#.-@-####
+#-#$..--#
+#--$-#--#
+#-#$**$.#
+#----#--#
+#########
+
+:::playpath=Solution 49.17
+rdlldrrrrdddlllllluulluurrrdrrrrddrdldll
+lluuurrrr
+
+

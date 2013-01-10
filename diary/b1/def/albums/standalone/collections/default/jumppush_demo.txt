@@ -1,0 +1,68 @@
+/:
+
+{	"games" :
+	{
+		"jumppush_demo":
+		{
+			"nam"		: "Jumppush Demo",
+			"basekey"	: "sokoban",
+			"credits"	: {	"author" : "L. Eap" },
+
+			/// See description in dresses.default.rules
+			"DEEPNESS_LIMIT"	: 2,
+			"interact"	:
+			{
+				"hero_b" :
+				{	
+						"box_a" : "jump"
+				}
+			}
+		}
+	},
+
+
+
+
+	"albums" :
+	{
+		"jumppush_demo" :
+		{
+			"dresses" :
+			{
+				"default" :
+				{
+					"rules" :
+					/"
+						Heros can push most of 2 color matching boxes.
+						Green hero can jump most of 2 blue boxes.
+					/" ,
+					"objective" : "Fill available targets with color-matching boxes."
+				}
+			}
+		}
+	},
+
+	"collection" :
+	{
+		"akey" : "jumppush_demo",
+		"credits" :
+		{
+			"title" : "Demo Collection",
+			"author" : "L. Eap"
+		}
+	}
+/:
+}
+
+/\\
+
+:::map
+# # # # # # #
+# - a - b - #
+# - A - B - #
+# - A # B - #
+# - A - B - #
+# - - - - - #
+# # # # # # #
+:::board_end
+

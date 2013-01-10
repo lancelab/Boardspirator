@@ -31,7 +31,7 @@ rm -rf ../$ALPHA
 mkdir ../$ALPHA
 mkdir ../$ALPHA/prod
 ruby collections2mozaic.rb
-ruby skin_credits2html.rb
+ruby credits2html.rb
 ruby project_files_tree2html.rb
 ruby minifier.rb $ALPHA
 

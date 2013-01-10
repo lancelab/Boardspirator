@@ -1,8 +1,14 @@
+/:
+{	"credits" :
+	{
+		/, title            Soko-Derivations
+		/, author           Multiple authors. Credits are at maps level.
+		/, editor           Konstantin Kirillov
+		/. license          Multiple authors. Credits are at maps level.
+	}
+}
+/\\
 
-:::. credits.title			:	Soko-Derivations
-:::. credits.author			:	Multiple authors. Credits are at maps level.
-:::. credits.editor			:	Konstantin Kirillov
-:::. credits.license		:	Multiple authors. Credits are at maps level.
 
 
 

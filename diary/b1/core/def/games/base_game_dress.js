@@ -29,18 +29,18 @@
 			tile		:{	width : 25, height: 25 },
 			style		:{	
 							play:{
-									backgroundImage:'', //background.png',
-									backgroundColor:'transparent'
+									backgroundImage : "", // for example, alternative is: background.png',
+									backgroundColor : 'transparent'
 							},
 		
 							parent:{
-									backgroundImage:'',
-									backgroundColor:'#000000'
+									backgroundImage : "",
+									backgroundColor : "#000000"
 							}
 						}, 
 
 			image_decoder	:{},
-			focuser			: '', // '' causes 'default' in code
+			focuser			: 'default',
 			playvigation	:{	
 								UNIT_IS_UNSELECTABLE : true // should be set to false for interacting heros
 			},
@@ -55,8 +55,8 @@
 			rules			:	"Hero can push only one box with matching color.\n"+
 								"Moved box carries away matching neighbours.\n"+
 								"Black, matches any color.\n",
-			objective		:	"Put boxes to color-matching targets till all boxes are put or all targets are filled",
-			story			:	"",
+			objective		:	"Deliver boxes to color-matching targets till \nall boxes are delivered or all targets are filled",
+			story			:	"Stubborn boxes ... ",
 			hname_table		:	{},
 			DIMENSION_NAMES	:	[ 'x', 'y', 'z' ]
 			// \\// INFO /////////////////////////////////

@@ -22,10 +22,10 @@
 	<script type="text/javascript" src="../tp/form.js"></script>
 
 	<!-- :: must be before others in gio: -->
-	<script type="text/javascript" src="../core/config.js"></script>
-	<script type="text/javascript" src="../core/config_gui.js"></script>
-	<script type="text/javascript" src="../core/config_description.js"></script>
-	<script type="text/javascript" src="../core/config_spawner.js"></script>
+	<script type="text/javascript" src="../core/config/core.js"></script>
+	<script type="text/javascript" src="../core/config/gui.js"></script>
+	<script type="text/javascript" src="../core/config/description.js"></script>
+	<script type="text/javascript" src="../core/config/spawner.js"></script>
 
 
 	<script type="text/javascript" src="../core/entry.js"></script>
@@ -44,97 +44,87 @@ To display a readme, turn JavaScript on.
 
 <pre>
 
-<h1>Draft</h1>
+<h1>Guest Readme</h1>
+
+<h2>Introduction</h2>
+
+	#@title@# is a Web-browser-based program to play, craft, and solve puzzles derived from root game, Whirly.
+
+	#@title@# acts like a player which loads collection-file and skin and converts them into games ready to play.
+	Collection-file contains game maps. Skin contain images.
+
+	Core-collections and core-skins are bundled with the player.
+	Other collections and skins can be read directly from Internet.
+
+	As in case of Sokoban, when people created probably hundreds of collections, you can craft your
+	own collections. 
+
+	Collection-files can script not only maps, but also new games, albums, and skins.
+
+<h2>Extra Links</h2>
+
+	<span style="font-size:18px"><a href="whirly_and_sokoban.htm">Whirly and Sokoban Variants</a></span>
+	<span style="font-size:18px"><a href="../?akey=kids6&asingle&curl=//def/albums/kids/6.json.txt">Kids 6</a></span>
+	<span style="font-size:18px"><a href="../?akey=kids6co_colo&asingle&curl=//def/albums/kids/6co_colorban.json.txt">Kids 6 CoColo</a></span>
+	<span style="font-size:18px"><a href="../?akey=kids7&asingle&curl=//def/albums/kids/7.json.txt">Kids 7</a></span>
 
 
-<h1>Links</h1>
+<h2>Games, Albums, and Collections</h2>
 
-	<span style="font-size:18px"><a href="../?cscript&akey=kids6&asingle&curl=//def/albums/kids/6.json.txt">Kids 6</a></span>
-	<span style="font-size:18px"><a href="../?cscript&akey=kids6co_colo&asingle&curl=//def/albums/kids/6co_colorban.json.txt">Kids 6 CoColo</a></span>
-	<span style="font-size:18px"><a href="../?cscript&akey=kids7&asingle&curl=//def/albums/kids/7.json.txt">Kids 7</a></span>
+	Game is a set of rules to play. "Game" here means a puzzle-game.
 
-
-<h1>In Guest Zone .. </h1>
-
-	.. you can play the game without logging-in as a member.
-
-
-	P l a y S e s s i o n   . .
-
-	.. can be saved as a text.
-	Copy-paste to your text editor and paste back when landing to the site again.
-	Only single map session can be copy-pasted at single copy-paste.
-
-
-	C r a f t S e s s i o n   . .
-	<a name="speedup"></a>
-	.., game maps and playpaths you created, can be copy-pasted the same way as PlaySessions.
-	( Use this hint to speed up repeating job: e, Ctr+a, Ctrl+v, Ctrl+d which means: open-editor, select-current-text, paste, done. )
-	<script>
-			if( false && feeder.exists ) {
-				document.write(
-					"You can keep your maps on your site and give your friends a link,\n\tand they will play from your links, or you can " +
-					"create <a href=\"#ownsite\">own playable site</a>."
-				);
-			}
-	</script>			
-
-
-<h1>Games, Albums, and Collections</h1>
-
-	Game is a mathematical definition. It contains colonies, rules, and ovbjective.
-		It cannot be copyrighted, but credited.
 	Album contains three things: game, dress, and collections.
+
 		Dress is how game looks and is interpreted in words.
 		Dress includes images which are called "Skin".
 		Collection is a file containing maps.
 
 	Traditionally dresses and collections can be copyrighted.
-	
-	Games can be inherited from other games. The top of inheritance tree is:
+
+	More accurately, game is a mathematical definition. It contains breeds, rules, and ovbjective.
+	It cannot be copyrighted, but credited.
+
+	Games can be derived from core-games or from external-games with core-game <a href="whirly.htm">Whirly</a>
+	at the top of inheritance tree.
 
 
-<h1><a href="whirly.htm">Whirly - the Root Game</a></h1>
 
 
-<h1>Customizing</h1>
+<a name="urlquery"></a>
 
-	If Album omits dress, the default dress inherited from applied game.
-	Album can be located on any part on Internet, not only on #@title@# server.
-	Album can refer collection located on any part on Internet.
-	Map script can refer any album and include skins from any part of Internet.
+	U R L - q u e r y    P a r a m e t e r s   . .
 
-	<a name=\"urlquery\"></a>
-
-	I n p u t   P a r a m e t e r s   . .
-
-		.. can be set in URL-query string. For example,
+		.. control execution of the player. For example:
 
 			...&akey=sokoban                                            - album key
-			...&aurl=http://mysite.com/mypath/myalbum.txt               - albums url
-			...&curl=http://users.bentonrea.com/~sasquatch/sokoban/m1   - collection url
+			...&aurl=http://mysite.com/mypath/myalbum.txt               - albums url, maps in target file are ignored
+			...&curl=http://users.bentonrea.com/~sasquatch/sokoban/m1   - collection url, target intends to have maps
 			...&curl=//mycollection_path/mycollection.txt
 			...&collection_ix=123
 			...&map_ix=345
 			...&asingle                                                 - suppresses display of other's albums except of &aurl
+			...&slim=300000                                             - positions' number limit for solver
 
 
 		&aurl or &curl can be set independently: both or one of them. 
-			You can set &aurl and define references to your collections
-					1) inside of your album or,
-				alternatively, add
-					2) &curl
-				In case 1), references to your (or others) collections are defined inside <a href="../def/albums/sokoban/album.js">album definition</a>.
-				
+		Game Crafters may want use these parameters to point to own sites.
 
-		&aurl is a full url:
-			&aurl=http://mysite.com/mypath/myalbum.txt
 
-		&curl can be set either as full or relative:
+<h2>Map Craft .. </h2>
+
+		.. is a simplest way to craft a Game. It does not require creating new rules or dresses.
+		Just borrow already existing Games or dresses and refer your maps to them.
+		<a href="whirly.htm#deriving">This link</a> contains examples of both mapifying and derivation. Just ignore
+		derivation part of collection files.
+
+
+		&aurl and &curl can be full or relative urls:
+
 			full url:
+				&aurl=http://mysite.com/mypath/myalbum.txt
 				&curl = http://users.bentonrea.com/~sasquatch/sokoban/m1">Sokoban map 123 from external collection
 			relative url:
-				relative url is attached to a "parent album" by using prefix "//":
+				relative url is attached to a "parent" by using prefix "//":
 				&curl = //mycollection_path/mycollection.txt
 					if albums is also supplied in form
 							&aurl=http://mysite.com/mypath/myalbum.txt
@@ -145,34 +135,32 @@ To display a readme, turn JavaScript on.
 
 		If "//" used in maps, then relative url is attached to collection's root.
 
+		You need to use <a href="map_formats.htm">collection file format</a>.
+		To get started, look at existing collections in <a href="project_files.htm">def/albums</a>
+		and the source of page <a href="whirly_and_sokoban.htm">Whirly and Sokoban Variants</a>.
+		Ignore derivation parts at first step.
+
 
 		Examples:
 			<a href="../?akey=co_pullpush&curl=http://www.ne.jp/asahi/ai/yoshio/sokoban/handmade/soko001.txt">loading reverse Sokoban from external site</a>,
 			<a href="../?akey=sokoban&map_ix=123&curl=http://users.bentonrea.com/~sasquatch/sokoban/m1">Sokoban map 123 from external collection</a>
 
-		For available options, look at <a href="../core/config.js">gio.config.query template</a>.
 
-		More is in file <a href="../core/def/proc/derive.js">derive.js at section: //\\	referencifies collection</a>
-		The plan was:	collection.external is a flag which externifies collection; otherwise, 
-						collection.address sets it relative to the player album tree.
-		The template of album is <a href="../def/albums/album_template.js">here</a>.
 
-	<script>
-			if( false && feeder.exists ) {
-				document.write(
-					"\n\t\tMore examples for &aurl:" +
-					"\n<a name=\"ownsite\"></a>" +
-					"\n\t" +
-					"<a href=\"" + feeder.url + "/mysite/index.php\">M a k e   O w n   P l a y a b l e   " + gio.description.title + "   S i t e</a>\n"
-			);}
-	</script>			
+<a name="craft"></a>
 
-	<a href="map_formats.htm">M a p    f o r m a t s</a>
+
+<h2>Game Craft</h2>
+
+	<a href="whirly.htm#deriving">Deriving from Whirly.</a>
+
+
+
 
 
 <a name="solver"> </a>
 
-<h1>Solver</h1>
+<h2>Solver</h2>
 
 	.. is breadth-first and weak. Its power depends on size of your computer memory.
 	Solver memory limit is preset to slim=(300000 pstates) for PC with 1 Gig memory.
@@ -194,6 +182,8 @@ To display a readme, turn JavaScript on.
 		Solver starts from given position, not from initial position of the map.
 		To generate new game-scenario, run solver for co-game, find "longest" solution in terms of
 		interactions or moves, then co-vert the scenario.
+		Don't switch to map other than currently under solving, because when solver finds
+		slolution, it throws it into current GUI.
 
 	There are possible difficulties at the edge of Web-browser capabilities:
 		Browsers die, quit, crash differently on different OSes.
@@ -207,13 +197,15 @@ To display a readme, turn JavaScript on.
 
 
 <a name="credits"> </a>
-<h1>Giving Credits</h1>
+<h2>Giving Credits</h2>
 
-		Note: dress.credits.license === "host-based" works only for dress-definitions made inside of album.
+		To give credits to your self or others, object-literal "credits" in collection and dress can be used.
+		Credits also stream from query-string, from map-script, dress-script, wroll-header.credits.
+		Credits can include dependence credits, like jQuery credits are nested in #@title@# description.
+		Keywords which are interpreted as credits are here: <a href="../tp/core2_no_jquery.js">/.\	AVAILABLE CREDIT KEYS</a>
 
 
-
-<h1>Troubleshooting</h1>
+<h2>Troubleshooting</h2>
 
 	Game crafter should not need debugging.
 	If you feel this helps to publish the game, add URL-query parameter:
@@ -227,8 +219,8 @@ To display a readme, turn JavaScript on.
 	Heavy debug may take too much browser resources.
 
 
-<h1><a href="app_developer_readme.htm">Application Developer Readme</a></h1>
-<h1><a href="project_files.htm">Project Files</a></h1>
+<h2><a href="app_developer_readme.htm">Application Developer Readme</a></h2>
+<h2><a href="project_files.htm">Project Files</a></h2>
 
 	
 

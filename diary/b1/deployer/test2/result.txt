@@ -1,0 +1,16 @@
+Log:
+    converted: level0-fileA
+header
+/:
+{ "credits" :
+	{
+		/.	first-line 	 first-value
+		/.	second	value
+		/.	third  	value
+		/,	fourth-value 	good
+
+}
+/\\
+footer
+
+End of log.

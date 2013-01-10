@@ -23,6 +23,13 @@
 					var colorbanKV					= cmd.colorbanKV = function(line){ return line.match(_ckv_match) || []; };
 					var comment_escape_char			= /^;/;
 
+					//.	Before parsing collection-text, it is splitted by lines by 
+					//	using this regular expression.
+					//	For example, copy-pasted collection fragments from Internet can
+					//	create a weird mix of delimited lines.
+					//	Perhaps this slpitter is still weak. TODM.
+					var file_lines_split_re			= /\r\n|\r|\n/g;
+
 
 					//.	sets sokoban map line detector
 					//	lets wrong lines to leak
@@ -33,16 +40,16 @@
 
 
 
-	/// Main decoder "decode" method
-	// Non-multithread safe
-	// Input	:	maps_text - text of collection
+	///	Main decoder "decode" method
+	//	Non-multithread safe
+	//	Input	:	maps_text - text of collection
 	//				collection_ - collection component of bundle
 	//
-	// Output	:	in case of success: collection.maps_loaded ='success'; 
+	//	Output	:	in case of success: collection.maps_loaded ='success'; 
 	//				otherwise simply returns;	
-	// Usage	:	After first scan, maps can be added to text and
+	//	Usage	:	After first scan, maps can be added to text and
 	//				"decode" can rescan them
-	// Coding pattern in master loop:
+	//	Coding pattern in master loop:
 	//					a. top detects a change and sets ...-raised flags and flags, 
 	//					b. set continue in master loop only if there are no flags raised, or
 	//					postboard tip and soko-pretitle edit can be skipped
@@ -75,34 +82,24 @@
 		var map_ix=-1;
 
 
-		// //\\ validates maps_text
+		// //\\ Splits text to lines
 		var maps_text = script.source_text;
-		if( maps_text.indexOf('\n') > -1 ) {
 
-			var flines = script.flines = maps_text.split( "\n" ); //TODM wastes performance when appending text to collection; don't do split again;
-
-			//. Sets memory for future trimmed lines.
+		var flines = script.flines = maps_text.split( file_lines_split_re );  //TODM wastes performance when appending text to collection; don't do split again;
+			/// Sets memory for future trimmed lines.
 			//	Be careful when using them not as a flag of empty lines:
 			//	they are not macrosed and are raw.
 			//
 			//	Hopes this is a faster way to reserve the memory
 			//	instead of adding elements to this array while parsing "flines".
-			var trimmed_lines = script.trimmed_lines = maps_text.split("\n");
-			//	TODM script.trimmed_lines is possibly huge waste of memory
+			//	TODM do effectively
+		var trimmed_lines = script.trimmed_lines = [];
+		tp.core.each( flines, function( ix, val ) {
+			trimmed_lines[ ix ] = '';
+		}); 
+		// \\// Splits text to lines
 
-		}else if( maps_text.indexOf( '\r' ) > -1 ) {
-
-			if( gio.debug ) gio.cons_add( "Rare case ... CR is a map line delimiter" );
-			var flines = script.flines = maps_text.split( "\r" );
-			var trimmed_lines = script.trimmed_lines = maps_text.split( "\r" );
-		}else{
-
-			colln.maps_loaded += "No line delimter \\r or \\n is found.\nNo maps exist in collection.";
-			return;
-		}
-		// \\// validates maps_text
-
-
+		
 
 
 		if( rescan_bflag ) {
@@ -292,6 +289,12 @@
 
 			if( header_raised ) {
 				cmd.finalize_file_header( postboard, colln );
+				//. forcibly cancells maps parsing
+				if( colln.script.presc.album ) {
+					//. emulates cancellation of everything for finalizing collection
+					area_flag = MAP_LOOKUP;
+					break;
+				}
 				parsed_file_header_bflag = true;
 			}
 
@@ -326,8 +329,8 @@
 
 						// Stashes board info
 						script : {	cbzone_bf : !!cbzone_bf,
-									symbol2breed : !!cbzone_bf && cmd.symbol2breed,
-									breed2symbol : !!cbzone_bf && cmd.breed2symbol,
+									color2breed : !!cbzone_bf && cmd.color2breed,
+									breed2color : !!cbzone_bf && cmd.breed2color,
 									decoder_table : cbzone_bf ? cmd.colorban_decoder_table : cmd.sokoban_decoder_table,
 									flines : flines,
 									first_map_line : ( postboard.lim > -1 ? postboard.lim : yy ), 
@@ -355,9 +358,7 @@
 						cols:[],
 						actor_cols : [],
 						dynamic_cols : [],
-						baton_cols : [],
-						target_cols : []
-
+						objective : { target_units : [], baton_units : [] }
 					};
 					raw_board_lines = map.script.raw_board_lines;
 				}

@@ -8,8 +8,6 @@
 	// Returns: JSONised array of all non-external available for load collections
 	gio.core.reflection.serialize_collections=function(){
 
-		if(!JSON || !JSON.stringify) return '{ "alert" : "no JSON found" }';
-		
 		var res = [];
 		var len=gio.session.alist.length;
 		for(var alix=0; alix<len; alix++){
@@ -35,17 +33,16 @@
 
 	// Returns: JSONised array of all non-external available for load collections
 	gio.core.reflection.serialize_game_defs=function(){
-		if(!JSON || !JSON.stringify) return '{ "alert" : "no JSON found" }';
 		return JSON.stringify(gio.def.games,null,'\t');
 	};
 
+	/*
 	// Returns: JSONised array of all non-external available for load collections
 	gio.core.reflection.serialize_basegame_def=function(){
-		if(!JSON || !JSON.stringify) return '{ "alert" : "no JSON found" }';
 		var def = gio.def.inherited_games[	gio.def.base_game.basekey  ];
 		return JSON.stringify( def,null,'\t' );
 	};
-
+	*/
 
 
 })(jQuery);

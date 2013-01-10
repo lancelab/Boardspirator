@@ -7,15 +7,13 @@
 
 
 
-	gio.draw_scene=function(){
-
-		var gs		= gio.getUnfinishedState();
-		var gm		= gs.gm;
-		if(gm.load !== 'finalized') return;
+	gio.draw_scene = function () {
 
 		var gs		= gio.getgs();
-		var game	= gs.gm.game;
 		var gm		= gs.gm;
+		if( !gm || gm.load !== 'finalized') return;
+		var game	= gm.game;
+
 		var dtile	= gm.dresses_wrap.chosen_dress.tile;
 		var uid2lid	= gs.pos.uid2lid;
 		var locs	= gm.locs;
@@ -52,6 +50,8 @@
 			do_set_focuser=false;
 			gio.domwrap.wraps.blinker.dostop();
 		}
+
+		if( gm.dresses_wrap.chosen_dress.focuser === '' ) do_set_focuser = false;
 		if(do_set_focuser){
 			gm.focuser_img.style.display='inline';
 		}else{

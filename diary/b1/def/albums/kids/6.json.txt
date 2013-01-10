@@ -1,4 +1,4 @@
-::://
+/:
 { "albums" :
 { "kids6" :
 	{
@@ -6,8 +6,14 @@
 		"album_name" : "Kids 6",
 
 		"collections"  :
-		[
-			{ "list_title"	: "Beginner", "ref" : { "folder" : { "akey" : "kids"} } }
+		[   
+			{	"credits" : { "title" : "Beginner" },
+				"ref" :
+				{
+					"list" : { "chosen" : true },
+					"folder" : { "akey" : "kids" }
+				}
+			}
 		],
 
 		"default" : { "skip" : true },
@@ -52,4 +58,5 @@
 }
 
 
-:::\\\
+/\\
+

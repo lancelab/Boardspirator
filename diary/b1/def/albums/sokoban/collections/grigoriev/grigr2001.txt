@@ -1,13 +1,17 @@
-
-
-:::. credits.title			:	Grigr2001 set [100 levels] - finished
-:::. credits.author			:	Evgeny Grigoriev
-:::. credits.copyright		:	Copyright (C) 2001? Evgeny Grigoriev
-:::. credits.license		:	I am not interested in my CopyRights !!! \nYou may do everything with these levels, you want. \nI shall be pleased, if you place them in computer program or on Web site. \nDo not ask my permission.
-:::. credits.web_site		:	http://grigr.narod.ru/	
-:::. credits.email			:	grigr(a)yandex(.)ru
-:::. credits.copied_from	:	http://grigr.narod.ru/zip/grigr2001-100.zip
-:::. credits.copied_on		:	November 24, 2012
+/:
+{	"credits" :
+	{
+		/, title            Grigr2001 set [100 levels] - finished
+		/, author           Evgeny Grigoriev
+		/, copyright        Copyright (C) 2001? Evgeny Grigoriev
+		/, license          I am not interested in my CopyRights !!! \nYou may do everything with these levels, you want. \nI shall be pleased, if you place them in computer program or on Web site. \nDo not ask my permission.
+		/, web_site         http://grigr.narod.ru/	
+		/, email            grigr(a)yandex(.)ru
+		/, copied_from      http://grigr.narod.ru/zip/grigr2001-100.zip
+		/. copied_on        November 24, 2012
+	}
+}
+/\\
 
 
 

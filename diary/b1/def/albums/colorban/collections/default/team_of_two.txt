@@ -1,23 +1,29 @@
+/:
+{ "credits" :
+	{
+		/,	title                 	Team of Two
+		/,	version					1.1  
+		/,	copyright             	Copyright (c) 2012 Konstantin Kirillov
+		/,	license               	This collection is free for distribution, modification, and use provided these credits are not removed.
+		/.	creation_date         	November 30, 2012
 
-:::.  credits.title                 Team of Two
-:::.  credits.version				1.1  
-:::.  credits.copyright             Copyright (c) 2012 Konstantin Kirillov
-:::.  credits.license               This collection is free for distribution, modification, and use provided these credits are not removed.
-:::.  credits.creation_date         November 30, 2012
+	}
+}
+/\\
 
 
 
 :::map
 :::context_akey=colorban
-- - - Jj Jj
+- - - y y
 - - - A b 
-1 1B Jj 2A 2 
+1 1B y 2A 2 
 - B - - - 
-Jj Jj a - -  
+y y a - -  
 :::board_end
 :::class= // A/19/(2.1)(2.1) sym
 :::factory_title=Small Line :: Swap the Pairs
-:::title=Perfect Notch :: Swap the Pairs
+:::title=Perfect Notch Walles :: Swap the Pairs
 
 
 -:::playpath=91.16 abs symmetrical
@@ -30,7 +36,8 @@ Jj Jj a - -
 |b.0.l|b.0.l|a.0.l|a.0.d|a.0.d|a.0.r|b.0.r|a.0.d|b.0.r|a.0.r|a.0.r|a.0.u|a.0.u|b.0.R|b.0.d
 |b.0.r|a.0.u|b.0.U|b.0.l|b.0.l|a.0.L|a.0.L|a.0.u|a.0.l|a.0.D|a.0.u|a.0.l|a.0.D|a.0.r|a.0.r
 
-:::playpath=Human. 95.16
+Human. 95.16
+:::playpath=Human
 |b.0.d|b.0.d|b.0.d|a.0.u|a.0.r|a.0.r|a.0.u|a.0.u|a.0.L|a.0.L|a.0.r|a.0.r|a.0.d|a.0.d|a.0.l
 |b.0.u|b.0.u|b.0.u|b.0.l|b.0.l|b.0.u|b.0.l|b.0.l|b.0.d|b.0.d|b.0.d|b.0.R|a.0.U|b.0.R|b.0.d
 |b.0.r|b.0.r|b.0.u|b.0.u|b.0.u|a.0.r|a.0.d|a.0.d|a.0.l|a.0.l|a.0.u|a.0.l|a.0.l|a.0.u|a.0.u
@@ -172,6 +179,32 @@ Jj Jj a - -
 |a.0.d|b.0.l|a.0.l|b.0.d|b.0.d|b.0.r|a.0.r|a.0.u|a.0.r|a.0.u|b.0.U|b.0.l|b.0.u|a.0.L|a.0.L
 |a.0.r|a.0.r|b.0.u|b.0.l|b.0.u|b.0.l|b.0.l|b.0.d|b.0.d|b.0.d|b.0.R|b.0.R|b.0.R|b.0.d|b.0.r
 |b.0.r|b.0.u|b.0.L|b.0.d|b.0.l|b.0.U|b.0.l|a.0.l|a.0.l|a.0.L|a.0.u|a.0.l|a.0.D|a.0.r|a.0.r
+
+
+:::dress=colorban_vases
+:::chosen=true
+:::back_image=background_dark.png
+:::image=ground_x_1_1=ground_x_in_scene.png
+:::image=ground_x_2_1=ground_x_in_scene.png
+:::image=ground_x_3_1=ground_x_in_scene.png
+:::image=ground_x_1_2=ground_x_in_scene.png
+:::image=ground_x_2_2=ground_x_in_scene.png
+:::image=ground_x_3_2=ground_x_in_scene.png
+:::image=ground_x_4_2=ground_x_in_scene.png
+:::image=ground_x_5_2=ground_x_in_scene.png
+:::image=ground_x_1_3=ground_x_in_scene.png
+:::image=ground_x_2_3=ground_x_in_scene.png
+:::image=ground_x_4_3=ground_x_in_scene.png
+:::image=ground_x_5_3=ground_x_in_scene.png
+:::image=ground_x_1_4=ground_x_in_scene.png
+:::image=ground_x_2_4=ground_x_in_scene.png
+:::image=ground_x_3_4=ground_x_in_scene.png
+:::image=ground_x_4_4=ground_x_in_scene.png
+:::image=ground_x_5_4=ground_x_in_scene.png
+:::image=ground_x_6_4=ground_x_in_scene.png
+:::image=ground_x_4_5=ground_x_in_scene.png
+:::image=ground_x_5_5=ground_x_in_scene.png
+:::image=ground_x_6_5=ground_x_in_scene.png
 
 
 

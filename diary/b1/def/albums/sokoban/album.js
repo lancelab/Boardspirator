@@ -63,7 +63,7 @@
 
 
 			{
-				"ref" : { "folder" : {	ckey: 'wierdy' } },
+				"ref" : { "folder" : {	ckey: 'weirdy' } },
 				credits : { "title"		: "Weirdy" 	},
 				map_title_source	:'comment'
 			}

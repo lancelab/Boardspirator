@@ -11,7 +11,7 @@ gio.def.albums['flocks']={
 
 	collections : 
 			[
-				{ credits : { title	: "Beginner" } },
+				{	credits : { title	: "Beginner" } },
 
 				{ 	"ref" : { "folder" : { fkey	: 'wells.txt' } },
 					credits : { title	: "Wells" }
@@ -26,6 +26,39 @@ gio.def.albums['flocks']={
 		"default"	:{	tile	:{	width : 60, height: 60 },
 						rules	:	"Heros push boxes of match-color ...\nBlack matches own and any color ...\nBoxes are sticky: moved box moves its neighbours ...\n"
 					},
+
+
+		chicken_garden :
+		{
+
+			credits : {
+								"title" : "Chicken Garden",
+								"author"	: "Konstantin Kirillov",
+								"copyright"	: "Copyright (C) 2012 Konstantin Kirillov",
+								"license"	: "host-based",
+								"date"		: "December 30, 2012"
+			},
+			tile	:{	width : 60, height: 60 },
+			style	:{	play:{ backgroundImage : 'background.png' } },			
+
+			
+			//inherit_from : "flocks", //TODO fails? will work? from own game?
+			skin_key : "flockgarden",
+			rules : "Each bread has own Master to push.\nMaster's of other breed pull its species",
+			objective : "Put each breed in to own eggs.",
+			skip : true,
+
+			image_decoder :
+			{
+					"hero_f"	: "blue_man2.png",
+					"box_f"		: "blue_chick.png",
+					"target_f"  : "blue_target.png",
+					"box_g"		: "red_chick.png",
+					"hero_g"	: "red_man2.png",
+					"target_g"  : "red_target.png",
+					"ground_x"  : "egg_ground.png"
+			}
+		},
 
 
 		flocks :{

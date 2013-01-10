@@ -1,8 +1,18 @@
 
-(function( $ ){ 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
-					var gio		=  tp.gio    =  tp.gio   || {};
-					var procs	=  gio.core.procs;
-					var ceach	=  tp.core.each;
+(function(){ 		var tp			=  $.fn.tp$  =  $.fn.tp$ || {};	
+					var gio			=  tp.gio    =  tp.gio   || {};
+					var procs		=  gio.core.procs;
+					var ceach		=  tp.core.each;
+
+					var do_debug	= gio.debug && !isNaN(gio.debug) &&  gio.debug % 5 === 0;
+
+
+					// //\\//	This file is a heart of the application.
+					//			Processes unit interaction.
+
+
+
+
 
 
 	///		does a vital debug
@@ -19,6 +29,9 @@
 		}
 		return result;
 	};
+
+
+
 
 
 	///	helps to run pull-interactions
@@ -40,75 +53,80 @@
 
 
 
-	///	Returns:		valid new_move or
-	//					evaluatable to false if move is forbidden
+
+	///	Heart:		of application. Processes interaction.
+	//	Returns:	valid new_move or evaluatable to false if move is forbidden.
 	procs.do_interaction = function (
 			direction, unit, move, recursion_depth, forbid_contacts, step_length,
 			dropx, dropy, dropz, 
 			forbidden_interaction
 	){
-		// ** prepares to store virtual move messages
+
+		//:	prepares to store virtual move messages
 		var log = gio.info.log;
 		var steps = move.steps;
-		if(!steps.length) log.move = '';
+		if( !steps.length ) log.move = '';
 		var verbose = gio.modes.dynamic.verbose || gio.debug;
-		var do_debug = gio.debug && !isNaN(gio.debug) &&  gio.debug % 5 === 0;
 
 
-		// ** prepares steps
-		var new_move=gio.prepare_step(direction, unit, move, '', step_length, dropx, dropy, dropz);
-		if(!new_move) return null;
+		//:	prepares steps
+		//	new_move may be overidden or deleted later
+		var new_move = gio.prepare_step( direction, unit, move, '', step_length, dropx, dropy, dropz);
+		if( !new_move ) return null;
 		var pos = move.pos;
 		var new_steps = new_move.steps;
 		var movers_number = new_steps.length;
 
-		//if(!recursion_depth && recursion_depth !== 0){
-		if(!recursion_depth){
+
+		if( !recursion_depth ) {
 			//.	Initially, steps.length = 0. 
 			//	At first call to interaction, movers_number = 1;
 			recursion_depth = movers_number;
 		}
 
-		// ** memorizes location of last step in sequence
-		var ww = new_steps[movers_number-1].new_loc;
+
+		//:	memorizes location of last step in sequence
+		var ww = new_steps[ movers_number-1 ].new_loc;
 		var xx = ww[0];
 		var yy = ww[1];
 
-		// ** makes shortcuts
-		var gm = unit.gm;
-		var game = gm.game;
-		var imatrix = game.interact;	
-		var tower = gm.loc2lid[xx][yy];
-		var top = pos.tops[xx][yy];
+
+		//:	makes shortcuts
+		var gm				= unit.gm;
+		var game			= gm.game;
+		var imatrix			= game.interact;	
+		var tower			= gm.loc2lid[xx][yy];
+		var top				= pos.tops[xx][yy];
+		var DEEPNESS_LIMIT	= game.DEEPNESS_LIMIT;
+
 
 		if(do_debug) {
 			gio.cons_add(	'Interacting ... game.gkey=' + game.gkey + 
 							' Proposed new_move: direction ' + direction 
-
 			);
 		}
 
 
-		// ** executes master loop through tower
-		tower_loop: for(var zz=0; zz<=top; zz++){
-		//tower_loop: for(var zz=0; zz<tower.length; zz++){
+		///	executes master loop through tower
+		tower_loop: for( var zz=0; zz <= top; zz++ ) {
 
 			var lid = tower[zz];
-			// * memorizes id of the peer to interact with in this tower:
+			//. memorizes id of the peer to interact with in this tower:
 			var peer_uid = pos.lid2uid[lid];
 
 
 
 			///	if one of the schedulees for move is in this cell,
 			//	ignores interaction check completely
-			for(var ss=0; ss<steps.length; ss++){
-				if(steps[ss].uid === peer_uid){
+			//	TODM make check this way if( steps.schedulee[ peer_uid ] ) break ...
+			for( var ss = 0; ss < steps.length; ss++ ) {
+				if( steps[ ss ].uid === peer_uid ) {
 					break tower_loop;
 				}
 			}
 
 
-			var peer=gm.units[peer_uid];
+			var peer = gm.units[ peer_uid ];
 
 
 			///	Begins debug reporting for given peer
@@ -119,7 +137,7 @@
 
 
 			//. checks unconditional interaction rule "pass"
-			if(peer.pass) continue;
+			if( peer.pass ) continue;
 
 
 			//: makes message stubs
@@ -129,8 +147,8 @@
 
 
 			/// checks unconditional interaction rule "block"
-			if(peer.block){
-				if(verbose) log.move += MSG_PEERS + MSG_XY;
+			if( peer.block ) {
+				if( verbose ) log.move += MSG_PEERS + MSG_XY;
 				return null;
 			}
 
@@ -141,11 +159,11 @@
 
 					//::	no entry in interaction matrix is specified
 					//		following default policies					
-					if( peer.race === 'wall' ) {
+					if( peer.race === 'wall' ) { //TODM races must indiced, not strings?
 
 						if( unit.color_ix === peer.color_ix || unit.color === 0 ) {
 							//. matched wall do block
-							if(verbose) log.move +=	MSG_PEERS + MSG_XY;
+							if( verbose ) log.move +=	MSG_PEERS + MSG_XY;
 							return null;
 						}else {
 							//. non-matched wall do pass
@@ -158,13 +176,13 @@
 							continue;
 						}else {
 							//. non-matched ground do block
-							if(verbose) log.move +=	MSG_PEERS + MSG_XY;
+							if( verbose ) log.move +=	MSG_PEERS + MSG_XY;
 							return null;
 						}
 					}
 
 					//::	follows default policy "block"
-					if(verbose) log.move +=	MSG_PEERS + MSG_XY;
+					if( verbose ) log.move +=	MSG_PEERS + MSG_XY;
 					return null;
 
 
@@ -175,17 +193,16 @@
 				var int_act = imatrix[unit.cname][peer.cname];
 
 				/// prepares message stub
-				if(verbose) {
+				if( verbose ) {
 						var mess_stub =
 							MSG_PEERS + MSG_XY + "Cannot " + int_act +
 							" more than " +
-							game.DEEPNESS_LIMIT+"\n";
+							DEEPNESS_LIMIT+"\n";
 				}
 
 
-				if(int_act === 'pass') {
+				if( int_act === 'pass') {
 					if(do_debug) gio.cons_add( 'Continue bs 	int_act = pass' );
-					//return new_move;
 					continue;
 				}
 				if( forbid_contacts ) return false;
@@ -193,20 +210,20 @@
 
 
 				/// collects statistics
-				if( int_act && recursion_depth === 1) {
+				if( int_act && recursion_depth === 1 ) {
 					new_move.action.intact = int_act;
 					move.action.intact = int_act;
 				}
 
 				/// breaks process if wrongly interacting unit is met
 				if( forbidden_interaction === int_act ) {
-						if(verbose) log.move +=	"Cannot " + int_act + " with " + peer.hname + "\n";
+						if( verbose ) log.move +=	"Cannot " + int_act + " with " + peer.hname + "\n";
 						return null;
 				}
 
 				// ///\\\ push
-				if(int_act === 'push'){
-					if(recursion_depth > game.DEEPNESS_LIMIT){
+				if( int_act === 'push' ) {
+					if(recursion_depth > DEEPNESS_LIMIT){
 						if(verbose) log.move +=	mess_stub;
 						return null;
 					}
@@ -221,9 +238,9 @@
 
 
 				// ///\\\ pull
-				}else if(int_act === 'pull') {
+				}else if( int_act === 'pull' ) {
 
-					if(recursion_depth > game.DEEPNESS_LIMIT){
+					if(recursion_depth > DEEPNESS_LIMIT){
 						if(verbose) log.move +=	mess_stub;
 						return null;
 					}
@@ -231,9 +248,7 @@
 
 					//.	moves actor in opposite direction   
 					//	faulty: climbs on wall
-					//new_move=gio.prepare_step(-direction, unit, move, 'dynamic_units_do_block');
-					//if(!new_move) return null;
-
+					//  new_move=gio.prepare_step(-direction, unit, move, 'dynamic_units_do_block');
 
 					//.	makes actor staying on own place by returning it back
 					new_move.steps.splice( new_move.steps.length - 2, 1 );
@@ -246,12 +261,12 @@
 							undefined, undefined, undefined, undefined, undefined,
 							'pull'
 					);
-					if(!new_move) return null;
+					if( !new_move ) return null;
 
 					///	pulls the peer
 					new_move = procs.do_interaction(
 							-direction, peer, new_move,
-							recursion_depth+1
+							recursion_depth + 1
 					);
 					return new_move;
 				// \\\/// pull
@@ -263,7 +278,7 @@
 
 				// ///\\\ swap
 				}else if(int_act === 'swap'){
-					if(recursion_depth > game.DEEPNESS_LIMIT){
+					if(recursion_depth > DEEPNESS_LIMIT){
 						if(verbose) log.move +=	mess_stub;
 						return null;
 					}
@@ -282,17 +297,18 @@
 				//	///\\\ leap
 				}else if(int_act === 'leap'){
 
-					if(recursion_depth > game.DEEPNESS_LIMIT){
+					if(recursion_depth > DEEPNESS_LIMIT){
 						if(verbose) log.move +=	mess_stub;
 						return null;
 					}
 
 					//:: leaps the peeer
 					new_move = procs.do_interaction( -direction, peer, new_move, recursion_depth + 1, undefined, 2 );
-					if(!new_move) return null;
+					if( !new_move ) return null;
 
 					//.	makes actor staying on own place by removing its initial-move
-					new_move.steps.splice( new_move.steps.length - 2, 1 );
+					//new_move.steps.splice( new_move.steps.length - 2, 1 );
+					new_move.steps.splice( 0, 1 );
 
 					if(do_debug && new_move ) gio.cons_add(	'Leap is valid.'	);
 					return new_move;
@@ -302,13 +318,18 @@
 
 
 				// ///\\\ jump
-				}else if(int_act === 'jump') {
-					if(recursion_depth > game.DEEPNESS_LIMIT){
+				}else if( int_act === 'jump') {
+
+					if( recursion_depth > DEEPNESS_LIMIT ) {
 						if(verbose) log.move +=	mess_stub;
 						return null;
 					}
-					//.	moves actor two steps ahead
-					new_move = procs.do_interaction( direction, unit, move, recursion_depth+1, undefined, 2 );
+
+					var step_length = recursion_depth+1;
+					//.	moves actor step_length ahead
+					new_move = procs.do_interaction (
+						direction, unit, move, recursion_depth + 1, undefined, step_length
+					);
 					return new_move;
 				// \\\/// jump
 
@@ -332,12 +353,14 @@
 
 
 
-	// ===================================================================
-	// Action:	clones move.steps and adds step to it
-	//			makes preliminary checks and returns null if failed.
-	// Input:	direction =	-1,1 for x, -2,2 for y, (will: -3,3 for z)
-	// Concept:	as of 1.146, z-dimension is simply ignored
-	// ===================================================================
+
+
+
+
+	///	Action:		clones move.steps and adds step to it
+	//				makes preliminary checks and returns null if failed.
+	//	Input:		direction =	-1,1 for x, -2,2 for y, (will: -3,3 for z)
+	//	Concept:	as of 1.146, z-dimension is simply ignored
 	gio.prepare_step=function(
 		direction, unit, move, dynamic_units_do_block, step_length,
 		dropx, dropy, dropz
@@ -442,4 +465,4 @@
 
 
 
-})(jQuery);
+})();

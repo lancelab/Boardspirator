@@ -47,7 +47,7 @@
 					]
 
 	# ** sets replacements
-	file_to_replace = 'core/config.js'
+	file_to_replace = 'core/config/core.js'
 	replacement_pair =	[	
 							# ** activates google application suite
 							/^\s*enabled\s*:\s*(\w*),\s*\/\/\s*\*DONT-REMOVE-THIS-DEPLOYER-MACRO\*gio\.config\.google_apps\*\s*$/,

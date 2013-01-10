@@ -80,10 +80,14 @@
 	// //\\ BUILDS NESTED CREDITS HTML-DISPLAYS
 
 	//	/.\	AVAILABLE CREDIT KEYS
-	var tooltipify_data			=	'title=description=version=version_name=maturity=author=';
-	tooltipify_data				+=	'editor=copyright=license=date=creation_date=publication_date=download=web_site=source=';
-	tooltipify_data				+=	'copied_from=copied_on=copy_date=bundling_date=influenced_by=';
-	tooltipify_data				+=	'email=developer_comment=comments';
+	var tooltipify_data			=	'title=description=version=version_name=maturity=';
+	tooltipify_data				+=	'author=editor=influenced_by=contributed_by=contributed=';
+	tooltipify_data				+=	'copyright=license=license_text=license_link=';
+	tooltipify_data				+=	'created=date=creation_date=publication_date=';
+	tooltipify_data				+=	'download=web_site=source=';
+	tooltipify_data				+=	'copied_from=copied_on=copy_date=bundling_date=';
+	tooltipify_data				+=	'email=developer_comment=comments=';
+
 	//	\./	AVAILABLE CREDIT KEYS
 
 
@@ -94,7 +98,7 @@
 	var tooltipify_desrc_data	=	'description=maturity=language=usage_requirements=developer_comment';
 
 	//. adds <a> tag
-	var anchorize_data			=	'download=source=web_site=copied_from';
+	var anchorize_data			=	'download=source=web_site=copied_from=license_link=';
 
 	var tooltipify_array		=	tooltipify_data.split('=');
 	var tooltip_array			=	tooltip_data.split('=');

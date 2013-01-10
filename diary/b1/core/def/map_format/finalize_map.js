@@ -102,15 +102,10 @@
 		}else{
 
 			// c onsole.log('map.bundled__ref=',map.bundled__ref);
-			var coll_ix	= parseInt( w_r_coll );
-			var map_ix	= parseInt( w_r.map_index );
-			
-			var coll__eff = gio.navig.select_album_and_collection(
-					ref_alb,
-					coll_ix,
-					map_ix,
-					'dont_land'
-			);
+			var coll_ix		= parseInt( w_r_coll );
+			var map_ix		= parseInt( w_r.map_index );
+
+			var coll__eff	= gio.navig.validate_coll_map( ref_alb, coll_ix, map_ix );
 
 			/// TODM	This info is too dry: who is failed: collection wrapper or
 			//			collection link, or collection text?
@@ -127,7 +122,15 @@
 						'Failed download referred map: ref_alb = ' + ref_alb + 
 						' coll_ix=' + coll_ix;
 			}
-			script.data_source_map = map__eff;
+
+			//. These two names are not very good and misleading:
+			//		map.coll__eff
+			//		map.script.data_source_map
+			//	They express the same concept, but they are spread via
+			//	different properties and look differently.
+			//	The concept is: always keep the most-original-credits "afloat".
+			//	TODM Refactoring must be done to fix this flaw.
+			script.data_source_map = map__eff.script.data_source_map || map__eff;
 
 			map.data_source_coll	= coll__eff;
 
@@ -135,7 +138,7 @@
 			//		Now, we are taking source-coll header credits, source-map credits,
 			//		overriding coll. with map. and store result in map.data_source_coll_credits
 			//		On "top" of this, recall from file_header_finalizer that
-			//		colln.credits = clonem( captions.credits, colln.credits )
+			//		colln.credits = clonem( colln.credits )
 			//		Following is not consistent because looses collection header info, but
 			//		is better than to loose it completely.
 			map.data_source_coll_credits = clonem( coll__eff.credits, map__eff.credits );			
@@ -147,7 +150,7 @@
 		}
 
 		//.	used to populate web and source in credits in get_map_credits()
-		map.coll__eff		= map__eff.collection;
+		map.coll__eff		= map__eff.coll__eff || map__eff.collection;
 		var dtable			= map__eff.script.decoder_table;
 		var rbl__eff		= clonem( map__eff.script.raw_board_lines );			
 		if( !rbl__eff.length ) return 'Empty map`s board. Map ix=' + map.ix;
@@ -292,13 +295,17 @@
 		if( map.data_source_coll_credits ) {
 			if( parsed.credits ) {
 
-				map.credits = clonem( parsed.credits );
+
+				map.credits = clonem( map.data_source_coll_credits );
+
+				//. but child is preserved as subcredits
+				map.credits.credits = [ clonem( parsed.credits ) ];
 				//. makes display overengineered: to much duplicating info
 				//	parent credits override child
 				//	map.credits = clonem( map.data_source_coll_credits, parsed.credits );
 
 				//. but child is preserved as subcredits
-				map.credits.credits = [ map.data_source_coll_credits ];
+				//map.credits.credits = [ map.data_source_coll_credits ];
 
 			}else{
 				map.credits = map.data_source_coll_credits;
@@ -327,27 +334,16 @@
 
 
 		/// //\\ BOOKKEEPS BREEDS
-		var targets=0;
-		var batons=0;
 		var actors=0;
-		ceach(map.target_cols, function(dummy,col){
-			targets +=col.units.length;
-		});
-		ceach(map.baton_cols, function(dummy,col){
-			batons +=col.units.length;
-		});
 		ceach(map.actor_cols, function(dummy,col){
 			actors +=col.units.length;
 		});
+		map.actors = actors;
 
 		//:	collects numbers for winning criteria and
 		//	puts them in map.objective "repository" 
-		var objective = map.objective = map.objective || {};
-		objective.necessary = Math.min(batons,targets);
-		objective.targets = targets;
-		objective.batons = batons;
-
-		map.actors = actors;
+		var obj = map.objective;
+		obj.necessary = Math.min( obj.baton_units.length, obj.target_units.length );
 		/// \\// BOOKKEEPS BREEDS
 
 
@@ -362,6 +358,7 @@
 
 		//. ABSORBS MAP INTO COLLECTION
 		collection.maps[map.ix] = map;
+		// c onsole.log('gm =', map );
 
 
 		return '';

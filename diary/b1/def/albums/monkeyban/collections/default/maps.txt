@@ -1,8 +1,14 @@
-:::. credits.title          Beginner
-:::. credits.author         Konstantin Kirillov
-:::. credits.license        Public Domain
-:::. credits.date           November 2011 (approximate) - November 25 2012
-:::. credits.email          beaverscript(a)landkey(.)net
+/:
+{	"credits" :
+	{
+		/, title          Beginner
+		/, author         Konstantin Kirillov
+		/, license        Public Domain
+		/, date           November 2011 (approximate) - November 25 2012
+		/. email          beaverscript(a)landkey(.)net
+	}
+}
+/\\
 
 
 
@@ -84,8 +90,8 @@ RRRURRllluulDDuulllddRRRRR
 :::dress=monkeyban
 :::image=wall_x_3_3=wall_a.png
 
-
-:::playpath=Opt. 77.21
+Opt.77.21
+:::playpath=Opt
 lDuruLullDRllddRUUrurDrddlLrruulDrddlUUd
 dllURdrruulDrdLLulluurrurDDrddlluRdrU
 
@@ -111,7 +117,7 @@ drrRdrU
 :::image=wall_x_3_3=wall_a.png
 
 98-22
-:::playpath
+:::playpath=Solution
 dRRRuuluLdDurrddldlluRUluRRldddrruuruulD
 LulDldddrrruUddllluuurDuurrrdLDuLulldddd
 rUdrrUUddlluRdrruL
@@ -131,13 +137,170 @@ rUdrrUUddlluRdrruL
 
 :::dress=monkeyban
 :::image=wall_x_3_3=wall_a.png
+:::objective=Have each monkey a seat
 
-
-:::playpath=Opt. 141.31
+Opt.141.31
+:::playpath=Opt
 uRRRddldLuUdrruululldRDldRRluuurrddrddlU
 LdlUluuurrrdDuulldRllddrUddrrruLLdlluurD
 ldRRlluuuurDDlddrrurruuLLrrddlldlluurUld
 ddrUrrrdLLurruulDDrdL
+
+Human.195.41
+:::playpath=Human
+dRRRllluuRDlddrrruuuLLdlddrUrruullDurrdd
+dllluRUluRRldddrruLruruulDLullddddrrruUd
+ldlluuuurrrrdLDuullDRllddRUUdddrrULdlUlu
+urrurrddDuuulDllluRRlldddrUluurrdrrddLLr
+ruullullddrDuluurDrrruLLrrdddlUUruL
+
+
+
+:::map
+# # #  # # # #
+# - A  - - - # 
+# - A  - 1 1 # 
+# a A  - - - # 
+# 1 A  # - 1 # 
+# - A  - - 1 #  
+# # #  # # # #  
+:::board_end
+:::title=Well :: Inconvenient Well
+:::class=X1.5
+
+:::dress=monkeyban
+:::image=wall_x_3_4=wall_a.png
+
+Opt.140.31
+:::playpath=Opt
+uuRlddRRllddRUUluurDurDrdLrrddlLLuUruull
+dDRurrdrddlllUdlUrurruullldDDurrUdrrddll
+lUdrrruuluuLdlldRlddrUdrrruuluulDulldRRd
+rDulllddrUdrRuulLulD
+
+
+:::map
+# # #  # # # #
+# - 1A 1 - - # 
+# - A  - - - # 
+# a A  - 1 # # 
+# 1 A  - - - # 
+# - A  - 1 - #  
+# # #  # # # #  
+:::board_end
+:::title=Well :: Imperfect Wall
+:::class=X2.5
+
+:::dress=monkeyban
+:::image=wall_x_3_2=wall_a.png
+:::image=wall_x_3_4=wall_a.png
+
+Sol.136.29
+:::playpath=Sol
+ddRRlluuuuRdDuuRllddddrUluuurrDurrdLdlLr
+uulldRRldddlUrrUdrrdLLuluuurDlddrdrruLdl
+UdlluRluuurrddDLuluurDrddlUruurrdLdlUddd
+rUllldRuuulDrddR
+
+:::map
+# # #  # # # #
+# 1 A  1 - - # 
+# - A  # - 1 # 
+# a A  - - # # 
+# - A  # - - # 
+# 1 A  - - 1 #  
+# # #  # # # #  
+:::board_end
+:::title=Well :: Triangle
+:::class=X2.5
+
+:::dress=monkeyban
+:::image=wall_x_3_2=wall_a.png
+:::image=wall_x_3_4=wall_a.png
+:::image=wall_x_5_3=wall_a.png
+
+Sol.135.35
+:::playpath=Sol
+RluuRRRddddlLuuRlddrruUllluurrrDDDullddr
+RuuuullDldRuurrddddllUUUdddrruuLrddllluu
+RluuRDldddrrruuuuLLdDDuuurrddLrddlLuUrru
+ullDurrddddlluluRUluRddddrruuLLdlUU
+
+
+
+
+
+:::map
+  # # # #
+  # - - # #  # # #
+  # - - x 1  - - #
+  # - A # A  - 1 #
+# # - - A 1  - # #
+# - - A # 1A - #
+# - - - - -  - #
+# # # # # 1  - #
+- - - - # #  # #
+:::board_end
+:::title=Spiral Rooms Right
+
+:::solution=142.34
+:::playpath=Hint
+rrddlDuruullllddrUdDuRRdrddlUUruLLLdldRR
+
+luurrdrddlUUdlluuuluurDldDDldRRRRdrUllll
+uurDldRRluuuurrrddDulllddrrUdlluuuurrrdd
+LLrruulDullldddrUUluRR
+
+
+
+
+
+:::map
+  # # #  #
+  # - 1  # # # # #
+  # - -  x - - - #
+  # - 1A # A - - #
+# # - 1  A - - # #
+# 1 - A  # A - #
+# 1 - - - -  - #
+# # # # # -  - #
+- - - - # #  # #
+:::board_end
+:::title=Spiral Rooms Left
+
+:::solution=144.38
+:::playpath=Sol
+llddrUldddrrrruulUdDuLLuluurDDldRRRuruLL
+rddllluuurDDurrdddrUUruLLLLulDrrrdddrddl
+UUUUruLLrddddllluuUdrrruullDurrddddllluu
+RRllddrUluuurrrdDDrdLLLL
+
+
+
+
+
+
+:::map
+  # # #   #
+  # - -   # # # # #
+  # - -   x 1 - - #
+  # - A   # A - - #
+# # - A   - 1 # #
+# - 1 1A  # A - #
+# - - -   - - - #
+# # # #   # 1 - #
+- - - -   # # # #
+:::board_end
+:::title=Spiral Rooms Center
+
+:::solution=192.42
+:::playpath=Sol
+llddRRllddrUluuurrrdDDrdLLLuluRRlddrruUl
+lluurDDrrddllUdlluRdrUUUdddrruuLLulDuuur
+DrrDurrdLullllddrddrruuUdddlluuluurrRlll
+ddrUluRddddlUUUdddrrruuLrddllluuuruulDDr
+drruuLrdrruLLddlluluurDDldRRluuR
+
 
 
 
@@ -159,12 +322,16 @@ ddrUrrrdLLurruulDDrdL
 :::image=wall_x_3_5=wall_a.png
 
 
-:::playpath=Sol. 196.37
+Sol.196.37
+:::playpath=Sol
 dldllluUddrrruUruullLdDDuuurrrddlUdddlLu
 uuurRddLruulldldRRRddllUdrruuuulldldRldd
 rUUddrruuuullDDDuuurrddLruulllddRlddRUUl
 uurrrdrDlddLruuuulllddrRlluurrrdrdLDuuul
 llddrRlluurDurrdrddlUlLdlUruurrDurDD
+
+
+
 
 
 :::map
@@ -186,13 +353,45 @@ llddrRlluurDurrdrddlUlLdlUruurrDurDD
 :::image=wall_x_3_5=wall_a.png
 
 
-:::playpath=246.49
+:::solution=246.49
+:::playpath=Hint
 dldllluUddrrruruulDDuuulLdDRluurrdrddlUd
 rddlUllluURddrrruuuulllDDDuuurrrddlLrrdd
+
 lUruuullllddRlddRRRdrUlllluurDldRRluuuur
 rrddDulLrruullldDlddrrrUdllluurDldRRRllu
 uuurrrddLLLddrrUdllluUruurrrddLLrrddllll
 uuRUdddrrruulLrruulDrdddllluUluuRRRllldd
 rUluRR
+
+
+
+
+
+:::map
+  # # # #
+  # - - # # # # #
+  # - - - - - - #
+  # 1 A 1 # - - #
+# # A # A A x # #
+# - 1 A - # - #
+# - - 1 1 - - #
+# # # # # - - #
+- - - - # # # #
+:::board_end
+:::title=Triangle Stream
+
+:::Solution=277.66
+:::playpath=Hint
+ddlllluRdrrruuuulllldDDldRRluuuurrdLulDD
+DrdRRdrUUUUruLLLdllddldRRRlluuurrurrdddd
+
+LLrruuuulldDuurrddddllUdllUdrruLdrrruuuu
+lldDDldRRdrUUUUruLLrddddlluuRldldlluRRdr
+rruUllDurrddlLLuruulluurDrDDDldRlulldRRu
+ruuulldDuurrdLulDrrdrrUruLLLdlluurDldRur
+rrddlldldlluRUUruulDrrrrddlldLrurrddL
+
+
 
 

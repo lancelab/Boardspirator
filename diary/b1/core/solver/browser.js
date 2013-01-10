@@ -229,7 +229,7 @@
 
 				// Reflect solution on playpaths dom-element if
 				// user is on the same map:
-				if(gio.getgs().gm === gm) gio.gui.reset_playpaths(gm);
+				if(gio.getgs().gm === gm) gio.gui.reset_playpaths_select_el( gm );
 
 			} // \\// adds path to gm.playpaths
 

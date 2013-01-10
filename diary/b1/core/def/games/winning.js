@@ -1,84 +1,64 @@
-(function(){	 	var tp  =  $.fn.tp$  =  $.fn.tp$ || {};	
-					var gio =  tp.gio    =  tp.gio   || {};
+( function () {	 	var tp		= $.fn.tp$  =  $.fn.tp$ || {};	
+					var gio		= tp.gio    =  tp.gio   || {};
+					var ceach	= tp.core.each;
 
-					var ceach=tp.core.each;
 
 
-	// ===================================
-	// Test for is position winning
-	// Speed-critical because used in solver.
-	// Input:	if gm and pos are provided
+	/// Tests:	is position winning or not
+	//			Speed-critical because used in solver.
+	//	Input:	if gm and pos are provided
 	//			then does work for them.
 	//			Otherwise, tests currently
-	//			running map and position
+	//			running map and position.
 	//
 	// Returns:	1 for 'won', 0 for 'playing'
 	// Outputs:	pos.filled_units
-	// ===================================
-	gio.colorban_is_game_won=function(gm, pos){ 
+	gio.colorban_is_game_won = function( gm, pos ) { 
 
-		if(!gm){
-			var gs = gio.getgs();
-			gm = gs.gm;
-			pos = gs.pos;
+		if( !gm ) {
+			var gs	= gio.getgs();
+			gm		= gs.gm;
+			pos		= gs.pos;
 		}
-		var game = gm.game;
-		var uid2loc = pos.uid2loc;
-		var objective = gm.objective;
+
+		var uid2loc		= pos.uid2loc;
+		var objective	= gm.objective;
 
 		var necessary_to_fill = objective.necessary;
 		if( !necessary_to_fill ) return 0;
 
-		var filled_units=0;
-		var filled=false;
-		var result='';
+		var filled_units	= 0;
+		var units			= objective.baton_units;
 
+		for( var nn = 0, len = units.length; nn < len; nn++ ) {
+			var unit = units[ nn ];
 
-		//We swap external loop and internal loop depending on
-		//which is greater, passives or targets - for performance reasons.
-		var external_col=gm.baton_cols;
-		var internal_col=gm.target_cols;
+			//.. good ... we have a unit ... now, checking is it matched
 
+			var loc = pos.uid2loc[ unit.id ];
+			//. TODH targets are always on the second floor
+			if( loc[2] < 2 ) continue;
 
-		if(objective.targets < objective.batons){
-			//targets fill required
-			external_col=gm.target_cols;
-			internal_col=gm.baton_cols;
+			var peer_lid	= gm.loc2lid[ loc[0] ][ loc[1] ] [ 1 ]; 
+			var peer_uid	= pos.lid2uid[ peer_lid ];
+			var peer		= gm.units[ peer_uid ];
+			
+			if( peer.target && 
+				(	peer.motive_name === unit.cname ||
+					( ( peer.color_ix === 0 || unit.color_ix === 0 ) && peer.motive_race === unit.race )
+				)
+			){
+				filled_units += 1;
+				if( filled_units >= necessary_to_fill ) break;
+			}
+			// c onsole.log( 'peer.motive_name=' + peer.motive_name + ' unit.cname=' + unit.cname +
+			//	 'peer.color_ix =' + peer.color_ix + " unit.color_ix " + unit.color_ix +
+			//	 'peer.motive_race= ' + peer.motive_race + 'unit.race=' + unit.race
+			//	);
+
 		}
-
-			// TODm: Avoid this ... need speed: ceach(external_col, function(edummy,ecol){
-			//var external_col_len = external_col.length;
-			//for(var edummy=0; edummy<external_col_len; edummy++){
-			//		var ecol = external_col[edummy];
-			ceach(external_col, function(edummy,ecol){
-				ceach(ecol.units, function(edummy2,eunit){
-						filled=false;
-						var eloc= uid2loc[eunit.id];
-						ceach(internal_col, function(idummy,icol){
-							//TODm hard coded rule ... not good
-							//colors not match:
-							if(	icol.color_ix !== 0 && ecol.color_ix !== 0 &&
-								icol.color_ix !== ecol.color_ix)
-								return true; 
-							ceach(icol.units, function(idummy2,iunit){
-								var iloc= uid2loc[iunit.id];
-
-								if(eloc[0]===iloc[0] && eloc[1]===iloc[1]){
-									//c onsole.log('filled external id='+eunit.id+' into int id='+iunit.id+' loc=',eloc);
-									filled_units +=1;
-									filled=true;
-									return false;
-								}
-							});														
-							if(filled)return false;
-						});
-						if(necessary_to_fill === filled_units) return false;
-					});
-					if(necessary_to_fill === filled_units) return false;
-			});//external_col
-			pos.filled_units=filled_units;
-			result = necessary_to_fill === filled_units ? 1 : 0;
-
+		pos.filled_units	= filled_units;
+		result				= filled_units >= necessary_to_fill ? 1 : 0;
 		return result
 	};
 

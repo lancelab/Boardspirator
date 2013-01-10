@@ -1,0 +1,179 @@
+/:
+
+{	"games" :
+	{
+		"sokoleap_demo":
+		{
+			"nam"		: "SokoLeap Demo",
+			"basekey"	: "sokoban",
+			"credits"	: {	"author" : "L. Eap" },
+
+			/// In this demo-game, only one interaction is changed from "push" to "leap"
+			"interact"	:
+			{
+				"hero_x" :
+				{	
+						"box_x" : "leap"
+				}
+			}
+		},
+
+		/// This game derives from above game and adds a twist: 
+		//	leaping box is able to push another box if on its way ...
+		"leappush_demo" :
+		{
+			"nam"				: "Angry Frogs",
+			"basekey"			: "sokoleap_demo",
+			"DEEPNESS_LIMIT"	: 2
+		}
+	},
+
+
+
+
+	"albums" :
+	{
+		"sokoleap_demo" :
+		{
+			"dresses" :
+			{
+				"default" :
+				{
+					"rules" : "When hero advances to a box, box leaps over hero if space allows.",
+					"objective" : "Fill the targets."
+				}
+			}
+		},
+
+
+
+
+		"leappush_demo" :
+		{
+
+			"dresses" :
+			{
+				"default" :
+				{
+					"rules" :
+					/"
+						When hero advances to a box,
+						box leaps over hero if space allows.
+						Leaped box is able to push box on its way ...
+					/"
+				},
+
+
+
+
+
+				/// This is our chosen dress
+				"swamp": {
+
+					"chosen"	: true,
+
+					//. we will borrow images from existing folder "leappush"
+					"skin_key"	: "leappush",
+
+					"credits" :
+					{
+								"title"		: "Swamp",
+								"author"	: "L. Eap.",
+								"copyright"	: "Copyright (C) 2012 L. Eap.",
+								"license"	: "host-based"
+					},
+
+					"tile"		: { "width": 60, "height": 60 },
+					"style" :
+					{
+						"play" :
+						{
+							"backgroundImage" : "background_dark.png",
+							"backgroundColor" : ""
+						}
+					},
+
+					"rules"		: "Advance Stork towards a frog to wake it up.",
+					"objective"	: "Put each frog next to flower.",
+					"story"		: "The Stork is desperate to restore order at own Swamp ...\nBut this make every subject angry ...",
+					"hname_table" :
+					{
+						"hero_x": "Swamp Master",
+						"box_x": "Frog",
+						"wall_x": "Perimeter"
+					},
+
+					//. we will borrow images from existing folder "leappush"
+					"image_decoder" :
+					{
+						"hero_x"	: "stork.png",
+						"box_x"		: "box_c.png",
+						"target_x"  : "flower_dim.png",
+						"wall_x"	: "dark_plant.png"
+					}
+				}
+			}
+		}
+		//album "leappush_demo" end
+	},
+
+
+	"collection" :
+	{
+		"akey" : "leappush_demo",
+		"credits" :
+		{
+			"title" : "Demo Collection",
+			"author" : "L. Eap"
+		}
+	}
+/:
+}
+
+/\\
+
+
+:::map
+#######
+#-..--#
+#-$#**#
+#-.$+$#
+#-*#*$#
+#-----#
+#######
+:::board_end
+:::title=Friends on Line
+
+107.36
+:::playpath=Solution
+RllllDrrrrrUddddllluuurrrrrddlllluuLurul
+druuldddrrrruuulllllddddrrrdlllddrrrruul
+lldddrrruuulllluuuurrrrrddd
+
+:::dress=swamp
+:::skin=leappush
+:::image=box_x_2_2=frog_red.png
+:::image=box_x_4_2=frog_blue.png
+:::image=box_x_5_2=frog_blue.png
+:::image=box_x_5_3=frog_red.png 
+:::image=box_x_2_4=frog_yellow.png
+:::image=box_x_4_4=frog_yellow.png
+
+
+:::map_end
+
+
+Very Boring
+
+########
+#--.---#
+#--#$**#
+#..-$+*#
+#--#$$$#
+#-.----#
+########
+
+:::playpath=Solution 45.17
+URuulllddrrrrDrrDululuRdlurddrUdddldldll
+uuurr
+

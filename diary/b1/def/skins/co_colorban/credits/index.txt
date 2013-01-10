@@ -22,8 +22,6 @@ Work Change:         Hedgehog body is extracted unchanged and put into images he
 
 
 
-F o l l o w i n g    f i l e s    a r e    i n    P u b l i c     D o m a i n
-
 
 
 

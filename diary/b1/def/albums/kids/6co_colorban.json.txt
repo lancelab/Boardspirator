@@ -1,4 +1,4 @@
-::://
+/:
 { "albums" :
 { "kids6co_colo" :
 
@@ -9,7 +9,9 @@
 
 		"collections"  :
 		[
-			{ "list_title"	: "Beginner", "ref" : { "folder" : { "akey" : "kids", "fkey" : "coco_maps.txt" } } }
+			{	"credits" : { "title" : "Beginner" },
+				"ref" : { "folder" : { "akey" : "kids", "fkey" : "coco_maps.txt" } }
+			}
 		],
 
 
@@ -53,4 +55,4 @@
 	}
 }
 }
-:::\\
+/\\

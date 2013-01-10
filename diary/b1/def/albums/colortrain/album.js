@@ -5,17 +5,19 @@
 	
 	gio.def.albums['colortrain']={
 
-		gkey	: 'colortrain',
+		gkey		: 'colortrain',
 		album_name	: 'Caterpillars',
 
-		collections 	:[
-		{	
-
-				"credits" : {	"author"	: "Authors credited for each map separately",
-								"title"		: "Beginner",
-								"license"	: "Each map is licensed separately."
-				}
-		}],
+		collections 	:
+		[
+			{	
+				"credits" : { "title"		: "Beginner" }
+			},
+			{	
+				"credits" : { "title"		: "Weirds"  },
+			 	"ref" : { "folder" : { fkey	: 'weirds.txt' } }
+			}
+		],
 
 
 		dresses  :  { 'default' :

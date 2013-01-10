@@ -1,5 +1,5 @@
 
-(function( $ ){ 	var tp  =  $.fn.tp$  =  $.fn.tp$ || {};	
+(function(){	 	var tp  =  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio =  tp.gio    =  tp.gio   || {};
 	
 
@@ -35,10 +35,15 @@
 											// makes this behavior unconditional
 											pass		: true 
 									  },
+							htarget	: {		activity	: { frozen : true },
+											target		: true,
+											pass		: true
+									  },
 							box		: {		activity	: { passive : true },
 											baton		: true
 									  },
-							hero	: {		activity	: { active : true }
+							hero	: {		activity	: { active : true },
+											baton		: true
 									  }
 					  },
 
@@ -124,6 +129,6 @@
 	}; //gio.def.base_game
 	
 
-})(jQuery);
+})();
 
 

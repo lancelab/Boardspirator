@@ -1,7 +1,14 @@
-:::.  credits.title       Beginner
-:::.  credits.copyright   Copyright (c) 2012 Konstantin Kirillov
-:::.  credits.license     Free for use, distribution, and modification as long as these credits retained.
-:::.  credits.date        December 15, 2012
+/:
+{ "credits" :
+	{
+		/,	title       	Beginner
+		/,	copyright   	Copyright (c) 2012 Konstantin Kirillov
+		/,	license     	Free for use, distribution, and modification as long as these credits retained.
+		/.	date        	December 15, 2012
+
+	}
+}
+/\\
 
 
 

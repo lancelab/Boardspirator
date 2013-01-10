@@ -481,6 +481,15 @@
 		};
 
 
+		/// Matches http(s):://my_host.com to link http(s)://my_host.com/some
+		//	Weak job. TODm improve.
+		self.do_match_own_host = function ( link ) {
+			var my = ( window.location.protocol + '//' + window.location.hostname ).toLowerCase();
+			var ownhost = link && ( link.toLowerCase().indexOf( my ) === 0 );
+			return ownhost;
+		};
+
+
 		/*
 		self.setup_doc_meta = function(name, text) {
 			var metas = document.getElementsByTag('meta');

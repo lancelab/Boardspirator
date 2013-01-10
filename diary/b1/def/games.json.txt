@@ -17,29 +17,11 @@
 	{
 			"default" :	
 			{
-				"rules"		:	"Hero can push box of matching color.\nMoved box carries away matching neighbours.\nBlack color matches any other color.\n",
+				"rules"		:	"Hero can push box of matching color.\nMoved box carries away matching neighbours.\nBlack matches any color.\n",
 				"objective"	:	"Put available boxes on available color-matching targets."
 			}
-	},
+	}
 
-	"cols"		:{ 	"hero_i"	:{	"baton" : true },  
-					"hero_h"	:{	"baton" : true },
-					"hero_g"	:{	"baton" : true }
-				},
-	"interact"	:{	"hero_i"	:{	"box_a" : "push",
-									"box_i" : "none"
-								},
-
-					"hero_h"	:{	"box_b" : "push",
-									"box_h" : "none"
-								},
-
-					"hero_g"	:{	"box_c" : "push",
-									"box_g" : "none"
-								}	
-				},
-
-	"comments" : "hero_i does the same as a, but is a baton to target_i"
 
 },
 
@@ -51,7 +33,7 @@
 	"basekey": "whirly",
 	"herd_sense": 0,
 	"post_definition_copathy": "copathy",
-	"credits"	:{	"author"	: "Konstantin Kirillov"  }
+	"credits"	:{	"contributor"	: "Konstantin Kirillov"  }
 },
 
 
@@ -71,7 +53,6 @@
 		"basekey"	:	"whirly",
 		"credits"	:{	"author"	: "Konstantin Kirillov"  }
 },
-
 
 
 
@@ -100,10 +81,6 @@
 	"nam": "PullPush",
 	"basekey": "colorban",
 	"post_definition": "pullpush",
-	"interact"	:{	"hero_i"	:{	"box_a" : "push",
-									"box_b" : "pull"
-								}	
-				},
 	"post_definition_copathy": "copathy"
 },
 
@@ -130,21 +107,7 @@
 {
 	"nam": "Flockmasters",
 	"basekey": "flocks",
-	"post_definition": "pullpush",
-
-	"interact"	:{	"hero_i"	:{	"box_a" : "push",
-									"box_i" : "none"
-								},
-
-					"hero_h"	:{	"box_b" : "push",
-									"box_h" : "none"
-								},
-
-					"hero_g"	:{	"box_c" : "push",
-									"box_g" : "none"
-								}	
-				}
-
+	"post_definition": "pullpush"
 },
 
 
@@ -157,15 +120,21 @@
 
 
 
+"pullpush":
+{
+	"nam": "PullPush",
+	"basekey": "colorban",
+	"post_definition": "pullpush",
+	"post_definition_copathy": "copathy"
+},
+
+
+
 "pullswappush" :
 {
 	"nam": "PullSwapPush",
 	"basekey": "colorban",
 	"post_definition": "pullswappush",
-	"interact"	:{	"hero_i"	:{	"box_a" : "push",
-									"box_b" : "pull"
-								}	
-				},
 	"post_definition_copathy": "copathy"
 },
 
@@ -176,16 +145,6 @@
 	"nam": "Co PullSwapPush",
 	"basekey": "pullswappush",
 	"post_definition": "pullpush_inversifier",
-	"post_definition_copathy": "copathy"
-},
-
-
-
-"pullpush":
-{
-	"nam": "PullPush",
-	"basekey": "colorban",
-	"post_definition": "pullpush",
 	"post_definition_copathy": "copathy"
 },
 
@@ -242,37 +201,6 @@
 	"DEEPNESS_LIMIT": 1000000
 },
 
-
-"bumpytargets":
-{
-	"nam"		: "Bumpy Targets",
-	"basekey"	: "whirly",
-	"credits"	:{	"author"	: "Konstantin Kirillov"  },
-
-	"cols": {
-		"target_a": {
-			"pass": false
-		},
-		"target_b": {
-			"pass": false
-		}
-	},
-
-	"interact" : {
-		"hero_a" : {	"target_a" : "pass",
-				  		"target_b" : "pass"
-		},
-		"hero_b" : {	"target_a" : "pass",
-				  		"target_b" : "pass"
-		},
-		"box_a" : { "target_a" : "pass",
-				  	 "target_b" : "pass"
-		},
-		"box_b" : { "target_a" : "block",
-					"target_b" : "pass"
-		}
-	}
-},
 
 
 

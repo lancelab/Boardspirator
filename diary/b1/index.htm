@@ -27,52 +27,54 @@
 	<script type="text/javascript" src="tp/form.js"></script>
 
 	<!-- :: must be before boardspirator scripts: -->
-	<script type="text/javascript" src="core/config.js"></script>
-	<script type="text/javascript" src="core/config_gui.js"></script>
-	<script type="text/javascript" src="core/config_templates.js"></script>
-	<script type="text/javascript" src="core/config_description.js"></script>
-	<script type="text/javascript" src="core/config_spawner.js"></script>
+	<script type="text/javascript" src="core/config/core.js"></script>
+	<script type="text/javascript" src="core/config/gui.js"></script>
+	<script type="text/javascript" src="core/config/templates.js"></script>
+	<script type="text/javascript" src="core/config/description.js"></script>
+	<script type="text/javascript" src="core/config/spawner.js"></script>
 
 	<!-- :: boardspirator scripts; their order has no matter: -->
-	<script type="text/javascript" src="core/navig/scroll_till_alive_zone.js"></script>
-	<script type="text/javascript" src="core/navig/map.js"></script>
+	<script type="text/javascript" src="core/data_io/data_loader.js"></script>
 
-	<script type="text/javascript" src="core/init/reinit_map.js"></script>
+	<script type="text/javascript" src="core/session/state.js"></script>
+	<script type="text/javascript" src="core/session/landify_map.js"></script>
+	<script type="text/javascript" src="core/session/round.js"></script>
+	<script type="text/javascript" src="core/session/round_manager.js"></script>
+	<script type="text/javascript" src="core/session/serializer.js"></script>
+	<script type="text/javascript" src="core/session/make_moves.js"></script>
+	<script type="text/javascript" src="core/session/scroll_to_landable.js"></script>
 
 	<script type="text/javascript" src="core/entry.js"></script>
-	<script type="text/javascript" src="core/round.js"></script>
-	<script type="text/javascript" src="core/round_manager.js"></script>
 	<script type="text/javascript" src="core/interaction.js"></script>
-	<script type="text/javascript" src="core/session.js"></script>
 	<script type="text/javascript" src="core/reflection.js"></script>
-	<script type="text/javascript" src="core/data_io/data_loader.js"></script>
-	<script type="text/javascript" src="core/data_io/session.js"></script>
 
 	<script type="text/javascript" src="core/solver/adapter.js"></script>
 	<script type="text/javascript" src="core/solver/core.js"></script>
 	<script type="text/javascript" src="core/solver/browser.js"></script>
 	<script type="text/javascript" src="core/solver/eliminator.js"></script>
 
-	<script type="text/javascript" src="core/gui/navigation.js"></script>
+	<script type="text/javascript" src="core/gui/navigation_handlers.js"></script>
 	<script type="text/javascript" src="core/gui/draw_scene.js"></script>
 	<script type="text/javascript" src="core/gui/entry.js"></script>
 	<script type="text/javascript" src="core/gui/create_popup_controls.js"></script>
 	<script type="text/javascript" src="core/gui/create_consoles.js"></script>
 	<script type="text/javascript" src="core/gui/consoles_procs.js"></script>
-	<script type="text/javascript" src="core/gui/reset.js"></script>
-	<script type="text/javascript" src="core/gui/init_map.js"></script>
+	<script type="text/javascript" src="core/gui/draw_buttons.js"></script>
+	<script type="text/javascript" src="core/gui/create_map.js"></script>
+	<script type="text/javascript" src="core/gui/draw_map.js"></script>
 	<script type="text/javascript" src="core/gui/draw_status.js"></script>
 	<script type="text/javascript" src="core/gui/create_controls.js"></script>
-	<script type="text/javascript" src="core/gui/init_control_events.js"></script>
+	<script type="text/javascript" src="core/gui/events.js"></script>
 	<script type="text/javascript" src="core/gui/help_popup_handlers.js"></script>
-	<script type="text/javascript" src="core/gui/text_editor_popup_handlers.js"></script>
+	<script type="text/javascript" src="core/gui/editor_popup_handlers.js"></script>
 	<script type="text/javascript" src="core/gui/popup_handlers.js"></script>
 	<script type="text/javascript" src="core/gui/fluidizer.js"></script>
 	<script type="text/javascript" src="core/gui/procs.js"></script>
+	<script type="text/javascript" src="core/gui/navigate_map.js"></script>
 
 	<script type="text/javascript" src="core/def/map_format/core.js"></script>
 	<script type="text/javascript" src="core/def/map_format/map_tables.js"></script>
-	<script type="text/javascript" src="core/def/map_format/file_header_finalizer.js"></script>
+	<script type="text/javascript" src="core/def/map_format/finalize_file_header.js"></script>
 	<script type="text/javascript" src="core/def/map_format/finalize_map.js"></script>
 	<script type="text/javascript" src="core/def/map_format/finalize_collection.js"></script>
 	<script type="text/javascript" src="core/def/map_format/collect_playpaths.js"></script>
@@ -91,20 +93,18 @@
 	<script type="text/javascript" src="def/albums/flocks/album.js"></script>
 	<script type="text/javascript" src="def/albums/pullpush/album.js"></script>
 	<script type="text/javascript" src="def/albums/monkeyban/album.js"></script>
-	<script type="text/javascript" src="def/albums/colorban/album.js"></script>
-	<script type="text/javascript" src="def/albums/sokoban/album.js"></script>
 	<script type="text/javascript" src="def/albums/flockmasters/album.js"></script>
+	<script type="text/javascript" src="def/albums/antimasters/album.js"></script>
+	<script type="text/javascript" src="def/albums/sokoban/album.js"></script>
+	<script type="text/javascript" src="def/albums/colorban/album.js"></script>
 	<script type="text/javascript" src="def/albums/colortrain/album.js"></script>
 	<script type="text/javascript" src="def/albums/doubleban/album.js"></script>
-
-	<script type="text/javascript" src="def/albums/bumpytargets/album.js"></script>
-
 	<script type="text/javascript" src="def/albums/pullswappush/album.js"></script>
 	<script type="text/javascript" src="def/albums/mozaic.js"></script>
 
 
 	<!-- must be after boardspirator files and before google applications -->
-	<script type="text/javascript" src="core/establish_session_modes.js"></script>
+	<script type="text/javascript" src="core/session/establish_session_modes.js"></script>
 
 
 	<!-- this must be before "body" as google analytics required this: -->
@@ -116,12 +116,13 @@
 
 
 		<div style="color:#666666;">
-			Games will not run if no JavaScript language<br />enabled in your browser.<br />
+			Games will not run if no JavaScript language<br />enabled in your browser.<br>
 			To run games, turn JavaScript on.
 			<br><br>
-			<br><a href="doc/guest_readme.htm">Guest Readme</a>
-			<br><a href="doc/project_files.htm">Project Files</a>
-			<br><a href="doc/whirly.htm">Whirly</a>
+			<a href="doc/guest_readme.htm">Guest Readme</a> <br>
+			<a href="doc/project_files.htm">Project Files</a> <br>
+			<a href="doc/whirly_and_sokoban.htm">Whirly and Sokoban Variants</a> <br>
+			<a href="doc/whirly.htm">Whirly</a> <br>
 		</div>
 		<script	type="text/javascript">
 			jQuery.fn.tp$.gio.config.google_apps.insert_ad_div_with_script();

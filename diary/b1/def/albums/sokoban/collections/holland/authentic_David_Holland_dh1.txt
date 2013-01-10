@@ -39,18 +39,21 @@ and the link to dh1 finally gave the text which follows --colorban header end--
 
 --colorban header beginning--
 
-:::.  credits.title                 dh1
-:::.  credits.author                David Holland
-:::.  credits.copyright             Copyright 2000 (C) David Holland.  <david@clickfest88.freeserve.co.uk>  (There is no year in original files, we assumed this is 2000, but can be 2000-2004)
-:::.  credits.license               These levels may be distributed freely as long as this copyright message is retained.
-:::.  credits.publication_date      original release date: October 2000
-:::.  credits.copied_from           http://web.archive.org/web/20040606032319/http://www.clickfest88.freeserve.co.uk/dh1/index.html
-:::.  credits.web_site              http://web.archive.org/web/20040602081248/http://www.clickfest88.freeserve.co.uk/
-:::.  credits.comments              Author's note: I have experimented with computer-generation for several of the smaller puzzles hence the "co-authorship" with sokgen (a computer program of mine). If you like the puzzles email me and if you have stylistic criticisms direct them to sokgen :-)\n\nFor those interested in the programming: sokgen uses exhaustive search of a puzzle space (backwards from a solved position). This can only be achieved for (very) small puzzles (about 100,000 "nodes" is the limit for my computer system, where a "node" represents a single legal push and movements of the man are not represented for brevity) . For the co-authored puzzles, I designed the maze and placed the goals, and sokgen generated start positions of stones and (usually) push-minimal solutions at the largest push-depth possible.
+/:
+{	"credits" :
+	{
 
-
-
-
+		/, title                 dh1
+		/, author                David Holland
+		/, copyright             Copyright 2000 (C) David Holland.  <david@clickfest88.freeserve.co.uk>  (There is no year in original files, we assumed this is 2000, but can be 2000-2004)
+		/, license               These levels may be distributed freely as long as this copyright message is retained.
+		/, publication_date      original release date: October 2000
+		/, copied_from           http://web.archive.org/web/20040606032319/http://www.clickfest88.freeserve.co.uk/dh1/index.html
+		/, web_site              http://web.archive.org/web/20040602081248/http://www.clickfest88.freeserve.co.uk/
+		/. comments              Author's note: I have experimented with computer-generation for several of the smaller puzzles hence the "co-authorship" with sokgen (a computer program of mine). If you like the puzzles email me and if you have stylistic criticisms direct them to sokgen :-)\n\nFor those interested in the programming: sokgen uses exhaustive search of a puzzle space (backwards from a solved position). This can only be achieved for (very) small puzzles (about 100,000 "nodes" is the limit for my computer system, where a "node" represents a single legal push and movements of the man are not represented for brevity) . For the co-authored puzzles, I designed the maze and placed the goals, and sokgen generated start positions of stones and (usually) push-minimal solutions at the largest push-depth possible.
+	}
+}
+/\\
 --colorban header end--
 
 

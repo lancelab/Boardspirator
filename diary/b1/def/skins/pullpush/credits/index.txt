@@ -3,12 +3,14 @@ Money Bag:
 
 File:                 money-bag-md.png
 Downloaded from =     http://www.clker.com/clipart-money-bag.html
+Uploader:             rg1024
+Drawn by:             rg1024
+Created:			  2010-03-12 16:23:54
 Shared by:            OCAL since Sunday, 20-Jun-10 21:28:31 PDT
+Contributor profile:  http://openclipart.org/user-detail/rg1024
 Contributor profile:  http://www.clker.com/profile-1068.html
 Downloaded=           http://openclipart.org/detail/31207
-Uploader: rg1024
-Drawn by: rg1024
-Link=                 http://openclipart.org/user-detail/rg1024
+
 
 
 Cabbage:
@@ -24,9 +26,12 @@ Shared by: OCAL since Monday, 11-Jun-12 20:41:26 PDT
 
 Large Plate:
 File:                  large_plate.svg.med.png
-downloaded from =      http://www.clker.com/clipart-2026.html
-Shared by: OCAL since Tuesday, 13-Nov-07 12:01:50 PST
+Uploader:              Gerald_G
+Created:               2007-11-26 20:50:51
+Contributor profile:   http://openclipart.org/user-detail/Gerald_G
 Contributor profile:   http://www.clker.com/profile-1068.html
+Shared by: OCAL since Tuesday, 13-Nov-07 12:01:50 PST
+downloaded from =      http://www.clker.com/clipart-2026.html
 
 
 

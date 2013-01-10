@@ -1,4 +1,4 @@
-::://
+/:
 { "albums" :
 
 { "ghostjump" :
@@ -10,8 +10,11 @@
 				"credits" : {	"title"		: "Beginner" 	}
 			}
 		],
-		"dresses": {
-			"default": {
+		"dresses":
+		{
+
+			"default":
+			{
 				"tile": {
 					"width": 30,
 					"height": 30
@@ -59,8 +62,38 @@
 				}
 			}
 		}
-	}
+		// Dresses
+	},
+	// Album
 	
-}
+
+	"co_ghostjump" :
+	{
+		"album_name": "",
+		"env" : { "dgkey"	: "ghostjump" },
+		"collections": [ ],
+		"dresses": {
+			"default": {
+				"chosen"	: true,
+				"rules": "Heros pull own-color boxes. Green hero jumps over with blue things.",
+				"objective": "Put blue boxes to blue targets."
+			},
+
+			"ghostban": {
+
+							"credits" : {
+								"date"		: "November 2 2012"
+							},
+				"rules": "Master pulls pizza ... Avatars pull ghost-pizza ...\nGhosts jump overe real things ..."
+			}
+		}
+	}
+	// End of co_ghostjump album
 
 }
+
+// End of albums
+
+}
+
+

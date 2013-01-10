@@ -1,10 +1,16 @@
+/:
+{ "credits" :
+	{
+		/,	title                 	Wells
+		/,	version               	1.1  
+		/,	author                	Konstantin Kirillov
+		/,	copyright             	Copyright (c) 2012 Konstantin Kirillov
+		/,	license               	This collection is free for distribution, modification, and use provided these credits are not removed.
+		/.	publication_date      	November 5 - November 25, 2012
 
-:::.  credits.title                 Wells
-:::.  credits.version               1.1  
-:::.  credits.author                Konstantin Kirillov
-:::.  credits.copyright             Copyright (c) 2012 Konstantin Kirillov
-:::.  credits.license               This collection is free for distribution, modification, and use provided these credits are not removed.
-:::.  credits.publication_date      November 5 - November 25, 2012
+	}
+}
+/\\
 
 
 :::map
@@ -215,7 +221,7 @@ A - B B x
 :::image=wall_x_2_3=wall_c.png
 :::image=wall_x_4_4=wall_b.png
 
-
+:::solution=466.101 possibly optimal
 
 :::map
 # - . - . . #

@@ -2,6 +2,10 @@
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var tpaste	=  tp.core.tpaste;
 
+					var defp	=  gio.def.procs;
+
+
+
 
 
 	// Input:	do_paste forces delivered data content to be pasted into
@@ -120,11 +124,12 @@
 	// Returns:	false if coll and default coll texts failed
 	// Advances:	to the point where map.load are 'parsed' and
 	//				leaves maps in this state.
-	gio.download_collection=function( coll ) {
+	gio.download_collection = function( coll ) {
 
 		var url;
-		var coll_ix	= coll.coll_ix;
-		var folder	= coll.ref.folder;
+		var coll_ix				= coll.ref.list.ix;
+		var folder				= coll.ref.folder;
+		var ownhost				= defp.detect_ownhost_url( coll );
 
 		if( gio.modes.sta_tic.db && folder.full){
 			var url = 	gio.modes.sta_tic.db + 
@@ -133,21 +138,29 @@
 						'&ckey='	+ folder.ckey +
 						'&fkey='	+ folder.fkey;
 		}else{
-			if( folder.full ){
-				url=folder.full;
+
+			if( folder.full ) {
+
+				url = folder.full;
+
 			}else{
-				if(gio.config.feeder.exists){
-					url = gio.config.feeder.url + "/" + gio.config.feeder.external_maps + coll.ref.link.link;
-				}else{
-					coll.maps_loaded += 'No feeder exists to load "' + coll.ref.link.link + '"';
-					return coll.maps_loaded === 'success';
+
+				url = coll.ref.link.link;
+
+				if( !ownhost ) {
+					if( gio.config.feeder.exists ) {
+						url = gio.config.feeder.url + "/" + gio.config.feeder.external_maps + url;
+					}else{
+						coll.maps_loaded += 'No feeder exists for outhost: "' + url + '"';
+						return false;
+					}
 				}
 			}
 		}
 
 
 		coll.maps_loaded='began';
-		if(gio.debug) gio.cons('Began loading '+url);
+		if(gio.debug) gio.cons( 'Began loading ' + url );
 
 		var ajax_call={
 				url: url,
@@ -160,35 +173,21 @@
 
 					if(coll.maps_loaded==='began' && textStatus==='success'){
 
-						if(gio.debug) gio.cons_add(coll.maps_loaded);
+						gio.debly( coll.maps_loaded );
+						coll.maps_loaded = 'ajax success';
+						gio.debly( 'data load ajax success' );
 
-						coll.maps_loaded='ajax success';
-						if(gio.debug) gio.cons_add('data load ajax success');
-
-						if( data.match( /^:::failed/i ) ) {
-
+						if( data.match( /^:::failed/i ) )
+						{
 							coll.maps_loaded = 
 									"Failed collection load.\nRedirector responded with text:\n" +
 									data.substr(0, 200);
-						}else {	
+						}else{	
 
 							coll.script.source_text = data;
 							gio.core.def.map_format.decode( coll );
-							if( gio.debug ) {
-								gio.cons_add( 'Finished maps decoder for akey ' + coll.lkey + '.');
-							}
+							gio.debly( 'Finished maps decoder for akey ' + coll.ref.list.akey + '.');
 						}
-
-/*
-						var w_success = coll.maps_loaded === 'success' || coll.script.state.definitions_processed;
-
-						if( !w_success ) {
-							var ww = "Collection \"" + url + "\" text failed.\n";
-							if( !coll.script.state.definitions_processed ) ww += "No definitions.\n"
-							ww	+= "coll.maps_loaded = " + coll.maps_loaded;
-							gio.cons_add( ww );
-						}
-*/
 					}
 				}
 		};
@@ -220,33 +219,37 @@
 
 
 
-	// ====================================================================
-	// Purpose:	loads maps from text, same way as it was loaded from file
-	// Action:	adds custom text to collection and parses the addition
-	// ====================================================================
-	gio.load_custom_collection = function( text ) {
+	///	Loads:	maps from user-entered text
+	//	Action:	adds custom text to colln.script.source_text,
+	//			parses this addition, and then lands on
+	//			the last map of collection.
+	//			TODM the name is misleading.
+	gio.add_map_text_and_land = function( text ) {
 
 		var gs						=	gio.getgs();
 		var colln					=	gs.coll;
 		colln.script.source_text	+= 	"\n" + colln.maps.length + "\n\n" + text;
 
 		colln.maps_loaded = 'began';
-		if( gio.debug ) gio.cons( 'began to add map to collection ... ' );
+		if(gio.debug ) gio.cons( 'began to add map to collection ... ' );
 
+		//. parses new maps
 		gio.core.def.map_format.decode ( colln );
 
 		var failed = true;
 		if( colln.maps_loaded === 'success' ) {
+
+			//. gets last map from reparsed text
 			var gm = colln.maps[ colln.maps.length-1 ];
-			if( gio.session.reinit.finalize_map( gm ) ) {
-				colln.map_ix = colln.maps.length-1;
-				var gs = gio.getgs();
-				gs.gm.title = 'My Edited. ' + gs.gm.title;
-				gio.session.reinit.rounds();
-				failed = false;
+
+			//. validates
+			if( gio.session.reinit.landify_map( gm ) ) {
+				//: lands on map
+				gm.title = 'My Edited. ' + gm.title;
+				failed = gio.navig.landify_and_land_map( gm, 'do_land' );
 			}
 		}
-		if(failed) gio.cons_add( "Failed to edit map." );
+		if( failed ) gio.cons_add( "Failed to edit map." );
 	};
 
 

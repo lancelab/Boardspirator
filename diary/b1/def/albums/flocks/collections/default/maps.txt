@@ -1,19 +1,45 @@
-:::.  credits.title       Beginner
-:::.  credits.copyright   Copyright (c) 2012 Konstantin Kirillov
-:::.  credits.license     Free for use, distribution, and modification as long as these credits retained.
-:::.  credits.date        November 20 2012
+/:
+{	"credits" :
+	{
 
-		::://debugging parser
-		::://
-			{ "moo" : 
+		/, title       Beginner
+		/, copyright   Copyright (c) 2012 Konstantin Kirillov
+		/, license     Free for use, distribution, and modification as long as these credits retained.
+		/. date        November 20 2012
+	},
 
-::://"
-			This is a text
+	// Following is a JWON test case
+
+	/=debugging parser
+
+	"moo" : 
+
+/"
+			Indent is preserved. Text on few lines
 			spread on few lines
-		::://" , "boo" : "new_boo"
+		    /"
+			, "boo" : "new_boo", "too" :
+
+			/" termination_token
+
+				Text. No indent.
+				Attached as multilines ...
+
+			/termination_token , "too_after" : true,
+
+				"property2" : {
+					/. supbroperty2 This is\ta free "text".
+				},
+				"property3" :
+				{
+ 						/, supbroperty3a This is\ta free "text".
+						/, supbroperty3b This is\ta free "text".
+						/. supbroperty3c This is\ta free "text".
+				}
+	
 			}
 
-:::\\\
+/\\
 
 
  
@@ -29,7 +55,6 @@
 :::board_end
 
 :::title=Demo
-:::author=Konstantin Kirillov
 
 :::playpath=Solved 67.11
 |a.0.d|a.0.l|a.0.l|a.0.u|a.0.R|b.0.l|b.0.l|b.0.u|b.0.l|b.0.l|b.0.u|b.0.u|b.0.R|a.0.d|a.0.r
@@ -50,7 +75,6 @@
 - - # # # # -
 :::board_end
 :::title=Warm Up
-:::author= Konstantin Kirillov
 
 :::playpath=Solved 103.24
 |b.0.d|a.0.l|a.0.d|a.0.l|a.0.l|a.0.u|b.0.u|b.0.u|b.0.r|b.0.r|b.0.d|a.0.R|a.0.R|b.0.L|b.0.L
@@ -75,7 +99,6 @@
 - # # # # # -
 :::board_end
 :::title=Get them Home // O.3.2.II
-:::author= Konstantin Kirillov
 
 
 :::playpath=solution
@@ -97,16 +120,6 @@
 
 :::dress=chicken_garden
 :::chosen
-:::title=Chicken Garden
-:::inherit_from=flocks
-:::skin=flockgarden
-:::image=f=blue_man2.png
-:::image=F=blue_chick.png
-:::image=6=blue_target.png
-:::image=g=red_man2.png
-:::image=G=red_chick.png
-:::image=7=red_target.png
-:::image=Y=egg_ground.png
 
 :::dress=night
 :::title=Night
@@ -159,23 +172,13 @@
 - # # # # # #
 :::board_end
 :::title=Kite // G.4.2.II
-:::author= Konstantin Kirillov
 
 :::dress=flocks
 :::skip
 
 
 :::dress=chicken_garden
-:::title=Chicken Garden
-:::inherit_from=flocks
-:::skin=flockgarden
-:::image=f=blue_man2.png
-:::image=F=blue_chick.png
-:::image=6=blue_target.png
-:::image=g=red_man2.png
-:::image=G=red_chick.png
-:::image=7=red_target.png
-:::image=Y=egg_ground.png
+:::chosen
 
 
 
@@ -206,7 +209,6 @@
 - # # # # # #
 :::board_end
 :::title=Ship  // G.4.2.II
-:::author= Konstantin Kirillov
 
 :::dress=flocks
 :::skip
@@ -399,7 +401,6 @@
 - # # # # # #
 :::board_end
 :::title=Smaller Shelter // G.3.3.II
-:::author=Konstantin Kirillov
 
 
 :::playpath=human solution
@@ -447,7 +448,6 @@
 - # # # # # #
 :::board_end
 :::title=Small Shelter A. Unsolved.  // G.4.2.II
-:::author=Konstantin Kirillov
 
 :::dress=flocks
 :::skip
@@ -464,7 +464,6 @@
 - # # # # # #
 :::board_end
 :::title=Small Shelter B. Unsolved. // G.3.3.II
-:::author= Konstantin Kirillov
 
 :::dress=flocks
 :::skip
@@ -481,8 +480,6 @@
 :::board_end
 :::title=Small Shelter C. Unsolved. // G.3.3.II
 
-
-:::author= Konstantin Kirillov
 
 :::dress=flocks
 :::skip

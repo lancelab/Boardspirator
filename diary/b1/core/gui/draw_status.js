@@ -1,28 +1,45 @@
 (function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
+
 					var gstyle	=  gio.config.style;
 					var gdr		=  gio.domwrap.regions;
 					var gde		=  gio.domwrap.elems;
-
 					
-					var STOP_ANNOYANCE	= 15; // Stops showing map caption after this number
-					var annoyance_count = 0;
 					var bC				= 'backgroundColor';
 					var iH				= 'innerHTML';
 					var tL				= 'title';
 					var tT				= 'tooltip';
+
+					var ANNOYANCE_MOVES	= gio.config.style.annoyances.MOVES_AFTER_START_LIMIT;
+					var ANNOYANCE_DURATION = gio.config.style.annoyances.DURATION_AFTER_START_LIMIT;
+					var annoyance_count = 0;
+					var annoyance_stop_time = -1;
+
+
 
 
 
 
 
 	/// Displays game status 
-	gio.draw_status=function(dont_redraw_won_status){ 
+	gio.draw_status = function( dont_redraw_won_status ) { 
 
 
-		var gs		= gio.getUnfinishedState();
+		var gs		= gio.getgs();
 		var gm		= gs.gm;
+		if( !gm || gm.load !== 'finalized') {
+			//. hides chaser
+			gde.chaser.style.display = 'none'; //TODm allow help. Redesign GUI scenarios.
+			gio.debly( "No GUI status. Malformed gm.");
+			return;
+		}
+		gio.debly( "Drawing GUI status ... ");
 
+
+		/// sets up limit only once
+		if( annoyance_stop_time < 0 ) {
+			annoyance_stop_time = ANNOYANCE_DURATION + (new Date()).getTime();
+		} 
 
 		//. visualizes dcenter for the first time after start up:
 		gdr.dcenter.style.display = 'block';
@@ -46,11 +63,6 @@
 		gio.config.google_apps.reset_ad_visibility();
 
 
-		if(gm.load !== 'finalized'){
-			//. hides chaser
-			gde.chaser.style.display = 'none'; //TODm allow help. Redesign GUI scenarios.
-			return;
-		}
 
 
 		//:	gets more info about map because it is loaded
@@ -124,6 +136,7 @@
 				solo[4][tT] =	'Deletes collected positions only for given map.' +
 									'Does not release memory for searches made in other maps.';
 			}
+			gio.debsol( "Inactive solver statuses set for display" );
 		}else if( msol.stopped_bf ) {
 			solo[0][tL] = "Suspending ...";
 			solo[1][tL] = "Suspending ...";
@@ -138,13 +151,10 @@
 			solo[2][tT] = "Suspends search. Can be resumed later.";
 		}
 		gio.domwrap.cpanel.cont_rols.solver_control.reset();
-		//. reveals solver console
-		gde.solver_cons.style.display =		msol.inactive_bf && !msol.browser_mode ? 
-											'none' : 'block';
 
 		/// possibly fails when this sub. is inside of event-handler
 		var ww = gio.domwrap.cpanel.cont_rols.solver_control.display;
-		if( msol.inactive_bf && msol.solutions && msol.solutions.length > 0 ) {
+		if( msol.inactive_bf && msol.solutions.length > 0 ) {
 			ww[iH] = 'Solved';
 		}else if( msol.inactive_bf && msol.stat && msol.stat.total_states > 1 ) {
 			//. cleans up master title ... q&d?
@@ -152,6 +162,16 @@
 		}else{
 			ww[iH] = 'Solver';
 		}	
+
+
+		//. reveals solver console
+		gde.solver_cons.style.display =		msol.never_ran  ? 'none' : 'block';
+		//.	amended
+		//	gde.solver_cons.style.display =		msol.inactive_bf && !msol.browser_mode ? 
+		//										'none' : 'block';
+
+		if( !msol.never_ran ) gio.debsol( "Solver controls redrawn" );
+
 		// \\// Solver ////
 
 
@@ -159,7 +179,7 @@
 
 
 		// //\\ status color
-		var ww_won = !dont_redraw_won_status ?  draw_won_or_not() : false;
+		var ww_won = !dont_redraw_won_status ?  draw_decorations() : false;
 
 		//. TODM why not use smaller box for indication ... 
 		//	no need for 4 colors ... no box dimension? 
@@ -195,8 +215,8 @@
 
 
 
-	/// Blocks controls which are forbidden by dress or by
-	//	playphase.
+	/// Blocks controls which are forbidden by dress or by playphase.
+	//
 	var do_filter_features_display = function ( gm, round ) {
 
 		var dress = gm.dresses_wrap.chosen_dress;
@@ -242,9 +262,10 @@
 
 
 
-	///	Predisplays winning/unwinning status and sugar caption-message
-	//	Returns: true for won, false for not or for "no objective defined"
-	var draw_won_or_not = function () { 
+	///	Purpose:	Predisplays winning/unwinning status and sugar caption-message,
+	//				Blocks annoyances.
+	//	Returns:	true for won, false for not or for "no objective defined"
+	var draw_decorations = function () { 
 
 		var gs			= gio.getgs();
 		var gm			= gs.gm;
@@ -253,10 +274,17 @@
 		var WCOLOR		= gstyle.WINNING_COLOR;
 		var mcap		= gio.domwrap.headers.map_caption_div;
 
-		//: stops show map caption after number of shows to not annoy user
+
+		//: stops show annoyances
 		annoyance_count	+= 1;
-		var ww			= annoyance_count < STOP_ANNOYANCE ? 'Map Level' : '';
-		mcap[iH]		= ww;
+		var show_annoynaces =	annoyance_count < ANNOYANCE_MOVES &&
+								(new Date()).getTime() < annoyance_stop_time;
+		//. stops show map caption
+		mcap[iH]			=	show_annoynaces ? 'Map Level' : '';
+		if( !show_annoynaces ) {
+			gdr.dtopcenter.style.display = "none";
+		}
+
 
 		//. leaves if no objective defined:
 		if( !won_or_not ) return false;
@@ -281,7 +309,7 @@
 			/// sugarifies ... useless? // TODm annoying. Show in status table?:
 			if( gio.debug ) {
 				if(	pos.filled_units>0 &&
-					pos.filled_units !== gm.objective.necessary &&
+					pos.filled_units < gm.objective.necessary &&
 					gio.modes.play !== 'autoplay'){
 						gio.plcons_add(		'Completed '+ pos.filled_units +' goal(s) ... remains '+
 											(gm.objective.necessary - pos.filled_units) + ' ...');
