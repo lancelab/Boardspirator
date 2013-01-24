@@ -1,45 +1,14 @@
-/:
-{	"credits" :
+/{
+	"credits" :
 	{
 
 		/, title       Beginner
 		/, copyright   Copyright (c) 2012 Konstantin Kirillov
 		/, license     Free for use, distribution, and modification as long as these credits retained.
 		/. date        November 20 2012
-	},
+	}
 
-	// Following is a JWON test case
-
-	/=debugging parser
-
-	"moo" : 
-
-/"
-			Indent is preserved. Text on few lines
-			spread on few lines
-		    /"
-			, "boo" : "new_boo", "too" :
-
-			/" termination_token
-
-				Text. No indent.
-				Attached as multilines ...
-
-			/termination_token , "too_after" : true,
-
-				"property2" : {
-					/. supbroperty2 This is\ta free "text".
-				},
-				"property3" :
-				{
- 						/, supbroperty3a This is\ta free "text".
-						/, supbroperty3b This is\ta free "text".
-						/. supbroperty3c This is\ta free "text".
-				}
-	
-			}
-
-/\\
+/}
 
 
  
@@ -98,7 +67,8 @@
 # # - - - # # 
 - # # # # # -
 :::board_end
-:::title=Get them Home // O.3.2.II
+:::title=Get them Home
+:::class=O.3.2.II
 
 
 :::playpath=solution
@@ -149,7 +119,8 @@
 # # - - - # #
 - # # # # # -
 :::board_end
-:::title=Black Manager Squeezed // O.3.3.IIO
+:::title=Black Manager Squeezed
+:::class=O.3.3.IIO
 
 
 :::playpath=human solution
@@ -171,7 +142,8 @@
 # # - - - 6F # 
 - # # # # # #
 :::board_end
-:::title=Kite // G.4.2.II
+:::title=Kite
+:::class=G.4.2.II
 
 :::dress=flocks
 :::skip
@@ -208,7 +180,8 @@
 # # - - - F # 
 - # # # # # #
 :::board_end
-:::title=Ship  // G.4.2.II
+:::title=Ship
+:::class=G.4.2.II
 
 :::dress=flocks
 :::skip
@@ -249,7 +222,8 @@
 # # - f - G # 
 - # # # # # #
 :::board_end
-:::title=Black Manager //G.3.3.IIO
+:::title=Black Manager
+:::class=G.3.3.IIO
 
 :::dress=flocks
 :::skip
@@ -289,7 +263,8 @@
 # # - - - # #
 # # # # # # #
 :::board_end
-:::title=The Crowd // G.2.3.3.IIIO
+:::title=The Crowd
+:::class=G.2.3.3.IIIO
 
 
 :::dress=flocks
@@ -331,7 +306,8 @@
 # # - - 1 # #
 # # # # # # #
 :::board_end
-:::title=Busy Farmer // G.2.3.3.IIIO
+:::title=Busy Farmer
+:::class=G.2.3.3.IIIO
 
 :::dress=flocks
 :::skip
@@ -400,7 +376,8 @@
 # # - - - - # 
 - # # # # # #
 :::board_end
-:::title=Smaller Shelter // G.3.3.II
+:::title=Smaller Shelter
+:::class=G.3.3.II
 
 
 :::playpath=human solution
@@ -447,7 +424,8 @@
 # # - - - F # 
 - # # # # # #
 :::board_end
-:::title=Small Shelter A. Unsolved.  // G.4.2.II
+:::title=Small Shelter A. Unsolved.
+:::class=G.4.2.II
 
 :::dress=flocks
 :::skip
@@ -463,7 +441,8 @@
 # # - f - G # 
 - # # # # # #
 :::board_end
-:::title=Small Shelter B. Unsolved. // G.3.3.II
+:::title=Small Shelter B. Unsolved.
+:::class=G.3.3.II
 
 :::dress=flocks
 :::skip
@@ -478,7 +457,8 @@
 # # - - - - # 
 - # # # # # #
 :::board_end
-:::title=Small Shelter C. Unsolved. // G.3.3.II
+:::title=Small Shelter C. Unsolved.
+:::class=G.3.3.II
 
 
 :::dress=flocks
@@ -498,7 +478,8 @@
 # # - - - - # # 
 # # # # # # # #
 :::board_end
-:::title=Meeting place cannot be changed // Osix4.1.1.2.III
+:::title=Meeting place cannot be changed
+:::class=Osix4.1.1.2.III
 
 
 :::playpath=solvedLX

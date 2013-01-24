@@ -1,0 +1,284 @@
+/{
+
+	//	//\\// CORE GAMES
+
+	"games" :
+	{
+
+		"flocks" :
+		{
+			"nam"		: "Flocks",
+			"basekey"	: "whirly",
+
+			"credits"	:
+			{
+				"date"		: "December 28, 2011 - May 7, 2012",
+				"author"	: "Konstantin Kirillov"
+			},
+
+			"dresses" :
+			{
+				"default" :	
+				{
+					"rules"		:	"Hero can push box of matching color.\nMoved box carries away matching neighbours.\nBlack matches any color.\n",
+					"objective"	:	"Put available boxes on available color-matching targets."
+				}
+			}
+		},
+
+
+		"monkeyban" :
+		{
+			"nam"		:	"Monkeyban",
+			"basekey"	:	"whirly",
+			"credits"	:	{ "author" : "Konstantin Kirillov" }
+		},
+
+
+		"colorban" :
+		{
+			"nam"							: "Colorban",
+			"basekey"						: "whirly",
+			"herd_sense"					: 0,
+			"post_definition_copathy"		: "copathy",
+			"credits"	:{	"contributor"	: "Konstantin Kirillov"  }
+		},
+
+
+		"co_colorban" :
+		{
+			"nam"						: "Co-Colorban",
+			"basekey"					: "colorban",
+			"post_definition"			: "pullpush_inversifier",
+			"post_definition_copathy"	: "copathy"
+		},
+
+
+
+		"sokoban" :
+		{
+			"nam"						: "Sokoban",
+			"basekey"					: "colorban",
+			"post_definition_copathy"	: "copathy",
+
+			"credits" :
+			{
+				"author"	: "Hiroyuki Imabayashi",
+				"license"	: "Public Domain. De facto.",
+				"web_site"	: "http://en.wikipedia.org/wiki/Sokoban",
+				"date"		: "1981",
+				"comments"  : "Published in 1982 by Thinking Rabbit, Takarazuka, Japan.\n\nOriginal game release copyrights possibly are:\nSokoban (R) Registered Trademark of Falcon Co., Ltd., Japan\nSokoban Copyright (C) 1982-2004 by Hiroyuki Imabayashi, Japan\nSokoban Copyright (C) 1989, 1990, 2001-2004 by Falcon Co., Ltd., Japan\n\n (from http://sokobano.de/wiki/index.php?title=Solver_Statistics)",
+				"email"		: ""
+			}
+		},
+
+
+		"co_sokoban" :
+		{
+			"nam"						: "Co-Sokoban",
+			"basekey"					: "sokoban",
+			"post_definition"			: "pullpush_inversifier",
+			"post_definition_copathy"	: "copathy"
+		},
+
+
+
+		"doubleban":
+		{
+			"nam" : "Doubleban",
+			"basekey": "colorban",
+			"DEEPNESS_LIMIT": 2
+		},
+
+
+		"colortrain":
+		{
+			"nam": "Colortrain",
+			"basekey": "colorban",
+			"DEEPNESS_LIMIT": 1000000
+		},
+
+
+
+
+		"pullpush" :
+		{
+			"nam"						: "PullPush",
+			"basekey"					: "colorban",
+			"post_definition"			: "pullpush",
+			"post_definition_copathy"	: "copathy"
+		},
+
+
+		"co_pullpush" :
+		{
+			"nam"						: "Co-PullPush",
+			"basekey"					: "pullpush",
+			"post_definition"			: "pullpush_inversifier",
+			"post_definition_copathy"	: "copathy"
+		},
+
+
+
+		"antiflocks" :
+		{
+			"nam"					: "Antiflocks",
+			"basekey"				: "flocks",
+			"post_definition"		: "pullpush_inversifier"
+		},
+
+
+		"flockmasters" :
+		{
+			"nam"					: "Flockmasters",
+			"basekey"				: "flocks",
+			"post_definition"		: "pullpush"
+		},
+
+
+		"antimasters":
+		{
+			"nam"					: "Antimasters",
+			"basekey"				: "flockmasters",
+			"post_definition"		: "pullpush_inversifier"
+		},
+
+
+
+		"leappush" :
+		{
+			"nam"						: "LeapPush",
+			"basekey"					: "colorban",
+			"post_definition"			: "leappush",
+			"post_definition_copathy"	: "copathy",
+			"credits"					:
+			{				"author"	: "Konstantin Kirillov",
+							"date"		: "October 25, 2012"	
+			}
+		},
+
+
+		"co_leappush" :
+		{
+			"nam"						: "Co-LeapPush",
+			"basekey"					: "leappush",
+			"post_definition"			: "pullpush_inversifier",
+			"post_definition_copathy"	: "copathy",
+			"credits"	:
+			{				"author"	: "Konstantin Kirillov",
+							"date"		: "October 26, 2012"	
+			}
+		},
+
+
+
+		//\\// Non Color-Match Games //////////////////// 
+
+		"pullswappush" :
+		{
+			"nam"						: "PullSwapPush",
+			"basekey"					: "colorban",
+			"post_definition"			: "pullswappush",
+			"post_definition_copathy"	: "copathy"
+		},
+
+
+		"co_pullswappush" :
+		{
+			"nam"						: "Co PullSwapPush",
+			"basekey"					: "pullswappush",
+			"post_definition"			: "pullpush_inversifier",
+			"post_definition_copathy"	: "copathy"
+		},
+
+
+		// //\\ These non-very-generic definitions rather pollute core-games
+		//		but they kept here because some sugar-code refers them.
+
+		"ghostban" :
+		{
+			"nam"			: "GhostBan",
+			"basekey"		: "colorban",
+			"credits"		:
+			{
+				"author"	: "Konstantin Kirillov",
+				"date"		: "October 30, 2012"
+			},
+
+			"interact" :
+			{
+				"hero_b" :
+				{	
+					"box_a"		: "swap",
+					"hero_a"	: "swap"
+				}
+			}
+		},
+
+
+		"co_ghostban" :
+		{
+			"nam"			: "Co-GhostBan",
+			"basekey"		: "ghostban",
+			"credits"		:
+			{	
+				"author"	: "Konstantin Kirillov",
+				"date"		: "October 30, 2012"
+			},
+
+			"interact" :
+			{
+				"hero_a" : {	"box_a" : "pull" },
+				"hero_b" : {	"box_b" : "pull" }
+			}
+		},
+
+
+		"ghostjump" :
+		{
+			"nam": "GhostJump",
+			"basekey": "colorban",
+			"credits"	:{	"author"	: "Konstantin Kirillov",
+							"date"		: "October 30, 2012"
+						},
+
+			"interact" : {
+				"hero_a" :
+				{	
+								"box_x" : "pull"
+				},
+				"hero_b" :
+				{	
+								"box_x" : "pull",
+								"box_a" : "jump",
+								"hero_a" : "jump"
+				}
+			}
+		},
+
+
+
+		"co_ghostjump" :
+		{
+			"nam"		: "Co-GhostJump",
+			"basekey"	: "colorban",
+			"credits"	:
+			{	
+					"author"	: "Konstantin Kirillov",
+					"date"		: "October 30, 2012"
+			},
+
+			"interact" :
+			{
+				"hero_b" :
+				{
+					"box_b"		: "pull",
+					"box_a"		: "jump",
+					"hero_a"	: "jump"
+				},
+				"hero_a" : { "box_a" : "pull" }
+			}
+		}
+		// \\// These non-very-generic definitions rather pollute core-games
+	}
+/}

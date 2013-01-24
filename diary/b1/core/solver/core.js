@@ -249,8 +249,6 @@
 				var ww = '... collecting all paths ';
 			}
 			gio.solver_cons( ww + 'on map "' + gm.title + '"');
-			gio.solver_cons_add(	phase.sphere + '.' + phase.angle +
-									' = move.positions of depature');
 			print_messages();
 			if( !dont_slice_time ) setTimeout( self.do_searches, wait_TIME ); 
 		};
@@ -494,17 +492,26 @@
 
 			var res	= msg + "\n";
 
+
+			var ww	= spheres.length-2 >= 0 ? spheres[spheres.length-2].length : 0;
+
+			res		+=	'DEPARTURE:  ' +
+						phase.sphere + '.' +
+						stat.completed_ball_size + '.' +
+						ww + '.' +
+						phase.angle +
+						" = move.ball.sphere.sphere_departed \n";
+
 			var 	last_move_count = spheres.length-1;
 			if(		!spheres[last_move_count].length  ) last_move_count -= 1;
-			if(		last_move_count > 0 ) {
-					res += last_move_count + " = arrival_move.\n";
-			}
 
-			res		+=	stat.total_states + '.' +
-						stat.completed_ball_size + '.' +
+			res		+=	'ARRIVAL:    '
+			res		+=	last_move_count ? last_move_count : '  ' ;
+			res		+=	'.' + stat.total_states + '.' +
+						//stat.completed_ball_size + '.' +
 						spheres[spheres.length-1].length  + 
-						" = total.departure ball.arrival_sphere"+ "\n";
-			res 	+=	stat.flat_dynamics_top_nodes_estimation + " = boundary\n";
+						" = move.total.sphere"+ "\n";
+			res 	+=	'Boundary =      '	+ stat.flat_dynamics_top_nodes_estimation + "\n";
 			res 	+=	stat.node_dimension	+ " = canon_dimension\n";
 			res 	+=	stat.hids_number	+ " = hids, ";
 			res 	+=	"ms="				+ stat.total_milliseconds + ", ";

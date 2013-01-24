@@ -1,5 +1,5 @@
-/:
-{ "credits" :
+/{
+	"credits" :
 	{
 		/,	title                 	Wells
 		/,	author                	Konstantin Kirillov
@@ -9,8 +9,8 @@
 		/.	license               	Free for use, distribution, and modification as long as these credits retained.
 
 	}
-}
-/\\
+
+/}
 
 
 

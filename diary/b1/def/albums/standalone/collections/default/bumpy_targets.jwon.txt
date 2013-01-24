@@ -1,5 +1,5 @@
-/:
-{	"credits" :
+/{
+	"credits" :
 	{
 		/,	title                 	Bumpy
 		/,	author                	Konstantin Kirillov
@@ -125,9 +125,7 @@
 		"credits"	: { "title" : "Beginner", "author" : "Shown at map-level. Otherwise at collection level." }
 	}
 
-
-}
-/\\
+/}
 
 
 :::map

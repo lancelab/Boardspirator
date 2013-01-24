@@ -1,5 +1,5 @@
-/:
-{ "credits" :
+/{
+ "credits" :
 	{
 		/,	title              	Beginner
 		/,	author             	Konstantin Kirillov
@@ -8,8 +8,8 @@
 		/.	creation_date      	November 29, 2012
 
 	}
-}
-/\\
+
+/}
 
 
 
@@ -134,7 +134,8 @@ dlluUrruULuLullddRurRDrDrddlULUlLLruuL
 # # - - - # #
 - # # # # # -
 :::board_end
-:::title=Black Manager Squeezed // O.3.3.IIO
+:::title=Black Manager Squeezed
+:::class=O.3.3.IIO
 
 :::dress=flocks
 :::skip
@@ -156,7 +157,8 @@ dlluUrruULuLullddRurRDrDrddlULUlLLruuL
 # # - - - 6F # 
 - # # # # # #
 :::board_end
-:::title=Kite // G.4.2.II
+:::title=Kite
+:::class=G.4.2.II
 
 :::dress=flocks
 :::skip
@@ -192,7 +194,8 @@ dlluUrruULuLullddRurRDrDrddlULUlLLruuL
 # # - - - F # 
 - # # # # # #
 :::board_end
-:::title=Ship  // G.4.2.II
+:::title=Ship
+:::class=G.4.2.II
 
 :::dress=flocks
 :::skip
@@ -233,7 +236,8 @@ dlluUrruULuLullddRurRDrDrddlULUlLLruuL
 # # - f - G # 
 - # # # # # #
 :::board_end
-:::title=Black Manager //G.3.3.IIO
+:::title=Black Manager
+:::class=G.3.3.IIO
 
 :::dress=flocks
 :::skip
@@ -273,7 +277,8 @@ dlluUrruULuLullddRurRDrDrddlULUlLLruuL
 # # - - - # #
 # # # # # # #
 :::board_end
-:::title=The Crowd // G.2.3.3.IIIO
+:::title=The Crowd
+:::class=G.2.3.3.IIIO
 
 
 :::dress=flocks
@@ -314,7 +319,8 @@ dlluUrruULuLullddRurRDrDrddlULUlLLruuL
 # # - - - # #
 # # # # # # #
 :::board_end
-:::title=Unexplored. The Crowd. No Black Manager // G.2.3.3.IIIO
+:::title=Unexplored. The Crowd. No Black Manager
+:::class=G.2.3.3.IIIO
 
 :::dress=flocks
 :::skip
@@ -330,7 +336,8 @@ dlluUrruULuLullddRurRDrDrddlULUlLLruuL
 # # - - 1 # #
 # # # # # # #
 :::board_end
-:::title=Busy Farmer // G.2.3.3.IIIO
+:::title=Busy Farmer
+:::class=G.2.3.3.IIIO
 
 :::dress=flocks
 :::skip
@@ -399,7 +406,8 @@ dlluUrruULuLullddRurRDrDrddlULUlLLruuL
 # # - - - - # 
 - # # # # # #
 :::board_end
-:::title=Smaller Shelter // G.3.3.II
+:::title=Smaller Shelter
+:::class=G.3.3.II
 
 human solution=120.19
 :::playpath=human hint
@@ -445,7 +453,8 @@ human solution=170.24
 # # - - - F # 
 - # # # # # #
 :::board_end
-:::title=Small Shelter A. Unsolved.  // G.4.2.II
+:::title=Small Shelter A. Unsolved.
+:::class=G.4.2.II
 
 :::dress=flocks
 :::skip
@@ -461,7 +470,8 @@ human solution=170.24
 # # - f - G # 
 - # # # # # #
 :::board_end
-:::title=Small Shelter B. Unsolved. // G.3.3.II
+:::title=Small Shelter B. Unsolved.
+:::class=G.3.3.II
 
 :::dress=flocks
 :::skip
@@ -476,7 +486,8 @@ human solution=170.24
 # # - - - - # 
 - # # # # # #
 :::board_end
-:::title=Small Shelter C. Unsolved. // G.3.3.II
+:::title=Small Shelter C. Unsolved.
+:::class=G.3.3.II
 
 :::dress=flocks
 :::skip
@@ -495,7 +506,8 @@ human solution=170.24
 # # - - - - # # 
 # # # # # # # #
 :::board_end
-:::title=Meeting place cannot be changed // Osix4.1.1.2.III
+:::title=Meeting place cannot be changed
+:::class=Osix4.1.1.2.III
 
 :::playpath=solvedLX
 |a.0.d|a.0.d|a.0.l|a.0.u|a.0.l|a.0.l|a.0.u|b.0.l|b.0.l|b.0.u|b.0.l|b.0.l|b.0.d|c.0.u|c.0.u

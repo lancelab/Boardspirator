@@ -12,84 +12,10 @@
 					var gdp		=  gdef.procs;
 					var tcoll	=  gio.def.templates.def.coll;
 
-					var do_debug = gio.debug && !isNaN(gio.debug) &&  gio.debug % 7 === 0;
-
-
-
-
-
-
-
-
-
-	/// Attaches and loads external collection from presc.ref.link.link
-	//	Makes it chosen.
-	//	Input:		query - opt, used as a flag of request from URL
-	//	Returns:	loaded-collection in success, othewise false-eqv
-	//
-	gdp.download_scriptio = function ( presc ) {
-
-
-		var der_alb		= gdef.procs.derive_album;
-		var down_coll	= gio.download_collection;
-		var tdef		= gdef.templates.def;
-		var tplay		= gdef.templates.play;
-
-		var query		= presc.env.query;
-		var link		= presc.link.link;
-		var link		= presc.album ? exp_url ( link ) : exp_url ( link, query && query.aurl );
-		presc.link.link = link;
-		
-
-		//. creates collection seed
-		var cseed					= gdp.normalize_cseed();
-		cseed.ref.list.chosen		= presc.list.chosen;
-		cseed.ref.link.link			= link;
-		cpaste( cseed.script.presc, presc );
-
-
-		var akey = presc.env.akey_master || presc.env.akey_advice;
-		var album_def = gio.def.albums[ akey ];
-		var do_merge_to_album = !!album_def;
-
-		gio.debly( "Going to download scrith: akey, link = " + akey + ", " + link );
-
-		if( query ) {
-
-			/// takes credits from query if any
-			var ww = cseed.credits;
-			ceach( core.tooltipify_array, function (index, key) {
-				core.propertify( ww, key, query[ key ] );
-			});
-
-			cseed.ref.list.title = presc.list.title || "From Query";
-			if( presc.album ) {
-				do_merge_to_album = false;
-			}else if( !presc.coll ) {
-				throw "Fatal. Query. Neither aurl, nor curl."; //TODO
-			}
-		}
-
-		if( do_merge_to_album ) {
-
-			//. prevents state change for middle-play downloads
-			var merged_album = der_alb ( akey, cseed, !query );
-			if( !merged_album )
-			{	gio.cons_add( "Failed add cseed to akey " + akey );
-				return false;
-			}
-			var ww = merged_album.collections;
-			var downcoll = ww[ ww.length - 1 ];
-
-		}else{
-
-			var downcoll = cpaste( cseed, tplay.coll );
-		}
-
-		//. dowloads coll
-		var success		= down_coll ( downcoll );
-		return			success ? downcoll : false;
-	};
+					var do_deb	=  gio.debug && !isNaN(gio.debug) &&  gio.debug % 7 === 0;
+					var dodeb	=  function ( string ) { if( do_deb )		gio.cons_add( "SpawnColl: " + string ); };
+					var deb		=  function ( string ) { if( gio.debug )	gio.cons_add( "SpawnColl: " + string ); };			
+					var conadd	=  function ( string ) { 					gio.cons_add( "SpawnColl: " + string ); };			
 
 
 
@@ -161,9 +87,9 @@
 		var cgame			= album.dgame;
 		/// finds collection redresser //TODM remove this feature if found useless
 		if( coll.ref.env.dgkey !== akey ) {
-			cgame = gdp.dress_game( coll.ref.env.dgkey );
+			cgame = gdp.dressi_gami_fy_album( coll.ref.env.dgkey );
 			if( !cgame ) {
-				gio.cons_add(	'Missed game context for key ' + coll.ref.env.dgkey +
+				conadd(	'Missed game context for key ' + coll.ref.env.dgkey +
 								' for collection ' + cix );
 				return false;
 			}
@@ -182,14 +108,10 @@
 		core.tooltipify( coll, "Collection" );
 		gdef.procs.assembly_coll_title( coll );
 
-
 		coll.state.shellified = true;
-
-		if(do_debug)
-		{
-			var ww = dotify( coll.title, 50 );
-			gio.cons_add(	'"' + ww + '" cshell filled for akey ' + album.key + '.');
-		}
+		dodeb(	'"' + dotify( coll.title, 50 ) + '" up-down links done. a, c = ' +
+				coll.ref.list.akey	+ ', ' +
+				coll.ref.list.ix	+ '.' );
 
 		return true;
 
@@ -199,18 +121,25 @@
 
 
 	/// Sets proper flags to false if collection link is from foreign host.
+	//	Returns true or false.
 	gdp.detect_ownhost_url = function ( coll ) {
 
-		var link = coll.ref.link.link;
-		if( link ) {
-			if( !core.do_match_own_host( link ) ) {
-				coll.ref.link.ownhost	= false;
-				// c onsole.log( "Outhost detected: link = " + link );
-				return false
+		var ref		= coll.ref;
+		var link	= ref.link;
+		var ll		= link.link;
+		if( ref.db ) {
+			link.ownhost = true;
+		}else if( ll ) {
+			if( core.do_match_own_host( ll ) ) {
+				link.ownhost = true;
+			}else{
+				link.ownhost = false;
+				// c ccc( "Outhost detected: link = " + linkT );
 			}
+		}else{
+			link.ownhost = true;
 		}
-		coll.ref.link.ownhost = true;
-		return true;
+		return link.ownhost;
 	};
 
 
@@ -221,6 +150,8 @@
 
 		gdp.normalize_cseed( coll );
 
+		if( album.ref.db ) coll.ref.dbased = true;
+
 		// //\\ establishes "down-links", credits, dom-title
 		//		non-external collections set relative to albums tree on player server
 		//		external collection referenced more complex way: see externify function.
@@ -229,7 +160,8 @@
 				externify( coll, album.ref.link.link );
 				coll.credits.source = coll.ref.link.link;
 		}else{
-				spawn_coll_folder_address( coll, album.key );
+
+			spawn_coll_folder_address( coll, album.key );
 		}
 		gdp.detect_ownhost_url( coll );
 		// \\// establishes "down-links"
@@ -287,21 +219,35 @@
 
 
 
-	/// assembles folder-address from given and default values
+	/// normalizes and assembles folder-address from given and default values
+	//	as of today, called only for link-missed collections
 	var spawn_coll_folder_address =  function ( coll, akey ) {
 
 			// we don't need folder at all
 			if( coll.ref.already_downloaded ) return;
 
-			var ff	= coll.ref.folder;
+			var has_folder = core.get_first_or_null( coll.ref.folder );
+			var ff = has_folder ? coll.ref.folder : coll.ref.db;
+
+			if( !ff ) {
+				if( coll.ref.dbased ) {
+					ff = coll.ref.db = {};
+				}else{
+					ff = coll.ref.folder = {};
+				}
+			}
 			ff.akey	= ff.akey	|| akey;
 			ff.ckey	= ff.ckey	|| 'default';
 			ff.fkey	= ff.fkey	|| 'maps.txt';
-			//. is a flag:
-			ff.full	= gio.config.defpaths.ALBUMS_DEF_PATH + 
+
+			if( coll.ref.folder ) {
+				//. is a flag:
+				ff.full	=	gio.config.defpaths.ALBUMS_DEF_PATH + 
 							'/' + ff.akey +
 							'/collections/'+ff.ckey +
 							'/'+ ff.fkey;
+			}
+
 	};
 
 

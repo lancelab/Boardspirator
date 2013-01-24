@@ -7,35 +7,18 @@
   <meta name="description" content="Board Puzzle Framework"> 
   <meta name="keywords" content="board game, puzzle game, on line game, game development, educational game, sokoban"> 
 
-  <title>Guest Readme</title>
+  <title>Collection File Format</title>
 
 	<link rel="stylesheet" href="css/readme.css">
 
-	<script type="text/javascript" src="../tp/lib/jquery-1.7.js"></script>
-	<script type="text/javascript" src="../tp/bind_events.js"></script>
-	<script type="text/javascript" src="../tp/core.js"></script>
-	<script type="text/javascript" src="../tp/core_no_jquery.js"></script>
-	<script type="text/javascript" src="../tp/core2_no_jquery.js"></script>
-	<script type="text/javascript" >$.fn.tp$.core.reset_path_from_land_to_app_root('..');</script>
-	<script type="text/javascript" src="../tp/gui.js"></script>
-	<script type="text/javascript" src="../tp/gui_no_jq.js"></script>
-	<script type="text/javascript" src="../tp/form.js"></script>
-
-	<!-- :: must be before others in gio: -->
-	<script type="text/javascript" src="../core/config/core.js"></script>
-	<script type="text/javascript" src="../core/config/gui.js"></script>
-	<script type="text/javascript" src="../core/config/description.js"></script>
-	<script type="text/javascript" src="../core/config/spawner.js"></script>
-
-
-
-	<script type="text/javascript" src="../core/entry.js"></script>
+	<script type="text/javascript" >window.tp$ = window.tp$ || {}; window.tp$.reset_path_from_land_to_app_root = '..' ;</script>
+	<script type="text/javascript" src="../prod/app.js""></script>
 	<script type="text/javascript" src="js/macrify.js"></script>
 
 </head><body><div style="color:#666666; white-space:pre; font-family:monospace;">
 
 Readme won't display if no JavaScript language enabled in your browser.
-To display a readme, turn JavaScript on.
+To display readme, turn JavaScript on.
 
 </div>
 
@@ -54,7 +37,7 @@ To display a readme, turn JavaScript on.
 		scode   - application-source-code
 		def     - definition
 
-<a name="cfile_example"></a>
+<a id="cfile_example"> </a>
 
 	Collection-file is a main tool to script final games.
 	Cfile can be sell-sufficient: it can contain full information to
@@ -80,7 +63,7 @@ To display a readme, turn JavaScript on.
 		single-line-comments,
 		and single-line property assignments.
 
-	In plain words, here is how cfile can look:
+	In plain words, here is how complex cfile can look:
 			/: 
 				{
 					"games" :
@@ -103,6 +86,7 @@ To display a readme, turn JavaScript on.
 			# @$. #	
 			#######
 
+	Syntax-sugar is available, see first example at <a href="whirly.htm#deriving">Game Craft</a>.
 
 
 	M a p s - s c r i p t   f o r m a t
@@ -309,6 +293,14 @@ To display a readme, turn JavaScript on.
 
 
 
-</pre></div></body></html>
+</pre></div>
+
+	<script	type="text/javascript">
+		jQuery.fn.tp$.gio.config.google_apps.insert_ad_div_with_script();
+	</script>
+
+
+
+</body></html>
 
 

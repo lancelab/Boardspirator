@@ -1,12 +1,12 @@
-/:
+/{
 
-{	"games" :
+	"games" :
 	{
 		"sokoleap_demo":
 		{
 			"nam"		: "SokoLeap Demo",
 			"basekey"	: "sokoban",
-			"credits"	: {	"author" : "L. Eap" },
+			"credits"	: {	"author" : "Dr. Leap" },
 
 			/// In this demo-game, only one interaction is changed from "push" to "leap"
 			"interact"	:
@@ -44,15 +44,12 @@
 		"credits" :
 		{
 			"title" : "Demo Collection",
-			"author" : "L. Eap"
+			"author" : "Dr. Leap"
 		}
 	}
-/:
-}
+/}
 
-/\\
-
-Leap the L
+Leaped by L
 
 #######
 #.-#-$#

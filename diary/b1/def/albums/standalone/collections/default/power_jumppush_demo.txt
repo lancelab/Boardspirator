@@ -1,11 +1,11 @@
-/:
+/{
 
-{	"games" :
+	"games" :
 	{
-		"jumppush_demo":
+		"power_jumppush_demo":
 		{
-			"nam"		: "Jumppush Demo",
-			"basekey"	: "sokoban",
+			"nam"		: "Power JumpPush Demo",
+			"basekey"	: "colorban",
 			"credits"	: {	"author" : "L. Eap" },
 
 			/// See description in dresses.default.rules
@@ -25,7 +25,7 @@
 
 	"albums" :
 	{
-		"jumppush_demo" :
+		"power_jumppush_demo" :
 		{
 			"dresses" :
 			{
@@ -33,8 +33,9 @@
 				{
 					"rules" :
 					/"
-						Heros can push most of 2 color matching boxes.
-						Green hero can jump most of 2 blue boxes.
+						Heros can push color matching boxes.
+						Green hero can jump over blue boxes.
+						Interaction power is limited to two boxes.
 					/" ,
 					"objective" : "Fill available targets with color-matching boxes."
 				}
@@ -44,25 +45,26 @@
 
 	"collection" :
 	{
-		"akey" : "jumppush_demo",
+		"akey" : "power_jumppush_demo",
 		"credits" :
 		{
 			"title" : "Demo Collection",
 			"author" : "L. Eap"
 		}
 	}
-/:
-}
-
-/\\
+/}
 
 :::map
 # # # # # # #
-# - a - b - #
-# - A - B - #
-# - A # B - #
-# - A - B - #
 # - - - - - #
+# b - A B - #
+# - A A B - #
+# - A A B - #
+# - - a - - #
 # # # # # # #
 :::board_end
+
+
+:::playpath=Move Sample
+|b.0.r|b.0.R|b.0.D|b.0.l|a.0.l|a.0.U
 

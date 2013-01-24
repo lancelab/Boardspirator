@@ -1,52 +1,55 @@
 <!DOCTYPE html>
 
- <html><head>
-  <!-- doctype for html 4 is only to satisfy IE -->
+<html>
+	<head>
   
-  <meta name="copyright" content="2011-2012 (c) Konstantin Kirillov">
-  <meta name="description" content="Board Puzzle Framework"> 
-  <meta name="keywords" content="board game, puzzle game, on line game, game development, educational game, sokoban"> 
+		<meta name="copyright" content="2011-2012 (c) Konstantin Kirillov">
+		<meta name="description" content="Board Puzzle Framework"> 
+		<meta name="keywords" content="board game, puzzle game, on line game, game development, educational game, sokoban"> 
 
-  <title>Guest Readme</title>
+		<title>Guest Readme</title>
 
-	<link rel="stylesheet" href="css/readme.css">
+		<link rel="stylesheet" href="css/readme.css">
 
-	<script type="text/javascript" src="../tp/lib/jquery-1.7.js"></script>
-	<script type="text/javascript" src="../tp/bind_events.js"></script>
-	<script type="text/javascript" src="../tp/core.js"></script>
-	<script type="text/javascript" src="../tp/core_no_jquery.js"></script>
-	<script type="text/javascript" src="../tp/core2_no_jquery.js"></script>
-	<script type="text/javascript" >$.fn.tp$.core.reset_path_from_land_to_app_root('..');</script>
-	<script type="text/javascript" src="../tp/gui.js"></script>
-	<script type="text/javascript" src="../tp/gui_no_jq.js"></script>
-	<script type="text/javascript" src="../tp/form.js"></script>
+		<script type="text/javascript" >window.tp$ = window.tp$ || {}; window.tp$.reset_path_from_land_to_app_root = '..' ;</script>
+		<script type="text/javascript" src="../prod/app.js""></script>
+		<script type="text/javascript" src="js/macrify.js"></script>
 
-	<!-- :: must be before others in gio: -->
-	<script type="text/javascript" src="../core/config/core.js"></script>
-	<script type="text/javascript" src="../core/config/gui.js"></script>
-	<script type="text/javascript" src="../core/config/description.js"></script>
-	<script type="text/javascript" src="../core/config/spawner.js"></script>
+	</head><body><div style="color:#666666; white-space:pre; font-family:monospace;">
 
+		Readme won't display if no JavaScript language enabled in your browser.
+		To display readme, turn JavaScript on.
 
-	<script type="text/javascript" src="../core/entry.js"></script>
-	<script type="text/javascript" src="js/macrify.js"></script>
+	</div>
 
-</head><body><div style="color:#666666; white-space:pre; font-family:monospace;">
+	<div style="white-space:pre; font-family:monospace; visibility:hidden;">
 
-Readme won't display if no JavaScript language enabled in your browser.
-To display a readme, turn JavaScript on.
+		<span style="visibility:hidden;">This token, #@title@#   , is a necessary flag to unhide this page.</span>
 
-</div>
+		<pre>
 
-<div style="white-space:pre; font-family:monospace; visibility:hidden;">
+	<h1>Guest Readme. Draft.</h1>
 
-<span style="visibility:hidden;">This token, #@title@#   , is a necessary flag to unhide this page.</span>
+		<a class="list" href="#introduction">Introduction</a>
+		<a class="list" href="#loading_games">Loading Games</a>
+		<a class="list" href="#components">Games, Albums, and Collections</a>
+		<a class="list" href="#map_craft">Map Craft</a>
+		<a class="list" href="map_formats.htm">Collection file format</a>.
+		<a class="list" href="whirly.htm#deriving">Game Craft</a>
+		<a class="list" href="#solver">Solver</a>
+		<a class="list" href="#credits">Giving Credits</a>
+		<a class="list" href="#troubleshooting">Troubleshooting</a>
+		<a class="list" href="whirly.htm">Whirly</a>
+		<a class="list" href="whirly_and_sokoban.htm">Whirly and Sokoban Variants</a>
+		<a class="list" href="../?akey=kids6&asingle&curl=//def/albums/kids/6.json.txt">Kids 6</a>
+		<a class="list" href="../?akey=kids6co_colo&asingle&curl=//def/albums/kids/6co_colorban.json.txt">Kids 6 CoColo</a>
+		<a class="list" href="../?akey=kids7&asingle&curl=//def/albums/kids/7.json.txt">Kids 7</a>
+		<a class="list" href="app_developer_readme.htm">Application Developer Readme</a>
+		<a class="list" href="project_files.htm">Project Files</a>
+	<a id="introduction"> </a>
 
-<pre>
+	<h2>Introduction</h2>
 
-<h1>Guest Readme</h1>
-
-<h2>Introduction</h2>
 
 	#@title@# is a Web-browser-based program to play, craft, and solve puzzles derived from root game, Whirly.
 
@@ -61,23 +64,20 @@ To display a readme, turn JavaScript on.
 
 	Collection-files can script not only maps, but also new games, albums, and skins.
 
-<h2>Extra Links</h2>
-
-	<span style="font-size:18px"><a href="whirly_and_sokoban.htm">Whirly and Sokoban Variants</a></span>
-	<span style="font-size:18px"><a href="../?akey=kids6&asingle&curl=//def/albums/kids/6.json.txt">Kids 6</a></span>
-	<span style="font-size:18px"><a href="../?akey=kids6co_colo&asingle&curl=//def/albums/kids/6co_colorban.json.txt">Kids 6 CoColo</a></span>
-	<span style="font-size:18px"><a href="../?akey=kids7&asingle&curl=//def/albums/kids/7.json.txt">Kids 7</a></span>
 
 
-<h2>Games, Albums, and Collections</h2>
+	<a id="components"> </a>
+	<h2>Games, Albums, and Collections</h2>
+
 
 	Game is a set of rules to play. "Game" here means a puzzle-game.
 
-	Album contains three things: game, dress, and collections.
+	Album comprises four things: game, dress, collections, and listing.
 
 		Dress is how game looks and is interpreted in words.
 		Dress includes images which are called "Skin".
 		Collection is a file containing maps.
+		Listing specifies how to group albums in listing or selection on front page.
 
 	Traditionally dresses and collections can be copyrighted.
 
@@ -90,11 +90,11 @@ To display a readme, turn JavaScript on.
 
 
 
-<a name="urlquery"></a>
+	<a id="loading_games"> </a>
+	<h2>Loading Games</h2>
 
-	U R L - q u e r y    P a r a m e t e r s   . .
 
-		.. control execution of the player. For example:
+	U R L - q u e r y    P a r a m e t e r s   control execution of the player. For example:
 
 			...&akey=sokoban                                            - album key
 			...&aurl=http://mysite.com/mypath/myalbum.txt               - albums url, maps in target file are ignored
@@ -110,25 +110,28 @@ To display a readme, turn JavaScript on.
 		Game Crafters may want use these parameters to point to own sites.
 
 
-<h2>Map Craft .. </h2>
+
+
+	<a id="map_craft"> </a>
+	<h2>Map Craft .. </h2>
 
 		.. is a simplest way to craft a Game. It does not require creating new rules or dresses.
 		Just borrow already existing Games or dresses and refer your maps to them.
-		<a href="whirly.htm#deriving">This link</a> contains examples of both mapifying and derivation. Just ignore
-		derivation part of collection files.
+		<a href="whirly.htm#deriving">This link</a> contains examples of both mapifying and derivation.
+		Just ignore derivation part of collection files.
 
 
 		&aurl and &curl can be full or relative urls:
 
 			full url:
 				&aurl=http://mysite.com/mypath/myalbum.txt
-				&curl = http://users.bentonrea.com/~sasquatch/sokoban/m1">Sokoban map 123 from external collection
+				&curl = http://users.bentonrea.com/~sasquatch/sokoban/m1 Sokoban map 123 from external collection
 			relative url:
 				relative url is attached to a "parent" by using prefix "//":
 				&curl = //mycollection_path/mycollection.txt
 					if albums is also supplied in form
 							&aurl=http://mysite.com/mypath/myalbum.txt
-						then resulting curl will be
+						then resulting curl will become:
 							curl = http://mysite.com/mypath/mycollection_path/mycollection.txt
 					otherwise, result is an appending to player's url:
 							curl = #@AppRoot@#/mycollection_path/mycollection.txt
@@ -137,7 +140,7 @@ To display a readme, turn JavaScript on.
 
 		You need to use <a href="map_formats.htm">collection file format</a>.
 		To get started, look at existing collections in <a href="project_files.htm">def/albums</a>
-		and the source of page <a href="whirly_and_sokoban.htm">Whirly and Sokoban Variants</a>.
+		or at links in page <a href="whirly_and_sokoban.htm">Whirly and Sokoban Variants</a>.
 		Ignore derivation parts at first step.
 
 
@@ -147,20 +150,9 @@ To display a readme, turn JavaScript on.
 
 
 
-<a name="craft"></a>
 
-
-<h2>Game Craft</h2>
-
-	<a href="whirly.htm#deriving">Deriving from Whirly.</a>
-
-
-
-
-
-<a name="solver"> </a>
-
-<h2>Solver</h2>
+	<a id="solver"> </a>
+	<h2>Solver ..</h2>
 
 	.. is breadth-first and weak. Its power depends on size of your computer memory.
 	Solver memory limit is preset to slim=(300000 pstates) for PC with 1 Gig memory.
@@ -196,16 +188,38 @@ To display a readme, turn JavaScript on.
 
 
 
-<a name="credits"> </a>
-<h2>Giving Credits</h2>
 
-		To give credits to your self or others, object-literal "credits" in collection and dress can be used.
-		Credits also stream from query-string, from map-script, dress-script, wroll-header.credits.
-		Credits can include dependence credits, like jQuery credits are nested in #@title@# description.
-		Keywords which are interpreted as credits are here: <a href="../tp/core2_no_jquery.js">/.\	AVAILABLE CREDIT KEYS</a>
+	<a id="credits"> </a>
+	<h2>Giving Credits</h2>
 
 
-<h2>Troubleshooting</h2>
+		Games, Dresses, Collections, and Maps can have credits to others or yourself.
+		Albums do not support credits.
+
+		Collections and Games absorb credits from 
+			json-literal fields like credits.XXXXX
+
+		Additionally, Collection absorb credits from
+			jwon-header.credits, and
+			from query-string.
+
+		Maps and Dresses absorb credits from map-script and dress-script.
+			
+		Following credit keywords <a href="../tp/core2_no_jquery.js">/.\	AVAILABLE CREDIT KEYS</a>
+		are supported.
+
+		Core-bundled Skins have separate page for credits. Other Skins may be credited in Dress credit fields.
+
+		Credits support dependence credits, like jQuery credits are nested in #@title@# description.
+
+		As a general rule, original credits override wrapper. For example, if "original" collection-A is referred
+		from maps of collection-B, then A-credits will be on top of display with B-subcredits.
+	
+
+
+
+	<a id="troubleshooting"> </a>
+	<h2>Troubleshooting</h2>
 
 	Game crafter should not need debugging.
 	If you feel this helps to publish the game, add URL-query parameter:
@@ -219,11 +233,15 @@ To display a readme, turn JavaScript on.
 	Heavy debug may take too much browser resources.
 
 
-<h2><a href="app_developer_readme.htm">Application Developer Readme</a></h2>
-<h2><a href="project_files.htm">Project Files</a></h2>
 
-	
 
-</pre></div></body></html>
+	</pre></div>
+
+	<script	type="text/javascript">
+		jQuery.fn.tp$.gio.config.google_apps.insert_ad_div_with_script();
+	</script>
+
+
+</body></html>
 
 

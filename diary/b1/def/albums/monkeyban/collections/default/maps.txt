@@ -1,5 +1,5 @@
-/:
-{	"credits" :
+/{
+	"credits" :
 	{
 		/, title          Beginner
 		/, author         Konstantin Kirillov
@@ -7,8 +7,8 @@
 		/, date           November 2011 (approximate) - November 25 2012
 		/. email          beaverscript(a)landkey(.)net
 	}
-}
-/\\
+
+/}
 
 
 

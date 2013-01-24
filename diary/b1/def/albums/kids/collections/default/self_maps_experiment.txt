@@ -1,5 +1,4 @@
-/:don't mozaic this is just an experiment
-{	
+/{don't mozaic this is just an experiment
 
 	"collection" :
 	{
@@ -65,9 +64,8 @@
 			}
 		}
 	}
-}
 	
-/\\	
+/}	
 	
 ; Warm Up
 

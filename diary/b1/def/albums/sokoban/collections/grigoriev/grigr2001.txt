@@ -1,5 +1,5 @@
-/:
-{	"credits" :
+/{
+	"credits" :
 	{
 		/, title            Grigr2001 set [100 levels] - finished
 		/, author           Evgeny Grigoriev
@@ -10,8 +10,8 @@
 		/, copied_from      http://grigr.narod.ru/zip/grigr2001-100.zip
 		/. copied_on        November 24, 2012
 	}
-}
-/\\
+
+/}
 
 
 

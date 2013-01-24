@@ -1,5 +1,5 @@
-/:
-{ "credits" :
+/{
+	"credits" :
 	{
 		/,	title                 	Beginner. Co-PullSwapPush.
 		/,	author                	Konstantin Kirillov
@@ -9,8 +9,8 @@
 		/.	creation_date         	2012 - December 7, 2012
 
 	}
-}
-/\\
+
+/}
 
 
 :::map

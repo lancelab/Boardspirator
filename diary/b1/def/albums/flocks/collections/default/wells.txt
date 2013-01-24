@@ -1,5 +1,5 @@
-/:
-{ "credits" :
+/{
+	"credits" :
 	{
 		/,	title                 	Wells
 		/,	version               	1.1  
@@ -9,8 +9,8 @@
 		/.	publication_date      	November 5 - November 25, 2012
 
 	}
-}
-/\\
+
+/}
 
 
 :::map

@@ -95,9 +95,10 @@
 		var gm				= unit.gm;
 		var game			= gm.game;
 		var imatrix			= game.interact;	
+		var DEEPNESS_LIMIT	= game.DEEPNESS_LIMIT;
 		var tower			= gm.loc2lid[xx][yy];
 		var top				= pos.tops[xx][yy];
-		var DEEPNESS_LIMIT	= game.DEEPNESS_LIMIT;
+		var lid2uid			= pos.lid2uid;
 
 
 		if(do_debug) {
@@ -112,7 +113,7 @@
 
 			var lid = tower[zz];
 			//. memorizes id of the peer to interact with in this tower:
-			var peer_uid = pos.lid2uid[lid];
+			var peer_uid = lid2uid[lid];
 
 
 

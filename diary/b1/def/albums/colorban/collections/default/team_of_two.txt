@@ -1,5 +1,5 @@
-/:
-{ "credits" :
+/{
+	"credits" :
 	{
 		/,	title                 	Team of Two
 		/,	version					1.1  
@@ -8,8 +8,8 @@
 		/.	creation_date         	November 30, 2012
 
 	}
-}
-/\\
+
+/}
 
 
 

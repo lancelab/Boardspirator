@@ -170,7 +170,7 @@
 			//: revisualizes titles
 			var coll	= gm.collection;
 			var lkey	= coll.ref.list.akey;
-			var colls	= gio.session.procs.get_album( lkey ).collections;
+			var colls	= gio.session.procs.get_listed_album( lkey ).collections;
 			gio.gui.procs.visualize_collection_titles( coll, colls );
 
 			gio.gui.procs.do_display_curr_board( 'yes' );

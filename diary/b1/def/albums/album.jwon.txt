@@ -1,0 +1,23 @@
+/{
+
+		"albums" :
+		{
+			"co_sokoban" :
+			{
+
+				"dresses" :
+				{ 
+					"default" :
+					{
+						"style" : {	"play" : { "backgroundColor" : "#AAAAAA" } },
+						"rules" : "The robot can pull one box."
+					}
+				}
+				// dresses
+			}
+			// album
+		}
+		// albums
+
+/}
+

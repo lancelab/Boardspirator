@@ -354,7 +354,9 @@
 		if(gsm.hide_db_site_links) craft = '';
 
 		var home = '';
-		if( !gio.config.feeder.exists || gio.config.query.aurl ) {
+		if(	(	!gio.config.feeder.exists || gio.config.query.aurl ) && 
+				gsm.homehost && gsm.homepath
+		) {
 			//TODM will be faulty if feeder scenario changes in the future
 			var home		=	anchor + 'http://' + gsm.homehost + '/' + gsm.homepath +
 								target + mtit.home;

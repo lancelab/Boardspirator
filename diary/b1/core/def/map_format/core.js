@@ -107,7 +107,8 @@
 			map_ix = colln.maps.length-1;
 			var ww = '.. rescan began for map ix ' + ( map_ix + 1 );
 			colln.maps_loaded += ww;
-			if( gio.debug ) gio.cons_add(ww);
+			gio.debly( ww );
+
 		}else{
 
 			//: begins parsing yet empty collection
@@ -123,6 +124,19 @@
 		script.proc.jwon	= cmd.CreateJwon( colln );
 		var jwon			= script.proc.jwon;	
 		var parse_jwon		= jwon.parse;
+		//:	Low-level protection. External collections missing jwon lead-token is
+		//	downgraded to soko_map.
+		var ww = gio.def.procs.detect_ownhost_url( colln ); //TODM slow. make test "mandatory" and logged.
+		if( !ww && !jwon.detect_format().beginner_re.test( maps_text ) ) {
+			jwon.parser_disabled_bf = true;
+			// c ccc( "disabled" );
+		}
+
+		//: Sets jwon ultimately
+		if( colln.ref.jwon === 'yes' )	jwon.parser_disabled_bf = false;
+		if( colln.ref.jwon === 'no' )	jwon.parser_disabled_bf = true;
+		gio.debly( 'Jwon parser = ' +	(!jwon.parser_disabled_bf) );
+
 
 		//.	lim is a flag, -1 means no postboard collection began
 		var postboard = { start : parsed.lines_number, lim : -1 };
@@ -243,6 +257,10 @@
 					// \\// dereferences map to map in another album or collection or game context
 
 
+					//..	hole in code: ... cb_detector === 'map_end' and others
+					//..	which not "continued"
+
+
 				}//.. else cbzone_bf
 				// \\\/// Digests :::-directive
 
@@ -290,7 +308,7 @@
 			if( header_raised ) {
 				cmd.finalize_file_header( postboard, colln );
 				//. forcibly cancells maps parsing
-				if( colln.script.presc.album ) {
+				if( colln.script.metag.defion ) {
 					//. emulates cancellation of everything for finalizing collection
 					area_flag = MAP_LOOKUP;
 					break;

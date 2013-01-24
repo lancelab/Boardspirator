@@ -193,7 +193,7 @@
 			if( cred.credits ) {
 				tp.core.each( cred.credits, function( key, credit ) {
 					var ob = { credits : credit }; 
-					//console.log( 'credit adding to dt =', credit );
+					// c onsole.log( 'credit adding to dt =', credit );
 					var extra_credit = row( self.tooltipify( ob, '', null, 'no width' ).credits_table, 							
 										   "Credits", "", "", "no_dot" );
 					dt += extra_credit;

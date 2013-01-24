@@ -1,0 +1,48 @@
+/{
+
+
+	"games" :
+	{
+
+		"pullorpush" :
+		{
+			"nam"						: "Pulopu",
+			"basekey"					: "colorban",
+			"post_definition"			: "pullorpush",
+			"post_definition_copathy"	: "copathy"
+		},
+
+
+
+		"jumphunt" :
+		{
+			"nam"						: "JumpHunt",
+			"basekey"					: "colorban",
+
+			//. this is not implemented
+			"post_definition_copathy"	: "",
+
+			"credits"					:
+			{				"author"	: "Konstantin Kirillov",
+							"date"		: "October 30, 2012"
+			},
+
+
+			"interact" :
+			{
+				"hero_b" :
+				{				"box_b" : "pull",
+						  		"box_a" : "jump",
+								"box_c" : "swap",
+								"box_d" : "leap"
+				},
+				"hero_a" :
+				{ 				"box_a" : "push",
+								"box_b" : "jump",
+								"box_c" : "swap",
+								"box_d" : "leap"
+				}
+			}
+		}
+	}
+/}

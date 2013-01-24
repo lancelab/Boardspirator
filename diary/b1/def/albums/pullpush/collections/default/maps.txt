@@ -1,5 +1,5 @@
-/:
-{ "credits" :
+/{
+	"credits" :
 	{
 		/,	title                 	Beginner
 		/,	author                	Konstantin Kirillov
@@ -9,8 +9,8 @@
 		/.	creation_date				November 29, 2012
 
 	}
-}
-/\\
+
+/}
 
 
 

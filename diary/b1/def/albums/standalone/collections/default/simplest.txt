@@ -1,0 +1,29 @@
+/{
+
+	//	Possibly simplest gamion.
+	//	Here we "invent" a new game "SokoLeap Demo".
+	//	Pretty simple ... "push" interaction is replaced with "leap".		
+	//	Important, the flag for this simple syntax is a presence of "interact" field.
+
+	"nam"		: "SokoLeap Demo",
+	"basekey"	: "sokoban",
+	"interact"	: 
+	{
+				"hero_x" : { "box_x" : "leap" }
+	}
+
+/}
+
+Leaped by L
+
+#######
+#.-#-$#
+#.---$#
+#..@$$#
+#--#--#
+#######
+
+:::playpath=Solution 35.13
+rrrurrullllddrrrrulllddrrurrrdlluur
+
+

@@ -4,13 +4,14 @@
 					var gstyle	=  gio.config.style;
 					var gde		=  gio.domwrap.elems;
 					var ggp		=  gio.gui.procs;
+					var deb		=  function ( string ) { if( gio.debug ) gio.cons_add( "GUI Procs: " + string ); };			
+
 
 
 
 
 
 	var unlock_popup=function(){gio.gui.modes.common_popup_shown=true;};
-
 
 
 
@@ -47,11 +48,12 @@
 	// Auxiliary
 	ggp.do_display_curr_board = function ( do_display ) {
 		var gs = gio.getgs();
-		var gm = gs.gm;
-		var board = gm && gm.board;
-		if( board ) {
-			var mess	=  do_display ? 'Displaying ' : 'Hiding ';
-			mess		+= ' current board. a,c,m = ' + gs.playalb.key + ', ' + gs.coll.ref.list.ix + ', ' + gm.ix;
+		var board = gs.board;
+		if( board )
+		{
+			var mess	=  do_display ? 'Displays' : 'Hides';
+			mess		+= ' board. a,c,m = ' + gs.akey + ', ' + gs.cix + ', ' + gs.mix;
+			deb( mess );
 			board.style.display = do_display ? 'block' : 'none';
 		}
 	};

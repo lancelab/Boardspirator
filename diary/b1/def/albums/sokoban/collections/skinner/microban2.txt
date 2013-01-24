@@ -1,5 +1,5 @@
-/:
-{	"credits" :
+/{
+	"credits" :
 	{
 		/, title			Microban II (135 puzzles, April, 2002)
 		/, copyright		Copyright (c) 2002 David W Skinner
@@ -9,8 +9,8 @@
 		/, copied_from	    http://users.bentonrea.com/~sasquatch/sokoban/m2
 		/. copied_on		November 14, 2012
 	}
-}
-/\\
+
+/}
 
 
 ; 1

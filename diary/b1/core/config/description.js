@@ -8,8 +8,11 @@
 					var feeder	= gio.config.feeder;
 
 
-	// //\\//	Describes Application and Credits.
-	//			Must not be put before config.js and before config_gui.js file.
+
+
+
+					// //\\//	Describes Application and Credits.
+					//			Must not be put before config.js and before config_gui.js file.
 
 
 	gio.description = {	title : 'Boardspirator' };
@@ -19,10 +22,10 @@
 
 		description			: gio.description.title + " (Boardy). Tool\n                 " +
 							  "to play, edit, solve, or develop board puzzles.",
-		version				: '0.1.181',
+		version				: '0.1.189',
 		version_name		: 'Mono',	// "Monoaction". In interaction, there is no significant reaction from actees back to actors.
 		maturity			: 'Draft',
-		date				: 'January 9, 2013',
+		date				: 'January 24, 2013',
 		copyright			: '(c) 2011-2013 Konstantin Kirillov',
 
 		license				: "Dual licensed under the MIT or GPL Version 2\n                " +
@@ -48,6 +51,13 @@
 							],
 
 		diary			: 	"Diary contains stand-alone versions. Usual landing page is index.htm:\n\n" +
+
+
+						"   0.1.189     Jan. 23. Gamion on-line editor. Converter to co-position script.\n" +
+						"   0.1.181     Jan. 9, 2013. GitHubed. \n" +
+						"                             Last version which:\n" +
+						"                                has game.json.txt instead of game.jwon.txt \n" +
+						"                                not having app.js inside documentation.\n" +
 						"   0.1.173     Jan. 5, 2013. Text related to database features removed from readmes. Loss. Find in former versions.\n" +
 						"   0.1.170     Dec. 30, 2012. htarget_X added.\n" +
 						"   0.1.170     all meta-maps-text info is in jwon, no more \"caption\" format. \n" +

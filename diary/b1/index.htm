@@ -11,6 +11,10 @@
 
 	<title>Boardspirator</title>
 
+
+	<!-- ///\\\ ================ FULL ENGINE =================== -->
+
+
 	<script type="text/javascript" src="tp/lib/jquery-1.7.js"></script>
 
 	<!-- needed only for debug-mode: -->
@@ -25,6 +29,9 @@
 	<script type="text/javascript" src="tp/gui_no_jq.js"></script>
 	<script type="text/javascript" src="tp/core_gui.js"></script>
 	<script type="text/javascript" src="tp/form.js"></script>
+
+
+	<!-- //\\ ---------------------- play --------------------- -->
 
 	<!-- :: must be before boardspirator scripts: -->
 	<script type="text/javascript" src="core/config/core.js"></script>
@@ -44,6 +51,7 @@
 	<script type="text/javascript" src="core/session/make_moves.js"></script>
 	<script type="text/javascript" src="core/session/scroll_to_landable.js"></script>
 
+	<script type="text/javascript" src="core/session/preload_core.js"></script>
 	<script type="text/javascript" src="core/entry.js"></script>
 	<script type="text/javascript" src="core/interaction.js"></script>
 	<script type="text/javascript" src="core/reflection.js"></script>
@@ -89,17 +97,19 @@
 	<script type="text/javascript" src="core/def/games/winning.js"></script>
 	<script type="text/javascript" src="core/def/games/base_game_dress.js"></script>
 
+	<!-- \\// ---------------------- play --------------------- -->
 
+
+	<!-- :: data -->
 	<script type="text/javascript" src="def/albums/flocks/album.js"></script>
 	<script type="text/javascript" src="def/albums/pullpush/album.js"></script>
 	<script type="text/javascript" src="def/albums/monkeyban/album.js"></script>
 	<script type="text/javascript" src="def/albums/flockmasters/album.js"></script>
-	<script type="text/javascript" src="def/albums/antimasters/album.js"></script>
 	<script type="text/javascript" src="def/albums/sokoban/album.js"></script>
 	<script type="text/javascript" src="def/albums/colorban/album.js"></script>
 	<script type="text/javascript" src="def/albums/colortrain/album.js"></script>
-	<script type="text/javascript" src="def/albums/doubleban/album.js"></script>
 	<script type="text/javascript" src="def/albums/pullswappush/album.js"></script>
+	<script type="text/javascript" src="def/albums/album.js"></script>
 	<script type="text/javascript" src="def/albums/mozaic.js"></script>
 
 
@@ -110,11 +120,13 @@
 	<!-- this must be before "body" as google analytics required this: -->
 	<script type="text/javascript" src="google_apps/do_insert.js"></script>
 
+	<!-- \\\/// ================ FULL ENGINE =================== -->
+
 
 	</head>
 	<body>
 
-
+		<!-- "if no JavaScript language"     is a key to disable this dom-node -->
 		<div style="color:#666666;">
 			Games will not run if no JavaScript language<br />enabled in your browser.<br>
 			To run games, turn JavaScript on.

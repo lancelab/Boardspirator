@@ -1,5 +1,5 @@
-/:
-{	"credits" :
+/{
+	"credits" :
 	{
 		/, title			Microban IV (102 puzzles, August 2010)
 		/, copyright		Copyright (c) 2010 David W Skinner
@@ -9,8 +9,8 @@
 		/, copied_from		http://users.bentonrea.com/~sasquatch/sokoban/m4
 		/. copied_on		November 14, 2012
 	}
-}
-/\\
+
+/}
 
 
 

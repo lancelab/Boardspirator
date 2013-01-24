@@ -6,7 +6,7 @@
 gio.def.albums['flockmasters']={
 
 	gkey : 'flockmasters',
-	"ref" : { "env" : { dgkey : "flocks" } },
+	"ref" : { "env" : { dress_akey : "flocks" } },
 
 	
 	collections : 

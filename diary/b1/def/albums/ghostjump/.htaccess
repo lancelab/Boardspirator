@@ -1,0 +1,6 @@
+#Courtecy file for Web-users having outdated links.
+#
+RewriteEngine on
+RewriteCond %{REQUEST_URI} ^(.*)album\.json\.txt
+RewriteRule .*  %1album.jwon.txt [R=301,L]
+

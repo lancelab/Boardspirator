@@ -155,10 +155,15 @@
 			tsx[board_y] = units.length-1;
 			for(var zz=0; zz<units.length; zz++){
 
-				// Do index location:
+				//: //\\	Indexes location //////////////////
+				//.			Generates new index, lid.
 				var lid=map.locs.length;
-				locy[zz] = lid;
-				map.locs[lid]=[x,board_y,zz];
+				locy[ zz ] = lid;
+				//.	Adds new location.
+				map.locs[ lid ]=[ x, board_y, zz ];
+				//: \\//	Indexes location //////////////////
+
+
 				u=units[zz];
 
 				rank=-1;

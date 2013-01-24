@@ -410,9 +410,9 @@
 			var gio=tp.gio;
 			var astub = '<a href="http://';
 
-			//remove JS waring which pollutes the body:
-			var to_remove=tp.core.matchChild(/^\s*Readme/i,document.body);
-			if(to_remove)document.body.removeChild(to_remove);
+			//. removes JS waring which pollutes the body:
+			self.remove_warning_about_absent_JS( "if no JavaScript language enabled in your browser" );
+
 
 			var to_display=tp.core.matchChild(/#@title@#/i,document.body);
 			if(to_display){
@@ -469,23 +469,31 @@
 		};
 
 
+		//: keeps my port and host
+		var lo_port = ( window.location.port && (window.location.port + '') ) || '';
+		if( lo_port === '80' ) lo_port = '';
+		lo_port = lo_port && ( ':' + lo_port );
+		var lo_my_host = ( window.location.protocol + '//' + window.location.hostname + lo_port ).toLowerCase();
+
+
 		/// (re)sets primary paths:
 		//		when appropriate, with format: http(s):://host[pathname],
 		//	 	webpath_to_land_folder_noslash has no tailing slash
 		self.reset_path_from_land_to_app_root = function ( from_land_to_root ) {
 			self.path_from_page_to_app_root		=	from_land_to_root;
 			self.webpath_to_land_folder_noslash	=	window.location.protocol + '//' + 
-													self.getFileParent( window.location.hostname + ( window.location.pathname || '/' ) );	
+													self.getFileParent( window.location.hostname + lo_port + ( window.location.pathname || '/' ) );	
 			self.app_webpath_noindex			=	self.webpath_to_land_folder_noslash +
 													(self.path_from_page_to_app_root && ( '/' + self.path_from_page_to_app_root ));
+			// c ccc( 'self.webpath_to_land_folder_noslash=' + self.webpath_to_land_folder_noslash );
 		};
 
 
 		/// Matches http(s):://my_host.com to link http(s)://my_host.com/some
 		//	Weak job. TODm improve.
 		self.do_match_own_host = function ( link ) {
-			var my = ( window.location.protocol + '//' + window.location.hostname ).toLowerCase();
-			var ownhost = link && ( link.toLowerCase().indexOf( my ) === 0 );
+			var ownhost = link && ( link.toLowerCase().indexOf( lo_my_host ) === 0 );
+			// c ccc( 'link=' + link + ' own host = ' + ownhost );
 			return ownhost;
 		};
 
@@ -512,7 +520,29 @@
 
 		//. Sets land-root as default app root:
 		//	If different, modify after insertion of core_no_jquery.js
-		self.reset_path_from_land_to_app_root('');
+		self.reset_path_from_land_to_app_root( window.tp$.reset_path_from_land_to_app_root || '' );
+
+
+
+
+		///	Input:	example: warning_key_regex_string = "no JS"
+		self.remove_warning_about_absent_JS = function ( warning_key_regex_string ) {
+
+			//: Removes first encountered document child which
+			//	contains JS-warning warning_key 
+			//	about missed-JS which pollutes the body:
+			var removal_regex = new RegExp( warning_key_regex_string, 'i' );
+			var to_remove = self.matchChild( removal_regex, document.body );
+			if( to_remove ) {
+
+				//. Fails? in Safary and Android
+				//	document.body.removeChild(to_remove);
+
+				to_remove.style.display='none';
+			}
+
+		};
+
 
 
 })();

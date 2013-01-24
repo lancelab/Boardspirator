@@ -1,5 +1,5 @@
-/:
-{ "credits" :
+/{
+	"credits" :
 	{
 		/,	title                 	Beginner
 		/,	version               	1.1  
@@ -9,8 +9,8 @@
 		/.	creation_date         	December 4, 2012
 
 	}
-}
-/\\
+
+/}
 
 
 :::map
@@ -255,33 +255,75 @@ ulDD
 # - - 1 - - - #
 # 2 2A # a A - #
 # - B 1b - # # # 
-# - - # - # 
-# # # # # #
+# - - # # #
+# # # #
 :::board_end
 :::title=Mockers
 
-144.48?
+144.48
 :::playpath=Hint
 |a.0.u|a.0.l|a.0.l|b.0.r|b.0.u|b.0.u|b.0.l|b.0.l|b.0.u
+|a.0.l|a.0.d|b.0.u|b.0.r|b.0.D|b.0.l|b.0.d|b.0.d|b.0.R|b.0.l|b.0.u|a.0.d|a.0.r|b.0.R|b.0.R
+|a.0.U|a.0.U|b.0.R|a.0.r|b.0.d|a.0.r|b.0.r|a.0.d|b.0.u|b.0.L|b.0.L|b.0.d|a.0.u|a.0.r|a.0.r
+
+|a.0.d|a.0.L|a.0.u|b.0.L|b.0.r|b.0.u|b.0.L|a.0.l|b.0.L|a.0.l|b.0.d|a.0.l|b.0.l|a.0.d|b.0.U
+|a.0.l|a.0.d|b.0.d|b.0.d|b.0.r|b.0.U|b.0.d|a.0.r|a.0.r|a.0.r|a.0.U|a.0.d|a.0.l|a.0.l|a.0.l
+|a.0.u|a.0.u|a.0.r|a.0.r|a.0.R|a.0.d|a.0.d|a.0.l|b.0.u|b.0.U|a.0.l|b.0.l|a.0.u|b.0.u|b.0.R
+|b.0.u|b.0.l|b.0.D|b.0.D|b.0.r|b.0.d|a.0.u|a.0.l|a.0.u|a.0.u|a.0.r|a.0.D|a.0.D|b.0.l|a.0.D
+|a.0.u|b.0.U|b.0.r|b.0.u|a.0.d|a.0.l|a.0.d|a.0.R|a.0.u|b.0.l|b.0.D|b.0.r|b.0.d|a.0.u|a.0.l
+|b.0.r|b.0.u|b.0.u|b.0.L|b.0.r|b.0.d|b.0.d|b.0.l|b.0.u|b.0.U|b.0.r|a.0.r|b.0.l|a.0.r|a.0.r
+|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.L|a.0.d|a.0.r|b.0.u|b.0.u|b.0.r|b.0.D|b.0.D|b.0.r|b.0.d
+
+
+Mockers
+179.42
+:::playpath=Human Hint
+|b.0.r|b.0.u|b.0.l|b.0.l|b.0.l|b.0.u|b.0.u|b.0.r|a.0.u|a.0.l|a.0.l|a.0.l|a.0.d|b.0.D|b.0.l
+|b.0.d|b.0.R|b.0.R|b.0.R|a.0.d|a.0.d|a.0.r|b.0.l|b.0.l|b.0.l|b.0.d|b.0.d|b.0.R|b.0.l|a.0.u
+|a.0.U|a.0.U|a.0.d|a.0.u|a.0.r|a.0.r|a.0.d|a.0.d|b.0.r|b.0.u|b.0.u|b.0.r|b.0.r|b.0.d|b.0.r
+|b.0.u|b.0.L|b.0.L|b.0.L|b.0.L|b.0.d|b.0.l|b.0.U|a.0.u|a.0.u|a.0.r|a.0.r|a.0.d|b.0.r|b.0.r
+
+|b.0.r|b.0.d|b.0.d|b.0.L|b.0.r|b.0.u|b.0.u|b.0.l|b.0.l|b.0.l|b.0.d|b.0.d|b.0.d|b.0.r|b.0.U
+|a.0.L|a.0.u|a.0.l|a.0.l|a.0.l|a.0.l|a.0.d|a.0.d|b.0.d|a.0.r|a.0.r|a.0.r|a.0.U|a.0.d|a.0.l
+|a.0.l|a.0.l|a.0.u|a.0.u|a.0.r|a.0.r|a.0.R|b.0.u|b.0.U|b.0.l|b.0.u|b.0.R|b.0.u|b.0.l|b.0.D
+|b.0.D|b.0.D|a.0.d|a.0.d|a.0.l|a.0.l|a.0.u|a.0.u|a.0.l|a.0.u|a.0.u|a.0.r|b.0.r|b.0.d|b.0.d
+|b.0.l|b.0.U|b.0.U|b.0.d|b.0.d|a.0.D|a.0.D|a.0.D|a.0.l|a.0.d|a.0.R|a.0.d|b.0.u|b.0.u|b.0.r
+|b.0.u|b.0.u|b.0.l|b.0.D|b.0.D|b.0.r|b.0.d|b.0.r|b.0.u|b.0.u|b.0.L|b.0.r|b.0.d|b.0.d|b.0.l
+|b.0.u|b.0.U|b.0.l|a.0.u|a.0.u|a.0.u|a.0.r|a.0.r|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.L|b.0.r
+|b.0.d|b.0.d|b.0.d|b.0.l|b.0.U|b.0.r|b.0.u|b.0.u|b.0.l|b.0.u|b.0.u|b.0.r|b.0.D|b.0.D
+
 
 
 
 :::map
 :::context_akey=ghostjump
-# # # #
-# - - # # # #
-# - B # - - # #
-# - - 1 - - - #
-# 2 2A # A - b #
-# - B 1 - # # # 
-# - - # a # 
-# # # # # #
+# #  #  #
+# -  b  # # # #
+# -  B  # - - # #
+# -  -  1 - - - #
+# 2  2A # A - - #
+# -  B  1 a # # # 
+# -  -  # # #
+# #  #  #
 :::board_end
-:::title=Free Mockers
+:::title=Mockers Unleased
 
-189.64?
+
+176.61
 :::playpath=Hint
-|a.0.u|a.0.U|a.0.r|b.0.l|a.0.u|a.0.u|a.0.l|b.0.d|a.0.D
+|a.0.U|a.0.r|a.0.u|a.0.u|a.0.l|a.0.D|a.0.l|a.0.l|a.0.l|a.0.d|b.0.D|b.0.l|b.0.d|b.0.d|b.0.R
+|b.0.l|b.0.u|a.0.d|a.0.r|b.0.R|b.0.R|a.0.U|a.0.U|b.0.R|b.0.d|b.0.L|b.0.r|b.0.u|b.0.l|b.0.l
+|a.0.d|a.0.l|a.0.d|b.0.d|b.0.d|b.0.r|b.0.U|b.0.r|a.0.r|b.0.r|a.0.r|b.0.u|a.0.r|b.0.u|a.0.U
+
+|a.0.d|a.0.l|a.0.l|a.0.l|a.0.u|a.0.u|a.0.r|b.0.r|b.0.D|b.0.r|b.0.d|b.0.L|b.0.u|b.0.l|b.0.l
+|a.0.r|a.0.R|a.0.u|a.0.r|a.0.D|a.0.u|b.0.d|b.0.d|b.0.r|b.0.r|b.0.r|b.0.U|b.0.r|b.0.u|b.0.l
+|b.0.L|a.0.d|a.0.r|a.0.d|a.0.L|a.0.u|b.0.L|a.0.l|b.0.L|a.0.l|b.0.r|b.0.d|b.0.l|b.0.l|b.0.l
+|b.0.u|b.0.U|b.0.r|b.0.u|a.0.l|a.0.l|a.0.d|a.0.d|a.0.r|a.0.r|a.0.r|a.0.U|a.0.d|a.0.l|a.0.l
+|a.0.l|a.0.u|a.0.u|a.0.r|a.0.r|a.0.R|a.0.l|a.0.l|b.0.l|b.0.D|b.0.D|b.0.r|a.0.l|a.0.u|a.0.u
+|a.0.r|b.0.r|b.0.d|b.0.d|b.0.l|b.0.l|b.0.U|b.0.d|b.0.l|b.0.U|b.0.U|b.0.R|b.0.l|a.0.D|a.0.D
+|a.0.D|a.0.l|a.0.d|a.0.R|a.0.u|b.0.r|b.0.u|b.0.u|b.0.l|b.0.D|b.0.D|b.0.r|b.0.d|a.0.u|a.0.l
+|b.0.r|b.0.u|b.0.u|b.0.L|b.0.r|b.0.d|b.0.d|b.0.l|b.0.u|b.0.U|b.0.r|a.0.r|b.0.l|a.0.r|a.0.r
+|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.L|b.0.u|b.0.u|b.0.r|b.0.D|b.0.D
 
 
 
@@ -319,5 +361,40 @@ ulDD
 |b.0.u|b.0.l|b.0.D|b.0.D|b.0.r|b.0.r|a.0.l|a.0.l|a.0.u|a.0.u|a.0.r|a.0.D|a.0.l|a.0.d|a.0.R
 
 
+
+:::map
+# # #  # 
+# - -  # #  # # 
+# - A  # -  - # #
+# - 1b - -  - - #
+# - 0  # 2A X - #
+# - 1  B a  # # # 
+# - -  # #  #
+# # #  # #
+:::board_end
+:::title=Share the Tip
+-:::title=Corrupt Ghost
+-:::context_akey=corrupt_ghost
+
+247.86
+:::playpath=Hint
+|b.0.r|b.0.r|b.0.r|b.0.D|b.0.l|b.0.d|b.0.R
+|b.0.R|a.0.U|a.0.r|a.0.u|a.0.u|a.0.l|a.0.D|a.0.L|a.0.L|b.0.r|b.0.r|b.0.d|b.0.L|b.0.r|b.0.u
+|b.0.R|a.0.l|a.0.u|a.0.l|b.0.R|b.0.l|b.0.d|b.0.d|b.0.d|b.0.r|b.0.U|b.0.r|b.0.r|b.0.u|b.0.L
+|b.0.L|a.0.d|a.0.R|a.0.R|a.0.l|a.0.d|a.0.d|a.0.r|a.0.r|b.0.l|b.0.l|b.0.d|b.0.l|a.0.r|a.0.U
+
+|a.0.d|a.0.l|b.0.l|a.0.l|b.0.u|a.0.l|b.0.u|a.0.u|b.0.r|a.0.u|a.0.u|a.0.u|a.0.r|b.0.D|a.0.D
+|b.0.l|a.0.D|b.0.d|b.0.R|b.0.d|a.0.D|a.0.u|b.0.u|b.0.u|a.0.R|b.0.D|a.0.r|a.0.r|a.0.R|a.0.u
+|a.0.r|a.0.D|a.0.l|a.0.l|a.0.l|b.0.l|b.0.d|b.0.d|b.0.r|a.0.U|a.0.l|a.0.d|a.0.d|a.0.r|a.0.U
+|b.0.L|a.0.U|a.0.U|b.0.L|b.0.L|b.0.d|b.0.l|b.0.d|b.0.L|b.0.r|b.0.u|b.0.u|b.0.l|b.0.l|b.0.d
+|a.0.l|a.0.u|a.0.u|a.0.r|b.0.d|b.0.d|b.0.r|b.0.U|b.0.U|b.0.l|b.0.u|b.0.R|b.0.l|a.0.D|a.0.D
+|a.0.D|a.0.l|b.0.d|b.0.r|a.0.d|a.0.d|a.0.r|b.0.r|b.0.u|b.0.u|b.0.L|b.0.r|b.0.d|b.0.d|b.0.l
+|b.0.l|b.0.u|b.0.r|b.0.U|a.0.U|a.0.r|a.0.r|a.0.u|b.0.r|b.0.r|b.0.R|b.0.R|a.0.u|a.0.r|a.0.r
+|a.0.d|a.0.L|a.0.u|a.0.l|a.0.u|b.0.d|b.0.r|b.0.r|b.0.u|b.0.L|b.0.L|a.0.d|a.0.R|a.0.R|a.0.l
+|a.0.d|a.0.d|a.0.r|a.0.r|a.0.r|a.0.U|a.0.d|a.0.l|a.0.l|a.0.l|a.0.u|a.0.u|a.0.r|a.0.D|a.0.u
+|a.0.R|a.0.d|a.0.d|a.0.R|a.0.u|a.0.U|a.0.l|a.0.u|a.0.u|a.0.r|b.0.l|b.0.l|b.0.l|a.0.r|a.0.R
+|a.0.d|a.0.r|a.0.r|a.0.u|b.0.u|b.0.u|b.0.r|b.0.D|b.0.l|b.0.d|b.0.R|b.0.R|b.0.l|b.0.l|b.0.d
+|b.0.d|b.0.r|b.0.r|b.0.u|b.0.r|b.0.u|b.0.l|b.0.D|b.0.l|a.0.L|b.0.l|a.0.L|b.0.l|a.0.L|a.0.r
+|a.0.r|b.0.d|b.0.d|b.0.r|b.0.r|b.0.U|b.0.r|b.0.u|a.0.d|a.0.l|a.0.d|a.0.L|b.0.l|b.0.D|b.0.l
 
 

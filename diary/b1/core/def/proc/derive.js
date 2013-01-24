@@ -5,15 +5,22 @@
 					var tpaste	=  core.tpaste;
 					var cpaste	=  core.paste_non_arrays;
 					var clonem	=  core.clone_many;
+					var exp_url	=  core.expand_to_parent;
 
 					var gdef	=  gio.def;
 					var gdp		=  gdef.procs;
+					var ggp		=  gio.gui.procs;
 					var dotify	=  core.dotify;
-					var exp_url	= tp.core.expand_to_parent;
-					var do_debug = gio.debug && !isNaN(gio.debug) &&  gio.debug % 7 === 0;
 
+					var sess	=  gio.session; 
+					var do_deb	=  gio.debug && !isNaN(gio.debug) &&  gio.debug % 7 === 0;
 
-
+					//:	We do sacrify speed by wrapping consoles into following functions, but
+					//	we gain adding a markerer "Derive", and do not sacrify performance because
+					//	deriving is a rare operation.
+					var dodeb	=  function ( string ) { if( do_deb )		gio.cons_add( "Derive: " + string ); };
+					var deb		=  function ( string ) { if( gio.debug )	gio.cons_add( "Derive: " + string ); };			
+					var conadd	=  function ( string ) { 					gio.cons_add( "Derive: " + string ); };			
 
 
 
@@ -38,40 +45,50 @@
 	//	Derives	dress,
 	//			post_definition, and
 	//			sugar.
-	gdp.derive_game = function( gkey ) {
-
-		//: verifies if job already done
-		var idef = gdef.inherited_games[gkey];
-		if(idef) return clonem(idef);
+	gdp.derive_game = function( gkey, overdefine ) {
 
 
-		//: verifies if own definition exists
-		var gdg = gdef.games[gkey];
-		if(!gdg){
-			gio.cons_add('Missed seed definition  for gkey "'+ gkey +'".');
-			return false;
+		///	Verifies if job already done.
+		if( !overdefine ) {
+			var idef = gdef.inherited_games[gkey];
+			if(idef) return clonem( idef );
 		}
 
 
-		// //\\ does the recursive inheritance job
+		///	Verifies if own definition exists.
+		var gdg = gdef.games[ gkey ];
+		if( !gdg ) {
+			deb(	'Missed seed definition  for gkey "'+ gkey + '". Base ' +
+					gdef.base_game.basekey + ' used instead.'
+			);
+			//.	resorting to last resort: base
+			gkey = gdef.base_game.basekey;
+			var idef = gdef.inherited_games[ gkey ];
+			if( idef ) return clonem( idef );
+			var gdg = gdef.games[ gkey ];
+		}
+
+
+		// //\\ Does the recursive inheritance job
 		gdg.basekey = gdg.basekey || gdef.base_game.basekey;
 		
 
-		if( gdg.basekey === gkey ){
+		if( gdg.basekey === gkey ){ //TODM this does not protect from deeper level loop
 
 			//.	no post-defs for self-referenced games  
 			//	this is just a funny way to protect mistakenly infinite-loop references
 			//	this also applies for gkey = whirly
 			//	bug?: idef = gdg;
-			idef = clonem(gdg);
+			idef = clonem( gdg );
 
 
 		}else{
-			idef=gdp.derive_game(gdg.basekey);
-			if(!idef)return false;
 
+			idef=gdp.derive_game( gdg.basekey, overdefine );
 
-			//	//\\ runs post-defs if any. changes idef
+			//	//\\	runs post-defs if any,
+			//			runs it BEFORE gdg is applied
+			//			changes idef
 			//	runs it BEFORE seed-definition is applied
 			var ww = gdg.post_definition;
 			if(ww && gio.def.post_definitions[ww]){
@@ -83,15 +100,17 @@
 			//	\\// runs post-defs if any. changes idef
 
 
-			idef = clonem(idef,gdg);
+			idef = clonem( idef, gdg );
 		}
 
+		//. removes garbage leaked from definition
+		if( idef.post_definition ) delete idef.post_definition;
 
+		//. copathy leaks from ancestors if not explicitly killed in definition
 		var ww = idef.post_definition_copathy;
 		// c onsole.log( idef.nam + ' idef.post_definition_copathy='+idef.post_definition_copathy);
 		//. redefine property only if it is not already defined: TODM poor programming:
 		if( ww && (typeof ww === 'string') ) idef.post_definition_copathy = ww && gio.def.sugar[ww];
-		// c onsole.log( idef.nam + ' idef=', idef );
 
 		//. puts game's name into credits.title for consistency
 		idef.credits.title = idef.nam;
@@ -114,42 +133,46 @@
 
 
 
-	/// Dresses game with dresses and credits from game, parent_album, and own_definition.
-	gdp.dress_game = function ( akey ) {
+	///	Dresses game with dresses and credits from game,
+	//	parent_album, and own_definition.
+	gdp.dressi_gami_fy_album = function ( akey, overdefine ) {
 
-		//: vital: returns copy, to protect template intact
-		var dgame = gdef.dressed_games[ akey ];
-		if( dgame ) return clonem( dgame );
+		if( !overdefine ) {
+			//: vital: returns copy, to protect template intact
+			var dgame = gdef.dressed_gamed_albums[ akey ];
+			if( dgame ) return clonem( dgame );
+		}		
 
-		/// verifies if own definition exists
 		var album_def = gdef.albums[ akey ];
-		if( !album_def ) {
-			gio.cons_add( 'Missed definition for album key "' + akey + '".');
-			return false;
+		//.	First, tries to use co-named album to benefit from its dress
+		if( album_def ) {
+			var gkey = album_def.gkey || akey;
+		}else{
+			deb( 'No def for akey "' + akey + '". Using game.');
+			var gkey = akey;
 		}
 
-
-		/// derives the game
-		var gkey = album_def.gkey || akey;
-		dgame = gdp.derive_game( gkey );
-		if( !dgame ) return false;
+		//:	derives the game
+		dgame = gdp.derive_game( gkey, overdefine );
 
 
 		//	//.\\	collects 4 dresses from 
 		//			game, parent-album, album-definition, and default-dress
 		//: takes dressed parent album if any
-		var dgkey = album_def.ref.env.dgkey;
-		var w_dgame = null;
-		if( dgkey ) {
-			w_dgame = gdp.dress_game( dgkey );
-			if( !w_dgame ) return false;
+		var dress_akey = album_def && album_def.ref.env.dress_akey;
+		var env_dgame = null;
+		//. dress_akey !== akey protects from infinite loop,
+		//	BUT does not protect from deeper levels of looping. TODM
+		if( dress_akey && dress_akey !== akey ) {
+			env_dgame = gdp.dressi_gami_fy_album( dress_akey, overdefine );
+			if( !env_dgame ) return false;
 		}
 
 		/// inherites dresses from definitions
-		dgame.dresses = clonem( dgame.dresses, w_dgame && w_dgame.dresses, album_def.dresses );
+		dgame.dresses = clonem( dgame.dresses, env_dgame && env_dgame.dresses, album_def && album_def.dresses );
 
 		/// injects default dress
-		ceach(dgame.dresses, function(dkey, dress){
+		ceach( dgame.dresses, function( dkey, dress ) {
 			var ww = clonem(gio.def.default_dress, dress);
 			cpaste( dress, ww );
 		});
@@ -167,8 +190,8 @@
 
 			//TODM Q&D license "host-based" results in following definition:
 			if( dress.credits.license === "host-based" ) {
-				dress.credits.license = "All rights reserved. Free when used as part of " +
-					gio.config.links.service_host + " service. ";
+				dress.credits.license =	"All rights reserved. Free when used as part of " +
+										gio.config.links.service_host + " service. ";
 			}
 
 		});
@@ -192,9 +215,9 @@
 
 		//: finalizes
 		dgame.akey = akey;
-		gdef.dressed_games[ akey ] = dgame;
+		gdef.dressed_gamed_albums[ akey ] = dgame;
 
-		return clonem(dgame);
+		return clonem( dgame );
 	}; /// Dresses album ...
 
 
@@ -208,30 +231,33 @@
 
 
 	/// Spawns album from its definition and parents
-	gdp.derive_album = function ( akey, cseed_to_add, preserve_gui_state ) {
+	gdp.derive_album = function ( akey, cseed_to_add, preserve_gui_state, overdefine ) {
 
-		var album = gio.session.stemmed_albums[ akey ];
-		if( album ) {
+		var gs			= gio.getgs();
+		var overdefined	= false;
+		var album		= sess.stemmed_albums[ akey ];
+
+		if( album && !overdefine ) {
 
 			//. returns album if already derived
 			if( !cseed_to_add ) return album;
-			if( do_debug ) gio.cons_add( 'Begins adding cseed to akey = "' + akey + '" ... ' );
-			// c onsole.log( "State snap = ", gio.session.get_state_snap() );
+			dodeb( 'Merges cseed into akey = "' + akey + '" ... ' );
+			// c onsole.log( "State snap = ", sess.get_state_snap() );
 
 		}else{
 
 
-			if( do_debug ) gio.cons_add( 'Begins deriving akey "' + akey + '". First time ... ' );
+			dodeb( '(Over)Derives akey "' + akey + '" ... ' );
 
 			//. gets definition
-			var album_def = gdef.albums[ akey ];
-			if( !album_def ) return false;
+			var album_def = gdef.albums[ akey ] || {};
 
 			//. templifies album
 			album = clonem( gio.def.templates.play.album, album_def );
 
 			//: does dressing
-			var dgame = gdp.dress_game( akey );
+			var dgame = gdp.dressi_gami_fy_album( akey, overdefine );
+
 			if( !dgame ) return false;
 			album.dgame = dgame;
 
@@ -245,14 +271,30 @@
 
 				/// removes external collections
 				if( !gio.config.feeder.exists ) {
-					if( do_debug ) gio.cons_add( 'Removing external colls from album: ' + akey );
+					dodeb( 'Removes external colls from album: ' + akey );
 					var w_purged = [];
 					ceach( album.collections, function( i, coll ) {
-						if( coll.ref.link.ownhost ) w_purged.push( coll );
+						if( coll.ref.link.ownhost ) {
+							dodeb(	'Preserved ownhosted cix, coll.list_title = ' + i +
+									' ' + coll.list_title 
+							);
+						w_purged.push( coll );
+						}
 					});
 					album.collections = w_purged
 				}
 
+				overdefined = overdefine && !!sess.stemmed_albums[ akey ];
+
+				if( overdefined )
+				{
+					///	Hides board and kills GUI state because it maybe lost after state change.
+					//.	Possibly too weak: if( gs.board && akey === gs.akey ) {
+					if( akey === gs.akey ) {
+						ggp.do_display_curr_board ( false );
+						sess.state.akey__bf = '';
+					}
+				}
 
 
 				//: templifies collections,
@@ -266,11 +308,13 @@
 
 
 
-				//.	enables album for references from application
-				gio.session.stemmed_albums[ akey ] = album;
+				//:	enables album for references from application
+				sess.stemmed_albums[ akey ] = album;
+
 
 			}catch(error){
-				gio.cons_add(	"Error deriving akey " + akey + ".\n" +
+
+				conadd(	"Error deriving akey " + akey + ".\n" +
 								( typeof error === 'object' && error !== null ? error.message : '' + error )
 				);
 				gio.debtp( error );
@@ -283,12 +327,34 @@
 		/// adds additional collection
 		if( cseed_to_add ) {
 			var coll_to_add = clonem( cseed_to_add, gio.def.templates.play.coll );
-			album.collections.push( coll_to_add );
-			var cix = album.collections.length - 1;
+			var ww = cseed_to_add.script.metag.cix_to_insert1;
+			if( ww ) {
+				var cix = ww - 1;
+				if( akey === gs.akey && gs.cix === cix ) {
+					gio.gui.procs.do_display_curr_board ( false );
+					sess.state.akey__bf = '';
+				}
+				album.collections[ cix ] = coll_to_add;
+				dodeb( 'Coll replaced cix = ' + cix );
+			}else{
+				album.collections.push( coll_to_add );
+				var cix = album.collections.length - 1;
+				dodeb( 'Coll added to cix = ' + cix );
+			}
+
 			/// preserves state ... is vital if middle-play-custom-landing-collection is non-validated yet
-			if( !preserve_gui_state ) {
+			if( !preserve_gui_state || overdefined ) {
 				if( !album.collections.ix || album.collections.ix !== 0 ) album.collections.ix = 0;
-				if( coll_to_add.chosen || coll_to_add.ref.list.chosen ) album.collections.ix = cix; //TODM sugar. rid
+				if( coll_to_add.chosen || coll_to_add.ref.list.chosen )
+				{
+					//:: TODM sugar. rid
+					if( akey === gs.akey ) {
+						ggp.do_display_curr_board ( false );
+						sess.state.akey__bf = '';
+					}
+					dodeb( 'Album pointed to  stated-cix = ' + cix );
+					album.collections.ix = cix;
+				}
 			}
 			// do this: if( coll_to_add.ref.list.chosen ) album.collections.ix = cix;
 			if( !gdp.spawn_coll_up_down_links( album, cix ) ) return false;
@@ -296,17 +362,42 @@
 
 
 		/// enables album in GUI
-		if(		!gio.session.alist_by_key[ akey ]		&& 
-				album.collections.length > 0			&&
-				( !gio.config.query.asingle || album.ref.list.display_preordered ||
-				akey === gio.config.query.akey )
+		if(		( !sess.alist_by_key[ akey ] ||  overdefined )	&& 
+				album.collections.length > 0					&&
+
+				(	!gio.config.query.asingle || album.ref.list.listify_on_top ||
+					album.ref.list.penetrate_asingle
+				)
 		){
-				album.ix = gio.session.alist.length;
-				//. puts album to selection list in the game web-page header
-				gio.session.alist[ gio.session.alist.length ] = album;
-				gio.session.alist_by_key[ akey ] = album;
+
+
+				if( overdefined )
+				{
+					///	Hides board and kills GUI state because it maybe lost after state change.
+					var gs = gio.getgs();
+					//.	Possibly too weak: if( gs.board && akey === gs.akey ) {
+					if( akey === gs.akey ) {
+						ggp.do_display_curr_board ( false );
+						sess.state.akey__bf = '';
+					}
+
+					var target_album = sess.alist_by_key[ akey ];
+					var target_aix = target_album.ix;
+					sess.alist[ target_aix ] = album;					
+					sess.alist_by_key[ akey ] = album;
+					album.ix = target_aix;
+					dodeb( 'Album replaced in list: akey, axi = "' + akey + '", ' + target_aix + '.' );
+
+				}else{
+
+					album.ix = sess.alist.length;
+					sess.alist[ sess.alist.length ] = album;
+					sess.alist_by_key[ akey ] = album;
+					dodeb( 'Album added to list: akey, axi = "' + akey + '", ' + target_aix + '.' );
+
+				}
 		}
-		// c onsole.log( 'gio.session.alist=', gio.session.alist );
+		// c onsole.log( 'sess.alist=', sess.alist );
 
 
 		if( album.collections.length > 0 ) {
@@ -315,8 +406,11 @@
 			album.title = gio.gui.procs.calculate_game_titile_from_names( coll.dgame.nam, album.album_name );
 		}
 
-		if( do_debug ) tp$.deb( (cseed_to_add ? "Added cseed to" : "Derived") + " akey " + akey );
-		// c onsole.log( "At the ''derive'' subr. end. State snap = ", gio.session.get_state_snap() );
+		dodeb( ( cseed_to_add ? "Finished cseeding" : "Derived" ) + " akey " + akey );
+		// c onsole.log( "At the ''derive'' subr. end. State snap = ", sess.get_state_snap() );
+
+
+
 
 		return album;
 

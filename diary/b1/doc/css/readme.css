@@ -10,3 +10,5 @@
 		td			{ background-color:#333333; vertical-align:top; padding:0px 10px 10px 10px; text-align: right; font-size:10px;	}
 		th			{ background-color:#444444; padding:15px; text-align: center; font-size:10px; }
 		tr.whirly td  { background-color:#333366; }
+
+		.list		{ font-size:15px; }

@@ -1,0 +1,114 @@
+/{  not ready for core-bundle
+
+	"collection" :
+	{	
+		"credits" :
+		{
+			/,	title              	Beginner
+			/,	copyright          	Copyright (c) 2013 Konstantin Kirillov
+			/,	license            	Free for use, distribution, and modification as long as these credits retained.
+			/.	creation_date      	January 2, 2013
+		}
+	},
+
+
+	"albums" :
+	{ 
+		"antimasters" :
+		{	
+
+			"gkey" : "antimasters",
+
+			"collections" :
+			[
+				{ "credits" : { "title" : "Beginner" } }
+			],
+
+			"dresses"  :
+			{
+
+				"default" :
+				{
+					"rules" :
+					/"
+						Heros pull boxes of matching color and
+						push boxes of alien color.
+						Black matches any color ...
+						Boxes are sticky: moved box involves its neighbours ...
+					/"
+				},
+
+
+				/// dress farm_flocks
+				"farm_flocks" :
+				{ 
+
+					"skin_key"	: "farm_flocks",
+					"chosen"	: true,
+					"credits"	: { "title" : "Home Yard", "date" : "January 2, 2013" },
+					"tile"		: {	"width" : 90, "height" : 90 },
+					"style"	:
+					{			"play" :
+								{	"backgroundImage" : "background.png",
+									"backgroundColor" : ""
+								}
+					},			
+					"focuser"	: "",
+
+					"rules"		:
+					/"
+						Mother Duck pulls its children and Rooster pulls own ...
+						Children push away form non-own parents.
+					/",
+
+					"objective"	: "Bring baby ducks to pools and chicken to eggs",
+
+					"story"		: "This is a time for family union ... Breeds must gather together",
+
+					"hname_table" :
+					{
+						/, hero_x	Father-Decoy
+						/, hero_a	Rooster
+						/, hero_b	Mother Duck
+						/, hero_c	Farmer
+						/, box_a	Chicken
+						/, box_b	Duck
+						/, box_c	Boy
+						/. box_x	Real monkey
+					}
+				}
+				/// dress farm_flocks
+
+			}
+		}
+		/// album
+	}
+	/// albums
+/}
+
+
+
+:::map=demo
+- # # # # # -
+# # B - a # -
+# A 2 2 - # #
+# C 2 3 1 B # 
+# A b 1 1 c # 
+# # # A - B # 
+- - # # # # #
+:::board_end
+
+:::title=Demo
+
+:::count=109.34
+:::playpath=Human 
+|b.0.r|b.0.r|a.0.l|a.0.d|a.0.d|a.0.d|b.0.u|b.0.R|b.0.R|a.0.U|a.0.U|c.0.u|c.0.l|c.0.l|b.0.d
+|b.0.r|b.0.r|b.0.r|b.0.D|b.0.l|b.0.d|b.0.R|c.0.l|c.0.L|c.0.L|c.0.L|c.0.d|c.0.d|a.0.d|a.0.R
+|a.0.l|a.0.l|a.0.u|a.0.L|a.0.d|a.0.l|a.0.d|a.0.u|a.0.U|b.0.u|b.0.r|b.0.D|b.0.l|c.0.u|c.0.l
+|c.0.U|c.0.l|a.0.L|a.0.L|c.0.D|c.0.u|b.0.R|b.0.R|c.0.r|c.0.R|c.0.l|c.0.l|c.0.d|b.0.d|b.0.r
+|b.0.r|b.0.u|b.0.U|a.0.r|a.0.u|b.0.d|b.0.r|b.0.r|a.0.L|a.0.d|a.0.u|b.0.l|b.0.l|a.0.d|a.0.D
+|a.0.r|a.0.d|a.0.d|a.0.l|b.0.R|b.0.u|b.0.r|a.0.u|a.0.R|b.0.l|b.0.D|b.0.r|b.0.d|a.0.r|a.0.u
+|b.0.u|b.0.l|b.0.l|a.0.d|a.0.D|b.0.R|b.0.l|b.0.d|a.0.d|a.0.R|b.0.R|a.0.r|a.0.R|b.0.U|b.0.d
+|a.0.r|a.0.R|a.0.d|c.0.R
+
+

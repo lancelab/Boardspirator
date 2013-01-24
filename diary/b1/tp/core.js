@@ -17,6 +17,8 @@
 
 	//File description: tp$.core	subplugin for generic methods
 
+	//. Shortcuts debug function.
+	var deb = window.tp$ && window.tp$.deb;
 
 	//attach plugin to jQuery:
 	$.fn.tp$ = (function(choice,arg){
@@ -95,32 +97,63 @@
 		};
 
 
-		self.load_object_synchronously = function(url, timeout){
-			var obj = { result : null };
-			var ajax_call={
-				url: url,
-				async:false,
-				cache: false,
-				dataType:'json',
-				timeout: timeout || 1000,
-				success:function(data,textStatus){
-					if(textStatus==='success'){
-						obj.result = data;
-						if($.fn.tp$.deb) $.fn.tp$.deb(data);
+
+
+		///	Downloads:	object via ajax.
+		//				Possibly redundant.
+		// Input:		all except url is optional.
+		//				do_paste 		-	forces delivered data content to be pasted into
+		//				obj[property]. 	-	If !do_paste, obj[property] = data.
+		//				async			-	default if sync.
+		self.download_object = function( url, obj, property, do_paste, async, timeout ) {
+
+			var obj_supplied		= !!obj;
+			obj						= obj || {};
+			property				= property || 'result';
+			obj[ property ]			= obj[ property ] || null;
+
+			var ajax_call = {
+				url			: url,
+				async		: !!async,
+				cache		: false,
+				dataType	: 'json',
+				timeout		: timeout || 1000,
+				success		: function( data, textStatus ) {
+
+					if( textStatus === 'success' ) {
+						if( do_paste ) {
+							obj[ property ] = self.clone_many( obj[ property ], data );
+						}else{
+							obj[ property ] = data;
+						}
+						// if( deb ) { deb( property); deb(data); }
 					}
 				}
 			};
-			$.ajax(ajax_call).fail( function(explanation){
-					var w='Ajax failed to load object.';
-					if($.fn.tp$.deb) $.fn.tp$.deb(explanation);
+
+
+			//	//\\	Missed doc for this. 
+			//					$.ajax( ajax_call ).fail( function( explanation ) { ...
+			//			Guessing this: error(jqXHR, textStatus, errorThrown)
+			//			From this: http://api.jquery.com/jQuery.ajax/
+			//	\\//
+			$.ajax( ajax_call ).fail( function( explanation ) {
+				var ww ='Ajax failed to load object.';
+				if( deb ) {
+					deb( ww + ' url=' + url + "\n");
+					deb( "Possible error status = " + arguments[1]);
+					deb( "Possible error expanation = " + arguments[2]);
+					// c onsole.log('arguments[0]=', arguments[0], "\n\n\narguments[1]=", arguments[1], "\n\n\narguments[1]=", arguments[2]);
+				}
 			});
-			return obj.result;
+
+			return obj[ property ];
 		};
-
-
+		///	Downloads:	object via ajax.
 
 
 		return self; //tp return
+
 	})(); //tp end
 	
 	

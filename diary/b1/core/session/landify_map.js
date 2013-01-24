@@ -1,5 +1,9 @@
-(function(){	 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
+( function () {	 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio  =  tp.gio    =  tp.gio   || {};
+
+					var deb  =  function ( string ) { if( gio.debug )	gio.cons_add( "Validate Map: " + string ); };			
+
+
 
 
 
@@ -47,6 +51,7 @@
 		//	if not, sets to false.
 		var map_boundary =	map.parsed.wall_boundary_encountered && 
 							map.script.decoder_table[ game.rule_helpers.map_boundary ];
+		deb( 'Map boundarness = ' + map_boundary ); //TODM  slow if scrolling maps
 		var left_wall = [];
 		var right_wall = [];
 		for(var yy=0; yy<map.size[1]; yy++){
@@ -54,10 +59,14 @@
 			var right = map.size[0];
 
 			if( map_boundary ) {
-				for(var xx=0; xx<map.size[0]; xx++){
-					var top = tops[xx][yy];
-					var tower = loc2lid[xx][yy];
-					for(var zz=1; zz<=top; zz++){
+				for(var xx = 0; xx < map.size[0]; xx++ ) {
+					var tower = loc2lid[ xx ][ yy ];
+					//. as of today, there is no auto completion of unfilled cells in map
+					if( !tower ) continue;
+					var top = tops[ xx ][ yy ];
+
+					for( var zz=1; zz <= top; zz++){
+
 						var unit = units[lid2uid[tower[zz]]];
 						if( unit.cname === map_boundary ){
 							if(left < 0) left = xx;
@@ -96,6 +105,7 @@
 
 			var lx = loc2lid[xx] = loc2lid[xx] || [];
 			for(var yy=0; yy<map.size[1]; yy++){
+				//.	..recall lx[yy] is an array, never 0.
 				if(!lx[yy]){
 					// Forbidden position:
 					ex[yy]=false;
@@ -228,7 +238,9 @@
 		if(gm.playpaths){
 			// Preserve initial pos for supplied paths:
 			tp.core.each(gm.playpaths,function(ii,pp){
-				pp.pos = tp.core.tclone( gm.pos ); //TODm why clone?
+				//. By cloning we enable future changes of initial pos
+				//	when solver injects a solution starting from arbitrary position.
+				pp.pos = tp.core.tclone( gm.pos );
 			});
 		}
 		gm.load = 'finalized';

@@ -1,5 +1,5 @@
-/:
-{ "credits" :
+/{
+	"credits" :
 	{
 		/,	title       	Beginner
 		/,	copyright   	Copyright (c) 2012 Konstantin Kirillov
@@ -7,8 +7,8 @@
 		/.	date        	December 15, 2012
 
 	}
-}
-/\\
+
+/}
 
 
 

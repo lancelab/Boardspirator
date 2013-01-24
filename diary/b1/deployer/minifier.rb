@@ -8,7 +8,7 @@
 # This module takes development index...htm file, scans its <script> tags, 
 # accomulates all the scripts in one file and rewrites index...htm file
 #
-# usage: $ruby run.rb
+# usage: $ruby minifier.rb
 #
 # =========================================================================
 
@@ -26,22 +26,35 @@
 	# http://stackoverflow.com/questions/4360810/ruby-operator-method-calls-vs-normal-method-calls
 	# http://stackoverflow.com/questions/2258673/operators-and-methods-in-ruby
 
-	tfolder = ARGV[0] ? ARGV[0] : 'alpha'
 
+
+	#:	version 1:
+	#	tfolder = ARGV[0] ? ARGV[0] : 'alpha'
+	#	scaffold = File.expand_path('../../' + tfolder, __FILE__) + '/'
+	#	final_index_path = scaffold + 'index.htm'
+	#	prod_script_path_from_page = 'prod/app.js'
+	#	final_engine_path = scaffold + prod_script_path_from_page
+
+
+	#: version 2:
+	tfolder = 'prod'
 	scaffold = File.expand_path('../../' + tfolder, __FILE__) + '/'
-
-	production_file_name = scaffold + 'index.htm'
-	prod_script_path_from_page = 'prod/app.js'
-	production_script_name = scaffold + prod_script_path_from_page
+	final_index_path = File.expand_path('../../', __FILE__) + '/index_prod.htm'
+	prod_script_path_from_page = tfolder + '/app.js'
+	final_engine_path = scaffold + 'app.js'
 
 	# input of deployer
 	web_page = ''
 
-	# ** outputs of deployer
+
+	#:	outputs of deployer
+	#.	contents of "index_product.htm"
 	product			= ''
+	#.	contents of "app.js"
 	product_scripts = ''
 
-	# ** search keys
+
+	#:	search keys
 	keys		= 	[	/<script[^<]+\ssrc="([^"]+)"[^<]*<\/script>/,
 						/<\/head>/
 					]
@@ -103,8 +116,8 @@
 		
 		end
 
-	    File.open( production_file_name, 'w' ){ |f| f.write(product) }
-	    File.open( production_script_name, 'w' ){ |f| f.write(product_scripts) }
+	    File.open( final_index_path, 'w' ){ |f| f.write( product ) }
+	    File.open( final_engine_path, 'w' ){ |f| f.write( product_scripts ) }
 
 
 

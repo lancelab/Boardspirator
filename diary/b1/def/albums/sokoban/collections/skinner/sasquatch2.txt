@@ -1,5 +1,5 @@
-/:
-{	"credits" :
+/{
+	"credits" :
 	{
 		/, title			Sasquatch II (August, 1999)
 		/, copyright		Copyright (c) 1999 David W Skinner
@@ -9,8 +9,8 @@
 		/, copied_from		http://users.bentonrea.com/~sasquatch/sokoban/s2
 		/. copied_on		November 14, 2012
 	}
-}
-/\\
+
+/}
 
 
 

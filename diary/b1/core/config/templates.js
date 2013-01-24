@@ -19,7 +19,7 @@
 			coll :
 			{
 				script :
-				{	presc :
+				{	metag :
 					{ 			//album or coll to mark an intent
 								env		:
 								{			//akey_master : query.akey,
@@ -87,7 +87,7 @@
 					},
 					list :
 					{
-						//display_preordered
+						//listify_on_top
 						//lkey	for derived_albums
 						//ix	for gui-list
 					}

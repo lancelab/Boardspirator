@@ -96,7 +96,7 @@
 	gio.def.albums['co_pullpush'] = {
 
 		gkey	: 'co_pullpush',
-		"env" : { "dgkey" : "pullpush" },
+		"env" : { "dress_akey" : "pullpush" },
 
 		dresses  :
 		{ 

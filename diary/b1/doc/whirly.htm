@@ -1,54 +1,41 @@
- <!DOCTYPE html>
- <html><head>
-  <!-- doctype for html 4 is only to satisfy IE -->
+<!DOCTYPE html>
+<html>
+	<head>
   
-  <meta name="copyright" content="2011-2012 (c) Konstantin Kirillov">
-  <meta name="description" content="Board Puzzle Framework, Whirly"> 
-  <meta name="keywords" content="whirly, board game, puzzle game, on line game, game development, educational game, sokoban"> 
+		<meta name="copyright" content="2011-2012 (c) Konstantin Kirillov">
+		<meta name="description" content="Board Puzzle Framework, Whirly"> 
+		<meta name="keywords" content="whirly, board game, puzzle game, on line game, game development, educational game, sokoban"> 
 
-  <title>Whirly. Draft.</title>
+		<title>Whirly. Draft.</title>
 
-	<link rel="stylesheet" href="css/whirly.css">
+		<link rel="stylesheet" href="css/whirly.css">
 
-	<script type="text/javascript" src="../tp/lib/jquery-1.7.js"></script>
-	<script type="text/javascript" src="../tp/bind_events.js"></script>
-	<script type="text/javascript" src="../tp/core.js"></script>
-	<script type="text/javascript" src="../tp/core_no_jquery.js"></script>
-	<script type="text/javascript" src="../tp/core2_no_jquery.js"></script>
-	<script type="text/javascript" >$.fn.tp$.core.reset_path_from_land_to_app_root('..');</script>
-	<script type="text/javascript" src="../tp/gui.js"></script>
-	<script type="text/javascript" src="../tp/gui_no_jq.js"></script>
-	<script type="text/javascript" src="../tp/form.js"></script>
-
-	<!-- :: must be before boardspirator scripts: -->
-	<script type="text/javascript" src="../core/config/core.js"></script>
-	<script type="text/javascript" src="../core/config/gui.js"></script>
-	<script type="text/javascript" src="../core/config/templates.js"></script>
-	<script type="text/javascript" src="../core/config/description.js"></script>
-	<script type="text/javascript" src="../core/config/spawner.js"></script>
-
-
-	<script type="text/javascript" src="../core/entry.js"></script>
-	<script type="text/javascript" src="js/macrify.js"></script>
+		<script type="text/javascript" >window.tp$ = window.tp$ || {}; window.tp$.reset_path_from_land_to_app_root = '..' ;</script>
+		<script type="text/javascript" src="../prod/app.js""></script>
+		<script type="text/javascript" src="js/macrify.js"></script>
 
 
 
 
-</head><body><div style="color:#666666; white-space:pre; font-family:monospace;  visibility:hidden;">
+	</head>
+		<body>
+			<div style="color:#666666; white-space:pre; font-family:monospace; ">
 
-This page won't display if no JavaScript language enabled in your browser.
-To display a this page, turn JavaScript on.
+				This page won't display if no JavaScript language enabled in your browser.
+				To display this page, turn JavaScript on.
 
-</div>
+			</div>
 
-<div style="white-space:pre; font-family:monospace; visibility:hidden;">
-<span style="visibility:hidden;">This token, #@title@#   , is a necessary flag to unhide this page.</span>
-<pre>
-<h1>Draft</h1>
-<h1><a href="../">Whirly ..</a></h1>
-		.. is a generalization of Sokoban game,
-		.. is a root for derivation any #@WebSiteWithTitle@# game,
-		.. such a game is defined by rules, map, and objective:
+			<div style="white-space:pre; font-family:monospace; visibility:hidden;">
+				<span style="visibility:hidden;">This token, #@title@#   , is a necessary flag to unhide this page.</span>
+				<pre>
+
+	<h1>Draft</h1>
+
+	<h1><a href="../">Whirly ..</a></h1>
+				.. is a generalization of Sokoban game,
+				.. is a root for derivation any #@WebSiteWithTitle@# game,
+				.. where game is defined by rules, map, and objective:
 
 
 	<b>Map</b> ..
@@ -97,9 +84,9 @@ To display a this page, turn JavaScript on.
 		There is only one race of active units, hero.
 
 
-<a name="interactions"></a>
 
-	<b>Rules</b> ..
+	<a id="interactions"> </a>
+	<b>Rules .. </b>
 
 		.. is an interaction matrix - matrix of available interactions between breeds:
 		
@@ -113,21 +100,22 @@ To display a this page, turn JavaScript on.
 		Rules have attributes: deepness and flockness.
 
 
-		<b>Deepness</b> ..
+	<b>Deepness</b> ..
 
 			.. is a parameter of interaction, DEEPNESS_LIMIT. 
 			It defines how far the inital hero's action can propagate through its neighbours.
 			For examle, pushed box, can push second box if second box is on its way. If second box cannot push any other box, this means
 			that deepness is 2. If 3 boxes can be pushed at once, deepness is 3. #@Sokoban@# is a game with deepness 1.
 
-		<b>Flockness</b> ..
+	<b>Flockness</b> ..
 
-			.. is a parameter of interaction, herd_sense, which natural number n &gt; = 0 ( 0 stands for no-herd-effect ).
+			.. is a parameter of interaction, herd_sense, which is a natural number n &gt; = 0
+			( 0 stands for no-herd-effect ).
 			Flocked interaction involves neighbours. This means if neighbour touched moved unit before move began,
 			then this neighbour will do the same move if no obstacles prevent this.
 
 
-
+	<a id="deriving"> </a>
 	<b>Objective</b> ..
 
 		.. of the game is to "fill" goals with color-matching-batons:
@@ -135,18 +123,51 @@ To display a this page, turn JavaScript on.
 		Otherwise: deliver all batons to color-matching targets.
 
 
+	<a id="deriving_fails"> </a>
+	<h2>Deriving from  Whirly</h2>
+
+	E x a m p l e s
+
+		<a href="../def/albums/standalone/collections/default/simplest.txt">Simplest cfile</a>  - "Experimental Game" and <a href="../?asingle&curl=//def/albums/standalone/collections/default/simplest.txt">its play</a>.
+
+			Of course, perhaps this game is boring. It omits some properties which you may like to assign
+			to your own games. The original Sokoban credits are "leaked" through, because we did not assign
+			our own. There is even no dress assigned from available core dresses, and description of
+			new rules is not reworded.
+			But this game is a "fist-class citizen" with other #@title@# games:
+			it can be replayed, has solver, other maps can be landed on in context of this game.
+
+			These short cfiles are good when one wants to quickly test a new set of rules.
+
+		<a href="../def/albums/standalone/collections/default/sokoleap_demo.txt">Simple cfile</a> and <a href="../?asingle&curl=//def/albums/standalone/collections/default/sokoleap_demo.txt">its play</a>.
+
+			This is the same "game" as above.
+			This cfile has games, albums, and collection sections.
+			In "albums" section, there is a description for new rules and objective. 
+			Credits added to collection and collection is pointed to defined album.
+
+		<a href="../def/albums/standalone/collections/default/leappush_demo.txt">Simple cfile with game and subgame</a> and <a href="../?asingle&curl=//def/albums/standalone/collections/default/leappush_demo.txt">its play</a>.
+
+			There are two games in cfile. The first game is still the same as above.
+			The second game is derived from the first with added twist:
+				the frog leaps and pushes another frog if latter is on its way.
+			The second game is dressed by using one of core dresses.
+			There are also variations of dress for specific maps.			
+
+		<a href="../def/albums/standalone/collections/default/power_jumppush_demo.txt">Power JumpPush</a> and <a href="../?asingle&curl=//def/albums/standalone/collections/default/power_jumppush_demo.txt">its play</a>.
+
+			In this game, heros have a little more power, they can interact at most with two boxes.
+			The "green" hero is special in this game, it can jump over blue boxes.
+			This all is clearly set in cfile text.
+			But, consequences are dramatic, this game is completely different than Colorban.
+
+		<a href="whirly_and_sokoban.htm#more_games">GhostJump</a>.  Cfile contains album which refers to collection.
+
+			Has more elaborated dress. "Jump" rule creates effect of going through units.
+
+		<a href="whirly_and_sokoban.htm#sandbox">Sandbox.</a>
 
 
-
-<a name="deriving"></a>
-
-D e r i v i n g    f r o m    W h i r l y
-
-	Example: <a href="../def/albums/standalone/collections/default/sokoleap_demo.txt">simplest cfile</a> and <a href="../?asingle&curl=//def/albums/standalone/collections/default/sokoleap_demo.txt">its play</a>.
-	Example: <a href="../def/albums/standalone/collections/default/leappush_demo.txt">simple cfile with game and subgame</a> and <a href="../?asingle&curl=//def/albums/standalone/collections/default/leappush_demo.txt">its play</a>.
-	Example: <a href="../def/albums/ghostjump/collections/default/ghostjump_demo.txt">simple cfile</a> and <a href="../?asingle&curl=//def/albums/ghostjump/collections/default/ghostjump_demo.txt">its play</a>.
-	Example: <a href="../def/albums/standalone/collections/default/jumppush_demo.txt">simple cfile jumppush_demo</a> and <a href="../?asingle&curl=//def/albums/standalone/collections/default/jumppush_demo.txt">its play</a>.
-	Example: <a href="../def/albums/bumpytargets/collections/default/maps.txt">cfile</a> and its play: #@Bumpy Targets@#.
 
 	Example, core games: <a href="../def/games.json.txt">definition seeds</a> bundled with #@title@#.
 
@@ -177,9 +198,8 @@ D e r i v i n g    f r o m    W h i r l y
 
 
 
-<a name="restrictions"></a>
-
-	Restrictions for Custom-Derived Games
+	<a id="restrictions"> </a>
+	R e s t r i c t i o n s    f o r    C u s t o m - D e r i v e d   G a m e s</a>
 
 		1. Parent and child games must have:
 
@@ -218,9 +238,12 @@ D e r i v i n g    f r o m    W h i r l y
 
 
 
-<a name="dualgames"></a>
 
-D u a l   G a m e s
+
+	<a id="dualgames"> </a>
+	<h2>Features</h2>
+
+	D u a l   G a m e s
 
 	Two games G, H called co-games if they have equal set of legal positions and
 			
@@ -240,7 +263,7 @@ D u a l   G a m e s
 
 
 
-M i x i n g    m a p s
+	M i x i n g    m a p s
 
 	Whirly can convert maps of one game to play them in other game for two cases:
 		#@Sokoban@# --&gt; #@PullPush@#: <a href="../?akey=pullpush&collection_ix=1">Modified map</a> and
@@ -254,11 +277,8 @@ M i x i n g    m a p s
 
 
 
-					
-
-<a name="extending"></a>
-
-E x t e n d i n g    W h i r l y ..
+	<a id="extending"> </a>
+	<h2>Extending Whirly</h2>
 
 	.. means adding new type of interactions to interaction matrix.
 	This requires reprogramming of scode.
@@ -267,11 +287,12 @@ E x t e n d i n g    W h i r l y ..
 	
 
 
+	Circular Links:
 
+	<a  href="guest_readme.htm">Guest Readme</a>
+	<a  href="whirly_and_sokoban.htm">Whirly and Sokoban Variants</a>
+	<a  href="project_files.htm">Project Files</a>
 
-<a name="variants"></a>
-
-<a href="whirly_and_sokoban.htm">W h i r l y     a n d     S o k o b a n     V a r i a n t s</a>
 
 
 #@WebSiteWithTitle@#:
@@ -283,6 +304,14 @@ EMail:		#@email@#
 
 
 
-</pre></div></body></html>
+</pre></div>
+
+	<script	type="text/javascript">
+		jQuery.fn.tp$.gio.config.google_apps.insert_ad_div_with_script();
+	</script>
+
+
+
+</body></html>
 
 

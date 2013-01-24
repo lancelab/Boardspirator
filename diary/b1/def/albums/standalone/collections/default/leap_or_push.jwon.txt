@@ -1,0 +1,259 @@
+/{
+
+	"credits" :
+	{
+		/,	title                 	Beginner
+		/,	author                	Dr. Leap
+		/,	version               	1.1
+		/,	copyright             	Copyright (c) 2012 Dr. Leap
+		/,	license               	This collection is free for distribution, modification, and use provided these credits are not removed.
+		/.	creation_date         	December 7, 2012
+
+	},
+
+	"collection":
+	{
+
+		"akey" : "leap_or_push",
+		"credits" :
+		{
+			"title"		: "Beginner"
+		}
+	},
+
+
+	"games" :
+	{
+
+		"leap_or_push" :
+		{
+			"nam"						: "Leap or Push",
+			"basekey"					: "colorban",
+			"post_definition"			: "leappush",
+			"post_definition_copathy"	: "copathy"
+		},
+
+
+		"co_leap_or_push" :
+		{
+			"nam"						: "Co-Leap or Push",
+			"basekey"					: "leap_or_push",
+			"post_definition"			: "pullpush_inversifier",
+			"post_definition_copathy"	: "copathy"
+		}
+
+	},
+
+
+	"albums" :
+	{
+		"leap_or_push" :
+		{
+			"album_name" : "",
+
+			"dresses" :
+			{
+
+				"default" :
+				{
+					"tile"			: { "width": 30, "height": 30 },
+					"rules"			: 
+									/"
+										Heros push own-color boxes and are leaped by other boxes.
+									/",
+					"objective"		: "Put blue boxes to their targets."
+				},
+
+
+				"leappush" :
+				{
+
+					"chosen"	: true,
+					"skin_key"	: "leappush",
+
+					"credits" :
+					{
+								"title"		: "Swamp",
+								"author"	: "Dr. Leap",
+								"license"	: "host-based",
+								"web_site"	: "http://landkey.net/gio/gio/play",
+								"date"		: "November 2 2012"
+					},
+
+					"tile"		: { "width": 60, "height": 60 },
+					"style"		:
+					{
+						"play" :
+						{
+							"backgroundImage" : "background.png",
+							"backgroundColor" : ""
+						}
+					},
+
+					"rules"			: "Hero pushes non-alive things. Hero is leaped by live creatures.",
+					"objective"		: "Put each movable thing or creature where it belongs.",
+					"story"			: "The Stork is desperate to restore order at own swamp ...\nBut not everyone recognizes him as a master ...",
+					"hname_table" :
+					{
+						"hero_b": "Master",
+						"box_b": "Food Stock",
+						"box_c": "Pet",
+						"wall_x": "Perimeter"
+					}
+				}
+				// dress
+			}
+			// Dresses
+		},
+		// Album
+	
+		"co_leap_or_push" :
+		{
+			"album_name" : "",
+			"env" : { "dress_akey" : "leap_or_push" },
+			"dresses" :
+			{
+				"default" :
+				{
+					"rules": "The hero pulls boxes of matching color and is leaped by boxes of other colors."
+				},
+				"leappush" :
+				{
+					"rules": "Hero pulls non-alive things. Hero is leaped by live creatures."
+				}
+			}
+		}
+
+	 }
+	 // End of albums
+
+/}
+
+
+
+
+
+
+:::map=test
+# # # # # #
+# - 3C C C #
+# - 2b B B #
+# - 3 3 2 #  
+# - - - - #
+# # # # # #
+:::board_end
+:::title=Warm Up
+
+:::playpath=Solution
+uurrrrDLulllldddrruuuur
+
+:::co_path
+lddddlluuurrrrdLDlllldd
+
+
+
+
+
+
+:::map
+# # # # # #
+# - 3C C C #
+# - 2b B B #
+# - 3X 3 2 #  
+# - - - 0 #
+# # # # # #
+:::board_end
+:::title=Gold counts
+
+
+:::playpath
+DuuurrrrDLulllldddRRuuuur
+
+:::co_path
+lddddRRuuurrrrdLDlllldddD
+
+
+
+
+:::map
+# # # # # #
+# - 3C C C #
+# - 2b B B #
+# - 3X 3 2 #  
+# 0 X - 0 #
+# # # # # #
+:::board_end
+:::title=Boxes on the way
+
+:::playpath
+lddRRuLuuurdlDuurddluuurrrDL
+
+:::co_path
+LDllldddruulddDruldddLdRRuur
+
+
+================= co-maps are below
+
+
+:::map=test
+:::context_akey=co_leap_or_push
+# # # # # #
+# - 3C 3b 3 #
+# - B 2 2 #
+# - C C B #  
+# - - - - #
+# # # # # #
+:::board_end
+:::title=Warm Up
+
+:::playpath=Solution
+lddddlluuurrrrdLDlllldd
+
+:::co_playpath
+uurrrrDLulllldddrruuuur
+
+
+
+
+
+
+:::map
+:::context_akey=co_leap_or_push
+# # # # # #
+# - 3C 3b 3 #
+# - B 2 2 #
+# - 0C C B #  
+# - - - X #
+# # # # # #
+:::board_end
+:::title=Gold counts
+
+
+:::playpath
+lddddRRuuurrrrdLDlllldddD
+
+:::co_playpath
+DuuurrrrDLulllldddRRuuuur
+
+
+
+
+:::map
+:::context_akey=co_leap_or_push
+# # # # # #
+# - 3C 3 3 #
+# - B 2b 2 #
+# - 0C C B #  
+# X 0 - X #
+# # # # # #
+:::board_end
+:::title=Boxes on the way
+
+:::playpath
+LDllldddruulddDruldddLdRRuur
+
+:::co_playpath
+lddRRuLuuurdlDuurddluuurrrDL
+
+
+

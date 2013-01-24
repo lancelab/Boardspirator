@@ -1,167 +1,48 @@
 
-(function(){		var tp		= jQuery.fn.tp$ = jQuery.fn.tp$ || {};	
+( function () {		var tp		= jQuery.fn.tp$ = jQuery.fn.tp$ || {};	
 					var gio		= tp.gio   = tp.gio   || {};
 					var core	= tp.core;
-
 					var ggi		= gio.gui.init;
+					var halted	= gio.description.title + ' is halted.';
+
 					var gdef	= gio.def;
 					var gdp		= gdef.procs;
 					var smode	= gio.modes.sta_tic;
 					var feeder	= gio.config.feeder;
 					var session	= gio.session;
+					var conadd	= function ( string ) { gio.cons_add( "Entry: " + string ); };			
+					var deb		= function ( string ) { gio.debly( "Entry: " + string ); };			
+	
+
 
 
 					//	//\\// Master Entry into application ////////////////////////
 
 
 
-	/// Enters:		master entry of the application.
-	//				This method is usually overridden in different *.htm landing pages:
-	//					whirly.htm, 
-	//					~appliction_readme.htm
-	//				All these pages use
-	//					gio.session.init.wrap,
-	//					see below.	
-	//	Behaviour:	halts application and returns if startup problems
+
+
+	/// Finalizes:	application ... visualizes play-GUI ... lands on map ...
 	//
 	session.init.entry = function () {
 
-		if( session.state.halted ) return;
-		var halted = gio.description.title +' is halted.';
+		if( leave_if_user_declined_browser() )		return "User declined browser";
+		deb( "Going to finalize app." );		
 
-		//. gets query from URL
-		var query 		= gio.config.query;
-		gio.debtp( query );
-
-
-		//. does initial gui tasks
-		if( !ggi.entry() ){ alert(halted); return; }
-
-		//. informs		
-		if( !feeder.exists ) gio.cons_add( "No feeder exists at URL = " + feeder.url );
-
-		//. finalizes base definitions
-		gdp.spawn_base_game_and_dress();
-
-
-
-		// //\\ LOADS GAME DEFINITIONS
-		if( smode.db ){	
-			/// loads all available game defs from database at once
-			gio.data_io.core.load.object(
-					smode.db + '/games',
-					gdef, 'games',
-					'do paste'
-			);
-		}else{
-			gio.data_io.core.load.object( 
-					gio.config.defpaths.GAMES_DEF_PATH + '/games.json.txt',
-					gdef,
-					'games',
-					'do paste'
-			);
-		}
-		// \\// LOADS GAME DEFINITIONS
-
-
-
-
-		// //\\ LOADS ALBUM DEFINITIONS
-		if( smode.db ) {	
-				///	loads all available album_defs from database at once and 
-				//	overrides loaded by <script> from index-page header
-				gio.data_io.core.load.object(	
-						smode.db + '/albums', //?json=yes',
-						gdef, 'albums'
-				);
-		}
-		gdp.normalize_album_defs( gdef.albums );
-		var pakey = gdp.get_preferred_album_def().key;
-		if( !pakey ) {
-			var ww = "No album definitions are loaded\n";
-			gio.cons_add( ww );
-			alert( ww + halted );
-			return;
-		}
-
-		if( query.aurl ) {
-			var presc =
-			{ 	"album" : true,
-				env	:
-				{	akey_master : query.akey,
-					akey_advice : pakey,
-					query		: query
-				},
-				link :
-				{	link : query.aurl
-				},
-				list :
-				{		chosen : true,
-						title : "External"
-				}
-			};
-			var downed_alb = gdp.download_scriptio ( presc );
-			if( !downed_alb ) {
-				gio.cons_add( 'Failed download cscript from ' + query.aurl );
-				alert( halted );
-				return;
-			}
-		}
-		// \\// LOADS ALBUM DEFINITIONS
-
-
-
-
-		/// Attaches external collection if any
-		var downed_coll = false;
-		if( query.curl ) {
-			var presc =
-			{ 	"coll" : true,
-				env	:
-				{	akey_master : query.akey,
-					akey_advice : pakey,
-					passive		: query.cpassive,
-					query		: query
-				},
-				link :
-				{	link : query.curl
-				},
-				list :
-				{		chosen : true  //TODM appar. overkill, aways chosen
-				}
-			};
-			var downed_coll = gdp.download_scriptio ( presc );
-			if( !downed_coll ) {
-				gio.cons_add( 'Failed download coll from query.url = ' + query.curl );
-				alert( halted );
-				return;
-			}
-		}
-
-
-		//: finally, instantiates remains of albums
-		core.each( gdef.albums, function( albkey, adummy ) {
-			gdp.derive_album( albkey );
-		});
-		if( session.alist.length === 0 ) {
-			gio.cons_add( 'GUI album list is empty.' );
-			alert( halted );
-			return;
-		}
-
+		//. Visualizes playzone GUI areas
+		gio.domwrap.regions.droot.style.display		= 'block';
 		ggi.create_controls_and_game_list();
 
 
-		//. releases messages stashed in debug before <body> created
-		gio.debtp( 'Albums instantiated. gio.gui.init.create_controls_and_game_list is done.' );
-
-
-
-		// //\\ prepares landing to requested map
-		var pakey			= gdp.get_preferred_album_def().key;
+		// //\\ Prepares landing and lands to requested map.
+		//. Gets query from URL.
+		var query 			= gio.config.query;
+		var pakey			= gdp.get_preferred_album_def( 'from listed albums' ).key;
 		var akey			= query.akey || pakey;
 		var collection_ix	= query.collection_ix || 0;
 		var map_ix			= query.map_ix || 0;
+		//.	Recalls previously downloaded collection if any.
+		var downed_coll		= session.init.downed_coll;
 
 		if( downed_coll ) {
 			if( downed_coll.ref.list.akey && downed_coll.maps_loaded === 'success' ) {
@@ -169,35 +50,120 @@
 				var collection_ix	= downed_coll.ref.list.ix;
 			}
 		}
+		var ww_land = 	" akey, cix, mix = \""	+
+						akey					+ "\", \"" + 
+						collection_ix			+ "\"" + "\", \"" +
+						map_ix					+ "\". ";
+		deb( "Going to land to " + ww_land );
 		if( !gio.navig.validate_coll_map( akey, collection_ix, map_ix, 'do_land' ) ) {
-				gio.cons_add( "Failed to land on album, coll " + akey + ", " + collection_ix );
+				conadd(	"Failed to land on " + ww_land + "\nAttempting pakey." );
 				if( !gio.navig.validate_coll_map( pakey, 0, 0, 'do_land' ) )
 				{
 					if( !gio.gui.procs.scroll_till_valid_album( 0, 'do_land' ) ) {
-						alert(halted);
-						return;
+						return( "No valid albums." );
 					}
 				}
 		}
-		// \\// prepares landing to requested map
+		// \\// Prepares landing and lands to requested map.
 
 
 
-		//: gets ears to listen to user
+		//: Gets ears to listen to user.
 		ggi.control_events();
 		ggi.step_events();
 		session.state.start_time = (new Date()).getTime(); 
 		gio.modes.app_loaded = true;
 
 		// Doc: Good way to see app tree:
-		// c onsole.log('application object tree',gio);
+		// c cc('application object tree',gio);
+
+		return '';
 
 	};// session.init.entry
 
-	session.init.wrap =	function(){	session.init.entry(); };
 
 
-})();
 
-jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
+
+	/// Warns and gets user's agreement to run app on specific browser.
+	var leave_if_user_declined_browser = function() {
+
+		var getout=false;
+		var question = "Would you still like to continue on your own risk?";
+		var immature_project = gio.description.title + " project and its games\nare incomplete draft and immature.\n\n";
+		var message = question;
+
+		//.. testing string = core.browser.IE = [ "8", "8" ];
+		if( core.browser.IE ) {
+
+			var version_barrier = 8;
+
+			var IEVersion = parseInt( core.browser.IE[1] );
+
+			if( IEVersion <= version_barrier ) {
+				var message =
+								"Your Internet Explorer version " + IEVersion +
+								" is too low.\n\n" + 
+								gio.description.title + " is designed for " +
+								"Fire Fox, Chrome, or Mobile browsers or\npossibly " +
+								"Internet Explorer version " + version_barrier + " or higher.\n\n" +
+								question;
+
+
+			}else{
+
+				var message =	gio.description.title + " is not tested in this browser.\n" +
+								"Fire Fox, Chrome, or Mobile browsers are recommended.\n\n" +
+								question;
+			}
+
+
+		}else if( tp.core.browser.Opera ) {
+				//alert( recommendation_standard + '. Opera will run with simple laoyout.');
+				var message = 	gio.description.title + ' was not tested and not developed in Opera.\n' + 
+								"Fire Fox, Chrome, or WebKit browsers are recommended\n"
+		}
+
+		getout = !confirm( immature_project + message );
+
+		return getout;
+	};
+
+
+
+
+	//. Initiates "Playzone". To be overridden in "Other zone" like "Document zone".
+	session.init.wrap =	function() { return session.init.entry(); };
+
+
+	/// Shortcuts halting.
+	var halt_if_failed = function ( message, area ) {
+		if( !message ) return;
+		if( area ) message = area + ": " + message;
+		gio.cons_add( message );
+		session.state.halted = true;
+		alert( message + "\n" + halted );
+	};
+
+
+
+	/// Fires up:	application. Master entry.
+	//	Displays:	message and halts if failure.
+	jQuery( 'document' ).ready( 
+
+		function () {
+
+			var init = session.init;
+			var state = session.state;
+									halt_if_failed( gio.gui.init.entry(),		"GUI Entry" );
+			if( !state.halted ) 	halt_if_failed( init.load_core_gamions(),	"Preload" );
+			if( !state.halted ) 	halt_if_failed( session.init.wrap(),		"Init.wrap" );
+		}
+	);
+
+
+
+
+}) ();
+
 

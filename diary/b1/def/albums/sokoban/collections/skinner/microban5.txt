@@ -1,5 +1,5 @@
-/:
-{	"credits" :
+/{
+	"credits" :
 	{
 		/, title			Microban V (26 puzzles, October 2010, this set is unfinished)
 		/, copyright		Copyright (c) 2010 David W Skinner
@@ -9,8 +9,8 @@
 		/, copied_from		http://users.bentonrea.com/~sasquatch/sokoban/m5
 		/. copied_on		November 14, 2012
 	}
-}
-/\\
+
+/}
 
 
 ; 1

@@ -509,7 +509,6 @@
 						//debug:
 						div.setAttribute('class','item '+i);
 tp$.debug(div,'item in loop');
-console.log('item in lop',div);
 
 						//============================================
 						//core event: making selection by item click:

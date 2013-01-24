@@ -55,6 +55,12 @@
 		}
 		return s.replace("\n", "\n" + space(length));
 	};
+
+	var c_onsole_log = 
+		!IE && window.console &&
+		typeof console !== 'undefined' &&
+		console.log;  // *** safe c onsole.log	
+	var c_onsole_clear = console.log &&  console.clear;  // *** safe c onsole.log
 	//==============================================================================
 	// End of auxilairy variables and functions
 	//==============================================================================
@@ -165,12 +171,12 @@
 			//Should catch history before page loaded.:
 			setup_debug_window(debug_window_, debug_window_parent_);
 			if(debug_window)debug_window.innerHTML="<pre>" + collected_in_session + "</pre>"; 
-			if(typeof window.console !== 'undefined' && console.log)console.log(r);  // *** safe console.log
+			if( c_onsole_log ) c_onsole_log( r );
 
 			//====================
 			//TODm
-			//fails,? why?: (console && console.log) || 
-			//if(window.console && window.console.log )console.log(r);  // *** safe console.log
+			//fails,? why?: (c onsole && c onsole.log) || 
+			//if(window.console && window.c onsole.log )c onsole.log(r);  // *** safe c onsole.log
 			//====================
 
 		}
@@ -190,9 +196,7 @@
 	//========================================================================================================================================
 
 
-	//fails,? why?: (console && console.log) || 
-
-
+	//fails,? why?: (c onsole && c onsole.log) || 
 
 
 
@@ -203,17 +207,17 @@
 	//					the same for debc
 	//--------------------------------------------------------------
 	//Purpose:	if window.console exist, debug only to it:
-	var debc=tp$.debc=
-		(!IE && window.console && typeof console !== 'undefined' && console.log) ||  // *** safe console.log
+	var debc=tp$.debc =
+		c_onsole_log ||
 		(function(){ for(var i=0; i<arguments.length; i++) debug(arguments[i]); });
 
 
 	// Purpose:	debug to both custom debugger and if exist, to console:
 	// Input:	empty arguments list clears up collected_in_session and debug windows
-	var deb=tp$.deb=function(){ 
+	var deb = tp$.deb = function(){ 
 		if( arguments.length === 0 ){
-			if(debug_window)debug_window.innerHTML="<pre> </pre>"; 
-			if(typeof window.console !== 'undefined' && console.log && console.clear) console.clear();  // *** safe console.log
+			if( debug_window ) debug_window.innerHTML = "<pre> </pre>"; 
+			if( c_onsole_clear ) c_onsole_clear();
 			collected_in_session = '';
 		}
 		for(var i=0; i<arguments.length; i++) debug(arguments[i]); 
@@ -223,9 +227,12 @@
 	//==============================================================
 
 
-	/// reduces annoying name console.log to shorter
-	window.ccc = function () {
-		for( var ii=0; ii < arguments.length; ii++) console.log( arguments[ ii ] ); 	
+	//: reduces annoying name c onsole.log to shorter
+	window.cccc = function () {
+		if( !c_onsole_log ) return;
+		for( var ii=0; ii < arguments.length; ii++) {
+			c_onsole_log( arguments[ ii ] );
+		}
 	}
 
 })();

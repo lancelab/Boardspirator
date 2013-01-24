@@ -10,34 +10,16 @@
 
 	<link rel="stylesheet" href="css/whirly.css">
 
-	<script type="text/javascript" src="../tp/lib/jquery-1.7.js"></script>
-	<script type="text/javascript" src="../tp/bind_events.js"></script>
-	<script type="text/javascript" src="../tp/core.js"></script>
-	<script type="text/javascript" src="../tp/core_no_jquery.js"></script>
-	<script type="text/javascript" src="../tp/core2_no_jquery.js"></script>
-	<script type="text/javascript" >$.fn.tp$.core.reset_path_from_land_to_app_root('..');</script>
-	<script type="text/javascript" src="../tp/gui.js"></script>
-	<script type="text/javascript" src="../tp/gui_no_jq.js"></script>
-	<script type="text/javascript" src="../tp/form.js"></script>
-
-	<!-- :: must be before boardspirator scripts: -->
-	<script type="text/javascript" src="../core/config/core.js"></script>
-	<script type="text/javascript" src="../core/config/gui.js"></script>
-	<script type="text/javascript" src="../core/config/templates.js"></script>
-	<script type="text/javascript" src="../core/config/description.js"></script>
-	<script type="text/javascript" src="../core/config/spawner.js"></script>
-
-
-	<script type="text/javascript" src="../core/entry.js"></script>
+	<script type="text/javascript" >window.tp$ = window.tp$ || {}; window.tp$.reset_path_from_land_to_app_root = '..' ;</script>
+	<script type="text/javascript" src="../prod/app.js""></script>
 	<script type="text/javascript" src="js/macrify.js"></script>
 
 
 
-
-</head><body><div style="color:#666666; white-space:pre; font-family:monospace; visibility:hidden;">
+</head><body><div style="color:#666666; white-space:pre; font-family:monospace;">
 
 This page won't display if no JavaScript language enabled in your browser.
-To display a this page, turn JavaScript on.
+To display this page, turn JavaScript on.
 
 </div>
 
@@ -45,7 +27,7 @@ To display a this page, turn JavaScript on.
 <span style="visibility:hidden;">This token, #@title@#   , is a necessary flag to unhide this page.</span>
 <pre>
 
-	<h1>Whirly and Sokoban Variants</h1>
+	<h1>Whirly and Sokoban Variants. Draft.</h1>
 
 
 	Part of this information is from 3rd-party sources and is as reliable as they were at Reasearch Date.
@@ -53,7 +35,7 @@ To display a this page, turn JavaScript on.
 
 
 
-<a name="variants"></a>
+<a id="variants"> </a>
 
 </pre>
 	<table style="position:relative; left:50px;">
@@ -62,7 +44,7 @@ To display a this page, turn JavaScript on.
 			<th>Reasearch<br>Date</th>
 			<th>Name.<br>Playlink.</th>
 			<th>Description</th>
-			<th>Deriving from Whirly. <br>Playlink.</th>
+			<th>Deriving from Whirly. <br>Script. Playlink.</th>
 			<th>Solver</th>
 			<th>Playlink</th>
 			<th>Reference</th>
@@ -168,21 +150,6 @@ To display a this page, turn JavaScript on.
 	</tr>
 
 
-
-	<tr class="whirly">	<td>2013-01-03</td>
-	   	<td>#@Doubleban@#</td>
-		<td>#@Colorban@#, but deepness is 2.<br>
-		<td>Colorban, but deepness is 2.
-		</td>
-		<td><a href="../?akey=doubleban">On Line</a><br>
-		</td>
-		<td>
-		</td>
-		<td><a href="whirly.htm">Whirly</a><br>
-		</td>
-	</tr>
-
-
 	<tr class="whirly">	<td>2013-01-03</td>
 	   	<td>#@Colortrain@#</td>
 		<td>#@Colorban@#, but deepness is infinite.<br>
@@ -247,7 +214,7 @@ To display a this page, turn JavaScript on.
 		<td>Reasearch<br>Date</td>
 		<td>Name.<br>Playlink.</td>
 		<td>Description</td>
-		<td>Deriving from Whirly. <br>Playlink.</td>
+		<td>Deriving from Whirly. <br>Script. Playlink.</td>
 		<td>Solver</td>
 		<td>Playlink</td>
 		<td>Reference</td>
@@ -421,22 +388,30 @@ To display a this page, turn JavaScript on.
 	Perhaps, 99% of these G-games can be just a junk or too complex
 	to be interesting for a human ... 
 
-	Each Manifold will have own fans, depository of maps (<a href="http://www.sourcecode.se/sokoban/index.php">The site</a>
-	claims having 22700 levels ... for Sokoban Manifold ), and of course, manifold.group.yahoo.com.
+	Each Manifold will have own fans, depository of maps and of course, manifold.group.yahoo.com ...
+	(<a href="http://www.sourcecode.se/sokoban/index.php">This site</a> claims having 22700 levels ... for Sokoban Manifold )
 
-	While yahoo.com does not have enough space for new groups, we show only a few
-	games in the table below. It is up to the reader to decide are these games rubbish or
-	stem a glorious Manifold. We don't know yet ...
+<a id="sandbox"> </a>
+
+	While yahoo.com does not have enough hard drive space for new groups, we show only a few Sandbox 
+	games below. It is up to the reader to decide are these games just a "sandbox" or stem a glorious Manifold.
+	We don't know yet ...
+
 
 
 </pre>
+
+
 <table style="position:relative; left:50px;">
 <thead>
+	<tr>
+		<th colspan="20"><h1>Sandbox Games</h1>
+	</tr>
 	<tr>
 		<th>Reasearch<br>Date</th>
 		<th>Name.<br>Playlink.</th>
 		<th>Description</th>
-		<th>Deriving from Whirly. <br>Playlink.</th>
+		<th>Deriving from Whirly. <br>Script. Playlink.</th>
 		<th>Solver</th>
 		<th>Playlink</th>
 		<th>Reference</th>
@@ -449,6 +424,34 @@ To display a this page, turn JavaScript on.
 
 
 <tbody>
+
+	<tr class="whirly">	<td>2013-01-03</td>
+	   	<td>#@Doubleban@#</td>
+		<td>#@Colorban@#, but deepness is 2.<br>
+		<td>Colorban, but deepness is 2.
+		</td>
+		<td>#@Doubleban@#
+		</td>
+		<td>
+		</td>
+		<td><a href="whirly.htm">Whirly</a><br>
+		</td>
+	</tr>
+
+
+	<tr class="whirly">	<td>2013-01-03</td>
+	   	<td>#@Antimasters@#</td>
+		<td>#@Flockmasters@#, with reverted pull - push interactions<br>
+		<td>#@Antimasters--script@#
+		</td>
+		<td>#@Antimasters@#
+		</td>
+		<td>
+		</td>
+		<td><a href="whirly.htm">Whirly</a><br>
+		</td>
+	</tr>
+
 
 	<tr class="no_color_match">	<td>2013-01-03</td>
 	   	<td> <a href="../?akey=ghostban&aurl=//def/albums/ghostban/album.json.txt">GhostBan</a>
@@ -472,7 +475,8 @@ To display a this page, turn JavaScript on.
 	</tr>
 
 	<tr class="no_color_match">	<td>2013-01-03</td>
-	   	<td><a href="../?akey=ghostjump&aurl=//def/albums/ghostjump/album.json.txt">GhostJump</a>
+	   	<td>
+			<a href="../?akey=ghostjump&aurl=//def/albums/ghostjump/album.jwon.txt">GhostJump</a>
 		</td>
 		<td>
 			#@Colorban@# with special hero, "ghost" who <br>
@@ -552,14 +556,31 @@ To display a this page, turn JavaScript on.
 		<td>
 			Folcks with following rule overriding<br>
 			parent rules:<br>
-			&nbsp;&nbsp; target_a does block box_b,<br>
-			&nbsp;&nbsp;(but still target_b passes box_a)<br>
-			(Indeed in both cases, there are the same<br>
-			races box and target and the same<br>
+			&nbsp;&nbsp; target_a does block box_b, (*)<br>
+			&nbsp;&nbsp;but still target_b passes box_a (**)<br>
+			( Non-color-match-game<br>
+			because in (*) and (**),<br>
+			box and target have the same<br>
 			negative-color-match,<br>
 			but interaction is different.)<br>
+			#@Bumpy Targets--script@#
 		</td>
 		<td>#@Bumpy Targets@#
+		</td>
+		<td>
+		</td>
+		<td><a href="whirly.htm">Whirly</a><br>
+		</td>
+	</tr>
+
+
+	<tr class="no_color_match">	<td>2013-01-03</td>
+	   	<td>#@LeapOrPush@#</td>
+		<td>#@Colorban@# with "other colors leaping"<br>
+		<td>
+			#@LeapOrPush--script@#
+		</td>
+		<td>#@LeapOrPush@#
 		</td>
 		<td>
 		</td>
@@ -571,6 +592,10 @@ To display a this page, turn JavaScript on.
 </table>
 <pre>
 
+	Circular Links:
+
+	<a  href="guest_readme.htm">Guest Readme</a>
+	<a  href="project_files.htm">Project Files</a>
 
 
 	Date:		#@date@#
@@ -579,6 +604,15 @@ To display a this page, turn JavaScript on.
 
 
 
-</pre></div></body></html>
+</pre></div>
+
+
+	<script	type="text/javascript">
+		jQuery.fn.tp$.gio.config.google_apps.insert_ad_div_with_script();
+	</script>
+
+
+
+</body></html>
 
 

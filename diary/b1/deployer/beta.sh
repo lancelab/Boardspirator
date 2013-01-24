@@ -9,11 +9,12 @@ echo "Deploys BETA version from ALPHA in remote host"
 
 #HOST="konstantin@127.0.0.1"
 #HOST="konstantin@192.168.1.101"
-HOST="landkey@landkey.net"
-#HOST="landkeyo@landkey.org"
+#HOST="landkey@landkey.net"
+#FOLDER="/var/www/html/gio/gio"
 
-FOLDER="/var/www/html/gio/gio"
-#FOLDER="/home1/landkeyo/public_html/gio/gio"
+HOST="landkeyo@landkey.org"
+FOLDER="/home1/landkeyo/public_html/whirlio"
+FOLDER="/home1/landkeyo/public_html/landkey_net/gio/gio"
 
 #in respect to FOLDER:
 ALPHA="a1"

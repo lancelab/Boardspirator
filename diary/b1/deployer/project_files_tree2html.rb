@@ -10,7 +10,7 @@ source_folder		= File.dirname( me )
 
 test_folder				= source_folder + '/..'
 result_file_path		= source_folder + '/../doc/project_files.htm'
-forbidden_folders		= '=factory=feeder=skipme='
+forbidden_folders		= '=factory=feeder=skipme=prod='
 forbidden_extensions	= /\.png$|\.gif$/
 verbose					= false
 

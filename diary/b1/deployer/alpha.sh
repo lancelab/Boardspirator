@@ -1,24 +1,23 @@
 #!/bin/bash
 
-############################################################
-#
-#  Deploys alpha version to folder $ALPHA in remote host
-#
-############################################################
+#  //\\// Deploys alpha version to folder $ALPHA in remote host
+
 
 
 #HOST="naladchik@127.0.0.1"
 #HOST="konstantin@127.0.0.1"
 #HOST="konstantin@192.168.1.101"
-HOST="landkey@landkey.net"
-#HOST="landkeyo@landkey.org"
+#HOST="landkey@landkey.net"
+#FOLDER="/var/www/html/gio/gio/"
 
-#. deployes only these units
-DEPLOYED_UNITS="def doc prod tp core tp"
-FOLDER="/var/www/html/gio/gio/"
-#FOLDER="/home1/landkeyo/public_html/gio/gio/"
+HOST="landkeyo@landkey.org"
+FOLDER="/home1/landkeyo/public_html/whirlio"
+FOLDER="/home1/landkeyo/public_html/landkey_net/gio/gio"
 
 ALPHA="a1"
+
+#. deployes only these units
+DEPLOYED_UNITS="def doc prod tp core tp google_apps"
 
 #stubs:
 #echo "$HOST:$FOLDER"
@@ -27,17 +26,21 @@ ALPHA="a1"
 # * use this if running from occasional place
 #cd /var/www/METAP/apps/BOARD/board/public/play/deployer/
 
-rm -rf ../$ALPHA
-mkdir ../$ALPHA
-mkdir ../$ALPHA/prod
 ruby collections2mozaic.rb
 ruby credits2html.rb
 ruby project_files_tree2html.rb
-ruby minifier.rb $ALPHA
+
+
+rm -rf ../$ALPHA
+mkdir ../$ALPHA
+mkdir ../$ALPHA/prod
+ruby minifier.rb
+#ruby minifier.rb $ALPHA
 
 
 cd .. 
 cp -rf $DEPLOYED_UNITS $ALPHA
+cp -f index_prod.htm $ALPHA/index.htm
 
 # * adds feeder feature which is not required for minimum functional site
 if [ -d "feeder"  ]; then	cp -rf feeder $ALPHA; fi

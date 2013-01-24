@@ -1,5 +1,5 @@
-/:
-{	"credits" :
+/{
+	"credits" :
 	{
 		/, title            Grigr2002 set [40 levels] - finished
 		/, author           Evgeny Grigoriev
@@ -10,8 +10,8 @@
 		/, copied_from      http://grigr.narod.ru/zip/grigr2002-40.zip
 		/. copied_on        November 23, 2012
 	}
-}
-/\\
+
+/}
 
 
 

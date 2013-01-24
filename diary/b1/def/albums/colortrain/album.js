@@ -1,35 +1,22 @@
-(function( ){ 	var tp  =  $.fn.tp$  =  $.fn.tp$ || {};	
-				var gio =  tp.gio    =  tp.gio   || {};
-	
+( function( ) { 	var tp  =  $.fn.tp$  =  $.fn.tp$ || {};	
+					var gio =  tp.gio    =  tp.gio   || {};
+
+
 
 	
-	gio.def.albums['colortrain']={
+			// //\\// Adds album to postponed load
 
-		gkey		: 'colortrain',
-		album_name	: 'Caterpillars',
-
-		collections 	:
-		[
-			{	
-				"credits" : { "title"		: "Beginner" }
-			},
-			{	
-				"credits" : { "title"		: "Weirds"  },
-			 	"ref" : { "folder" : { fkey	: 'weirds.txt' } }
-			}
-		],
-
-
-		dresses  :  { 'default' :
+			var wrap = gio.data_io.add_defions;
+			gio.data_io.add_defions = function ()
 			{
-				style : {	play:{ backgroundColor:'#AAAAAA' } },
-				rules :
-					"The robot can push any number of boxes of matching color.\n"+
-					"Black matches any color.\n"
-			}
-		}// dresses
+				wrap();
+				arg		=	{};
+				arg.url	=	tp.core.app_webpath_noindex + '/' +
+							gio.config.defpaths.ALBUMS_DEF_PATH +
+							'/colortrain/album.jwon.txt',
+				gio.data_io.download_defion ( arg );
+			};
 
-	};
 
 })();
 

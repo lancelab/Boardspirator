@@ -1,13 +1,13 @@
-/:
-{	"credits" :
+/{
+	"credits" :
 	{
 		/, title			Weirdy.
 		/, author			Konstantin Kirillov.
 		/, license			Public Domain
 		/. email			beaverscript(a)landkey(.)net
 	}
-}
-/\\
+
+/}
 
 
 Discussion:

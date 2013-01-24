@@ -1,5 +1,5 @@
-/:
-{	"credits" :
+/{
+	"credits" :
 	{
 		/, title			Sasquatch IX (April 2009)
 		/, copyright		Copyright (c) 2009 David W Skinner
@@ -9,8 +9,8 @@
 		/, copied_from		http://users.bentonrea.com/~sasquatch/sokoban/s9
 		/. copied_on		November 14, 2012
 	}
-}
-/\\
+
+/}
 
 
 ; 1

@@ -1,4 +1,4 @@
-(function( $ ){ 	var tp		= $.fn.tp$  =  $.fn.tp$ || {};	
+( function () {	 	var tp		= $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		= tp.gio    =  tp.gio   || {};
 					var cpaste	= tp.core.paste_non_arrays;
 
@@ -17,7 +17,7 @@
 
 				var coll = alb.collections[collix];
 				if( coll.ref.link.link ) continue;
-				if( !coll.maps_loaded ) gio.download_collection(coll);
+				if( !coll.maps_loaded ) gio.data_io.download_cfile(coll);
 				if( coll.maps_loaded !== 'success' ) continue;
 				var scoll = res[res.length] = 
 					cpaste( {}, gio.def.templates.play.coll );
@@ -45,4 +45,4 @@
 	*/
 
 
-})(jQuery);
+}) ();

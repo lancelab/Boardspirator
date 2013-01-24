@@ -12,10 +12,6 @@
 		collections :
 		[
 				{
-					"credits" : { "title"		: "Beginner"	}
-				},
-
-				{
 					"credits" : { "title"		: "Team of Two"	},
 					"ref" : { "folder" : { fkey : 'team_of_two.txt'	} }
 				},
@@ -23,6 +19,10 @@
 				{
 					"credits" : {	"title"		: "Soko Derivations" },
 					"ref" : { "folder" : { fkey : 'soko_derivations.txt' } }
+				},
+
+				{
+					"credits" : { "title"		: "Beginner"	}
 				}
 
 		],
@@ -113,7 +113,7 @@
 
 	gio.def.albums['co_colorban'] = {
 
-		"ref" : { "env" : { dgkey	: "colorban" } },
+		"ref" : { "env" : { dress_akey	: "colorban" } },
 
 		dresses  :
 		{ 

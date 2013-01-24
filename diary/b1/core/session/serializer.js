@@ -53,7 +53,7 @@
 
 					var coll_key = 'c'+coll_ix;
 					if( !session[playalb.key][coll_key] ) return true;
-					if( !coll.maps_loaded ) gio.download_collection(coll);
+					if( !coll.maps_loaded ) gio.data_io.download_cfile(coll);
 					if( coll.maps_loaded !== 'success' ) return true;
 					core.each(coll.maps, function(mix, gm){
 

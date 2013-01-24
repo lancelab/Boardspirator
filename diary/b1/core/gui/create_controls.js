@@ -304,13 +304,13 @@
 		if( gio.config.feeder.exists ) {
 			makeControl( {
 				name : 'load_external',
-				options :	[	{	title:'Load External',
-									tooltip:'Load External Collection from Internet'
+				options :	[	{	title	: 'Land on External',
+									tooltip	: 'Load external collection from Internet'
 								}
 							],
 				callback :	function(i,option){
 								switch(option.title){
-									case 'Load External' :	
+									case 'Land on External' :	
 										gio.map_editors.submit_box_to_enter_collection_link();
 										break;
 								}
@@ -363,7 +363,7 @@
 											}
 											break;
 									case 'Load Session' :
-											var w = gio.data_io.core.load.object_synchronously(
+											var w = tp.core.download_object(
 												// Id 1 is ignored:
 												gio.modes.sta_tic.db+'/game_sessions/1');
 											if(w.status === 'not logged'){
@@ -467,8 +467,21 @@
 
 		makeControl( {
 				name : 'edit',
-				options :	[	{	title:'Edit Map Scripts',
-									tooltip:'Create own maps. Will add to "My Album". Key: e.'
+				options :	[
+								{	title:'Create Gamion',
+									tooltip:'Create your game, album, or map scripts.'
+								},
+								{	title:'Edit Gamion',
+									tooltip:'Edit current game, album, or map scripts.'
+								},
+								{	title:'Edit Map Scripts',
+									tooltip:'Edit current map in context of current collection. Key: e.'
+								},
+								{	title:'Edit Position',
+									tooltip:'Convers current position to board-script to be edited.'
+								},
+								{	title:'Edit Co-Position',
+									tooltip:'Convers current position to co-position board-script to be edited.'
 								},
 								{	title:'Edit Playpath',
 									tooltip:'Edit or show playpath text. Key: w.'
@@ -497,8 +510,20 @@
 							],
 				callback :	function(i,option){
 								switch(option.title){
+									case 'Create Gamion' :	
+											gio.map_editors.submit_box_to_enter_gamion( 'create' );
+											break;
+									case 'Edit Gamion' :	
+											gio.map_editors.submit_box_to_enter_gamion( 'edit' );
+											break;
 									case 'Edit Map Scripts' :	
-											gio.map_editors.edit_custom_maps();
+											gio.map_editors.edit_custom_maps( 'edit_map_scripts' );
+											break;
+									case 'Edit Position' :	
+											gio.map_editors.edit_custom_maps( 'pos_to_map' );
+											break;
+									case 'Edit Co-Position' :	
+											gio.map_editors.edit_custom_maps( 'pos_to_comap' );
 											break;
 									case 'Edit Playpath' :
 											gio.map_editors.display_game_path();
@@ -710,6 +735,11 @@
 		//------------------------
 		// ? Finalize common popup
 		//========================
+
+
+		//. releases messages stashed in debug before <body> created
+		gio.debtp( 'create_controls_and_game_list is done.' );
+
 	};
 
 })(jQuery);

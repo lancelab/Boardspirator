@@ -2,6 +2,9 @@
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var ceach	=  tp.core.each;
 
+
+
+
 					// //\\// This file must be loaded before other game javascript files
 
 
@@ -38,13 +41,15 @@
 
 
 					gio.def			= { base_game : {},
-										games : {}, albums : {}, 
+										games : {}, albums : {},
+										default_album_key : 'album', 
 										dresses : null,
-										inherited_games : {}, dressed_games : {},
+										inherited_games : {}, dressed_gamed_albums : {},
 										colorban_map_decoder : null,
-										procs : {},
-										personal_craft_akey : 'my_album'  };
+										procs : {}
+					},
 
+					gio.def.albums[ gio.def.default_album_key ] = {};
 
 					gio.modes		= {	
 										//.	TODF no static and dynamic ... everythig is dynamic
@@ -56,7 +61,11 @@
 
 					// blocks : {}, probably will be a good name:
 					gio.gui			= { procs : {}, 	modes : {},  init : {}, create : {} };
-					gio.data_io		= { core : { load : {}, save : {} }, session : { load : {}, save : {} } };
+					gio.data_io		= { 
+											core : { load : {}, save : {} }, session : { load : {}, save : {} },
+											//. wraps gradual adding of albums
+											add_defions : function () { return; }
+									};
 
 					gio.core		= { procs : {}, reflection : {}, def : { map_format : {} } };
 					gio.navig		= { in_session : { round : {} }, in_map : {}}; // TODm map must be in gio.gui
@@ -175,9 +184,14 @@
 
 								//: possibly helps to garbage collector
 								//. increased time to wait for gc:
-								CRITICAL_WAIT_TIME : 1000,	//ms
-								//. threshold to increase for sphere volume
-								CRITICAL_VOLUME : 300000,	//canons
+								CRITICAL_WAIT_TIME : 2000,	//ms
+								//. Threshold.
+								//	When move-sphere voulume increases above this value
+								//	then TIME_TO_WAIT_MS is temporarily set to 
+								//	CRITICAL_WAIT_TIME. 
+								//		For monochrome games, we set it to
+								//		CRITICAL_VOLUME : 300000,	//canons
+								CRITICAL_VOLUME : 50000,	//canons
 
 
 								//. abandoned
@@ -208,8 +222,11 @@
 										// "false" disables an entire google suite
 			//host			: ....,		// dynamically chosen by hostname
 
-			forbidden_dir	: "/a1/",	// if this token is met in location.pathname, then
-										// google traces do removed from site
+			//: if one of these tokens is met in location.pathname, then
+			//	google is disabled in entire application
+			forbidden_dirs			: [ "/a1/", "metap/apps/" ],
+			forbidden_host_names	: [ 'localhost' ],
+
 
 			ad		: 					// overriden by host if any
 			{ 

@@ -1,5 +1,5 @@
-/:
-{	"credits" :
+/{
+	"credits" :
 	{
 
 		/, title            Beginner
@@ -8,8 +8,8 @@
 		/, date             2011 - November 2012
 		/. email            beaverscript(a)landkey(.)net
 	}
-}
-/\\
+
+/}
 
 :::map
 #  #  #  #  #  #  #  #

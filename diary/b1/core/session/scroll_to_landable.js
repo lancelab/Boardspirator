@@ -1,4 +1,4 @@
-(function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+( function () {	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var core	=  tp.core;
 					var ceach	=  core.each;
@@ -9,6 +9,7 @@
 					var ggp		=  gio.gui.procs;
 					var gsp		=  gio.session.procs;
 				
+
 
 
 
@@ -38,10 +39,10 @@
 
 			//: DOES LANDING
 			ggp.do_display_curr_board	( false );
-			ggp.do_set_state			( akey, null, cix, gm.ix );
+			gsp.do_memorize_GUI_state	( akey, null, cix, gm.ix );
+			// gsp.debstate('memorized');
 			album.title					= ggp.get_master_title_from_session_state();
 			gio.gui.unhide_map			( gm ); //TODO validation ... what if this GUI fails ?
-
 
 			return true;
 	};	/// Validates map and lands if requested
@@ -50,42 +51,6 @@
 
 
 
-
-	///	Sets:		GUI states: session.state.album_ix, ... 
-	//	Input:		all is optional
-	//				akey pulled before aix.
-	//				if album info is missed, then current is used and not changed.
-	//				if coll info is missed, then current is used and not changed.
-	//				if map info is missed, then current is used and not changed.
-	ggp.do_set_state = function ( akey, aix, cix, mix ) {
-
-				var ss			= session;
-				if( akey ) {
-					var album	= ss.procs.get_album( akey );
-				}else if( aix || aix === 0 ) {
-					var album = ss.alist[ aix ];
-				}else{
-					var album = ss.alist[ state.album_ix ];
-				}
-
-				if( !cix && cix !== 0 ) cix = album.collections.ix;
-				var coll = album.collections[ cix ];
-
-				if( !mix && mix !== 0 ) mix = coll.map_ix;
-
-				//. first state component
-				ss.state.album_ix	= album.ix;
-
-				//. second state component
-				album.collections.ix = cix;
-
-				//. third state component
-				coll.map_ix = mix;
-	
-				gio.debtp(	'Established state: aix,a,c,m = ' +
-							album.ix + ', ' + album.key + ', ' + cix + ', ' + mix );
-
-	};
 
 
 
@@ -192,7 +157,7 @@
 
 
 		/// Validates collection download
-		if( !coll.maps_loaded ) gio.download_collection( coll );
+		if( !coll.maps_loaded ) gio.data_io.download_cfile( coll );
 		if(	coll.maps_loaded !== 'success' ) {
 			gio.debtp( 'Failed maps load. Message: ' + coll.maps_loaded );
 			return false;
@@ -215,14 +180,27 @@
 
 
 
-	/// Tries:		to get best album selection from definitsions
+	/// Tries:		to get best album selection from definitsions.
+	//	Method:		Most important akeys are tried first.
+	//				If no success, then tried next.
+	//	Input:		from_listed - opt, if supplied, 
+	//				searches only inside stemmed_albums
 	//	Retruns:	see last return statement
-	gdef.procs.get_preferred_album_def = function () {
+	gdef.procs.get_preferred_album_def = function ( from_listed ) {
 
-		var first_album = core.get_first_or_null( gdef.albums );
+		var first_album = null;
+		if( from_listed ) {
+			ceach( gdef.albums, function( akey, album ) {
+				if( gio.session.alist_by_key[ akey ] ) {
+					first_album	= { album : album, key : akey };
+					return false;
+				}
+			});
+		}else{
+			var first_album = core.get_first_or_null( gdef.albums );
+		}
 		if( !first_album ) return { album : null, key : '' };
 		var chosen_akey = first_album.key;
-
 		var state_aix = state.album_ix;
 		var state_akey = state_aix || state_aix === 0 ? 
 				session.alist[ state.album_ix ] : '';
@@ -235,7 +213,7 @@
 
 		//. selects from preordered
 		ceach( gdef.albums, function( akey, album ) {
-			chosen_akey = ( album.ref.list.display_preordered && akey ) || chosen_akey;
+			chosen_akey = ( album.ref.list.listify_on_top && akey ) || chosen_akey;
 		});
 
 		chosen_akey = chosen_akey || state_akey;

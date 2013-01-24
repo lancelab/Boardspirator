@@ -1,21 +1,42 @@
 (function( ) {	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var ceach	=  tp.core.each;
+
 					var gdf		=  gio.def;
 
 
 	gio.def.sugar = {};
 
+
+
+	//	//\\	 Highly:	customized helper to build co-paths.
+	//						Based on Q&D tricks. In worst case scenario,
+	//						if used wrongly, will give just wrong co-path string.
+
 	var sugar_inverse_path_symbols =
-	{	d : 'u', u : 'd', l : 'r', r : 'l',
-		//. converts "swap" action
+	{
+		//. untouchable steps change direction
+		d : 'u', u : 'd', l : 'r', r : 'l',		//(*)
+
+		//. pull, push do not, so above line does the job for colorban, sokoban, pullpush and
+		//	their cogames
+
+		//. swap, leap, jump change direction
+		//	len = move.steps.length
+		//	leap: len = 1 => line (*) is used (covers leappush)
+		//	jump: len = 1 => line (*) is used (covers ghostjump)
+		//	swap: len = 2 => line below is needed:
 		D : 'U', U : 'D', L : 'R', R : 'L' 
 	};
-	/// Scope:		pullswappush aware
+
+	///	Scope:		Works for:
+	//					colorban, sokoban, ghostjump, pullswappush, and ghostban
+	//				and their co-games.
+	//
 	//	Inputs:		copath - part of copath which is already made
 	//				ccc - current path symbol to convert
 	//	Outputs:	copath
-	gio.def.sugar.copathy = function (gm, move, copath, ccc){
+	gio.def.sugar.copathy = function ( gm, move, copath, ccc ) {
 
 				if(move.steps.length === 1){
 					ccc = sugar_inverse_path_symbols[ccc];
@@ -26,7 +47,8 @@
 							//find colors ... do for equal
 							( gm.game.gkey === 'co_pullswappush' || gm.game.gkey === 'pullswappush' ||
 							  gm.game.gkey === 'co_ghostban'	|| 	gm.game.gkey === 'ghostban'	 )
-						){
+							)
+				{
 		
 					//: "dissecting" colors
 					var passee_id = move.steps[1].uid;
@@ -55,43 +77,36 @@
 				return copath;
 	};//gio.def.sugar.copathy
 
-
-
-	gio.def.post_definitions = {
-
-
-
-		pullpush_inversifier :  function(game){
-			ceach(game.interact, function(peerA, peersB){
-				ceach(peersB, function(peerB, interaction){
-					if(interaction === 'pull'){
-						peersB[peerB] = 'push';
-					}else if(interaction === 'push'){
-						peersB[peerB] = 'pull';
-					}
-				});
-			});
-		},
+	//	\\//	 Highly:	customized helper to build co-paths.
 
 
 
 
 
-		///		extends interactons to pull
-		//		Extension is done for interactions:
-		//			hero_alpha - box_beta and box_alpha - box_beta
-		//			for alpha != beta and alpha,beta != x
-		//		Extension is: pull for different colors, 
-		//			for equal colors interaction is the same.
-		pullpush :  function(game){
+
+	///	Extends interactons to added interactions
+	//			initiator_is_lower and initiator_is_higer.
+	//	Only for
+	//		non-black interands of different colors
+	//		box-targets
+	//	Input:	even -	optional. If supplied, 
+	//					sets interaction only for colors 2, 4, ...
+	//					for interands WITH EQUAL COLORS
+	var unmatched_col_int_extender = function( initiator_is_lower, initiator_is_higer, even ) {
+
+		return function( game ) {
+
 
 			var colors = game.colors;
 			var itr = game.interact;
 
-			for(var color_ix=1; color_ix<colors.length; color_ix++){
-				var color = colors[color_ix];
+			for( var color_ix=1; color_ix < colors.length; color_ix++ ) {
 
-				tp.core.each(game.races, function( race_name, race ){
+				var color = colors[ color_ix ];
+
+				if( even && ( (color_ix % 2) != 0 ) ) continue;
+
+				tp.core.each( game.races, function( race_name, race ) {
 
 					if(	(race_name !== 'box' && race_name !== 'hero') ||
 						//. we don't change interactions with black color
@@ -99,124 +114,64 @@
 						return true;
 					}
 
-					var initiator_name = game.cnames[race_name][color_ix];	
-					for(var color_jx=1; color_jx<colors.length; color_jx++){
+
+					var initiator_name = game.cnames[ race_name ][ color_ix ];	
+					for( var color_jx=1; color_jx < colors.length; color_jx++ ) {
 						var color = colors[color_jx];
-						var peer_name = 'box_'+ color;	
-						if(color_ix !== color_jx) itr[initiator_name][peer_name] = 'pull';
+						var peer_name = 'box_'+ color;
+
+						if( even ) {
+
+							if( color_ix == color_jx ) itr[ initiator_name ][ peer_name ] = initiator_is_lower;
+
+						}else{
+
+							if( color_ix < color_jx ) itr[ initiator_name ][ peer_name ] = initiator_is_lower;
+							if( color_ix > color_jx ) itr[ initiator_name ][ peer_name ] = initiator_is_higer;
+						}
 					}
 				});//game.races
 			}//for(var color_ix
-	  	},//pullpush :  function(game)
+	  	};
+	};///	Extends interactons to added_interaction
 
 
 
 
-		pullorpush :  function(game){
 
-			var colors = game.colors;
-			var itr = game.interact;
 
-			for(var color_ix=1; color_ix<colors.length; color_ix++){
-				var color = colors[color_ix];
 
-				tp.core.each(game.races, function( race_name, race ){
 
-					if(	(race_name !== 'box' && race_name !== 'hero') ||
-						// * we don't change interactions with black color
-						color_ix === 0 ){
-						return true;
+
+	gio.def.post_definitions = {
+
+
+		/// Swaps 'pull' and 'push' interactions
+		pullpush_inversifier :  function( game ) {
+
+			ceach( game.interact, function( peerA, peersB ) {
+				ceach( peersB, function( peerB, interaction ) {
+
+					if( interaction === 'pull' ) {
+						peersB[ peerB ] = 'push';
+					}else if( interaction === 'push' ) {
+						peersB[ peerB ] = 'pull';
 					}
-
-					var initiator_name = game.cnames[race_name][color_ix];	
-					for(var color_jx=1; color_jx<colors.length; color_jx++){
-						var color = colors[color_jx];
-						var peer_name = 'box_'+ color;	
-						//. only even-color race pulls ... other's not ...
-						if( (color_ix % 2 ) === 0 && color_ix === color_jx ) itr[initiator_name][peer_name] = 'pull';
-					}
-				});//game.races
-			}//for(var color_ix
-	  	},//pullorpush :  function(game)
+				});
+			});
+		},
 
 
+		///	extends interactons to pull
+		pullpush		: unmatched_col_int_extender( 'pull', 'pull' ),
 
+		///	extends interactons to leap
+		leappush		: unmatched_col_int_extender( 'leap', 'leap' ),
 
+		pullswappush	: unmatched_col_int_extender( 'swap', 'pull' ),
 
-
-
-		///		extends interactons to leap
-		//		TODM compress ... "compress" "copy-paste" by adding a parameter to post-definitor: parameter=key=leappush, ...
-		//		Extension is done for interactions:
-		//			hero_alpha - box_beta and box_alpha - box_beta
-		//			for alpha != beta and alpha,beta != x
-		leappush :  function(game){
-
-			var colors = game.colors;
-			var itr = game.interact;
-
-			for(var color_ix=1; color_ix<colors.length; color_ix++){
-				var color = colors[color_ix];
-
-				tp.core.each(game.races, function( race_name, race ){
-
-					if(	(race_name !== 'box' && race_name !== 'hero') ||
-						// * we don't change interactions with black color
-						color_ix === 0 ){
-						return true;
-					}
-
-					var initiator_name = game.cnames[race_name][color_ix];	
-					for(var color_jx=1; color_jx<colors.length; color_jx++){
-						var color = colors[color_jx];
-						var peer_name = 'box_'+ color;	
-						if(color_ix !== color_jx) itr[initiator_name][peer_name] = 'leap'; //was 'pull';
-					}
-				});//game.races
-			}//for(var color_ix
-	  	},//leappush :  function(game)
-
-
-
-
-
-
-
-
-
-
-		///		extends interactons to pull, swap: hero swaps with higher colors, pulls with lower,
-		//		Extension is done for interactions:
-		//			hero_alpha - box_beta and box_alpha - box_beta
-		//			for alpha != beta and alpha,beta != x
-		pullswappush :  function(game){
-
-			var colors = game.colors;
-			var itr = game.interact;
-
-			for(var color_ix=1; color_ix<colors.length; color_ix++){
-				var color = colors[color_ix];
-
-				tp.core.each(game.races, function( race_name, race ){
-
-					if(	(race_name !== 'box' && race_name !== 'hero') ||
-						//:	we don't change interactions with black color
-						color_ix === 0 ){
-						return true;
-					}
-
-					var initiator_name = game.cnames[race_name][color_ix];	
-					for(var color_jx=1; color_jx<colors.length; color_jx++){
-						var color = colors[color_jx];
-						var peer_name = 'box_'+ color;	
-						//: master changer
-						if(color_ix < color_jx) itr[initiator_name][peer_name] = 'swap';
-						if(color_ix > color_jx) itr[initiator_name][peer_name] = 'pull';
-					}
-				});//game.races
-			}//for(var color_ix
-	  	}//pullswappush :  function(game)
-
+		///	extends interactons to pull for colors 2, 4, ...
+		pullorpush		: unmatched_col_int_extender( 'pull', null, 'even' )
 
 	};//gio.def.post_definitions
 })();

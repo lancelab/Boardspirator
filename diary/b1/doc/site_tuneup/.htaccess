@@ -1,0 +1,5 @@
+# Use PHP5 Single php.ini as default
+AddHandler application/x-httpd-php5s .php
+
+#Disable directory browsing
+Options -Indexes

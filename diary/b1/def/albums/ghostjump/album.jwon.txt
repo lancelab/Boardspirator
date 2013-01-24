@@ -1,0 +1,122 @@
+/{
+
+	"albums" :
+	{
+		"ghostjump" :
+		{
+			"album_name"	: "",
+			"collections"	:
+			[
+				{
+					"credits" : {	"title"		: "Beginner" 	}
+				}
+			],
+
+			"dresses" :
+			{
+
+				"default" :
+				{
+					"tile"			: { "width": 30, "height": 30 },
+					"playvigation"	: {	"UNIT_IS_UNSELECTABLE" : false },
+					"rules"			: 
+									/"
+										Heros push own-color boxes and pull black.
+										Green hero jumps over blue things.
+									/",
+					"objective"		: "Put boxes to color-matching targets."
+				},
+
+				"ghostban" :
+				{
+					"chosen"		: true,
+					"skin_key"		: "ghostban",
+					"playvigation"	: {	"UNIT_IS_UNSELECTABLE" : false },
+
+					"credits" :
+					{
+								"title"		: "Courtesy",
+								"copyright"	: "Copyright (C) 2012 Konstantin Kirillov",
+								"license"	: "host-based",
+								"web_site"	: "http://landkey.net/gio/gio/play",
+								"date"		: "November 2 2012"
+					},
+
+					"tile" : { "width": 60, "height": 60 },
+
+					"style" :
+					{
+						"play" :
+						{
+								"backgroundImage": "background.png",
+								"backgroundColor": ""
+						}
+					},
+					"focuser" : "ghostban",
+
+					"rules"			: 
+									/"
+										Chief pushes pizza ... Ghost pushes ghost-pizza ...
+										Both pull tip of money if present ...
+										Ghost moves through real things (except money) ...
+									/",
+					"objective"		: "Deliver pizza to dishes, and tip (if any) to a safe place.",
+					"story"			: 
+									/"
+										Chief is desperate to serve dinner ...
+										but not aware about Ghost who is desperate to help ...
+										Money is a thing hard to resist for both, and
+										they cannot agree how to share a tip ...
+										and after all, ghost-pizza has little nutritional value ...
+									/",
+
+					"hname_table" :
+					{
+						"hero_a"	: "Chief. Hungry?",
+						"hero_b"	: "Ghost. Eat or treat?",
+						"box_a"		: "Pizza",
+						"box_b"		: "azziP",
+						"box_x"		: "Tip",
+						"target_a"	: "Dish"
+					}
+				}
+				// "ghostban" :
+			}
+			// Dresses
+		},
+		// Album
+	
+
+		"co_ghostjump" :
+		{
+			"album_name"	: "",
+			"env"			: { "dress_akey"	: "ghostjump" },
+			"collections"	: [ ],
+			"dresses" :
+			{
+				"default" :
+				{
+					"chosen"	: true,
+					"rules"		: 
+								/"
+									Heros pull own-color boxes and push black.
+									Green hero jumps over blue things.
+								/",
+					"objective"	: "Put blue boxes to their targets."
+				},
+
+				"ghostban" :
+				{
+
+					"credits"	: { "date" : "November 2 2012" },
+					"rules"		: "Reverse to respective co-game"
+				}
+			}
+		}
+		// End of co_ghostjump album
+
+	 }
+	 // End of albums
+
+/}
+

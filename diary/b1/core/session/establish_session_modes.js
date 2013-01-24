@@ -15,7 +15,7 @@
 		if( smode.db ){
 			// ** gets server message
 			ww = gio.session.server;
-			gio.data_io.core.load.object(	
+			core.download_object(	
 					smode.db + '/albums?server_message=yes',
 					ww, 'message'
 			);
@@ -35,10 +35,10 @@
 	(function(){
 
 		// ** establishes database session if requested
-		w = core.getQueryPar('db');
-		if(w){
-			if( typeof w === 'string'){
-				smode.db = w === 'no' ? '' : w;
+		var ww = core.getQueryPar('db');
+		if( ww ){
+			if( typeof ww === 'string'){
+				smode.db = ww === 'no' ? '' : ww;
 			}else{
 				smode.db = 
 						window.location.protocol+'//'+

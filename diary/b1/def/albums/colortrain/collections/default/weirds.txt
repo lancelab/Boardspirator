@@ -1,5 +1,5 @@
-/:
-{	"credits" :
+/{
+	"credits" :
 	{
 
 		/, title       Weirds
@@ -7,9 +7,8 @@
 		/, license     Free for use, distribution, and modification as long as these credits retained.
 		/. date        January 6, 2013
 	}
-}
 
-/\\
+/}
 
 
 

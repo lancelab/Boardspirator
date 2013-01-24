@@ -8,24 +8,9 @@
   <meta name="keywords" content="board game, puzzle game, on line game, game development, educational game, sokoban"> 
 
   <title>Framework</title>
-	<script type="text/javascript" src="../tp/lib/jquery-1.7.js"></script>
-	<script type="text/javascript" src="../tp/bind_events.js"></script>
-	<script type="text/javascript" src="../tp/core.js"></script>
-	<script type="text/javascript" src="../tp/core_no_jquery.js"></script>
-	<script type="text/javascript" src="../tp/core2_no_jquery.js"></script>
-	<script type="text/javascript" >$.fn.tp$.core.reset_path_from_land_to_app_root('..');</script>
-	<script type="text/javascript" src="../tp/gui.js"></script>
-	<script type="text/javascript" src="../tp/gui_no_jq.js"></script>
-	<script type="text/javascript" src="../tp/form.js"></script>
 
-	<!-- :: must be before others in gio: -->
-	<script type="text/javascript" src="../core/config/core.js"></script>
-	<script type="text/javascript" src="../core/config/gui.js"></script>
-	<script type="text/javascript" src="../core/config/description.js"></script>
-	<script type="text/javascript" src="../core/config/spawner.js"></script>
-
-
-	<script type="text/javascript" src="../core/entry.js"></script>
+	<script type="text/javascript" >window.tp$ = window.tp$ || {}; window.tp$.reset_path_from_land_to_app_root = '..' ;</script>
+	<script type="text/javascript" src="../prod/app.js""></script>
 
 	<script type="text/javascript" >
 		$.fn.tp$.gio.session.init.entry=function(){
@@ -43,7 +28,7 @@
 </head><body><div style="color:#666666; white-space:pre; font-family:monospace;">
 
 Readme won't display if no JavaScript language enabled in your browser.
-To display a readme, turn JavaScript on.
+To display readme, turn JavaScript on.
 
 </div>
 
@@ -71,6 +56,12 @@ EMail:					#@email@#
 
 
 O v e r v i e w
+
+
+To refresh engine for documentation, do cd and run minifier:
+
+	cd deployer
+	ruby minifier.rb
 
 
 #@title@# can be ported to database-driven site like boardspirator.com, but
@@ -212,6 +203,12 @@ A p p l i c a t i o n    A r c h i t e c t u r e
 Y o u   a r e   w e l c o m e
 </pre>
 </div>
+
+	<script	type="text/javascript">
+		jQuery.fn.tp$.gio.config.google_apps.insert_ad_div_with_script();
+	</script>
+
+
 
 </body></html>
 

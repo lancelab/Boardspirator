@@ -1,6 +1,6 @@
-/:
+/{
 
-{	"games" :
+	"games" :
 	{
 		"sokoleap_demo":
 		{
@@ -33,20 +33,6 @@
 
 	"albums" :
 	{
-		"sokoleap_demo" :
-		{
-			"dresses" :
-			{
-				"default" :
-				{
-					"rules" : "When hero advances to a box, box leaps over hero if space allows.",
-					"objective" : "Fill the targets."
-				}
-			}
-		},
-
-
-
 
 		"leappush_demo" :
 		{
@@ -127,10 +113,7 @@
 			"author" : "L. Eap"
 		}
 	}
-/:
-}
-
-/\\
+/}
 
 
 :::map

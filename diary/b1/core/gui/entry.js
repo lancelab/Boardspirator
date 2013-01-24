@@ -1,5 +1,6 @@
-(function( $ ){ 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+(function( ){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
+
 					var gstyle	=  gio.config.style;
 					var gdw		=  gio.domwrap;
 					var gde		=  gio.domwrap.elems;
@@ -35,40 +36,6 @@
 
 
 
-	/// Warns and gets user's agreement to run app on specific browser
-	var leave_if_user_declined_browser=function(){
-
-		var getout=false;
-
-		if( $.browser.msie ) {
-
-			/*
-			if(parseInt($.browser.version,9)<=version_barrier){
-				var message +=	' Internet Explorer version '+$.browser.version+".\n"+
-								recommendation+".\n"+question;
-				getout=!confirm(message);
-			} else {
-			*/
-
-			var message =	"Sorry, we have no extra time or software resources\n" +
-							"to develop for Internet Explorer or Windows 8.\n" +
-							"We cannot guarantee " + gio.description.title + " will run in this browser.\n" +
-							"Fire Fox, Chrome, or WebKit browsers are recommended\n" +
-							"Would you like to continue on your own risk?";
-			getout=!confirm( message );
-
-
-		}else if(tp.core.browser.Opera){
-				//alert( recommendation_standard + '. Opera will run with simple laoyout.');
-				alert(	gio.description.title + ' was not tested and not developed in Opera.\n' + 
-						"Fire Fox, Chrome, or WebKit browsers are recommended\n"
-				);
-		}
-		return getout;
-	};
-
-
-
 
 
 
@@ -81,25 +48,13 @@
 
 		var w, ww;
 
-
-
-
-		// ** Remove missed-JS html-coded-waring which pollutes the body:
-		var to_remove=tp.core.matchChild(/^\s*Game/i,document.body);
-		if(to_remove){
-			// Fails in Safary and ?Android:
-			// document.body.removeChild(to_remove);
-			to_remove.style.display='none';
-		}
-		if(leave_if_user_declined_browser())return false;
-
-
-
-
+		//. removes JS waring which pollutes the body:
+		tp.core.remove_warning_about_absent_JS( "if no JavaScript language" );
 
 		// ** droot
 		var droot = gdr.droot=document.createElement('div');
 		droot.style.margin = 'auto';
+		droot.style.display = 'none';
 		document.body.style.backgroundColor = gstyle.rootColor;
 		document.body.appendChild(droot);
 		// Vital for debug:
@@ -199,8 +154,8 @@
 		gio.gui.init.popups();
 		gio.gui.init.create_consoles();
 
-		return true;
+		return '';
 	};
 
 
-})(jQuery);
+})();

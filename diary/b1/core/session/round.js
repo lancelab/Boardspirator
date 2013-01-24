@@ -1,10 +1,14 @@
-(function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
-					var gio		=  tp.gio    =  tp.gio   || {};
+( function () {		var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+				  	var gio		=  tp.gio    =  tp.gio   || {};
 					var tclone	=  tp.core.tclone;
 
 					var rman	=  gio.navig.in_session.round;
 					var ggp		=  gio.gui.procs;
+					var cmd		=  gio.core.def.map_format;
 
+
+					var dot_regex = /\./g;
+					var space_regex = / /g;
 
 
 	// **	Used:	to return player to start
@@ -186,6 +190,95 @@
 
 
 
+	///	Converts round's position to board-script in colorban format.
+	//	Applies some sugar to shorten simple maps.
+	rman.pos2map_script = function ( round, do_comap ) {
+
+		var table			= cmd.colorban_encoder_table;
+		var cotable			= cmd.colorban_encoder_cotable;
+		var mapcut			= cmd.sugar_soko_mapcut;
+		var TARGET_REGEX	= cmd.map_sugar.TARGET_REGEX;
+		var TARGET			= cmd.map_sugar.TARGET;
+
+			
+		var gm			= round.gm;
+
+		//:	shortcuts static data
+		var units		= gm.units;
+		var loc2lid		= gm.loc2lid;
+		var x_size		= gm.size[0];
+		var y_size		= gm.size[1];
+		var xy_exists	= gm.xy_exists;
+
+		//: dynamic data
+		var pos			= round.pos;
+		var tops		= pos.tops;
+		var lid2uid		= pos.lid2uid;
+
+		var single_symbol_cells = true;
+		var script = ":::map\n";
+
+		if( do_comap )
+		{
+			script += ":::comment: this context_akey is approximate. You may wish different one.\n";
+			script += ":::context_akey=co_" + gm.game.akey + "\n";
+		}
+
+		var board = '';
+		for( var yy = 0; yy < y_size; yy++ ) {
+
+			for( var xx = 0; xx < x_size; xx++ ) {
+
+				var tower	= loc2lid[ xx ][ yy ];
+				//. As of today, there is no autofilling empty cells in map.				
+				if( !tower ) break;
+
+				var top		= tops[ xx ][ yy ];
+				var tower_script = '';
+				var short_symbols = true;
+
+				for( var zz_virt = 0; zz_virt <= top; zz_virt++ ) {
+
+
+					var zz = do_comap ? (top - zz_virt) : zz_virt; 
+
+					var lid = tower[ zz ];
+					var uid = lid2uid[ lid ];
+					var unit = units[ uid ];
+					var symbol =	do_comap ? 
+									cotable[ unit.cname ] :
+									table[ unit.cname ];
+					if( symbol === cmd.map_sugar.GROUND ) {
+						if( top > 0 ) continue;
+						symbol = cmd.map_sugar.GROUND;
+					}
+					if( symbol.length > 1 ) short_symbols = false;
+					if( zz_virt < top || top === 0 ) tower_script += '.';
+					tower_script += symbol;
+				}
+				//. sugar
+				if( short_symbols ) tower_script = tower_script.replace( dot_regex, '' );
+				//. shortens 0X -> *
+				if( mapcut[ tower_script ] ) tower_script = mapcut[ tower_script ];
+
+				if( tower_script.length > 1 ) single_symbol_cells = false;
+				board += tower_script + ' ';
+			}
+			board += "\n";
+		}
+
+		if( single_symbol_cells ) {
+			board = board.replace( space_regex, '' ).replace( TARGET_REGEX, TARGET );
+		}
+		script += board + ":::board_end\n";
+
+		return script;
+
+	}; //rman.pos2map_script
+
+
+
+
 
 
 	//////////////////////////////////////
@@ -199,7 +292,7 @@
 	//=========================================================================
 	rman.path2texts=function(round, sugar_do_inverse_path){
 
-		var ww					= gio.core.def.map_format.playpath;
+		var ww					= cmd.playpath;
 		var DIRECTION			= ww.DIRECTION;
 		var TOKEN_SEPARATOR		= ww.TOKEN_SEPARATOR;
 		var SUBTOKEN_SEPARATOR	= ww.SUBTOKEN_SEPARATOR;
@@ -207,9 +300,9 @@
 		var text='', count=0, c;
 		var gm=round.gm;
 		var colonies=gm.cols;
-		var breed2color = gm.actors>1 && gio.core.def.map_format.breed2color;
+		var breed2color = gm.actors>1 && cmd.breed2color;
 		//gm.script.breed2color;
-		//gio.core.def.map_format.breed2color; //colorban_decoder_table
+		//cmd.breed2color; //colorban_decoder_table
 
 
 		var sugar_inverse_path = '';
@@ -280,7 +373,7 @@
 	// 		Returns:	"" if no errors Otherwise - validator_err.
 	rman.text2round = function(text_, round){
 
-		var ww					= gio.core.def.map_format.playpath;
+		var ww					= cmd.playpath;
 		var DIRECTION			= ww.DIRECTION;
 		var TOKEN_SEPARATOR		= ww.TOKEN_SEPARATOR;
 		var SUBTOKEN_SEPARATOR	= ww.SUBTOKEN_SEPARATOR;
@@ -307,7 +400,7 @@
 		//		multiactor is truing if
 		//			!!gm.actors
 		//			TOKEN_SEPARATOR is detected 
-		var color2breed	= gm.actors > 1 && gio.core.def.map_format.color2breed; //gm.script.color2breed;
+		var color2breed	= gm.actors > 1 && cmd.color2breed; //gm.script.color2breed;
 		var multiactor		= (color2breed && text.indexOf(TOKEN_SEPARATOR) > -1);
 		var splitter		= multiactor ? TOKEN_SEPARATOR : ''
 		var textArray		= text.split(splitter);

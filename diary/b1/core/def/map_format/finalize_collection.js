@@ -46,9 +46,13 @@
 			colln.maps_loaded ='success';
 			if(gio.debug)gio.cons(colln.dgame.nam+' maps decoder success');
 		}else{
+
 			var w='..no maps found in text';
 			colln.maps_loaded +=w;
-			gio.cons(w);
+			if( !colln.script.metag.defion ) {
+				//. throws warning for user
+				gio.cons(w);
+			}
 		}
 
 
