@@ -23,7 +23,8 @@
 					"rules"		:	"Hero can push box of matching color.\nMoved box carries away matching neighbours.\nBlack matches any color.\n",
 					"objective"	:	"Put available boxes on available color-matching targets."
 				}
-			}
+			},
+			"boredom" : 2
 		},
 
 
@@ -31,7 +32,8 @@
 		{
 			"nam"		:	"Monkeyban",
 			"basekey"	:	"whirly",
-			"credits"	:	{ "author" : "Konstantin Kirillov" }
+			"credits"	:	{ "author" : "Konstantin Kirillov" },
+			"boredom"	: 2
 		},
 
 
@@ -41,7 +43,8 @@
 			"basekey"						: "whirly",
 			"herd_sense"					: 0,
 			"post_definition_copathy"		: "copathy",
-			"credits"	:{	"contributor"	: "Konstantin Kirillov"  }
+			"credits"	:{	"contributor"	: "Konstantin Kirillov"  },
+			"boredom"	: 1
 		},
 
 
@@ -60,6 +63,7 @@
 			"nam"						: "Sokoban",
 			"basekey"					: "colorban",
 			"post_definition_copathy"	: "copathy",
+			"boredom"					: 1,
 
 			"credits" :
 			{
@@ -81,13 +85,48 @@
 			"post_definition_copathy"	: "copathy"
 		},
 
+		"boximaze" :
+		{
+			"nam"						: "BoxiMaze",
+			"basekey"					: "sokoban",
+			"post_definition_copathy"	: "copathy",
+
+			"credits" :
+			{
+				"author"	: "This Sokoban Variant fist known as PushMan made by Comad.",
+				"license"	: "Public Domain. De facto.",
+				"web_site"	: "http://www.arcade-museum.com/game_detail.php?game_id=9161",
+				"date"		: "1990",
+				"email"		: ""
+			},
+			"dresses" :
+			{
+				"default"	: { "objective"	: "Guide hero to its target" }
+			},
+			"comments" :
+			/"
+				The core rules are no different than in Sokoban. Game is expected to be less complex and
+				less entertaining ... possibly not worth to make a separate definition to it ...
+				The only argument is its simplicity and desire to give a credit to Comad ...
+				Unless someone discovers sudden twists and depthy maps ... can be this you?
+			/"
+		},
+
+		"co_boximaze" :
+		{
+			"nam"						: "Co-BoxiMase",
+			"basekey"					: "boximaze",
+			"post_definition"			: "pullpush_inversifier",
+			"post_definition_copathy"	: "copathy"
+		},
 
 
 		"doubleban":
 		{
 			"nam" : "Doubleban",
 			"basekey": "colorban",
-			"DEEPNESS_LIMIT": 2
+			"DEEPNESS_LIMIT": 2,
+			"boredom" : 2
 		},
 
 
@@ -95,7 +134,8 @@
 		{
 			"nam": "Colortrain",
 			"basekey": "colorban",
-			"DEEPNESS_LIMIT": 1000000
+			"DEEPNESS_LIMIT": 1000000,
+			"boredom" : 2
 		},
 
 
@@ -106,7 +146,8 @@
 			"nam"						: "PullPush",
 			"basekey"					: "colorban",
 			"post_definition"			: "pullpush",
-			"post_definition_copathy"	: "copathy"
+			"post_definition_copathy"	: "copathy",
+			"boredom" : 2
 		},
 
 
@@ -132,7 +173,8 @@
 		{
 			"nam"					: "Flockmasters",
 			"basekey"				: "flocks",
-			"post_definition"		: "pullpush"
+			"post_definition"		: "pullpush",
+			"boredom" 				: 3
 		},
 
 
@@ -154,7 +196,8 @@
 			"credits"					:
 			{				"author"	: "Konstantin Kirillov",
 							"date"		: "October 25, 2012"	
-			}
+			},
+			"boredom" 					: 2
 		},
 
 
@@ -179,7 +222,8 @@
 			"nam"						: "PullSwapPush",
 			"basekey"					: "colorban",
 			"post_definition"			: "pullswappush",
-			"post_definition_copathy"	: "copathy"
+			"post_definition_copathy"	: "copathy",
+			"boredom" 					: 3
 		},
 
 
@@ -212,7 +256,8 @@
 					"box_a"		: "swap",
 					"hero_a"	: "swap"
 				}
-			}
+			},
+			"boredom" : 2
 		},
 
 
@@ -253,7 +298,8 @@
 								"box_a" : "jump",
 								"hero_a" : "jump"
 				}
-			}
+			},
+			"boredom" : 3
 		},
 
 

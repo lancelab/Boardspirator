@@ -26,8 +26,9 @@ y y a - -
 :::title=Perfect Notch Walles :: Swap the Pairs
 
 
--:::playpath=91.16 abs symmetrical
+-:::playpath=abs symmetrical
 :::playpath=Solution
+:::solpath=91.16.7
 |b.0.d
 |b.0.d|b.0.d|a.0.u|a.0.r|a.0.r|a.0.u|a.0.u|a.0.L|a.0.L|a.0.r|a.0.r|a.0.d|a.0.d|a.0.l|b.0.u
 |b.0.u|b.0.u|b.0.l|b.0.l|b.0.u|b.0.l|b.0.l|b.0.d|b.0.d|b.0.d|b.0.R|a.0.U|b.0.R|b.0.d|b.0.r
@@ -64,8 +65,8 @@ Human. 95.16
 :::title= Bonus Notch :: Build the Line
 
 
--:::playpath=183.46
 :::playpath=Solution
+:::solpath=183.46.27
 |a.0.l|a.0.u|a.0.u
 |a.0.u|a.0.r|a.0.D|a.0.u|b.0.l|b.0.l|b.0.d|b.0.d|b.0.r|b.0.R|b.0.d|b.0.r|b.0.U|a.0.l|a.0.d
 |a.0.d|a.0.d|a.0.r|a.0.r|a.0.d|a.0.r|a.0.r|b.0.d|a.0.r|b.0.r|a.0.u|a.0.L|a.0.L|b.0.u|b.0.u
@@ -107,21 +108,21 @@ Human. 95.16
 
 :::map
 :::context_akey=co_colorban
-# # # # # # -
-# - - - # # #
-# - 1 a 2 - # 
+# # # # # - -
+# - - - # # # -
+# - 1 a 2 - # -
 # A A # B B # #
 # - - 2b - 1 - # 
 # # # - - - - #  
-- # # # # # # #
+- - # # # # # #
 :::board_end
 
 :::class=A/21/(2.1)(2.1)
 :::factory_title= Co. Free Line :: Build the Line
 :::title= Reverse. Bonus Notch :: Build the Line
 
--:::playpath=183.46
 :::playpath=Solution
+:::solpath=183.46.27
 |a.0.l|a.0.l|a.0.D|a.0.r|a.0.d|a.0.D|a.0.r|a.0.d|a.0.L|a.0.L|b.0.r|b.0.U|b.0.r|b.0.u|b.0.U
 |a.0.d|a.0.l|b.0.l|b.0.l|b.0.u|b.0.R|a.0.U|a.0.U|a.0.r|b.0.R|b.0.u|b.0.r|b.0.D|b.0.r|b.0.r
 |b.0.d|b.0.r|b.0.D|a.0.u|a.0.L|a.0.d|a.0.l|a.0.l|a.0.u|a.0.u|a.0.u|a.0.l|a.0.l|a.0.L|a.0.r
@@ -156,8 +157,8 @@ Human. 95.16
 :::factory_title= Little Spiral:: Colors, Unite
 :::title= Lost Bonus :: Colors, Unite
 
--:::playpath=291.50
 :::playpath=Hint
+:::solpath=289.50.30
 |b.0.l|b.0.l|b.0.U|b.0.l|b.0.l|b.0.l
 |a.0.d|a.0.l|a.0.l|a.0.u|a.0.l|a.0.l|a.0.u|a.0.l|a.0.u|b.0.u|a.0.u|b.0.u|a.0.r|b.0.u|a.0.D
 |a.0.l|a.0.d|b.0.d|a.0.d|b.0.d|a.0.r|b.0.d|a.0.r|b.0.r|a.0.r|b.0.r|a.0.d|b.0.r|a.0.r|b.0.d
@@ -178,7 +179,7 @@ Human. 95.16
 |b.0.r|a.0.d|b.0.r|b.0.r|a.0.d|a.0.d|a.0.r|a.0.r|a.0.u|a.0.L|a.0.d|b.0.D|a.0.l|a.0.U|a.0.U
 |a.0.d|b.0.l|a.0.l|b.0.d|b.0.d|b.0.r|a.0.r|a.0.u|a.0.r|a.0.u|b.0.U|b.0.l|b.0.u|a.0.L|a.0.L
 |a.0.r|a.0.r|b.0.u|b.0.l|b.0.u|b.0.l|b.0.l|b.0.d|b.0.d|b.0.d|b.0.R|b.0.R|b.0.R|b.0.d|b.0.r
-|b.0.r|b.0.u|b.0.L|b.0.d|b.0.l|b.0.U|b.0.l|a.0.l|a.0.l|a.0.L|a.0.u|a.0.l|a.0.D|a.0.r|a.0.r
+|b.0.r|b.0.u|b.0.L|b.0.d|b.0.l|b.0.U|b.0.l|a.0.l|a.0.l|a.0.L|a.0.u|a.0.l|a.0.D
 
 
 :::dress=colorban_vases

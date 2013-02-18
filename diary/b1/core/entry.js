@@ -10,8 +10,8 @@
 					var smode	= gio.modes.sta_tic;
 					var feeder	= gio.config.feeder;
 					var session	= gio.session;
-					var conadd	= function ( string ) { gio.cons_add( "Entry: " + string ); };			
-					var deb		= function ( string ) { gio.debly( "Entry: " + string ); };			
+					var conadd	= function ( string ) { gio.cons_add( "Core Entry: " + string ); };			
+					var deb		= function ( string ) { gio.debly( "Core Entry: " + string ); };			
 	
 
 
@@ -39,24 +39,26 @@
 		var query 			= gio.config.query;
 		var pakey			= gdp.get_preferred_album_def( 'from listed albums' ).key;
 		var akey			= query.akey || pakey;
-		var collection_ix	= query.collection_ix || 0;
-		var map_ix			= query.map_ix || 0;
+		//: depricated:		query.collection_ix, query.map_ix
+		var coll_ref		= query.ckey || query.cix || query.collection_ix || 0;
+		var map_ref			= query.mkey || query.mix || query.map_ix || 0;
 		//.	Recalls previously downloaded collection if any.
 		var downed_coll		= session.init.downed_coll;
 
 		if( downed_coll ) {
 			if( downed_coll.ref.list.akey && downed_coll.maps_loaded === 'success' ) {
 				var akey			= downed_coll.ref.list.akey;
-				var collection_ix	= downed_coll.ref.list.ix;
+				//.	was: var collection_ix	= downed_coll.ref.list.ix;
+				var coll_ref		= query.ckey || downed_coll.ckey;
 			}
 		}
-		var ww_land = 	" akey, cix, mix = \""	+
+		var ww_land = 	" akey, cref, mref = \""	+
 						akey					+ "\", \"" + 
-						collection_ix			+ "\"" + "\", \"" +
-						map_ix					+ "\". ";
-		deb( "Going to land to " + ww_land );
-		if( !gio.navig.validate_coll_map( akey, collection_ix, map_ix, 'do_land' ) ) {
-				conadd(	"Failed to land on " + ww_land + "\nAttempting pakey." );
+						coll_ref				+ "\"" + "\", \"" +
+						map_ref					+ "\". ";
+		deb( "Landing to" + ww_land );
+		if( !gio.navig.validate_coll_map( akey, coll_ref, map_ref, 'do_land', query.dkey ) ) {
+				conadd(	"Failed to land on" + ww_land + "\nAttempting preferred akey." );
 				if( !gio.navig.validate_coll_map( pakey, 0, 0, 'do_land' ) )
 				{
 					if( !gio.gui.procs.scroll_till_valid_album( 0, 'do_land' ) ) {
@@ -88,9 +90,10 @@
 	/// Warns and gets user's agreement to run app on specific browser.
 	var leave_if_user_declined_browser = function() {
 
-		var getout=false;
-		var question = "Would you still like to continue on your own risk?";
-		var immature_project = gio.description.title + " project and its games\nare incomplete draft and immature.\n\n";
+		var getout = false;
+		var question = "Would you like to continue?";
+		var immature_project	= gio.description.title + " is under development and not completely tested.\n";
+		immature_project		+= "All tests are positive, but incorrect execution is possible.\n\n";
 		var message = question;
 
 		//.. testing string = core.browser.IE = [ "8", "8" ];
@@ -100,7 +103,8 @@
 
 			var IEVersion = parseInt( core.browser.IE[1] );
 
-			if( IEVersion <= version_barrier ) {
+			if( IEVersion <= version_barrier )
+			{
 				var message =
 								"Your Internet Explorer version " + IEVersion +
 								" is too low.\n\n" + 
@@ -108,24 +112,26 @@
 								"Fire Fox, Chrome, or Mobile browsers or\npossibly " +
 								"Internet Explorer version " + version_barrier + " or higher.\n\n" +
 								question;
+				getout = !confirm( message );
 
-
-			}else{
+			}else if( IEVersion > 10 ) {
 
 				var message =	gio.description.title + " is not tested in this browser.\n" +
 								"Fire Fox, Chrome, or Mobile browsers are recommended.\n\n" +
 								question;
+				getout = !confirm( message );
+
 			}
 
-
 		}else if( tp.core.browser.Opera ) {
-				//alert( recommendation_standard + '. Opera will run with simple laoyout.');
-				var message = 	gio.description.title + ' was not tested and not developed in Opera.\n' + 
-								"Fire Fox, Chrome, or WebKit browsers are recommended\n"
+			//alert( recommendation_standard + '. Opera will run with simple laoyout.');
+			var message = 	gio.description.title + ' was not tested and not developed in Opera.\n' + 
+								"Fire Fox, Chrome, or WebKit browsers are recommended\n";
+			getout = !confirm( message );
+
+		}else{
+			getout = false; // !confirm( immature_project + question );
 		}
-
-		getout = !confirm( immature_project + message );
-
 		return getout;
 	};
 

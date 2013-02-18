@@ -520,7 +520,7 @@
 
 		//. Sets land-root as default app root:
 		//	If different, modify after insertion of core_no_jquery.js
-		self.reset_path_from_land_to_app_root( window.tp$.reset_path_from_land_to_app_root || '' );
+		self.reset_path_from_land_to_app_root( ( window.tp$ && window.tp$.reset_path_from_land_to_app_root ) || '' );
 
 
 

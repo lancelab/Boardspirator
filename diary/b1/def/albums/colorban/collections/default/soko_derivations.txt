@@ -11,6 +11,119 @@
 
 
 
+:::map=submarine
+:::context_akey=colorban
+- # # #  # 
+- # - -  # 
+# # D @  #  #  # # #
+# - - A  -  -  - - # 
+# 2 - 3B B  1C - 2 # 
+# - - -  4  -  # # #
+# # # #  #  #  # 
+:::board_end
+:::author=Konstantin Kirillov
+:::title=submarine
+:::inspired_by=puzzle-0174
+:::inspired_by_link=http://www.sokobanonline.com/play/community-puzzles/pc46/one-thousand/set-2/15680_puzzle-0174
+:::inspired_by_web_site=http://www.sokobanonline.com/
+
+:::playpath=Hint
+:::solpath=299.85.52
+ulDDlddrUdrrULrRurr
+
+dLLdlluURRllddlluuRRluurDDllddrrrruuLLrr
+ddllUdlluRURuulDDlddrrrruuLLrrddllUdlluR
+UddrrruulLDurrddlLulluRRuulDDrddrruuLrdd
+lluUluurDDllddRUUrrrddlLrULulldRRuuulDDr
+ddrruuLrdrruLdldlluUluurDDllddRRURuLddll
+uRUrrdRdLLruulldRuuulDDrddrruRuLLrddlluU
+luurDDllddRRURuLddlluRUruulDDlddrrULuurD
+
+
+
+
+
+:::map=little_submarine
+:::context_akey=colorban
+- # # #  # 
+- # - -  # 
+# # - B  # # # #  #
+# - - -  - - E -  # 
+# 1 F 2D C 3 A 4@ # 
+# - - -  5 - 6 #  #
+# # # #  # # # #
+:::board_end
+:::title=little_submarine
+:::author=Konstantin Kirillov
+:::inspired_by=puzzle-0174
+:::inspired_by_link=http://www.sokobanonline.com/play/community-puzzles/pc46/one-thousand/set-2/15680_puzzle-0174
+:::inspired_by_web_site=http://www.sokobanonline.com/
+
+:::dress=merry_crew
+:::title=Merry crew
+:::chosen
+:::rules=To be moved salor has to\nbe slightly tapped by captain
+:::objective=Put everyone to bed including captain
+:::story=After celebration a glorious fishing\nthe submarine crew needs rest,\nbut salors are so merry\nthat captain has to personally\ninvite each salir to his bed\n(including himself) ....
+
+
+:::playpath=Hint
+:::solpath=323.91.52
+uLL
+ddlllluurDldRRRRuuLLrrddlULrrurrdLLdlluu
+
+RRllddlluuRRluurDDllddrrrruuLLrrddllUdll
+uRURuulDDlddrrrruuLLrrddllUdlluRUddrrruu
+lLDurrddlLulluRRuulDDrddrruuLrddlluUluur
+DDllddRUUrrrddlLrULulldRRuuulDDrddrruuLr
+drruLdldlluRlUluurDDllddRRlUUruulDrdrdRR
+uLLdLUddlluuRRluurDDllddrUUrRdrdLLruulld
+RuuulDDrddrruruLLrddlluRlUllddRRuLuuurDD
+
+
+
+
+
+:::map=little_submarine
+:::context_akey=co_colorban
+- # # #  # 
+- # - -  # 
+# # - 2  # # # # #
+# - - @  - - 5 - # 
+# A 6 4B 3 C 1 D # 
+# - - -  E - F # #
+# # # #  # # # #
+:::board_end
+:::title=little_submarine
+:::author=Konstantin Kirillov
+:::inspired_by=puzzle-0174
+:::inspired_by_link=http://www.sokobanonline.com/play/community-puzzles/pc46/one-thousand/set-2/15680_puzzle-0174
+:::inspired_by_web_site=http://www.sokobanonline.com/
+
+:::comment=map=submarine_big_team3_generic
+
+:::dress=merry_crew
+:::dress=merry_crew
+:::rules=To be pulled salor has to\nbe slightly tapped by captain
+:::objective=Get everyone up to own work position
+:::story=After celebration a glorious fishing\nthe submarine crew got rest.\nHelp captain to bring\nevery salor to work position again ...
+
+
+:::playpath=Hint
+:::solpath=323.91.52
+DDldddLdRRuurrUrRdrruulLLdldlluulDDrdddR
+
+urrddlLLuluRlUUluurrDDlddrRRddrruuULuLLd
+RRululDrddlUUrRRuurrDDlddrUrRdrruruLdllu
+lLddlluulDDrdddRRurrdLUlLruulllUURuurrDD
+lddrUdrruulLddlluulDDrddRRdrrdLruulldDLr
+ddllluuURdrruUrruullLLddlllluurDDrddRURd
+rruUrruullLLddlllluurrDDlddrRRddrruurrRR
+ddrruLLulldllLUruullLLddRRRRurDlddrrrruu
+LLd
+
+
+
 
 :::map
 - - # # # #
@@ -36,9 +149,9 @@ Comment-End:
 ;THIS MAP IS A NON-SIGNIFICANT MODIFICATION OF 
 ;GRIGoRusha ORIGINAL MAP
 
-454
 
-:::playpath
+:::playpath=Solution
+:::solpath=454.115.40
 rDrrddddllluURRllddrrruUUruulDllulllldLD
 DDldRRRuuRRddrrruuUruLddddllluuRRllddrrr
 uUlllllddlluuuururrDDuulldlddddrruuRuuul
@@ -78,5 +191,6 @@ Comment:
 color red
 Comment-End:
 
+:::playpath=Solution Lost
 
 

@@ -1,4 +1,5 @@
-(function( ){	 	var tp   	=  $.fn.tp$      =  $.fn.tp$ || {};	
+
+( function () {	 	var tp   	=  $.fn.tp$      =  $.fn.tp$ || {};	
 					var gio  	=  tp.gio        =  tp.gio   || {};
 					var ceach   =  tp.core.each;
 
@@ -72,6 +73,18 @@
 	};
 
 
+
+
+
+	gsp.disable_GUI_state = function ( ) 
+	{
+		var sstt = session.state;
+		if( !sstt.akey__bf ) return;
+		deb(	'Disabling GUI state which is: aix, a = ' +
+				sstt.album_ix + ', ' + sstt.akey__bf
+		);
+		sstt.akey__bf = '';
+	};
 	
 
 

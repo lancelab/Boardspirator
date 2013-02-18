@@ -1,9 +1,9 @@
-(function(){		var tp		= jQuery.fn.tp$ = jQuery.fn.tp$ || {};	
+( function () {		var tp		= jQuery.fn.tp$ = jQuery.fn.tp$ || {};	
 					var gio		= tp.gio   = tp.gio   || {};
 
 					var gdef	= gio.def;
 					var cpaste	= tp.core.paste_non_arrays;
-
+					var clone	= tp.core.clone_many;
 
 
 
@@ -16,27 +16,24 @@
 		def :
 		{
 
+			metag :
+			{ 
+								galfinition :
+								{
+									//overdefine;
+									//penetrate_asingle
+									//derive_at_download
+									//listify_on_top
+								},
+								mapfinition : {},
+								common : {}
+			},
+
 			coll :
 			{
 				script :
-				{	metag :
-					{ 			//album or coll to mark an intent
-								env		:
-								{			//akey_master : query.akey,
-											//akey_advice : first_album.key,
-											//query		: query
-								},
-								link :
-								{
-											//link : query.aurl
-								},
-								list :
-								{			//exclusive : query.asingle,
-											//chosen : true,
-											//title : "External",
-											//selected : true
-								}
-					}
+				{
+					metag : {}	
 				},
 
 				ref :
@@ -73,6 +70,7 @@
 			album :
 			{
 				collections : [],
+				coll_ref : {},
 				dresses : {},
 				ref : 
 				{
@@ -97,24 +95,34 @@
 
 		play :
 		{
+			//: There is no album.
+			coll : {}
 		}
 
 	};
 
+	cpaste( tt.def.coll.script.metag, tt.def.metag );
+
 	//: defines templates for play-time objects	
-	cpaste( tt.play, tt.def );
+	cpaste( tt.play.coll, tt.def.coll );
 	cpaste( tt.play.coll,
 		{
-			//maps : [], // TODM put maps in script
-
-			//	list - last list owner
-			//		aix - index in albums
-			//		akey - akey in stemmed albums
-			//		cix - index in own album
-			
+			//	maps : [], is defined in parser
 			script : { state : {}, parsed : {}, proc : {}, heap_json : {} }
 		}
 	);
+
+
+	//. Normalizes existing metag, seed, or creates a new one.
+	tt.normalize_metag	= function ( seed ) { return cpaste( cpaste( seed, tt.def.metag ), seed ); };
+
+	//. Normalizes existing coll, seed, or creates a new one.
+	tt.normalize_coll	= function ( seed ) { return cpaste( cpaste( seed, tt.def.coll ), seed ); };
+
+	//. Normalizes existing album, seed, or creates a new one.
+	tt.normalize_album	= function ( seed ) { return cpaste( cpaste( seed, tt.def.album ), seed ); };
+
+
 
 })();
 

@@ -229,9 +229,10 @@
 
 
 
-	// **	at the moment, used 2-times in round.js and 1 in solver
-	//		this is a "light-weight" mover: no interaction check
-	gio.navig.process_move_record=function(gm, pos, steps, backward){ //TODm redundant? rid?
+	///	At the moment, used 2-times in round.js and 1 in solver.
+	//	This is a "light-weight" mover: no interaction check.
+	gio.navig.process_move_record = function ( gm, pos, steps, backward )
+	{
 			var locs = gm.locs;
 			var tops = pos.tops;
 			var lid2uid = pos.lid2uid;

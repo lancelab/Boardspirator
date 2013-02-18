@@ -11,9 +11,9 @@ gio.def.albums['flocks']={
 
 	collections : 
 			[
-				{	credits : { title	: "Beginner" } },
+				{	ckey : 'beginner', credits : { title	: "Beginner" } },
 
-				{ 	"ref" : { "folder" : { fkey	: 'wells.txt' } },
+				{ 	ckey : 'wells', "ref" : { "folder" : { fkey	: 'wells.txt' } },
 					credits : { title	: "Wells" }
 				}
 			],
@@ -27,13 +27,21 @@ gio.def.albums['flocks']={
 						rules	:	"Heros push boxes of match-color ...\nBlack matches own and any color ...\nBoxes are sticky: moved box moves its neighbours ...\n"
 					},
 
+		/* abandoned, see bugs ...  why ..
+		// not sure about inherit_from ... implemented?
+		"chickens_promoted" :
+		{
+			skip : true,
+			skin : "flockgarden"
+
+		},
+		*/
 
 		chicken_garden :
 		{
 
 			credits : {
 								"title" : "Chicken Garden",
-								"author"	: "Konstantin Kirillov",
 								"copyright"	: "Copyright (C) 2012 Konstantin Kirillov",
 								"license"	: "host-based",
 								"date"		: "December 30, 2012"
@@ -44,7 +52,7 @@ gio.def.albums['flocks']={
 			
 			//inherit_from : "flocks", //TODO fails? will work? from own game?
 			skin_key : "flockgarden",
-			rules : "Each bread has own Master to push.\nMaster's of other breed pull its species",
+			rules : "Each manager can push subject \nonly of own breed.",
 			objective : "Put each breed in to own eggs.",
 			skip : true,
 
@@ -57,6 +65,21 @@ gio.def.albums['flocks']={
 					"hero_g"	: "red_man2.png",
 					"target_g"  : "red_target.png",
 					"ground_x"  : "egg_ground.png"
+			},
+			hname_table	:{
+				hero_x	: 'grey manager',
+				hero_a	: 'blue manager',
+				hero_b	: 'green manager',
+				hero_c	: 'red manager',
+				hero_d	: 'manager',
+				hero_e	: 'manager',
+				hero_f	: 'blue manager',
+				hero_g	: 'red manager',
+				hero_h	: 'manager',
+				hero_i	: 'manager',
+				box_f	: 'blue chick',
+				box_g	: 'red chick',
+				box_h	: 'chick'
 			}
 		},
 

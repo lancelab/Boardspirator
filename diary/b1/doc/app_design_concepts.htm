@@ -83,14 +83,14 @@
 
 
 
-	S o l v e r    a n d     s a v e r   r e p r e s e n t a t i o n s
+	C a n o n.   I d e a     o f    P o s i t i o n - S t a t e    R e p r e s e n t a i o n.
 
 
 	lid2uid is too big to be used in solver which memorizes already tested states.
 
 	Another array is used to represent a state:
 
-	The name is "ordered_hids".
+	The name is "ordered_hids" or "canon".
 	Hid is a shortcut for "hole id".
 	"Hole" is another weird name. There is an array, hid2lid, exists. It contains only locations
 	which are reachable to dynamic unit in the map. Black walls are excluded.
@@ -103,16 +103,16 @@
 
 	For example, consider map:
 
-		- O S
-		W O r
+		- A B 
+		# A @
 
-	O - are boxes of color 1.   - dcolony 0
-	S - is box of color 2.      - dcolony 1 		
-	W - is a black wall.         
-	r - is a pusher of color 0. - dcolony 2 
-	- is an empty cell
+	A - are boxes of color 1.   - dcolony 0
+	B - is box of color 2.      - dcolony 1 		
+	# - is a black wall.         
+	@ - is a pusher of color 0. - dcolony 2 
+	-   is an empty cell
 	
-	"dcolony" stand for "dynamic colony".
+	"dcolony" stands for "dynamic colony".
 
 	Assume, for a moment, that there are no grounds and targets.
 	Lids are mapped to this board this way:
@@ -121,46 +121,74 @@
 		3 4 5
 
 	Hids are:
-		0 1 2
-		  3 4
+		0 1 3
+		  2 4
+	(Wall is omitted, it is not dynamic.)
 
-	hid2lid is = [ 0, 1, 2, 4, 5 ]
+	hid2lid is = [ 0, 1, 4, 2, 5 ]
 
 	Unit ids are
 		  0 1
 		2 3 4
 
-	There are three dynamic colonies: O, S, and r.
+	There are three dynamic colonies: A, B, and @.
 	Then, finally, the position can be mapped as "ordered hids":
 
-		1 3 2 4
+		(1 2) (3) (4)
 
-	or like (1 3) (2) (4),
+	or simply 1 2 3 4,
 	where hids are grouped by dcolony.
-	Hids inside the colony are always in ascending order.
-	Because of (1 3) and (3 1) is the same position.
+	Hids inside the colony are always put in ascending order, so
+	distribution (2 1) will never happen, hence representation of
+	distribution for given dcololy is always unique.
 	   		
 
 	The terms "ordered_hids", "solver node", "pstate", "playstate", "canon" mean the same in the program.
-	"Solver node" sounds like a part of some tree, and indeed, such tree is built when solver does a search.
+	"Solver node" sounds like a part of some tree, and indeed, there is a tree:
+	"nodes_repository" in adapter.js which keeps discovered canons in following manner:
+
+	nodes_repository
+		is an array,
+		for given example, its dimension is 4,
+		non-leaf elements point to array of next nodes,
+		leafs denote existing canons.
+
+		Leafs do not keep canons. Leafs keep boolean "true" value and are used to mark discovered canons.
+		Such tree is built when solver does a search.
+
 	For above example, this tree is organized in following natural order:
 
 		0 1 ...
 		...
 
 		1 2 ...
-		...
+		...     1 2 3 4	
 		...
 		....
 		0 1 2 
 		         0 1 2 3
 		         0 1 2 4
-		0 1 3 
-		         0 1 3 2
-		         0 1 3 4
-		...
+		....
 		
-		Here, the leaf nodes "0 1 2 3", "0 1 2 4" are "ordered hids".
+		Here, the leaf nodes "0 1 2 3", "1 2 3 4" are canons.
+
+
+
+
+	C a n o n    R e p r e s e n t a t i o n   V a r i a n t s
+
+		As of Version 1.191, there are 3 modes for Solver in <a href="../core/config/description.js">gio.solver.config</a>:
+			
+			CANON_STRING
+			CANON_ARRAY
+			CANON_LINKED_LIST (default)
+
+		String representation looks like "0.1:2:3" for canon (0,1)(2)(3).
+		In CANON_ARRAY, canons are stored in spheres array.
+		In CANON_STRING, canons are stored in spheres array as strings.
+		In CANON_LINKED_LIST, elements of spheres array and nodes_repository are coinsided, but
+		canon is stored as a address-path to itself in nodes_repository.
+		
 
 </div>
 

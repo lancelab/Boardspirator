@@ -31,7 +31,11 @@
 			var round = rounds[rix];
 			var sr = stash.rounds[rix]={};
 			sr.path = gio.navig.in_session.round.path2texts(round).path;
-			var pstate = gm.solver.adapter.createdNode(round.start_pos, null, null, 'make pstate only');
+
+			//.	Apparently bug: refers to nodes-repository, but supplies string instead of repository
+			//var pstate = gm.solver.adapter.createdNode(round.start_pos, null, null, 'make pstate only');
+
+			var pstate = gm.solver.adapter.createdNode( round.start_pos );
 			sr.pstate = tclone(pstate);
 			//sr.current_pos_ix = round.current_pos_ix; //TODmm 
 		}

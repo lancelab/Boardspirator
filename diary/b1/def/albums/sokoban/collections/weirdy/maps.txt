@@ -10,6 +10,123 @@
 /}
 
 
+
+:::map
+:::context_akey=sokoban
+:::title=Lone Target
+-##############-
+-#--------$-#-#-
+##-##$$$$#$---#-
+#--#------$-$$#-
+#@-$$$$$#--#$.#-
+#--#-----#----#-
+##-#$$$-$-#--##-
+-#-$-$-#$--#-#--
+-#-$-$--$-$-$#--
+-#--$-#$$--$-#--
+-##---$-$##--#--
+--############--
+:::board_end
+
+
+:::playpath
+ruuurrrrrrrRlllDullDRdRDulLDurrdLdRdRluu
+ulluulllddddddddrdrruLuuRlddrUrrRUrrDrDr
+UUUlululuRUrrrd
+
+:::co_playpath
+ulllURdrdrdrUUU
+lDlDllURllUluurRddLdlluluuuuuuuurrrddrrd
+ddrRuRuLulldDLrdDRuRDrrdDrrrRllllllldddl
+
+
+
+:::map
+:::context_akey=sokoban
+:::title=Lone Target
+-##############-
+-#--------$-#-#-
+##-##$$$$#$---#-
+#--#------$-$-#-
+#@-$$$$$#--#$-#-
+#--#-----#---!#-
+##-#$$$-$-#--##-
+-#-$-$-#$--#-#--
+-#-$-$--$-$-$#--
+-#--$-#$$--$-#--
+-##---$-$##--#--
+--############--
+:::board_end
+
+
+
+:::playpath
+ruuurrrrrrrRlllDullDRdRDulLDurrdLdRdRluu
+ulluulllddddddddrdrruLuuRlddrUrrRUrrDrDr
+UUUlululuRUrrrddd
+
+:::co_playpath
+uuulllURdrdrdrUUU
+lDlDllURllUluurRddLdlluluuuuuuuurrrddrrd
+ddrRuRuLulldDLrdDRuRDrrdDrrrRllllllldddl
+
+
+
+:::map
+:::title=Not All Roads Lead to Rome
+:::context_akey=sokoban
+---##########
+---#--------#
+---#-######-#
+---#-#----#-#
+--##-##-###-#
+--#-$--$----#
+--#--#--###-#
+--#--#####--#
+--#@-##-!#--#
+--#--##-##--#
+--#-$--$----#
+--##-#--##--#
+---#-#####--#
+---#--------#
+---##########
+:::board_end
+
+
+:::map
+:::title=Simple Boximaze
+:::context_akey=co_sokoban
+- - - # # # # # # # # # 
+# # # # - - - - - - - # # 
+# # # # - - # - - # - $ $ # 
+# ! - - - # - # # - # - - x # 
+# # # # - # - - - # - - $ # 
+- - - # - - $ - $ # - - # # # 
+- - - - # # # - - - - # 
+# # # # # # # - - $ # 
+# # # # # # # # # # 
+:::board_end
+
+
+Simple Boximaze
+
+---#########
+---#-------###         
+####--#--#-$-##
+#@---#-##-#$-!#    
+####-#---#-$-##
+---#---$-#--## 
+---####-$--##
+------#-$-##
+------#####
+
+
+
+
+
+
+
+
 Discussion:
 
 ;Question: http://sokoban.maxforum.org/2012/08/20/how-to-build-a-non-reusable-path/#post1
@@ -23,7 +140,7 @@ Discussion:
 ----------####-----------------####----------
 ---------#-$--#################--$-#---------
 #########--$-#-----------------#-$--#########
-#@--------#-$--###############--$-#-------$.#
+#@--------#-$--###############--$-#--------!#
 ##########--$-#---------------#-$--##########
 ----------####-----------------####----------
 
@@ -37,7 +154,7 @@ Title = Bidirectional onetime valves demo.
 
 :::playpath=Demo
 rrrrrrrruruRRdLddRUrrurrrrrrrrrrrrrrrrdr
-dRRuLuuRDrrdrrrrrrR
+dRRuLuuRDrrdrrrrrrrr
 
 
 
@@ -68,6 +185,18 @@ but any number of times if to start from right to left.
 :::title=Onedirection-onetime colorized
 :::author=Konstantin Kirillov
 :::license=Public Domain. August 26, 2012.
+
+
+
+
+
+
+
+
+
+
+............... Sokoban maps follow ................
+
 
 
 

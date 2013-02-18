@@ -1,9 +1,110 @@
+
 ( function () {	 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio  =  tp.gio    =  tp.gio   || {};
 
-					var deb  =  function ( string ) { if( gio.debug )	gio.cons_add( "Validate Map: " + string ); };			
+					var deb		= function ( string ) { if( gio.debug )	gio.cons_add( "Virtual Landifying Map: " + string ); };			
+					var conadd	= function ( string ) { gio.cons_add( "Virtual Landifying Map: " + string ); };			
 
 
+
+
+
+
+	///	Boundarifies map.
+	//	Builds an internal area information.
+	//		Before building "holes" and "exists",
+	//		calculates wall boundaries for each y-row.
+	var boundarify = function ( map, left_wall, right_wall,  loc2lid, lid2uid )
+	{
+
+		var msize_x = map.size[0];
+		var msize_y = map.size[1];
+		var tops	= map.pos.tops;	
+		var units	= map.units;
+
+
+		var internal_cells_number = 0;
+
+		//.	detects is map boundaryness,
+		//	if it is, sets map_boundary to cname of a wall (usually wall_x),
+		//	if not, sets to false.
+		var map_boundary	=	map.parsed.wall_boundary_encountered && 
+								map.script.decoder_table[ map.game.rule_helpers.map_boundary ];
+								deb( 'Map boundarness = ' + map_boundary ); //TODM  slow if scrolling maps
+
+		for( var yy = 0; yy < msize_y; yy++ ) {
+			
+			var left	= boundarify_line(	1,	yy, msize_x, map_boundary, loc2lid, lid2uid, tops, units );
+			var right	= boundarify_line(	-1,	yy, msize_x, map_boundary, loc2lid, lid2uid, tops, units );
+			if( map_boundary && left === -1 && right === msize_x )
+			{
+				deb( "Walled map but walless line " + yy + ".\n" +
+					'"Map: "' +  map.title + "'."
+				);
+			}
+
+			//. normalizes
+			if( left >= right ) right = left + 1;
+			left_wall[ yy ]		= left;
+			right_wall[ yy ]	= right;
+			internal_cells_number += right - left - 1;
+		}
+		// Good debug:
+		// c onsole.log('Left/right walls:', left_wall, right_wall); 	
+
+		//: helps to build metrics
+		map.metrics.internal_cells_number = internal_cells_number;
+	};
+
+
+
+	/// Does job for single line
+	//	for lef or right directions for right or left walls correspondingly.
+	var boundarify_line = function ( direction, yy, msize_x, map_boundary, loc2lid, lid2uid, tops, units )
+	{
+
+		var left = -1;
+
+		/// Loops via directionless variable xx_v.
+		for( var xx_v = 0; xx_v < msize_x; xx_v++ )
+		{
+			var xx = direction < 0 ? msize_x - xx_v - 1 : xx_v;
+
+			var tower = loc2lid[ xx ][ yy ];
+			var block = false;
+
+			//. as of today, there is no auto completion of unfilled cells in map
+			if( !tower )
+			{
+
+				//. Continues in "opening" area.
+				if( left < 0 && map_boundary ) continue;
+				block = true;
+
+			} else {
+				var top = tops[ xx ][ yy ];
+
+				//. HARD CODED ASSUMPTION THAT GROUND OCCUPIES THE z=0 cell
+				for( var zz = 1; zz <= top; zz++ )
+				{
+					var unit = units[ lid2uid[ tower[ zz ] ] ];
+					if( unit.block || ( map_boundary && unit.cname === map_boundary ) )
+					{
+						block = true;
+						break;
+					}
+				}								
+			}
+			if( block )
+			{
+				left = xx_v;
+			}else{
+				if( !map_boundary || left > -1 ) break;
+			}
+		}
+		if( map_boundary && left < 0 ) left = msize_x;
+		return ( direction > 0 ? left : msize_x - left - 1 );
+	};
 
 
 
@@ -15,7 +116,8 @@
 	//				available to place dynamic units.
 	// Returns:		true in success case,
 	//				false if failed. Sets map.load='invalid' in this case.	
-	var normalize_map=function(map){
+	var normalize_map = function( map )
+	{
 
 		var game = map.game;
 		var roof = game.rule_helpers.map_roof;
@@ -31,6 +133,7 @@
 		var units = map.units;
 		var locs = map.locs;
 		var loc2lid = map.loc2lid;
+		var msize_x = map.size[0];
 
 		// ** shortcuts flat indices
 		var exists=map.xy_exists = [];
@@ -39,64 +142,11 @@
 		var hid2loc = map.digest.hid2loc = [];
 		var lid2hid = map.digest.lid2hid = [];
 
+		var internal_blocking_units = 0;
 
-		// =========================================
-		// Wall boundary.
-		// Before building "holes" and "exists",
-		// calculate wall boundaries for each y-row:
-		// -----------------------------------------
-
-		//.	detects is map boundaryness,
-		//	if it is, sets map_boundary to cname of a wall (usually wall_x),
-		//	if not, sets to false.
-		var map_boundary =	map.parsed.wall_boundary_encountered && 
-							map.script.decoder_table[ game.rule_helpers.map_boundary ];
-		deb( 'Map boundarness = ' + map_boundary ); //TODM  slow if scrolling maps
-		var left_wall = [];
-		var right_wall = [];
-		for(var yy=0; yy<map.size[1]; yy++){
-			var left = -1;
-			var right = map.size[0];
-
-			if( map_boundary ) {
-				for(var xx = 0; xx < map.size[0]; xx++ ) {
-					var tower = loc2lid[ xx ][ yy ];
-					//. as of today, there is no auto completion of unfilled cells in map
-					if( !tower ) continue;
-					var top = tops[ xx ][ yy ];
-
-					for( var zz=1; zz <= top; zz++){
-
-						var unit = units[lid2uid[tower[zz]]];
-						if( unit.cname === map_boundary ){
-							if(left < 0) left = xx;
-							right = xx;
-						}
-					}
-				}
-				//TODO this protection is insufficient
-				if( left === -1 && right === map.size[0] ) {
-										map.load = 'invalid';
-										gio.cons_add(	"Walled map but walless line " + yy + ".\n" +
-														"Map: " +  map.title
-										); //TODm Map validation must be separate from normilizer.
-										return false;
-				}
-			}
-
-
-			left_wall[yy] = left;
-			right_wall[yy] = right;
-		}
-		// Good debug:
-		// c onsole.log('Left/right walls:', left_wall, right_wall); 	
-		// -----------------------------------------
-		// Wall boundary end
-		// =========================================
-
-
-
-
+		var left_wall		= [];
+		var right_wall		= [];
+		boundarify ( map, left_wall, right_wall,  loc2lid, lid2uid );
 
 		for(var xx=0; xx<map.size[0]; xx++){
 
@@ -105,6 +155,9 @@
 
 			var lx = loc2lid[xx] = loc2lid[xx] || [];
 			for(var yy=0; yy<map.size[1]; yy++){
+
+				var forbidden_xx = ( xx <= left_wall[ yy ] || xx >= right_wall[ yy ] ); //TODM why not to do continue when forbidden_xx?
+
 				//.	..recall lx[yy] is an array, never 0.
 				if(!lx[yy]){
 					// Forbidden position:
@@ -126,7 +179,11 @@
 							var uid = lu[lid];
 							var unit = map.units[uid];
 							//. absorbs unconditionally blocking units like wall_x
-							if( unit.block ) ex[yy]=false;
+							if( unit.block )
+							{
+								ex[yy]=false;
+								if( !forbidden_xx ) internal_blocking_units += 1;
+							}
 
 
 							// ** makes sure dynamic units are on top
@@ -140,7 +197,7 @@
 									if( activity.active || activity.passive ){
 
 										map.load = 'invalid';
-										gio.cons_add(	"Broken map. Two dynamic units in one cell.\n" +
+										conadd(	"Broken map. Two dynamic units in one cell.\n" +
 														"Map: " +  map.title +
 														" Unit below: " + unit_below.id + ", " +
 														"Unit above: " + unit.id + ", " +
@@ -162,6 +219,7 @@
 							}
 						}
 					}
+					//. Recall ... unconditionally blocking walls were already washed out from ex.
 					if(ex[yy]){
 						if( xx <= left_wall[yy] || xx >= right_wall[yy] ){
 							ex[yy] = false;
@@ -177,9 +235,9 @@
 							}
 						}
 					}
-				}
-			}
-		}
+				} //.. loc2lid[xx][yy] exists ...
+			} // yy
+		} // xx
 		/*
 		c onsole.log('map.locs=',map.locs);
 		c onsole.log('map.loc2lid=',map.loc2lid);
@@ -188,7 +246,12 @@
 		// Good debug:
 		// c onsole.log('constructed: hid2loc=',hid2loc);
 
+		//: helps to build metrics
+		map.metrics.internal_blocking_units = internal_blocking_units;
+
 		var corners = gio.solver.bays_builder(map); 
+		gio.session.reinit.metrify( map );
+
 		map.load = 'valid';
 		return true;
 	};
@@ -199,13 +262,9 @@
 	//	returns:	false if validation failed
 	gio.session.reinit.landify_map = function( gm ) {
 
-		if( gio.debug ) {
-			var coll = gm.collection;
-			gio.cons_add(	'Landifying map. m,c,a = ' + gm.ix + ', ' +
-							coll.ref.list.ix + ', ' + coll.ref.list.akey );
-		}
-
+		var coll = gm.collection;
 		var game = gm.game;
+		deb( 'Begins ... m,c,a = ' + gm.ix + ', ' + coll.ref.list.ix + ', ' + coll.ref.list.akey );
 
 		if( gm.load === 'invalid') {
 			gio.session.reinit.messages =
@@ -245,9 +304,12 @@
 		}
 		gm.load = 'finalized';
 
-		gio.debly(	'Finalized map m,c,a = ' + gm.ix + ', ' + gm.collection.ref.list.ix + ', ' + gm.collection.ref.list.akey );
+		gio.debly(	'Finalized map: validated, boardified, titled: m,c,a = ' +
+					gm.ix + ', ' + gm.collection.ref.list.ix + ', ' + gm.collection.ref.list.akey
+		);
 		return true;
 	};
+
 
 
 

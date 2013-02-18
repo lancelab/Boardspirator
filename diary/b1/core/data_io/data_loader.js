@@ -9,8 +9,9 @@
 					var gdef	=  gio.def;
 					var gdp		=  gdef.procs;
 					var dio		=  gio.data_io;
-					var deb		=  function ( string ) { gio.debly( "Dataloader: " + string ); };			
-					var conadd	=  function ( string ) { gio.cons_add( "Dataloader: " + string ); };			
+					var session	=  gio.session;
+					var deb		=  function ( string ) { gio.debly( "DataLoader: " + string ); };			
+					var conadd	=  function ( string ) { gio.cons_add( "DataLoader: " + string ); };			
 
 
 
@@ -20,91 +21,125 @@
 	//				Prepares means:
 	//					creates cseed,
 	//					passes data from metag to cseed,
-	//					appends or replaces cseed in album if requested and not defion.
+	//					appends or replaces cseed in album if requested and not gafion.
 	//
 	//	Input:		coll_text - opt. Skips download and parses this text.
 	//	Returns:	loaded-collection in success, othewise false-eqv
 	//
 	dio.download_gamion = function ( metag, coll_text ) {
 
-		var tdef		= gdef.templates.def;
-		var tplay		= gdef.templates.play;
-
-		var query		= metag.env.query;
-		var link		= metag.link.link;
-		var link		= metag.defion ? exp_url ( link ) : exp_url ( link, query && query.aurl );
-		metag.link.link = link;
-		deb( "Preparing gamion. " + ( link && ( ' link = ' + link ) ) );
-
-
-
 		//. creates collection seed
-		var cseed = gdp.normalize_cseed();
-		cseed.ref.list.chosen	= metag.list.chosen;
-		cseed.ref.link.link		= link;
-		cseed.ref.jwon			= metag.jwon || query && query.jwon; //TODM redundant. Make one master metag.
-		cpaste( cseed.script.metag, metag );
+		var cseed			= gdp.normalize_cseed();
+		metag				= cpaste( cseed.script.metag, metag );
+		var galfin			= metag.galfinition;
+		var mapfin			= metag.mapfinition;
+		var gafion			= galfin.gafion;
+		var common			= metag.common;
+		var query_is_source	= metag.common.query_is_source;
+		var query_credits	= mapfin.query_credits;
+		var cref			= cseed.ref;
 
 
-		if( query ) {
+		//:	fixes possible inconsistenses
+		var cinsert 		= gafion ? 0 : metag.mapfinition.cix_to_insert1;
+		var link			= metag.common.link;
+		if( !coll_text && !link )
+		{
+			conadd('Possibly typo: link and gamion-text are missed ...');
+			return false;
+		}
 
+		deb( "Prepares gamion." + ( ( link && ( ' Link = ' + link ) ) || '' ) );
+
+		cref.list.cix_to_insert1	= cinsert;
+		cref.list.chosen			= metag.mapfinition.chosen;
+		cref.list.title				= mapfin.title;
+		cref.link.link				= link;
+		cref.jwon					= metag.common.jwon;
+
+		if( query_credits )
+		{
 			/// Transfers credits from query to cseed if any.
 			var ww = cseed.credits;
 			ceach( core.tooltipify_array, function (index, key) {
-				core.propertify( ww, key, query[ key ] );
+				core.propertify( ww, key, query_credits[ key ] );
 			});
-
-			cseed.ref.list.title = metag.list.title || "From Query";
-
 		}
 
-		var parent_akey			= metag.env.akey_master || metag.env.akey_advice;
-		var add_coll_into_album	= !!parent_akey && gio.def.albums[ parent_akey ];
+
+		var parent_akey	= mapfin.akey_master || mapfin.akey_advice;
+		//.				album is available
+		var a_available	= !!parent_akey && gio.def.albums[ parent_akey ];
 
 
-		if( !metag.reuse_collection && ( metag.defion || !add_coll_into_album || coll_text ) ) {
 
-			var downcoll = cpaste( cseed, tplay.coll );
+//		var fresh_cseed	= !cinsert && 
+//				(	common.user_entered_gamion_text && coll_text ) ||
+//					gafion ||
+//					!a_available || coll_text
+//				);
 
+
+		if( gafion || ( !cinsert && ( !a_available || coll_text ) ) )
+		{
+
+			var downcoll = cpaste( cseed, gdef.templates.play.coll );
+
+
+		
+		//	do_merge	= cinsert || !(  gafion || !a_available || coll_text );
+		//	do_merge	= cinsert || (  !gafion && a_available && !coll_text );
+		//	!gafion &&             (         cinsert        ||               ( add_coll && !coll_text )     )
+		//	( cinsert      ||               (  !gafion &&  a_available && !coll_text )     )
 		}else{
 
-			if( metag.reuse_collection ) {
-
-				var gs = gio.getgs();
-				var parent_akey = gs.akey;
-				var cix = metag.cix_to_insert1 - 1;
-				deb( "Reusing album's collection a, c = " + parent_akey + ', ' + cix );
+			if( cinsert )
+			{
+				var gs			= gio.getgs();
+				var parent_akey	= gs.akey;
+				var cix			= cinsert - 1;
+				deb( "Reuses album's collection a, c = " + parent_akey + ', ' + cix );
 			}else{
-				deb( "Adding coll-seed into album. akey = " + parent_akey );
+				deb( "Adds coll-seed into album. akey = " + parent_akey );
 			}
 
 			//. prevents state change for middle-play downloads
-			var merged_album = gdp.derive_album ( parent_akey, cseed, !query );
+			cseed.ref.list.preserve_gui_state = !query_is_source;
+
+			var merged_album = gdp.derive_album ( parent_akey, cseed );
 			if( !merged_album )
-			{	conadd( "Failed add coll-seed to akey " + parent_akey );
+			{	conadd( "Failed adding coll-seed to akey " + parent_akey );
 				return false;
 			}
 			var ww = merged_album.collections;
-			var downcoll = metag.reuse_collection ? ww[ cix ] : ww[ ww.length - 1 ];
+			var downcoll = cinsert ? ww[ cix ] : ww[ ww.length - 1 ];
 		}	
 
 
 		/// Decodes cfile ( downloads if requested before ).
 		if( coll_text ) {
 
-			deb( 'Decoding gamion ... ' );
+			deb( 'Decodes gamion ... ' );
 			downcoll.maps_loaded = 'began';
 			downcoll.script.source_text = coll_text;
 			gio.core.def.map_format.decode( downcoll );
-			deb( 'Finished maps decoder. akey =' + downcoll.ref.list.akey + '.' );
+			deb( 'Gamion decoder finished. akey = ' + downcoll.ref.list.akey + '.' );
 			var success =
 				downcoll.maps_loaded === 'success' ||
 				downcoll.script.state.definitions_processed;
-
 		}else{
 
 			//. dowloads coll
 			var success	= dio.download_cfile ( downcoll );
+		}
+
+
+		//if( query_is_source && gafion && !success ) {
+		if( query_is_source && !success ) {
+			var halted		= gio.description.title + ' is halted.';
+			conadd( 'Failed download gafion from ' + link );
+			session.state.halted = true;
+			alert( halted );
 		}
 
 		return success ? downcoll : false;
@@ -123,10 +158,10 @@
 	dio.download_cfile = function( coll ) {
 
 		var url;
-		var coll_ix				= coll.ref.list.ix;
-		var folder				= coll.ref.folder;
-		var ref_db				= coll.ref.db;
-		var ownhost				= gdp.detect_ownhost_url( coll );
+		var coll_ix		= coll.ref.list.ix;
+		var folder		= coll.ref.folder;
+		var ref_db		= coll.ref.db;
+		var ownhost		= gdp.detect_ownhost_url( coll );
 
 		if( folder.full ) {
 
@@ -227,46 +262,6 @@
 
 
 
-	dio.download_defion = function ( arg ) {
-
-			//:	available arguments
-			var url					= arg.url;
-			var query				= arg.query;
-			var listify_on_top		= arg.listify_on_top;
-			var penetrate_asingle	= arg.penetrate_asingle;
-			var derive_at_download	= arg.derive_at_download;
-
-			var session				= gio.session;
-			var halted				= gio.description.title + ' is halted.';
-
-
-			var metag =
-			{ 	defion : true,
-				env	:
-				{	query				: query,
-					listify_on_top		: listify_on_top, //TODM bad coding
-					derive_at_download	: derive_at_download,
-					penetrate_asingle	: penetrate_asingle,
-				},
-				link :
-				{	link : url
-				},
-				list :
-				{	chosen : !!query,
-					title : query && "External"
-				}
-			};
-			deb( "Downloading defion " + url );
-			var downed_alb = dio.download_gamion ( metag );
-			if( !downed_alb ) {
-				conadd( 'Failed download defion from ' + url );
-				session.state.halted = true;
-				alert( halted );
-			}
-			return downed_alb;
-
-	};
-
 
 
 	///	Loads:	maps from user-entered text
@@ -281,7 +276,7 @@
 		colln.script.source_text	+= 	"\n" + colln.maps.length + "\n\n" + text;
 
 		colln.maps_loaded = 'began';
-		if( gio.debug ) gio.cons( 'began to add map to collection ... ' );
+		if( gio.debug ) gio.cons( 'adding map to coll ... ' );
 
 		//. parses new maps
 		gio.core.def.map_format.decode ( colln );
@@ -293,7 +288,7 @@
 			var gm = colln.maps[ colln.maps.length-1 ];
 
 			deb( 'Validates added-from-text-map ...' );
-			if( gio.session.reinit.landify_map( gm ) ) {
+			if( session.reinit.landify_map( gm ) ) {
 				deb( 'Lands on added-from-text-map ...' );
 				gm.title = 'My Edited. ' + gm.title;
 				failed = !gio.navig.landify_and_land_map( gm, 'do_land' );

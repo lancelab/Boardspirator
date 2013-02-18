@@ -9,6 +9,8 @@
 					var ggp		=  gio.gui.procs;
 					var gsp		=  gio.session.procs;
 				
+					var conadd		= function ( string ) { gio.cons_add( "Landing Tasks: " + string ); };			
+					var deb			= function ( string ) { if( gio.debug) conadd( string ); };			
 
 
 
@@ -17,7 +19,7 @@
 
 	
 	/// Validates map and lands if requested
-	gio.navig.landify_and_land_map = function( gm, do_land ) {
+	gio.navig.landify_and_land_map = function( gm, do_land, dkey ) {
 
 			var coll	= gm.collection;
 			var list	= coll.ref.list;
@@ -28,9 +30,9 @@
 
 			var validated = session.reinit.landify_map( gm );
 			if( !validated )
-			{	gio.debly(	"Cannot land m,c,a = " + gm.ix + ', ' +
-							cix + ', ' + akey + "\n" +
-							(session.reinit.messages || '' ) + "\n"
+			{	deb(	"Cannot land m,c,a = " + gm.ix + ', ' +
+						cix + ', ' + akey + "\n" +
+						(session.reinit.messages || '' ) + "\n"
 				);
 			}
 			if( !do_land || !validated ) return validated;
@@ -42,6 +44,7 @@
 			gsp.do_memorize_GUI_state	( akey, null, cix, gm.ix );
 			// gsp.debstate('memorized');
 			album.title					= ggp.get_master_title_from_session_state();
+			ggp.virtual_reselect_dress	( gm, dkey );
 			gio.gui.unhide_map			( gm ); //TODO validation ... what if this GUI fails ?
 
 			return true;
@@ -68,7 +71,7 @@
 			var state_aix	= ( start_aix + i) % len;
 			playalb			= session.alist[ state_aix ];
 			var mess		= " scroll to album " + state_aix + " " + playalb.title;
-			if( gio.debug ) gio.cons_add( "Doing " + mess );
+			deb( "Doing " + mess );
 		
 			var found_coll_ix1	= gsp.scroll_till_landable_coll(
 					playalb.collections.ix, playalb.collections,
@@ -76,12 +79,12 @@
 			);
 
 			if( found_coll_ix1 ) return true;
-			if(gio.debug) gio.cons_add( "Failed " + mess );
+			deb( "Failed " + mess );
 		}
 
 		var ww = 'No games available';
 		// TODO poor design: gio.domwrap.popups.modal_message_popup.show( { innerHTML : ww } );
-		gio.cons_add( ww );
+		conadd( ww );
 		return false;
 	};
 
@@ -106,12 +109,12 @@
 			if( !coll.ref.link.link || (download_external_if_first && !i) ) { //TODM rid
 				var success = gio.navig.validate_coll_map( coll.ref.list.akey, coll.ref.list.ix, null, do_land ); 
 			}else{
-				if( gio.debug ) gio.cons_add( "Skipped scroll of external coll" );
+				deb( "Skipped scroll of external coll" );
 			}
 			if( success ) return ( current_coll_ix + 1 );
 		}
 		
-		gio.cons_add( "Scroll failed for colls at akey = \"" + collections[0].ref.list.akey + "\"" );
+		conadd( "Scroll failed for colls at akey = \"" + collections[0].ref.list.akey + "\"" );
 		return false;
 	};
 	
@@ -125,9 +128,10 @@
 	gio.navig.validate_coll_map = function(
 
 			akey,
-			cix,
-			map_ix,
-			do_land
+			cref,
+			map_ref,
+			do_land,
+			dkey
 	){
 
 
@@ -138,7 +142,7 @@
 			if( lista ) {
 				var album_ix = lista.ix;
 			}else{
-				gio.debly( 'Missed akey ' + akey + ' in GUI-album-set');
+				deb( 'Missed akey ' + akey + ' in GUI-album-set');
 				return false;
 			}
 		}else{
@@ -147,31 +151,39 @@
 		}
 
 		/// Looks up collection
-		if( cix || cix === 0  ) {
-			if( lista.collections.length <= cix || cix < 0) return false;
-		}else{
-			cix = lista.collections.ix;
+		var coll = ( typeof cref === 'string' ) && cref && lista.coll_ref[ cref ];
+		if( !coll )
+		{
+			if( typeof cref === 'number' )
+			{
+				var cix = cref;
+				if( lista.collections.length <= cix || cix < 0) return false;
+			}else{
+				var cix = lista.collections.ix;
+			}
+			var coll = lista.collections[ cix ];
 		}
-		var coll = lista.collections[ cix ];
-
 
 
 		/// Validates collection download
 		if( !coll.maps_loaded ) gio.data_io.download_cfile( coll );
 		if(	coll.maps_loaded !== 'success' ) {
-			gio.debtp( 'Failed maps load. Message: ' + coll.maps_loaded );
+			deb( 'Failed maps load. Message: ' + coll.maps_loaded );
 			return false;
 		}
 
 
-		//: Prevalidates map
-		var map_requested	= map_ix || map_ix === 0;
-		if( !map_requested ) map_ix = coll.map_ix;
-		var gm = coll.maps[ map_ix ];
-		if( !gm ) return false;
+		//: Searches map
+		if( !map_ref && map_ref !== 0 )	map_ref = 0;
+		var gm = ( typeof map_ref === 'string' ) ? coll.maps_ref[ map_ref ] : coll.maps[ map_ref ];
+		if( !gm )
+		{
+			deb( 'Unable to find map by map_ref = ' + map_ref + '.' );
+			return false;
+		}
 
 
-		var finalized = gio.navig.landify_and_land_map( gm, do_land );
+		var finalized = gio.navig.landify_and_land_map( gm, do_land, dkey );
 
 		if( !finalized ) return false;
 		return coll;

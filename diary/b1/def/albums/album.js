@@ -6,15 +6,22 @@
 	
 			// //\\// Adds album to postponed load
 
-			var wrap = gio.data_io.add_defions;
-			gio.data_io.add_defions = function ()
+			var wrap = gio.data_io.add_gafions;
+			gio.data_io.add_gafions = function ()
 			{
 				wrap();
-				arg		=	{};
-				arg.url	=	tp.core.app_webpath_noindex + '/' +
-							gio.config.defpaths.ALBUMS_DEF_PATH +
-							'/album.jwon.txt',
-				gio.data_io.download_defion ( arg );
+				gio.data_io.download_gamion (
+				{
+					galfinition :
+					{	penetrate_asingle	: true, 
+						gafion				: true
+					},
+					common :
+					{	link :	tp.core.app_webpath_noindex + '/' +
+								gio.config.defpaths.ALBUMS_DEF_PATH +
+								'/album.jwon.txt'
+					}
+				});
 			};
 
 

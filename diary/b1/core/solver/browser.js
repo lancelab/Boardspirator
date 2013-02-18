@@ -1,9 +1,9 @@
-(function(){	 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function () {	 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio  =  tp.gio    =  tp.gio   || {};
 
 					var solver			= gio.solver;
 					var config			= solver.config;
-					var CANON_IS_STRING	= config.CANON_IS_STRING;
 					var NODES_LIMIT		= config.NODES_LIMIT;
 
 
@@ -11,17 +11,17 @@
 
 
 	/// creates spoints browser
-	solver.create_browser = function( map_solver, gm_ ) {
+	solver.create_browser = function ( map_solver, gm_ ) {
 
 		var msol			= map_solver;
 
 		//: localizes indices
 		var ww				= solver.POSPOINT;
-		var STATE			= ww.STATE;
 		var PARENT_SPHERE	= ww.PARENT_SPHERE;
 		var PARENT_ANGLE	= ww.PARENT_ANGLE;
 		var DIRECTION		= ww.DIRECTION;
 		var HID				= ww.HID;
+		var UNIT_HID		= ww.UNIT_HID;
 
 		//: localizes shortcuts:
 		var gm				= gm_;
@@ -49,8 +49,8 @@
 		msol.browser.do_move = function( 
 											direction,
 											sphere_spot,
-											add_title_to_gm_playpaths
-
+											add_title_to_gm_playpaths,
+											do_metrify_optimal
 		){
 
 
@@ -127,12 +127,12 @@
 			var paths = msol.do_expand_path( 
 							spoint,
 							[bp.sphere, bp.angle],
-							'inject_into_session',
-							add_title_to_gm_playpaths	
+							( do_metrify_optimal ? 'do_metrify_optimal' : 'only inject_into_session' ),
+							add_title_to_gm_playpaths
 			);
 
 			gio.solver_cons_add(
-					' p-point = '	+ bp.sphere + '.' + bp.angle + ' l-index='+spoint[HID] +
+					' p-point = '	+ bp.sphere + '.' + bp.angle + ' l-index='+spoint[UNIT_HID] +
 					' parent = '	+ spoint[PARENT_SPHERE] + '.' + spoint[PARENT_ANGLE] +
 					' dir='			+ spoint[DIRECTION] + "\n" +
 					":::playpath=from solver\n" + paths.path + "\n\n" +
@@ -151,40 +151,56 @@
 		//				inject_into_session - opt, modifies round's path,
 		//				add_title_to_gm_playpaths - opt,
 		//						adds path to gm.playpaths with this title
-		msol.do_expand_path = function( spoint, slocation, inject_into_session, add_title_to_gm_playpaths ) {
+		msol.do_expand_path = function( spoint, slocation, inject_into_session, add_title_to_gm_playpaths )
+		{
 
 			var pos		= tp.core.tclone( msol.startPos ); //TODm waste of pos: make one pos per solver
 			var len		= slocation[0]; //spoint[OWN_SPHERE];
 			var moves	= [];
-			for( var ss=0; ss<len; ss++ ) {
+
+			// c ccc( 'new spoint=', spoint );
+
+			for( var ss = 0; ss < len; ss++ ) {
 
 				// Good debug:
-				/*
-				c onsole.log( (len-ss-1)+' '+spoint[HID]+'-'+
-							' dir='+spoint[DIRECTION]+': '+spoint[PARENT_SPHERE] + '.'+ spoint[PARENT_ANGLE] +
-							'->'+slocation[0]+'.'+slocation[1], spoint);
-				*/
+				
+				// c ccc(	(len-ss-1)+' '+spoint[UNIT_HID]+'-'+ ' dir='+spoint[DIRECTION] +
+				//		', sphere.angle='+spoint[PARENT_SPHERE] + '.'+ spoint[PARENT_ANGLE] +
+				//		' top? sphere.angle='+slocation[0]+'.'+slocation[1]);
 
-				moves[len-ss-1]= { hid : spoint[HID], action : { direction : spoint[DIRECTION] } } ;
-				spoint = spheres[spoint[PARENT_SPHERE]][spoint[PARENT_ANGLE]];
+				//. seems crashes in linked-list:
+				//, spoint);
+				
+				moves[len-ss-1]= { hid : spoint[UNIT_HID], action : { direction : spoint[DIRECTION] } } ;
+
+				spoint = spheres[ spoint[ PARENT_SPHERE ] ][ spoint[ PARENT_ANGLE ] ];
+				if( !spoint ) break;
 			}
-			//c onsole.log('hid moves=',moves);
+
+
+			// c ccc( 'do_expand_path: moves=' , moves );
 			var uid_moves = [];
+
 
 			for(var ss=0; ss<len; ss++) {
 
-				var loc0 = hid2loc[moves[ss].hid];
-				var xx = loc0[0];
-				var yy = loc0[1];
-				var zz = pos.tops[xx][yy];
-				//c onsole.log(' moving. loc0=',loc0, ' topsx=',pos.tops[xx]);
-				var lid = loc2lid[xx][yy][zz];
-				var uid = pos.lid2uid[lid];
+				var hid		= moves[ss].hid;
+				var loc0	= hid2loc[hid];
+				var xx		= loc0[0];
+				var yy		= loc0[1];
+				var zz		= pos.tops[xx][yy];
+				var lid		= loc2lid[xx][yy][zz];
+				var uid		= pos.lid2uid[lid];
+
+		
+				// c ccc(	'Browser: Moving unit=' + units[uid].hname + ' uid=' + uid +
+				//			' from? hid=' + hid + ' from lid=' + lid +
+				//			' from xx,yy,zz' + xx + ', ' + yy + ', ' + zz
+				//);
 
 
 				moves[ss].action.uid = uid;
 
-				// c onsole.log(' Moving unit='+units[uid].hname+' uid='+uid );
 				var new_move = gio.do_process_move(
 						moves[ss].action.direction,
 						gm,
@@ -208,8 +224,26 @@
 			var path_text	= path_texts.path;
 			var co_path		= path_texts.co_path;
 
-			if( inject_into_session ){
-				gio.gui.procs.inject_path_from_text(path_text, null, 'stay_at_the_end');
+			if( inject_into_session )
+			{
+				if( gio.getgs().gm === gm )
+				{
+					gio.gui.procs.inject_path_from_text( path_text, null, 'stay_at_the_end' ); //TODM do validation
+					var round = gio.getgs().round;
+				}else{
+
+					var round = gm.rounds[ gm.rounds.ix ];
+					var w_validator_msg = gio.navig.in_session.round.text2round( path_text, round ); //TODM do validation
+				}
+
+				if( 'do_metrify_optimal' === inject_into_session )
+				{
+					gm.metrics.optpath		= gm.metrics.optpath || {};
+					gm.metrics.optpath.p	= round.moves.length;
+					gm.metrics.optpath.i	= round.interacts;
+					gm.metrics.optpath.r	= round.peer_change;
+					gio.session.reinit.metrify( gm );
+				}
 			}
 
 
@@ -217,10 +251,16 @@
 			// //\\ adds path to gm.playpaths
 			if( add_title_to_gm_playpaths ) {
 
-				var ww = playpath = "playpath=" + add_title_to_gm_playpaths + "\n";
-				gio.solver_cons_add(
-					":::" + ww + path_text + (co_path && ("\n:::co_" + ww + co_path ))
-				);
+				if( 'do_metrify_optimal' === inject_into_session )
+				{
+					var ww = gm.metrics.optpath;
+					var directive = 'optpath=' + ww.p + '.' + ww.i + '.' + ww.r + "\n";
+				}else{
+					var directive = "playpath=" + add_title_to_gm_playpaths + "\n";
+				}
+				var ww = directive;
+
+				gio.solver_cons_add( ":::" + ww + path_text + (co_path && ("\n:::co_" + ww + co_path )) );
 				gm.playpaths = gm.playpaths || [];
 				gm.playpaths.push({	title : add_title_to_gm_playpaths,
 									value : path_text,
@@ -229,7 +269,7 @@
 
 				// Reflect solution on playpaths dom-element if
 				// user is on the same map:
-				if(gio.getgs().gm === gm) gio.gui.reset_playpaths_select_el( gm );
+				if( gio.getgs().gm === gm ) gio.gui.reset_playpaths_select_el( gm );
 
 			} // \\// adds path to gm.playpaths
 

@@ -6,6 +6,7 @@
 
 					// //\\//	JWON - JSON Wrapper Object Notation.
 					//			Wrapper around Colorban standard map format.
+					//			Version 10. Jan. 26, 2013.
 					//			Version 9. Jan. 21, 2013.
 					//			Version 8. Jan. 17, 2013.
 
@@ -82,13 +83,16 @@
 		var raw						= '';
 
 
-		/// Returns "/{" to ease jwon text detection at file beginning.
-		self_jwon.detect_format = function () {
-			var beginner = jwon_marker + JWON_INITIALIZATION;
-			var beginner_re = new RegExp ( '^(\s\n\r)*' + beginner );
-			var ww = { beginner : beginner, beginner_re : beginner_re };
-			return ww;
+		//	//\\ Detects jwon at the beginning of text
+		var ww						= jwon_marker + JWON_INITIALIZATION;
+		var format_detector_re		= new RegExp ( '^(\s\n\r)*' + ww );
+		/// Returns true if text begins with jwon neglecting leading spacers.
+		self_jwon.detect_format = function ( text )
+		{
+			return format_detector_re.test( text )
 		};
+		//	\\// Detects jwon at the beginning of text
+
 
 
 		///	Parses

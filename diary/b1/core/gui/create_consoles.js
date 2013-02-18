@@ -1,4 +1,5 @@
-(function(){ 		var tp		=  jQuery.fn.tp$  =  jQuery.fn.tp$ || {};	
+
+( function () { 	var tp		=  jQuery.fn.tp$  =  jQuery.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var gstyle	=  gio.config.style;
 					var gdw		=  gio.domwrap;

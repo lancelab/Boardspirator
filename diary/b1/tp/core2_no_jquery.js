@@ -81,10 +81,10 @@
 
 	//	/.\	AVAILABLE CREDIT KEYS
 	var tooltipify_data			=	'title=description=version=version_name=maturity=';
-	tooltipify_data				+=	'author=editor=influenced_by=contributed_by=contributed=';
+	tooltipify_data				+=	'author=editor=influenced_by=inspired_by=contributed_by=contributed=';
 	tooltipify_data				+=	'copyright=license=license_text=license_link=';
 	tooltipify_data				+=	'created=date=creation_date=publication_date=';
-	tooltipify_data				+=	'download=web_site=source=';
+	tooltipify_data				+=	'download=web_site=inspired_by_web_site=source=inspired_by_link=';
 	tooltipify_data				+=	'copied_from=copied_on=copy_date=bundling_date=';
 	tooltipify_data				+=	'email=developer_comment=comments=';
 
@@ -98,7 +98,7 @@
 	var tooltipify_desrc_data	=	'description=maturity=language=usage_requirements=developer_comment';
 
 	//. adds <a> tag
-	var anchorize_data			=	'download=source=web_site=copied_from=license_link=';
+	var anchorize_data			=	'inspired_by_web_site=download=source=web_site=copied_from=inspired_by_link=license_link=';
 
 	var tooltipify_array		=	tooltipify_data.split('=');
 	var tooltip_array			=	tooltip_data.split('=');

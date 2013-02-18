@@ -1,0 +1,90 @@
+/{
+	"credits" :
+	{
+		/, title          Monkey Solutions
+		/, author         Bs. Solver.
+		/, license        Public Domain
+		/, date           Feb. 6, 2013
+		/. email          beaverscript(a)landkey(.)net
+	}
+
+/}
+
+
+:::map
+:::akey=sokoban
+:::ckey=microban1
+:::map_index=0
+:::board_end
+
+:::playpath=Opt. 26.7.
+dlUrrrdLullddrUluRUddrruLL
+
+:::map_end
+
+
+
+:::::::::::::::::::::::::::::
+:::map
+:::akey=sokoban
+:::ckey=microban1
+:::map_index=1
+:::board_end
+
+:::comment=much harder than :::playpath=Opt. 16.3. for Sokoban
+:::playpath=Opt. 38.7.
+rddLdlluUdRdrruuulullDDuurrdrdLuullddR
+
+
+
+:::map_end
+:::::::::::::::::::::::::::::
+
+
+:::::::::::::::::::::::::::::
+:::map
+:::akey=sokoban
+:::ckey=microban1
+:::map_index=2
+:::board_end
+
+:::comment=proposed 44.16.
+:::playpath=No Solution
+ruuLLLLddlluuRRurDDurrrddlUruLLLLddlluuR
+RdrU
+
+:::map_end
+:::::::::::::::::::::::::::::
+
+
+
+
+:::::::::::::::::::::::::::::
+-:::map
+:::akey=sokoban
+:::ckey=microban1
+:::map_index=
+:::board_end
+
+:::playpath=Opt. 
+
+
+:::map_end
+:::::::::::::::::::::::::::::
+
+
+:::::::::::::::::::::::::::::
+-:::map
+:::akey=sokoban
+:::ckey=microban1
+:::map_index=
+:::board_end
+
+:::playpath=Opt. 
+
+
+:::map_end
+:::::::::::::::::::::::::::::
+
+
+

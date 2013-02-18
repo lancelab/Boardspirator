@@ -24,11 +24,11 @@
 # # # #
 :::board_end
 :::title=Clumsy Helper.
-:::author=Konstantin Kirillov
 :::influenced_by=David W. Skinner. Microban II, Map 1. Source: http://users.bentonrea.com/~sasquatch/sokoban/m2 Site: http://users.bentonrea.com/~sasquatch/sokoban/
 :::date=October 31, 2012.
 
-:::playpath=Opt. 84-30
+:::playpath=Optimal
+:::optpath=84.30.18
 |a.0.U|a.0.U|a.0.U|b.0.L|b.0.r|b.0.d|b.0.l|b.0.l|a.0.l|a.0.d|b.0.u|b.0.r|b.0.D|b.0.u|b.0.l
 |b.0.d|b.0.d|b.0.r|a.0.r|a.0.r|b.0.U|b.0.l|b.0.u|b.0.u|b.0.r|a.0.r|a.0.d|a.0.L|a.0.L|a.0.r
 |b.0.D|b.0.l|b.0.d|b.0.r|a.0.u|a.0.l|a.0.l|a.0.u|a.0.u|a.0.u|a.0.r|a.0.D|a.0.D|a.0.l|a.0.d
@@ -47,13 +47,13 @@
 :::title=Comparing GhostJump with Microban II Map 1
 :::comments=this map is included solely for comparision purpose which we consider a fair use
 
-:::playpath=Opt.44-16.
+:::optpath=44.16.7
 dllUdrruLLUluurDDlDRdrruLdldlUUUrDldRuuu
 ulDD
 
 
 
-:::map
+:::map=triangle_table
 # # # #
 # - b #
 # - B # #
@@ -64,13 +64,12 @@ ulDD
 # # # #
 :::board_end
 :::title=Triangle Table
-:::author=Konstantin Kirillov
 :::influenced_by=David W. Skinner. Microban II, Map 1. Source: http://users.bentonrea.com/~sasquatch/sokoban/m2 Site: http://users.bentonrea.com/~sasquatch/sokoban/
 :::data=October 31, 2012
 
 
-
-:::playpath=Sol. 121-40
+:::playpath=Solution
+:::solpath=121.40.24
 |a.0.l
 |a.0.u|b.0.l|b.0.d|b.0.d|b.0.d|b.0.d|b.0.r|a.0.R|a.0.l|a.0.u|a.0.u|a.0.R|a.0.D|a.0.l|a.0.d
 |a.0.d|b.0.u|a.0.r|b.0.l|b.0.u|b.0.u|b.0.u|b.0.r|b.0.D|b.0.D|b.0.l|b.0.d|b.0.R|b.0.l|a.0.U
@@ -83,7 +82,7 @@ ulDD
 
 
 
-:::map
+:::map=no_dish_for_ghost
 # # # #
 # - b #
 # - B # #
@@ -94,11 +93,10 @@ ulDD
 # # # #
 :::board_end
 :::title=No Dish for Ghost
-:::author=Konstantin Kirillov
 :::influenced_by=David W. Skinner. Microban II, Map 1. Source: http://users.bentonrea.com/~sasquatch/sokoban/m2 Site: http://users.bentonrea.com/~sasquatch/sokoban/
 :::data=October 31, 2012
 
-:::playpath=Opt. 106-37
+:::optpath=106.37.24
 |a.0.l|a.0.u|a.0.R|a.0.l|a.0.u|a.0.u|a.0.R|a.0.D|b.0.D|a.0.l|b.0.D|b.0.l|a.0.d|b.0.d|b.0.R
 |b.0.l|a.0.d|b.0.d|a.0.r|a.0.U|a.0.U|b.0.r|b.0.r|b.0.u|a.0.U|b.0.L|b.0.r|b.0.d|b.0.l|b.0.l
 |a.0.l|a.0.d|b.0.u|b.0.r|b.0.D|b.0.u|b.0.l|b.0.d|b.0.d|b.0.r|a.0.r|a.0.r|b.0.U|b.0.l|b.0.u
@@ -122,7 +120,6 @@ ulDD
 # # # #
 :::board_end
 :::title=Departured Micro. Get Together.
-:::author=Konstantin Kirillov
 :::data=November 9 2012
 
 
@@ -133,6 +130,59 @@ ulDD
 |a.0.r|a.0.u|a.0.u|a.0.L|a.0.r|b.0.r|b.0.D|b.0.r|b.0.d|a.0.l|a.0.d|a.0.l|a.0.l|a.0.d|a.0.d
 |a.0.r|a.0.U|a.0.l|b.0.L|b.0.u|b.0.l|b.0.d|b.0.r|a.0.u|a.0.R|a.0.l|b.0.U|a.0.u|a.0.R|a.0.l
 |a.0.u|a.0.u|a.0.r|a.0.D
+
+
+
+:::map
+:::context_akey=ghostjump
+# # #  #  #  # #
+# - -  1  -  - #
+# - B  2B -  - # 
+# - 1b 2A 1B - # 
+# - A  2  A  - # 
+# - a  #  -  - #  
+# # #  #  #  # #
+:::board_end
+-:::title=Intersection2
+:::title=Intersection
+
+:::playpath=114.28
+|b.0.l|b.0.d|b.0.r|b.0.r|b.0.d|b.0.l|a.0.l|a.0.u|a.0.u
+|a.0.u|a.0.u|a.0.r|a.0.r|a.0.r|a.0.d|a.0.r|a.0.d|a.0.d|a.0.L|a.0.r|b.0.u|b.0.U|a.0.u|a.0.u
+|b.0.r|a.0.u|b.0.u|a.0.l|b.0.u|a.0.l|a.0.l|a.0.l|a.0.d|a.0.d|a.0.r|a.0.R|a.0.l|a.0.l|a.0.d
+|a.0.d|a.0.r|a.0.U|a.0.R|a.0.l|a.0.l|a.0.u|a.0.u|a.0.u|a.0.r|a.0.r|a.0.r|b.0.l|b.0.D|b.0.D
+|b.0.r|a.0.r|a.0.d|b.0.u|a.0.d|b.0.d|a.0.L|a.0.r|a.0.d|b.0.d|a.0.d|b.0.d|a.0.l|a.0.U|a.0.d
+|b.0.l|b.0.L|a.0.u|b.0.r|b.0.u|a.0.l|a.0.U|a.0.U|b.0.l|b.0.l|b.0.d|a.0.d|a.0.d|a.0.r|b.0.R
+|b.0.l|b.0.u|b.0.u|b.0.R|b.0.l|b.0.u|a.0.r|a.0.u|a.0.u|a.0.u|a.0.l|a.0.L|a.0.r|b.0.r|b.0.D
+|b.0.u|b.0.r|b.0.d|a.0.l|a.0.d|a.0.l|b.0.L|b.0.r|b.0.d|a.0.l|a.0.u|a.0.R|a.0.l|a.0.d|a.0.d
+
+
+
+
+
+
+:::map
+:::context_akey=ghostjump
+# #   #  #  #  #   #
+# -   -  1  -  -   #
+# -   B  2B -  -   # 
+# .h1 1A 2  1A .h2 # 
+# -   B  2A -  -   # 
+# -   b  1a A  -   #  
+# #   #  #  #  #   #
+:::board_end
+-:::title= Alive Intersection 30
+:::title= Alive Intersection
+
+:::playpath=87.30
+|b.0.l|a.0.l|b.0.r|b.0.u|a.0.l|a.0.u|a.0.u|a.0.u|b.0.l|a.0.u|a.0.r|a.0.r|a.0.r|a.0.d|a.0.D
+|a.0.u|a.0.u|a.0.l|a.0.l|a.0.l|a.0.d|b.0.u|b.0.r|a.0.d|a.0.R|a.0.R|a.0.l|a.0.l|b.0.D|b.0.u
+|b.0.r|b.0.r|b.0.d|b.0.L|b.0.d|b.0.d|a.0.d|a.0.d|a.0.r|b.0.l|b.0.u|a.0.r|a.0.U|a.0.U|b.0.R
+|b.0.l|b.0.u|b.0.u|a.0.U|a.0.r|b.0.R|b.0.D|b.0.l|b.0.d|b.0.d|a.0.r|a.0.d|a.0.L|a.0.L|a.0.r
+|a.0.r|a.0.d|a.0.d|a.0.L|a.0.L|a.0.r|b.0.r|b.0.U|b.0.d|b.0.l|b.0.u|b.0.R|a.0.U|a.0.d|b.0.R
+|b.0.d|b.0.r|b.0.u|a.0.l|a.0.u|a.0.l|b.0.L|b.0.r|b.0.u|a.0.l|a.0.d|a.0.R|a.0.l|a.0.u|a.0.u
+
+
 
 
 
@@ -148,7 +198,6 @@ ulDD
 :::board_end
 
 :::title=Departured Micro. Ghost to Bottom.
-:::author=Konstantin Kirillov
 :::data=November 9 2012
 
  94-30
@@ -229,8 +278,8 @@ ulDD
 :::objective=Deliver pizza to dishes and cooks to their chairs
 
 
-116.39
 :::playpath=Hint
+:::solpath=116.40.29
 |b.0.r|a.0.d|b.0.r|a.0.R|a.0.l|b.0.l|b.0.d|b.0.L|b.0.u|b.0.R|b.0.d
 |b.0.r|b.0.u|a.0.u|a.0.r|a.0.u|b.0.L|b.0.r|b.0.d|b.0.l|b.0.l|b.0.u|a.0.r|a.0.d|a.0.r|b.0.R
 |b.0.u|b.0.r|a.0.d|a.0.L|a.0.r|b.0.D|b.0.l|a.0.u|a.0.l|b.0.r|b.0.d|a.0.l|a.0.l|a.0.d|a.0.d
@@ -247,7 +296,7 @@ ulDD
 
 
 
-:::map
+:::map=mockers
 :::context_akey=ghostjump
 # # # #
 # - - #
@@ -260,8 +309,8 @@ ulDD
 :::board_end
 :::title=Mockers
 
-144.48
 :::playpath=Hint
+:::solpath=144.48.35
 |a.0.u|a.0.l|a.0.l|b.0.r|b.0.u|b.0.u|b.0.l|b.0.l|b.0.u
 |a.0.l|a.0.d|b.0.u|b.0.r|b.0.D|b.0.l|b.0.d|b.0.d|b.0.R|b.0.l|b.0.u|a.0.d|a.0.r|b.0.R|b.0.R
 |a.0.U|a.0.U|b.0.R|a.0.r|b.0.d|a.0.r|b.0.r|a.0.d|b.0.u|b.0.L|b.0.L|b.0.d|a.0.u|a.0.r|a.0.r
@@ -295,7 +344,7 @@ Mockers
 
 
 
-:::map
+:::map=mockers_unleased
 :::context_akey=ghostjump
 # #  #  #
 # -  b  # # # #
@@ -309,8 +358,8 @@ Mockers
 :::title=Mockers Unleased
 
 
-176.61
 :::playpath=Hint
+:::solpath=176.60.42
 |a.0.U|a.0.r|a.0.u|a.0.u|a.0.l|a.0.D|a.0.l|a.0.l|a.0.l|a.0.d|b.0.D|b.0.l|b.0.d|b.0.d|b.0.R
 |b.0.l|b.0.u|a.0.d|a.0.r|b.0.R|b.0.R|a.0.U|a.0.U|b.0.R|b.0.d|b.0.L|b.0.r|b.0.u|b.0.l|b.0.l
 |a.0.d|a.0.l|a.0.d|b.0.d|b.0.d|b.0.r|b.0.U|b.0.r|a.0.r|b.0.r|a.0.r|b.0.u|a.0.r|b.0.u|a.0.U
@@ -362,7 +411,7 @@ Mockers
 
 
 
-:::map
+:::map=share_the_tip
 # # #  # 
 # - -  # #  # # 
 # - A  # -  - # #
@@ -376,8 +425,8 @@ Mockers
 -:::title=Corrupt Ghost
 -:::context_akey=corrupt_ghost
 
-247.86
 :::playpath=Hint
+:::solpath=247.86.59
 |b.0.r|b.0.r|b.0.r|b.0.D|b.0.l|b.0.d|b.0.R
 |b.0.R|a.0.U|a.0.r|a.0.u|a.0.u|a.0.l|a.0.D|a.0.L|a.0.L|b.0.r|b.0.r|b.0.d|b.0.L|b.0.r|b.0.u
 |b.0.R|a.0.l|a.0.u|a.0.l|b.0.R|b.0.l|b.0.d|b.0.d|b.0.d|b.0.r|b.0.U|b.0.r|b.0.r|b.0.u|b.0.L

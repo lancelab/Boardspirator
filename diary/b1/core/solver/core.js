@@ -1,19 +1,24 @@
-(function(){	 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function () {	 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio  =  tp.gio    =  tp.gio   || {};
 
 					var solver			= gio.solver;
 					var config			= solver.config;
-					var CANON_IS_STRING	= config.CANON_IS_STRING;
 					var NODES_LIMIT		= config.NODES_LIMIT;
 
-					/// sets indices in spoint
+					/// Sets indices in spoint,
+					//	perhaps should be in gio.solver.config.
 					solver.POSPOINT = {
 							STATE			: 0,
-							PARENT_SPHERE	: 1,
-							PARENT_ANGLE	: 2,
-							DIRECTION		: 3, //spatial dir in map?
-							HID				: 4
+							HID				: 1,
+							PARENT_SPHERE	: 2,
+							PARENT_ANGLE	: 3,
+							DIRECTION		: 4, // action.direction at Aug 8, 2012 app. version
+							UNIT_HID		: 5,
+							UPLINKS			: -1 // defined dynamically
 					};
+
+
 
 
 
@@ -34,6 +39,16 @@
 		var PARENT_ANGLE	= ww.PARENT_ANGLE;
 		var DIRECTION		= ww.DIRECTION;
 		var HID				= ww.HID;
+		var UNIT_HID		= ww.UNIT_HID;
+
+		//: canon representation
+		var CANON_REPRESENTED_AS	= config.CANON_REPRESENTED_AS;
+		var wCON					= gio.solver.CONSTANTS;
+		var CANON__STRING			= CANON_REPRESENTED_AS	=== wCON.CANON_STRING;
+		var CANON__ARRAY			= CANON_REPRESENTED_AS	=== wCON.CANON_ARRAY;
+		var CANON__LINKED_LIST		= CANON_REPRESENTED_AS	=== wCON.CANON_LINKED_LIST;
+		solver.POSPOINT.UPLINKS		= CANON__LINKED_LIST ? 2 : 0;
+		
 
 		//: flags
 		var forbid_contacts;
@@ -77,7 +92,7 @@
 		self.browser_mode = false;
 		self.never_ran = true;
 		var adapter = self.adapter = solver.Adapter( self, gm );
-
+		var createdNode = adapter.createdNode;
 
 
 
@@ -90,7 +105,8 @@
 									dont_slice_time_			// search without interruptions
 		){
 
-			if(	gm.game.gkey !== 'sokoban' && gm.game.gkey !== 'colorban' &&
+			if(	gm.game.gkey !== 'sokoban' && gm.game.gkey !== 'colorban' && gm.game.gkey !== 'co_sokoban' && 
+				gm.game.gkey !== 'boximaze' && 
 				!gio.config.query.luckedin ) {
 				NODES_LIMIT = 300000;
 			}
@@ -128,21 +144,27 @@
 			//	validations in code ... especially for correctnes of 
 			//	generated hid array and parsed map-board
 			try {
-				spheres[0][0][STATE] = adapter.createdNode( startPos, 0, 0, alive_nodes );
-			}catch (err) {
-				gio.cons_add(	"zeor pos. " + 
+
+				if( CANON__LINKED_LIST )
+				{
+					spheres[0][0] = createdNode( startPos, 0, 0, alive_nodes );
+				}else{
+					spheres[0][0][STATE] = createdNode( startPos, 0, 0, alive_nodes );
+					spheres[0][0][UNIT_HID] = -1;			// sane?: 32 bits
+				}
+
+			}catch (error) {
+				gio.cons_add(	"setting zero position: " + 
 								( typeof error === 'object' && error !== null ? error.message : '' + error )
 				);
 				//.	we can return here because nothing is yet done, and
 				//	all flags are set to beginning
 				return;
 			}
-
 												// time limits estimations for sane maps:
 			spheres[0][0][PARENT_SPHERE] = -1;	// max = 16 bits
 			spheres[0][0][PARENT_ANGLE] = -1;	// 32 bits
 			spheres[0][0][DIRECTION] = 0;		// 3 bits
-			spheres[0][0][HID] = -1;			// 32 bits
 
 			//. establishes filling sphere
 			//spheres[1]=[];
@@ -181,6 +203,7 @@
 		self.resume_memory = function () {
 
 			spheres = self.spheres = [];
+			//. null indicates absense of parent node.
 			alive_nodes = [];
 			gio.solver.create_browser( self, gm );
 			phase = { sphere : 0, angle : 0 };	
@@ -210,7 +233,7 @@
 					self.browser.position.sphere = solutions[0][0];
 					self.browser.position.angle = solutions[0][1];
 					//. adds to the heap and modifies round's path:
-					self.browser.do_move(null, null, 'Just Solved');
+					self.browser.do_move( null, null, 'Just Solved', 'do_metrify_optimal' );
 				}
 			}
 
@@ -318,10 +341,8 @@
 					//	validations in code ... especially for correctnes of 
 					//	generated hid array and parsed map-board
 //					try {
-
-						var canon	= CANON_IS_STRING ? adapter.str2canon( spoint[STATE] ) : spoint[STATE];
 						// TODF iteratesPushlessZone(canon);
-						unitsIterator( canon );
+						unitsIterator( spoint );
 /*
 					}catch (error) {
 
@@ -382,13 +403,13 @@
 		// ==============================================
 		// Spawns four planar directions for search
 		// ==============================================
-		var spaceIterator=function(unit, pos, unit_hid){
+		var spaceIterator=function(unit, pos, unit_hid ) {
 			for(var x=-1; x<2; x++){
 				for(var y=-1; y<2; y++){
 					if( x !== 0 && y !== 0 ) continue;
 					if( x === 0 && y === 0 ) continue;
 					var direction = y !==0 ? 2*y : x;
-					var new_move = doHandleMove(  direction, pos, unit, unit_hid  );
+					var new_move = doHandleMove(  direction, pos, unit, unit_hid );
 					if(new_move) gio.navig.process_move_record(gm, pos, new_move.steps, 'backward');
 
 					// This breaks completeness of angle iteration:
@@ -405,19 +426,25 @@
 		// Loops via actors, one in a time and
 		// fires space search for each actor
 		// ==============================================
-		var unitsIterator = function(canon){
+		var unitsIterator = function( spoint ) {
 
-			// Unwrap canon
-			var pos = adapter.doReStorePosition(canon);
+			if( CANON__LINKED_LIST )
+			{
+				var pos	= adapter.canode2pos( spoint );
+			}else{
+				var canpos	= spoint[STATE];
+				canpos		= CANON__STRING && adapter.str2canon( canpos );
+				var pos		= adapter.doReStorePosition( canpos );
+			}
 
-			for(var ii=0; ii<gm.actor_cols.length; ii++){
+			for( var ii=0; ii<gm.actor_cols.length; ii++ ) {
 				var col = gm.actor_cols[ii];
-				var did = col.did;
 				var cunits=col.units;
-				for(var uix=0; uix<cunits.length; uix++){
-					spaceIterator(  cunits[uix], pos, canon[did][uix]  );
-					// This breaks completeness of angle iteration:
-					// if(spaceIterator(cunits[uix], pos, canon[did][uix])) return true;	
+				for( var uix=0; uix < cunits.length; uix++ ) {
+					var unit = cunits[ uix ];
+					var lid = pos.uid2lid[ unit.id ];
+					var unit_hid = lid2hid[ lid ];
+					spaceIterator( unit, pos, unit_hid );
 				}
 			}
 		};
@@ -433,10 +460,9 @@
 		// ==============================================
 		var doHandleMove = function ( direction, pos, unit, unit_hid ) {
 
-			// This breaks completeness of angle iteration:
-			//if(self.inactive_bf) return false;
 
 			//c onsole.log('core: making move. unit.id='+unit.id+' '+unit.hname+' pos=',pos);
+
 
 			// Validates move
 			var new_move = gio.do_process_move(direction, gm, pos, unit, null, null, forbid_contacts);
@@ -447,36 +473,46 @@
 
 			var growing = spheres[phase.sphere+1];
 			var growing_angle = growing.length;
-				try {
-			var new_canon = adapter.createdNode(new_move.pos, phase.sphere+1,  growing_angle,  alive_nodes);
-				}catch (err) {
-					gio.cons_add(	"Handling move. sphere ix, angle ix= " + phase.sphere + ' ' + phase.angle + ' ' + 
+
+
+			try {
+					var new_canon = createdNode( new_move.pos, phase.sphere+1,  growing_angle,  alive_nodes );
+			}catch (error) {
+					gio.cons_add(	"Solver: Error: In doHandleMove: sphere ix, angle ix= " +
+									phase.sphere + ' ' + phase.angle + ' ' + 
 									( typeof error === 'object' && error !== null ? error.message : '' + error )
 					);
+					throw "Solver failed";
 					//tp$.deb(error);
-				}
+			}
 
 
 
 
 			if( !new_canon ) return new_move;
 
-			spawned_states_number += 1;
 
-			// Does state bookeeping
-			growing[ growing_angle ]=[
-					new_canon,
-					phase.sphere,
-					phase.angle,
-					// * is an action.direction at Aug 8, 2012 app. version:
-					direction,
-					unit_hid
-			];
+			/// Does state bookeeping
+			if( CANON__LINKED_LIST )
+			{
+				var new_canode = new_canon;
+			}else{
+				var new_canode = [];
+				new_canode[ STATE ] = new_canon;
+			}
+			new_canode[ PARENT_SPHERE ]	= phase.sphere;
+			new_canode[ PARENT_ANGLE ]	= phase.angle;
+
+			new_canode[ UNIT_HID ]		= unit_hid;
+			new_canode[ DIRECTION ]		= direction;
+
+			growing[ growing_angle ] = new_canode;
+			spawned_states_number += 1;
 
 
 			// Checks solution
-			if( game.won_or_not(gm, new_move.pos) ){
-				solutions.push([phase.sphere+1, growing_angle]);
+			if( game.won_or_not( gm, new_move.pos ) ) {
+				solutions.push( [ phase.sphere + 1, growing_angle ] );
 			}
 			return new_move;
 		};//doHandleMove=function

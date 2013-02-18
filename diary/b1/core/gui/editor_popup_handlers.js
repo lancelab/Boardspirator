@@ -1,6 +1,8 @@
-(function( $ ){ 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function( $ ) { 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var clonem	=  tp.core.clone_many;
+					var exp_url	=  tp.core.expand_to_parent;
 
 					var med		=  gio.map_editors;
 					var ggp		=  gio.gui.procs;
@@ -14,7 +16,8 @@
 
 
 
-	med.display_game_path=function(){
+	med.display_game_path = function ()
+	{
 
 			//if(!tp.core.allow_non_mainstream_browser()) return;
 			ggp.lock_controls('Displaying a path');
@@ -22,8 +25,10 @@
 			med.show_text_editor();
 			var ww=$(gio.domwrap.popups.input_text_popup.popup_el).children('textarea')[0];
 			var result = gio.navig.in_session.round.path2texts_current();
-			ww.value = 	":::playpath\n" + result.path; 
-			ww.value += result.co_path ? "\n\n:::co_playpath\n" + result.co_path : '';
+
+			var directive	=	'playpath=' + result.metrics + "\n";
+			ww.value		=	":::" + directive  + result.path; 
+			ww.value		+=	result.co_path ? "\n\n:::co_" + directive + result.co_path : '';
 			
 				// Quick way to get stringified objects:
 				// ww.value="albums=\n" + JSON.stringify( gio.def.albums, null, '\t');
@@ -260,17 +265,36 @@
 		///	Landing on gamion from external link ///////////////////////////
 		}else if( imode === 'external_link' ) {
 
-			wlink = $.trim( custom_text );
-			var akey = gm.collection.ref.list.akey;
+			var wlink		= $.trim( custom_text );
+			var success		= !!wlink;  //TODM "courtecy work" check user input
+			if( success )
+			{
+				var wlink		= exp_url ( $.trim( custom_text ) );
+				var akey		= gm.collection.ref.list.akey;
+				var downed_coll	= gio.data_io.download_gamion (
+				{
+					galfinition :
+					{	penetrate_asingle	: true,
+						title				: "My Album Choice",
+						chosen				: true
+					},
 
-			var metag =
-			{ 	env		: {	akey_advice : akey, penetrate_asingle : true },
-				link	: { link : wlink },
-				list	: { title : "My Choice", chosen : true }
-			};
+					mapfinition :
+					{
+						akey_advice			: akey,
+						title				: "My Maps Choice",
+						chosen				: true
+					},
 
-			var downed_coll = gio.data_io.download_gamion ( metag );
-			var success = !!downed_coll;
+					common :
+					{	
+						//user_dynamic_link	: true,
+						link				: wlink
+					}
+				});
+
+				var success = !!downed_coll;
+			}
 
 			if( success ) {
 				var akey	= downed_coll.ref.list.akey;
@@ -280,14 +304,15 @@
 					var success = gio.navig.validate_coll_map( akey, cix, 0, 'do land' );
 					if( !success ) conadd( "Failed landing on " + akey + ", " + ix );
 				}else{
-					conadd(	"No maps in collection ... perhaps are albums only ...\n" +
-									"try to scroll to albums manually ... "							
+					conadd(	"No maps in collection ... perhaps are albums only ...\n" + //TODM there must be a way to pull derived album or game from parsed heap and try to scroll to gkey or akey.
+							"try to scroll to albums manually ... "							
 					);
 					//TODM do the scroll .... possibly use this: gdef.procs.get_preferred_album_def
 				}
 			}else{
 				conadd( 'Failed custom scrith download for ' + wlink );
 			}
+
 
 			if( !success ) ggp.do_display_curr_board( true );
 			ggp.unlock_controls();
@@ -300,25 +325,44 @@
 		///	Loading gamion from user text ///////////////////////////
 		}else if( imode === 'edit_gamion' || imode === 'create_gamion' ) {
 
-			var akey	= gs.akey;
+			var custom_text	= $.trim( custom_text );
+			if( !custom_text )
+			{
+				ggp.do_display_curr_board( true );
+				ggp.unlock_controls();
+				gio.input_mode = '';
+				return;
+			}
 
-			var wedit	= imode === 'edit_gamion';
-			var metag 	=
-			{ 	
-				overdefine			:	wedit,
-				jwon				:	true,
-				cix_to_insert1 		:	wedit ? gs.cix + 1 : 0,
-				reuse_collection 	:	wedit,
-				env					:	{
-											akey_advice : akey,
-											penetrate_asingle : true
-										},
-				link				:	{},
-				list				:	{ title : "My Gamion", chosen : true }
+			var akey		= gs.akey;
+			var wedit		= imode === 'edit_gamion';
+			var metag		=
+			{
+				galfinition :
+				{	penetrate_asingle	: true,
+					overdefine			: wedit,
+					chosen				: true,
+					title				: "My Galfinition"
+				},
+
+				mapfinition :
+				{
+					cix_to_insert1		: wedit ? gs.cix + 1 : 0,
+					akey_advice			: akey,
+					title				: "My Mapfinition",
+					chosen				: true
+				},
+
+				common :
+				{	
+					//user_entered_gamion_text	: true,
+					jwon						: true
+				}
 			};
 
-			var downed_coll = gio.data_io.download_gamion ( metag, custom_text );
-			var success = !!downed_coll;
+
+			var downed_coll	= gio.data_io.download_gamion ( metag, custom_text );
+			var success		= !!downed_coll;
 
 			if( success ) {
 				var akey	= downed_coll.ref.list.akey;
@@ -356,8 +400,7 @@
 		}else if( imode === 'map' ) {
 
 			gio.data_io.add_map_text_and_land( custom_text );
-			gio.navig.validate_coll_map( null, null, null, 'do_land' );
-			ggp.unlock_controls(); //only then clear it ...
+			ggp.unlock_controls();
 			gio.input_mode='';
 
 

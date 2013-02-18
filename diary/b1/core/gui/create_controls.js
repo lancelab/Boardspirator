@@ -1,4 +1,5 @@
-(function( $ ){ 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function( $ ) { 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var gstyle	=  gio.config.style;
 					var gdr		=  gio.domwrap.regions;
@@ -113,7 +114,7 @@
 					}}
 		);
 
-		//Map caption:
+		//:: Builds up Map caption and Creativity Indicator.
 		var w = dwheaders.map_caption_div = document.createElement( 'div' );
 		w.style.position='absolute';
 		w.style.color='#FFFFFF';
@@ -121,7 +122,33 @@
 		w.style.top=ww+Math.ceil(cstyle.mapHeight/3)+'px';
 		w.style.fontFamily=cstyle.fontFamily;
 		gdr.dsubtop.appendChild(w);
-		w.innerHTML='Map';
+		//:: Builds up Text Message Container.
+		var ww = dwheaders.map_caption_text_div = document.createElement( 'div' );
+		ww.style.position='absolute';
+		w.style.color='#FFFFFF';
+		w.style.width=(cstyle.subcaptionWidth-5)+'px';
+		w.style.top=ww+Math.ceil(cstyle.mapHeight/3)+'px';
+		w.style.fontFamily=cstyle.fontFamily;
+		dwheaders.map_caption_div.appendChild( ww );
+		//:: Builds up Creativity Ind. Container.
+		var ww = dwheaders.map_caption_total_div = document.createElement( 'div' );
+		ww.style.position='absolute';
+		ww.style.backgroundColor='#0000DD';
+		ww.style.width = '50px';
+		ww.style.height = '10px';
+		ww.style.top = '0px';
+		ww.style.display = 'none';
+		ww.style.fontFamily=cstyle.fontFamily;
+		dwheaders.map_caption_div.appendChild( ww );
+		//:: Builds up Creativity Ind. Highlighter.
+		var ww = dwheaders.map_caption_highlighter_div = document.createElement( 'div' );
+		ww.style.position='absolute';
+		ww.style.backgroundColor='#FFAAAA';
+		ww.style.width = '0px';
+		ww.style.height = '10px';
+		ww.style.top = '0px';
+		ww.style.fontFamily=cstyle.fontFamily;
+		dwheaders.map_caption_total_div.appendChild( ww );
 
 
 
@@ -254,13 +281,15 @@
 		ww = '<td style="border:none; background-color:#333333; padding:2px;" >'
 		w = 	'<table style="border:none; color:#FFFFFF; font-family:Helvetica, Arial; font-size:10px;">';
 		w +=	www+'Moves</td>';
-		w +=	www+'InterActs</td>';
 		w +=	www+'Path</td>';
+		w +=	www+'InterActs</td>';
+		w +=	www+'ReInter</td>';
 		w +=	wwww+'Backs</td>';
 		w +=	'</tr><tr>';
 		w +=	www+'Moves</td>';
-		w +=	www+'InterActs</td>';
 		w +=	www+'Path</td>';
+		w +=	www+'InterActs</td>';
+		w +=	www+'ReInter</td>';
 		w +=	wwww+'Backs</td>';
 		w +=	'</tr></table>';
 
@@ -271,10 +300,11 @@
 		//ww.setAttribute('id','moves_div_debug'); //debug
 		w = $(ww).find('td');
 
-		gde.movesCount=w[4];
-		gde.interactionsNumber=w[5];
-		gde.pathCount=w[6];
-		gde.backsCount=w[7];
+		gde.movesCount			= w[5];
+		gde.pathCount			= w[6];
+		gde.interactionsNumber	= w[7];
+		gde.RePartsCount		= w[8];
+		gde.backsCount			= w[9];
 
 		//	\\// MainStatus
 

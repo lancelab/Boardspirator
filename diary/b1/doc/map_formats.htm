@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-
- <html><head>
-  <!-- doctype for html 4 is only to satisfy IE -->
+<html><head>
   
+  <meta http-equiv="Content-Type"	content="text/html; charset=UTF-8">
   <meta name="copyright" content="2011 (c) Konstantin Kirillov">
   <meta name="description" content="Board Puzzle Framework"> 
   <meta name="keywords" content="board game, puzzle game, on line game, game development, educational game, sokoban"> 
@@ -27,11 +26,11 @@ To display readme, turn JavaScript on.
 <span style="visibility:hidden;">This token, #@title@#, is a necessary flag to unhide this page.</span>
 
 <pre>
-<h1>Collection File Format. Draft.</h1>
+<h1>Gamion Format. Draft.</h1>
 	
 
 	Legend:
-		cfile	- collection-file
+		gamion	- "game or collection-file"
 		opt     - optional
 		req     - required
 		scode   - application-source-code
@@ -39,33 +38,32 @@ To display readme, turn JavaScript on.
 
 <a id="cfile_example"> </a>
 
-	Collection-file is a main tool to script final games.
-	Cfile can be sell-sufficient: it can contain full information to
+	Gamion is a "collection-file" and is a main tool to script final games.
+	Gamion can be sell-sufficient: it can contain full information to
 	define invented-in-place-games, albums, and maps-script.
 
-	Examples: <a href="whirly.htm#deriving">scripting and deriving in cfile</a>.
+	Examples: <a href="whirly.htm#deriving">scripting and deriving in gamion</a>.
 
-	Cfile format:
+	Gamion format:
 
-		<a href="../core/def/map_format/jwon.js">jwon</a>-header - opt
-		maps-script - opt
+		selffinition - opt
+		mapfinition - opt
 	
 
-	Jwon-header is a wrapper for json format.
-	Maps-script is either <a href="../def/albums/flocks/collections/default/maps.txt">Colorban-script</a> or script in <a href="http://sokobano.de/wiki/index.php?title=Sok_format">sok-format (External link).</a>
+	selffinition - definition for games, albums, or for both. Its format is <a href="../core/def/map_format/jwon.js">jwon</a>.
+	mapfinition - <a href="../def/albums/flocks/collections/default/maps.txt">Colorban-script</a> or script in <a href="http://sokobano.de/wiki/index.php?title=Sok_format">sok-format (External link).</a>
 
-	Without maps-script, cfile can serve like add-on to core games and albums.
-	Without jwon-header, cfile can be just a plain Colorban or Sokoban maps file.
+	Without mapfinition, gamion can serve like add-on to core games and albums.
+	Without selffinition, gamion can be just a plain Colorban or Sokoban maps file.
 
-	Jwon-header can contain game-definitions, album-definitions, collection-seed, and credits.
-		In plain words, this is a json-formatted-text wich opens up with the token /: and has insertions of
+	Selffinition can contain game-definitions, album-definitions, collection-seed, and credits.
+		In plain words, this is a json-formatted-text wich opens up with the token /{ and has insertions of
 		<a href="http://en.wikipedia.org/wiki/Here_document">"here-document"</a> fragments,
 		single-line-comments,
 		and single-line property assignments.
 
-	In plain words, here is how complex cfile can look:
-			/: 
-				{
+	In plain words, here is how complex gamion can look:
+			/{ 
 					"games" :
 					{ 
 						// new game
@@ -80,16 +78,16 @@ To display readme, turn JavaScript on.
 					{
 						....
 					}
-				}
-			/\\	
+			/}
 			#######
 			# @$. #	
 			#######
+	The part with /{ .... /} is a selffinition. The rest is mapfinition.
 
 	Syntax-sugar is available, see first example at <a href="whirly.htm#deriving">Game Craft</a>.
 
 
-	M a p s - s c r i p t   f o r m a t
+	M a p f i n i t i o n    f o r m a t
 
 		MAP_LOOKUP - opt
 			colorban directives - opt
@@ -162,6 +160,8 @@ To display readme, turn JavaScript on.
 			:::akey
 			:::collection_index
 			:::map_index
+			:::ckey
+			:::mkey
 
 		Get an indea from source code section <a href="../core/def/map_format/core.js">//\\ dereferences</a>
 
@@ -267,6 +267,18 @@ To display readme, turn JavaScript on.
 					:::center_image=//transparent.png
 
 				( Programmer can get an indea from section <a href="../core/def/map_format/collect_dresses.js">//\\	modifies image</a>. )
+
+
+
+
+	P l a y p a t h s
+
+		:::playpath=MyTitle means playpath strings follow right after and named "MyTitle". 
+		:::optpath=333.22 tells to metrics estimator that solution is optimal in sense of path, and
+		           p,i = 333,22
+		:::solpath=333.22 is the same as above but it is not know is solution optimal or not.
+
+		:::playpath cannot happen after :::optpath or after :::solpath
 
 
 

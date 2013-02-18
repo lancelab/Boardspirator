@@ -1,4 +1,5 @@
-(function( $ ){
+
+( function( $ ) {
 
 
 	///////////////////////////////////////////////////////////////////////////
@@ -15,20 +16,51 @@
 	///////////////////////////////////////////////////////////////////////////
 
 
-	//File description: tp$.core	subplugin for generic methods
+	// //\\// tp$.core	subplugin for generic methods
 
 	//. Shortcuts debug function.
 	var deb = window.tp$ && window.tp$.deb;
 
-	//attach plugin to jQuery:
-	$.fn.tp$ = (function(choice,arg){
-					var that=this && this[0];
-					if(!that)return;
-					return $.fn.tp$.beautify_el[choice].call(that,arg);
+
+	/// Attaches tp$ to jQuery.
+	//	tp$ is a plugin which in turn is a wrapper to "subplugin" tp$.beautify_el{}
+	//	which in turn is an object which properties are subsubplugins,
+	//	and also, 
+	//	tp$ is a top object to attach different applications, and bodies of subplugins.
+	//	( like tp$.gio, for example is a Boardspirator ).
+	//	
+	//	beautify_el is defined in beautify.js, and at this version, only for one real subplugin 'select'
+	//	which body is tp$.form.
+	//
+	//	Returns:	NOT A jQuery object, but specific object for each subplugin.
+	//
+	//				
+	//	This:		When jQuery provides "this" to plugin, ONLY
+	//				this[0] is used. "NO BATCH PROCESSING".
+	//				Because, of plugin completely replaces DOM-element, so
+	//				original array, "this" "is useless".
+	//				
+	//	Input:		choice is a name of subplugin, like choice = "select'.
+	//
+	//	Usage example:	var beautified=$('#select_id').tp$('select');
+	//					Here, subsubplugin 'select' is invoked.
+	//					"beautified" is a specific object returned by method
+	//					form.create_select_el(), so real final DOM element is
+	//					
+	//					var dom_el = beautified ['wrapper']
+	//
+	$.fn.tp$ = ( function( choice, arg ) {
+
+					var that= this && this[0];
+					if( !that ) return;
+					return $.fn.tp$.beautify_el[ choice ].call( that, arg );
 	});
+
+
 
 	//add Description:
 	$.fn.tp$.description=Description;	
+
 
 	//Attaches top part of tp$.core subplugin
 	$.fn.tp$.core=(function(){
@@ -143,7 +175,8 @@
 					deb( ww + ' url=' + url + "\n");
 					deb( "Possible error status = " + arguments[1]);
 					deb( "Possible error expanation = " + arguments[2]);
-					// c onsole.log('arguments[0]=', arguments[0], "\n\n\narguments[1]=", arguments[1], "\n\n\narguments[1]=", arguments[2]);
+					// c onsole.log('arguments[0]=', arguments[0], "\n\n\narguments[1]=", arguments[1],
+					// "\n\n\narguments[1]=", arguments[2]);
 				}
 			});
 

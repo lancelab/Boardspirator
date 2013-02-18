@@ -37,6 +37,9 @@
 					'Doubleban'				: astub + 'doubleban&aurl=//def/albums/doubleban/album.jwon.txt">Doubleban</a>', 
 					'Colortrain'			: astub + 'colortrain">Colortrain</a>', 
 
+					'BoxiMaze'				: astub_no_alb	+ 'akey=boximaze">BoxiMaze</a>', 
+					'BoxiMaze-maps'			: bstub			+ '../def/albums/boximaze/collections/default/maps.txt">Maps</a>',
+
 					'Bumpy Targets'			: astub_no_alb + 'asingle&curl=//def/albums/standalone/collections/default/bumpy_targets.jwon.txt">Bumpy Targets</a>',
 					'Bumpy Targets--script'	: bstub        + '../def/albums/standalone/collections/default/bumpy_targets.jwon.txt">Script</a>',
 

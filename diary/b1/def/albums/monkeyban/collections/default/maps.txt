@@ -25,7 +25,7 @@ Warm Up
 #####    $#
     #######
 
-
+:::playpath=Solution
 rRRlllulDDDldRRRRRurrdLLullddrUdrruulLLL
 LuurrDDldRRdrUUllllulldRRuurrrddddlUULdl
 UUUUdlluRRRdrUluRddrddlUUruLruuRRRllldLd
@@ -69,11 +69,12 @@ Introduction Three
 #############
 
 
+:::playpath=Solution
 RRRURRllluulDDuulllddRRRRR
 
 
 
-:::map
+:::map=divided_friends
 -#####-
 ##.--## 
 #-$-$-# 
@@ -90,8 +91,8 @@ RRRURRllluulDDuulllddRRRRR
 :::dress=monkeyban
 :::image=wall_x_3_3=wall_a.png
 
-Opt.77.21
-:::playpath=Opt
+:::playpath=Optimal
+:::optpath=77.21.11
 lDuruLullDRllddRUUrurDrddlLrruulDrddlUUd
 dllURdrruulDrdLLulluurrurDDrddlluRdrU
 
@@ -101,7 +102,7 @@ rdrruLUddlluRdrruulDrdLLulluurrurDDullld
 drrRdrU
 
 
-:::map
+:::map=chair_for_a_leader
 # # # # # # #
 # - A - - - # 
 # - 1A - 1 - # 
@@ -116,8 +117,8 @@ drrRdrU
 :::dress=monkeyban
 :::image=wall_x_3_3=wall_a.png
 
-98-22
 :::playpath=Solution
+:::solpath=98.22.12
 dRRRuuluLdDurrddldlluRUluRRldddrruuruulD
 LulDldddrrruUddllluuurDuurrrdLDuLulldddd
 rUdrrUUddlluRdrruL
@@ -368,7 +369,7 @@ rUluRR
 
 
 
-:::map
+:::map=triangle_stream
   # # # #
   # - - # # # # #
   # - - - - - - #
@@ -381,8 +382,8 @@ rUluRR
 :::board_end
 :::title=Triangle Stream
 
-:::Solution=277.66
 :::playpath=Hint
+:::solpath=277.66.22
 ddlllluRdrrruuuulllldDDldRRluuuurrdLulDD
 DrdRRdrUUUUruLLLdllddldRRRlluuurrurrdddd
 

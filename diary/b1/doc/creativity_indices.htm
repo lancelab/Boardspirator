@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+	<head>
+  
+		<meta http-equiv="Content-Type"	content="text/html; charset=UTF-8">
+		<meta name="copyright" content="2011-2013 (c) Konstantin Kirillov">
+		<meta name="description" content="Whirly Map Rating"> 
+		<meta name="keywords" content="whirly, whirlitivity, board game, sokoban variants, sokoban rating, puzzle game, on line game, game development, educational game, sokoban"> 
+
+		<title>Map Creativity Indicators</title>
+	</head><body><pre>
+
+
+	<h2>Contents</h2>
+
+	<a href=#cm">Map Creativity Metric</a>
+	<a href="#pros_and_cons">Pros and Cons</a>
+	<a href="../?akey=sokoban&curl=//def/albums/sokoban/collections/solutions.txt">Samples. Open up "Help/About Map".</a>
+	<a href="creativity_indices_current_analysis.htm">Samples Digest. Former Versions.</a>
+
+
+	<h2 id="cm">Map Creativity Metric ..</h2>
+
+	.. is a creativity required from human-player to solve the map.
+	.. does not necessarily measure aesthetic or entertaining qualities of the puzzle.
+
+	Adopted in Whirly forumula is:
+
+	cm = d / v, where
+	difficulty, d = I + ( p - i ) * g, where
+
+	i = number of interactions between hero and other units,
+	p = number of moves,
+	p, i are taken for p-minimal solution,
+	
+	g = min( density, 1 ) is "effective density" of units, to eliminate idle moves in sparse maps,
+	density = u / s,
+	u = number of dynamic units,
+	s = number of empty cells,
+
+	I = effective interactions.
+
+	v, volumability, non-creative factor to be eliminated by division: d / v.
+
+	wm = cm / maxc, where
+
+	wm - whirlitivity metric, attempt to rate games in given family,
+	maxc - cm for the game with maximal cm in given family.
+
+
+	<h2>Let's look at idea ..</h2>
+
+	.. it is assumed, that game difficulty is a "nested composition" of difficulties with increasing creativity.
+
+	The first level is a number of mouse-clicks to handle game navigation. We ignore it. Assume GUI is well done.
+
+	v - the second level of difficulty is a number of brain-clicks to handle a number of units, dimensions of the map,
+	number of rules to remember. This sort of creativity can be interesting in arcade games, but not of Whirly's interest.
+	We are going to exclude it. We call it "volumability" to emphasise its "mechanical" nature.
+	We'll discuss it in a moment.
+	
+	Suppose, the puzzle is not solved in the second level. What next?
+	Beyond second level, there are brain-clicks required to accomulate experiences of the game, built strategies,
+	deal with surprises of the gameplay, and consult intuition.
+
+	There can be more levels. But we don't go there. We include all of them as level 3.
+	Every level below 3 is a boredom by definition.
+	Level 3 is a creativity measured with cm, creativity-metric.
+
+	So, d = cm * v.
+
+	<p id="d_not_p">
+	Applying the same idea, we don't take d as plain number of moves: d != p. (**).
+	We would try to use formula dtry = i + density * ( p - i ) to remove low-level difficulty.
+	But this is not enough, we are trying to remove low-level difficulty even from i,
+	when we calculate I in formula (*). 
+	</p>
+
+
+	<h2>Let's consider the details</h2>
+
+	When we calculate the difficulty, we still trying to remove boredoms.
+	We don't use i in place of I for difficulty. Simple pushing a box along the line is
+	not a creative difficulty. Changing boxes is more creative.
+
+	I = 2( 2reint + ( i - reint ) ) / 3.   ( * )
+	
+	reint, "reinteractions" are changes of a target by hero. For example in Sokoban context,
+	reint = "box changes" when hero leaves one box and turns own attention to other which is
+	considered as one brain-click.
+
+	Formula (*) is arbitrary crude and needs research. An extreme case i = reint gives I = 4i/3 and 
+	is rewarded by about +30%, the case of no reinteractions: reint = 0 is gratified by about -30%.
+
+
+
+	<h2>Let's discuss boredoms, v.</h2>
+
+		When number of boxes and walls grows, difficulty is growing, but not necessarily
+		demands player to be creative.
+			Whirling up geometrical elements without increasing of their number may contribute to
+				creativity ( or may not ).
+			There also is possible increase of creativity-demand due not only complex geometry, but
+				due unexpected scenario stemmed from specific geometry.
+
+		Excessively complex rules are also part of volumability.
+
+
+		Volumability:
+
+		v = n' * b' * r', where
+
+		n', b', r' are cells, breeds, rules boredoms respectively.
+
+		For each of these boredoms a', we select a range of comfortability:
+				amin &lt; a &gt; asense where "a" penalized slightly, ( see near <a href="../core/session/metrify_map.js">... do_boredomize = function ...<a> ),
+			and when
+				a &gt; asense, penalized as a' = 1 + a/asense.
+
+		"a" stands for one of the following:
+
+		b = number of scenarioble breeds,
+		n = number of internal cells in the map,
+		r = number of effective rules and objectives in game.
+	
+		We don't try to build one formula for all families of puzzles.
+		Instead "we build a perspective user" for given family of puzzles.
+
+		We restrict comfortability ranges for our user and use them as
+		parameters for our formulas.
+
+		See comments in near object <a href="../core/config/core.js">EXPECTED_USER</a>.
+
+		For example, we would take these parameters for "Sokoban User":
+
+			Because of in Sokoban game number of scenarioble breeds is not changed:
+			hero, box, target - 3, we exclude criteria "breeds" completely
+			by making bmin = 3. The user completely comfortable with 3 breads.
+			This is an enthusiastic Sokoban player.
+			bsense does not matter, breed = 1 always. No penalty.
+
+			Rules? The is only one rule: push. So Rmin = 1. rules = 1 always.
+
+			Cells? We noted of abandance of "big" maps. So, for Soko-user:
+				nmin = 4 * 4 = 16. User do not note any boredom when less than this.
+				nsense = 10 * 10 = 100. User feels presence 100 internal cells. Penalty begins work around nsense.
+
+			Finally: v = 1 + n / nsense,  when n &gt; 100,
+			             1                when n &lt; 16,
+			             smoothly grows from 1 to 2 otherwise.
+
+		But for Whirly-family including many Sokoban-like families, one must compare maps with
+		different game-rules and different breeds. The chosen parameters are near object
+		<a href="../core/config/core.js">EXPECTED_USER</a>.
+
+
+		Examples for maps without hero-targets:
+
+			Sokoban:  b = 3,  ( hero, box, and target )
+			          r = 1   ( push )
+
+			Colorban: b = 3 -- 30, ( 3 races * color )
+			          r = 1, ( push )
+
+			PullPush: b = 3 -- 30,
+			          r = 2  ( pull and push )
+		
+			Monkeyban: b = 3,
+			           r = 2  ( push or push with sticky-boxes effect )
+
+			Flocks:    b = 3 -- 30,
+			           r = 2  ( push or push with sticky-boxes effect )
+
+		PushMan: b = 3, ( no targets for boxes, but htarget for hero. )
+		         r = 1  ( push )
+
+
+	<h2 id="pros_and_cons">Pros and Cons</h2>
+
+	Practical Cons.
+
+	It is hard to calculate this metric because of
+
+		1.	Solver sorts solution by p, minimal path length, and takes the top item.
+			However, this order is not necessaritly the same as order by i, number of interactions, or by reint.
+			To have a correct creativity metric calculated, solver must sort by cm.
+
+		2.	Not every solver can solve the map. One may use human-built solutions, which
+			can be far from optimal.
+
+
+	Cons.
+
+	1. Formulas are crude and not adequate. They don't reflect a nature of a game-family.
+	   It is not difficult to calculate additional metrics of solution, like turns, returns, correlations ... and
+	   construct adequate formulas. This is not done.
+
+	   Maps are penalized by increasing number of cells ultimately. Patterns are not felt.
+	   However, patterns cancel human difficulty and instead make game more creative.
+
+	2. Metric cm has unknown upper bound. cm allows only to order maps, not to measure them.
+	   Relative measure depends on max known map.
+
+	3. p-optimal solution is not necessary is i - optimal, but i is more significant in d.
+
+
+	Pros.
+
+	1. Simplicity.
+
+
+
+
+Copyright (c) 2013 Konstantin Kirillov
+
+
+
+</pre></div>
+
+</body></html>
+
+

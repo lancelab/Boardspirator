@@ -1,4 +1,4 @@
-(function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+( function () {	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var core	=  tp.core;
 					var ceach	=  core.each;
@@ -90,22 +90,20 @@
 
 
 		// //\\ BUNDLES REFERRED MAP IF ANY
-		var w_r			= map.bundled__ref;
-		var w_r_coll	= w_r.collection_index;
-		var ref_alb		= w_r.akey;
+		var w_r		= map.bundled__ref;
+		var w_cref	= w_r.coll_ref;
+		var ref_alb	= w_r.akey;
 
 		//.	as this is seen below: these variables are flags of raw map presense
-		if( !ref_alb || !(w_r_coll || w_r_coll === 0) ) {
+		if( !ref_alb || !(w_cref || w_cref === 0) ) {
 			
 			var map__eff = map;
 
 		}else{
 
 			// c onsole.log('map.bundled__ref=',map.bundled__ref);
-			var coll_ix		= parseInt( w_r_coll );
-			var map_ix		= parseInt( w_r.map_index );
-
-			var coll__eff	= gio.navig.validate_coll_map( ref_alb, coll_ix, map_ix );
+			var map_ref		= w_r.map_ref;
+			var coll__eff	= gio.navig.validate_coll_map( ref_alb, w_cref, map_ref );
 
 			/// TODM	This info is too dry: who is failed: collection wrapper or
 			//			collection link, or collection text?
@@ -113,14 +111,14 @@
 			//	
 			if( !coll__eff ) {
 				return	'Failed download referred map: ref_alb = ' + ref_alb + 
-						' coll_ix=' + coll_ix + ' map_ix=' + map_ix;
+						' w_cref=' + w_cref + ' map_ref=' + map_ref;
 			}
 
-			var map__eff = coll__eff.maps[ map_ix ];
+			var map__eff = ( typeof map_ref === 'string' ) ? coll__eff.maps_ref[ map_ref ] : coll__eff.maps[ map_ref ];
 			if( !map__eff ){
-				return	'Map with index ' + map_ix + ' does not exist' + "\n" +
+				return	'Map with ref ' + map_ref + ' does not exist' + "\n" +
 						'Failed download referred map: ref_alb = ' + ref_alb + 
-						' coll_ix=' + coll_ix;
+						' w_cref=' + w_cref;
 			}
 
 			//. These two names are not very good and misleading:
@@ -165,8 +163,7 @@
 
 
 		// //\\ COLLECTS DATA FROM POSTBOARD
-		var playpaths		= [];
-		var playpath_tray	= { pp : null, cbflag : false };
+		var playpath_tray	= { pp : null, cbflag : false, map : map, playpaths : [], title : '' };
 
 		/// wraps data to exchange it with extract_to_dresses function
 		var dress_tray	= {	dr : null, zoneon_flag : false,
@@ -199,8 +196,6 @@
 				playpath_tray,
 				master_line_trimmed,
 				pkey,
-				master_line,
-				playpaths,
 				cbzone_bf
 			)) continue;
 
@@ -266,17 +261,19 @@
 			}
 		} ///.. does loop through postboard
 
-		if( playpaths.length > 0 )	map.playpaths = playpaths;
+		if( playpath_tray.playpaths.length > 0 )	map.playpaths = playpath_tray.playpaths;
 		if( dress_tray.counter )	map.dresses = dress_tray.dresses;
 		// c onsole.log(' fin map ... added after counter ...map.dresses=', map.dresses, map.ix);
 		map.parsed.macrosed_postboard = macrosed_postboard;
+
+		map.key = map.key || 'map_' + map.ix;
 		// \\// COLLECTS DATA FROM POSTBOARD
 
 
 
 
 
-		/// //\\ SETS TITLES AND CREDITS
+		/// //\\ SETS TITLES AND CREDITS /////////////////////////////////////////
 
 		var ww_final_title = (parsed.credits && parsed.credits.title) || '';
 		if(!cbzone_bf){
@@ -322,7 +319,7 @@
 		map.tooltip	+=	core.dotify( map.credits.title, 200, 'Title: ', '. '  );
 		map.tooltip	+=	'zcount: ' + map.ix + '.';
 		// \\\/// pasting credits //////////////////////////////
-		/// \\// SETS TITLES AND CREDITS
+		/// \\// SETS TITLES AND CREDITS /////////////////////////////////////////
 
 
 
@@ -357,7 +354,8 @@
 
 
 		//. ABSORBS MAP INTO COLLECTION
-		collection.maps[map.ix] = map;
+		collection.maps[ map.ix ]		= map;
+		collection.maps_ref[ map.key ]	= map;
 		// c onsole.log('gm =', map );
 
 

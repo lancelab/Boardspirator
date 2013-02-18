@@ -19,7 +19,7 @@
 - A y - -
 A - B 0B 0a
 - A y - -
-- - - 0 y
+- - - 0
 :::board_end
 :::class=R2.3.2
 :::title=Notch Stone :: The Same to Each One
@@ -30,7 +30,7 @@ A - B 0B 0a
 :::image=wall_x_4_4=wall_b.png
 :::objective=Put all monkeys to chairs
 
-:::playpath=Opt. 100.31
+:::optpath=100.31.20
 ulDllldDuurrrrddlLdlUlLuUrrDDllldDRRRdrU
 lUUllUUrruullldDRDuuurrddLruuRRlddddRRlu
 UrruuLDldllUluRddrrD
@@ -65,8 +65,7 @@ A - h1.B 0B 0a
 :::image=wall_x_4_4=wall_b.png
 :::image=a=hero_a_hatless.png
 
-191.64
-:::playpath=Opt
+:::optpath=192.64.36
 ulDllldDuurrrrddlLdlUlLuUrrDDllldDRRRdrU
 lUUllUUrrDullDDrRRurDrrddddllUdlUURUUluu
 rRlDDlDDDrdrruruLLLUdrruulLLdlUlluuulDuu
@@ -97,8 +96,8 @@ A - B 2B 2a
 :::image=wall_x_2_3=wall_c.png
 :::image=wall_x_4_4=wall_b.png
 
-328.87
 :::playpath=Hint
+:::solpath=328.87.44
 ulDllldDuurrrrddlLdlUlLuUrrDDllldDRRRdrU
 lUUllUUrrDullDDrRRurDrrddddllUdlUUUdRRld
 
@@ -172,7 +171,7 @@ A - 1B 2B a
 :::image=wall_x_2_3=wall_c.png
 
 
-:::playpath=131.43
+:::playpath=131.43.25
 ulDrddlLdldllluURluuRRRdDllDDRRUdllUUrRR
 drUrrurUlUdRlluurrRRDDrrrdddDrddllluUrrr
 uuluullDlDrrrddrddlllluuRRllddrrrruuLLLD
@@ -192,8 +191,7 @@ DLLDuLDDDuu
 :::title=BWells :: Groupify :: Kids
 :::class=D2.3.2
 
-:::note=antibug fixed
-:::playpath=Opt. 64.11
+:::optpath=64.11.5
 dldllluUddrrruruululLdDDuuurrdrddlUlLuuu
 urrddLulDllddrrUUlluurrD
 
@@ -209,7 +207,7 @@ urrddLulDllddrrUUlluurrD
 :::title=BWells :: Aligned Chairs
 :::class=D2.3.1
 
-:::playpath=Opt. 66.22
+:::optpath=66.22.9
 LdlUllUluRRRDullDDrRRurDrrdrDlddlllUURUU
 rruuLrddllluuRRlluurrrdrdL
 
@@ -231,7 +229,7 @@ lddrrrUrudlULrddllluuRluurrrDD
 :::board_end
 :::title=BWells :: Triangled Chairs
 :::class=D2.3.1
-:::playpath=Opt. 45.10
+:::optpath=45.10.8
 LulullldDRlddRUUluurrrdrddldLruruulDllld
 drUdR
 
@@ -261,8 +259,8 @@ drUdR
 :::board_end
 :::class=D2.3.1
 :::title=BWells :: Corner for Monkey
-
-:::playpath=Opt.53.22 S1
+-comment S1
+:::optpath=53.22.11
 LulDllDldRRRUdllUUrRRdrUrrurUluulllDDRRl
 DldDrUrruruLL
 
@@ -279,7 +277,7 @@ DldDrUrruruLL
 :::class=D2.3.1
 :::title=BWells :: Throne for Klasskeeper
 
-:::playpath=Opt. 145.41
+:::optpath=145.41.21
 LdlUllUluRRRDullDDrRRurDrrdrDlddlllUURRl
 UluUrDrrdrdLLLUlUdrUrrUruLLrddllluuRlddr
 rruuuullDulDurrrddddllluUddrrruuLruulllD
@@ -306,7 +304,7 @@ DDuRRlluurrrdrddlUllluurD
 :::class=D2.3.1
 :::title=BWells :: Diagonal Chairs
 
-:::playpath=Opt. 57.24
+:::optpath=57.24.12
 LulDllDldRRRUdllUUrRRdrUrrurUluulllDDRDD
 lddrRlUUrruruLLrU
 

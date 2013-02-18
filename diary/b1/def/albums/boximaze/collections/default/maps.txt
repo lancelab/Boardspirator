@@ -1,0 +1,274 @@
+/{
+
+	"credits" :
+	{
+		/, title			Beginner.
+		/, author			Konstantin Kirillov.
+		/, license			Public Domain
+		/. email			beaverscript(a)landkey(.)net
+	}
+
+/}
+
+
+Warm Up in BoxiMaze
+
+---#########
+---#-------###         
+####--#--#-$-##
+#@---#-##-#$-!#    
+####-#---#-$-##
+---#---$-#--## 
+---####-$--##
+------#-$-##
+------#####
+
+:::playpath=Clear Goal
+:::solpath=44.6.5
+rrruurrrrrrdRlullllllddddrrurrdLddRUrruu
+RUrr
+
+
+
+:::map=warm_up_sokoban
+:::context_akey=boximaze
+--#######
+--#---$-####
+###--#$--$-###
+#-$-$-$-#$-$.#
+#@$-$-$#-$-###
+#-$-$-$--###
+###--#$--#
+--#---$-##
+--#######
+:::board_end
+:::title=Warm Up in Sokoban
+
+:::dress=give_me_my_bone
+:::skip
+
+:::dress=follow_the_smell
+:::title=Follow the Smell
+:::chosen
+:::objective=Put boot on feet
+:::inherit_from=give_me_my_bone
+
+:::solpath=61.20.17
+uRlddRUrUUrurRlldlddRUrRUrrRllldlldlDDrd
+rRlluluurDrRDrruuRUrR
+
+:::co_playpath=61.20
+RlURddllDRlDlddrdrrRl
+ulDDrurrurrrRllURlURuururrRldlUUlURuurRd
+
+:::map_end
+
+
+
+:::map=lone_target
+:::context_akey=boximaze
+##############-
+#--------$-#-#-
+#-##$$$$#$---#-
+#-#------$-$-#-
+#-$$$$$#--#$-#-
+#@#-----#---!#-
+#-#$$$-$-#--##-
+#-$-$-#$--#-#--
+#-$-$--$-$-$#--
+#--$-#$$--$-#--
+##---$-$##--#--
+-############--
+:::board_end
+:::title=Lone Target
+
+:::dress=give_me_my_bone
+:::image=box_x_5_2=box_x_B.png
+:::image=box_x_7_2=box_x_C.png
+:::image=box_x_2_4=box_x_D.png
+:::image=box_x_4_4=box_x_B.png
+:::image=box_x_11_4=box_x_C.png
+:::image=box_x_4_6=box_x_D.png
+:::image=box_x_7_6=box_x_B.png
+:::image=box_x_2_7=box_x_C.png
+:::image=box_x_7_7=box_x_D.png
+:::image=box_x_4_8=box_x_B.png
+:::image=box_x_9_8=box_x_C.png
+:::image=box_x_3_9=box_x_D.png
+:::image=box_x_7_9=box_x_B.png
+:::image=box_x_5_10=box_x_C.png
+
+
+:::solpath=97.23.20
+
+uuuurrrrrrrRlllDullDRdRDulLDurrdLdRdRluu
+ulluulllddddddddrdrruLuuRlddrUrrRUrrDrDr
+UUUlululuRUrrrddd
+
+:::co_playpath
+uuulllURdrdrdrUUU
+lDlDllURllUluurRddLdlluluuuuuuuurrrddrrd
+ddrRuRuLulldDLrdDRuRDrrdDrrrRllllllldddd
+
+
+:::map_end
+
+
+
+
+
+
+:::map=lone_target_sokoban
+:::context_akey=sokoban
+##############-
+#--------$-#-#-
+#-##$$$$#$---#-
+#-#------$-$$#-
+#-$$$$$#--#$.#-
+#@#-----#----#-
+#-#$$$-$-#--##-
+#-$-$-#$--#-#--
+#-$-$--$-$-$#--
+#--$-#$$--$-#--
+##---$-$##--#--
+-############--
+:::board_end
+:::title=Lone Target in Sokoban
+
+
+
+:::solpath=96.25.21
+
+uuuurrrrrrrRlllDullDRdRDulLDurrdLdRdRluu
+ulluulllddddddddrdrruLuuRlddrUrrRUrrDrDr
+UUUlululuRUrrrd
+
+:::co_playpath
+uulllURdrdrdrUUU
+lDlDllURllUluurRddLdlluluuuuuuuurrrddrrd
+ddrRuRuLulldDLrdDRuRDrrdDrrrRllllllldddd
+
+:::map_end
+
+
+
+:::map=nearly
+:::context_akey=boximaze
+############
+#----------#
+#$$$$$$$$$-#
+#---#----$-##
+#$-$#--#-$--##
+#!--#-#--$#--#
+#$#$#$#-$--#-#
+#@$-#-#--$$$-##
+#$-$$--##--#--#
+#---$---#-$-#-#----
+#-####-$-#$---#-----
+#-$-$-#$--$-###-------
+#-$-$--$-####--------
+#--$-#####-----
+#----#---------
+######---------
+:::title=Nearly
+:::board_end
+
+
+:::solpath=114.28.20
+
+DDrrURRdrrldRullulllldDDDDrdrruLuuRlddrU
+rrRUrrRlllUluluuUUUrurrddlddrUrrDulldRdd
+RDrrruuluuululuuulllllllDullDRdddl
+
+:::co_playpath
+ruuuRDrrdDrrrrrrrdddrdrdddrddlllDR
+uuRurrdDllUluuruulldlUUUddrdrUrrrRllURll
+UluurRddLdllulDDDDurrrrdrrdRurlluRRUllDD
+
+
+:::map_end
+
+
+
+Discussion:
+
+;Question: http://sokoban.maxforum.org/2012/08/20/how-to-build-a-non-reusable-path/#post1
+;Attempt: http://landkey.net/gio/gio/play?akey=sokoban&curl=http://landkey.net/gio/gio/research/solving_locks_tunnel.txt
+
+
+
+;Bidirectional onetime valves demo
+
+----------####-----------------####----------
+---------#-$--#################--$-#---------
+#########--$-#-----------------#-$--#########
+#@--------#-$--###############--$-#--------!#
+##########--$-#---------------#-$--##########
+----------####-----------------####----------
+
+
+Date: Public Domain. August 27, 2012.
+Comment: Tunnel in the middle can be passed only once if to start from any direction. This behaviour "does not depend" on placement of targets.
+
+
+:::playpath=Demo
+rrrrrrrruruRRdLddRUrrurrrrrrrrrrrrrrrrdr
+dRRuLuuRDrrdrrrrrrrr
+
+
+
+;Onedirection-onetime valve
+
+-----------###----------
+###########-$-#---------
+#@--------#-$--########-
+#########--$-#-------!#-
+---------#---##########-
+----------###-----------
+
+
+;DateAugust 26, 2012.
+;Comment: Left tunnel can be passed only once if to start from left to right, but any number of times if to start from right to left.
+
+
+:::map
+:::context_akey=sokoban
+- -  - - - - - - - # # #   #  #
+# #  # # # # # # # # -  B  2 # #
+# b  - - - - - - - # -  B  - - # # # # # #
+# #  # # # # # # - 2 B  2  # - - - - B 2 #
+- -  - - - - - # # - -  -  # # # # # # # #
+- -  - - - - - - # # #  #  #
+:::board_end
+:::title=Onedirection-onetime colorized
+:::date=August 26, 2012.
+
+:::dress=default
+:::image=ground_x_1_2=target_c.png
+:::image=ground_x_2_2=target_c.png
+:::image=ground_x_3_2=target_c.png
+:::image=ground_x_4_2=target_c.png
+:::image=ground_x_5_2=target_c.png
+:::image=ground_x_6_2=target_c.png
+:::image=ground_x_7_2=target_c.png
+:::image=ground_x_8_2=target_c.png
+:::image=ground_x_8_3=target_c.png
+:::image=ground_x_13_2=target_a.png
+:::image=ground_x_13_3=target_a.png
+:::image=ground_x_14_3=target_a.png
+:::image=ground_x_15_3=target_a.png
+:::image=ground_x_16_3=target_a.png
+:::image=ground_x_17_3=target_a.png
+
+
+:::map_end
+
+:::map=the_team
+- -   - - - - - - - - - # # # - - - - - - - -   - -
+# #   # # # # # # # # # - $ - # - - - - - - -   - -
+# h2. - - a - - - - - # - $ - - # # # # # # #   # -
+# #   # # # # # # # - - $ - # - - - - b - - h1. # -
+- -   - - - - - - - # - - - # # # # # # # # #   # - 
+- -   - - - - - - - - # # # - - - - - - - - -   - -
+:::board_end
+

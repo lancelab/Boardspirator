@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+	<head>
+  
+		<meta http-equiv="Content-Type"	content="text/html; charset=UTF-8">
+		<meta name="copyright" content="2011-2012 (c) Konstantin Kirillov">
+		<meta name="description" content="Board Puzzle Framework, Whirly"> 
+		<meta name="keywords" content="whirly, board game, puzzle game, on line game, game development, educational game, sokoban"> 
+
+		<title>Creativity Indicators</title>
+	</head><body><pre>
+
+O r i g i n a l    B o a r d:
+
+:::map
+:::akey=sokoban
+:::ckey=sasquatch8
+:::map_index=0
+:::board_end
+
+Parameters:
+  Internal cells     = 41
+  Blocks (walls),  w = 2
+  Empty cells,     s = 29
+  Dynamic units,   u = 10
+  Density ... u/s, g = 0.3448275862068966
+
+
+E x p e c t e d    A u d i e n c e    P a r a m e t e r s
+
+    Volumability, v = rules * breeds * cells = 1.3703933884297521
+          rules     = 1 ( r, R0 = 1, 3 )
+          breeds    = 1.04 ( b, B0 = 3, 10 )
+          cells     = 1.3176859504132232 ( n, N0 = 40, 55 )
+
+    Path, Inter, ReInter: p, i, ri  = 104, 29, 17 (i,ri estimated)
+    Flat Diff,   fd = i+g(p-i)      = 54.86206896551724
+    reint           = 2(ri+i)/3     = 30.666666666666668
+    Difficulty,   d = reint+g(p-i)  = 56.52873563218391
+    Creativity,   c = d/v           = 41.25000610004157
+    Soko-style,   c/maxc            = 2.4
+    Whirlitivity, c/maxc            = 24.2%
+
+    Known maxc, 170.1.
+
+::::::::::::::::::::::::::::::::::
+
+
+
+:::map
+:::akey=sokoban
+:::ckey=egrig2002
+:::map_index=31
+:::board_end
+
+:::solpath=454.115.40
+rDrrddddllluURRllddrrruUUruulDllulllldLD
+DDldRRRuuRRddrrruuUruLddddllluuRRllddrrr
+uUlllllddlluuuururrDDuulldlddddrruuRuuul
+lulDDDDDldRuuuuulldRurDDDDlddrUUUUUruLrr
+rdddlddLruuruuulllddddlddrUUUUUrurrdddRd
+dLLLrrrrrruulLLddlluuRuuurrdDLDRuuulldDu
+ulldldddlddrUrruuRuuulldlddDldRuuuuruulD
+DlluRRRRRRlllldDDDlddrUUUUUluRRRRdddlddL
+ruururrdLuluulllddddlddrUrrrrUUruLdddllu
+uRlddrruUlURdddrrruuLLLddllllUUUUrurrDul
+ldlluRRRlldddddrruuRlddrruUrrrUruulDLrDD
+lllddrrrUUUruL
+
+
+
+Parameters:
+  Internal cells     = 61
+  Blocks (walls),  w = 11
+  Empty cells,     s = 41
+  Dynamic units,   u = 9
+  Density ... u/s, g = 0.21951219512195122
+
+
+E x p e c t e d    A u d i e n c e    P a r a m e t e r s
+
+    Volumability, v = rules * breeds * cells = 1.7833851239669423
+          rules     = 1 ( r, R0 = 1, 3 )
+          breeds    = 1.04 ( b, B0 = 3, 10 )
+          cells     = 1.7147933884297522 ( n, N0 = 55.5, 55 )
+
+    Path, Inter, ReInter: p, i, ri  = 454, 115, 40 (i,ri estimated)
+    Flat Diff,   fd = i+g(p-i)      =or less 189.41463414634148
+    reint           = 2(ri+i)/3     = 103.33333333333333
+    Difficulty,   d = reint+g(p-i)  =or less 177.7479674796748
+    Creativity,   c = d/v           =or less 99.6688629342686
+    Soko-style,   c/maxc            =or less 5.9
+    Whirlitivity, c/maxc            =or less 58.5%
+
+    Known maxc, 170.1.
+
+
+
+
+:::::::::::::::::::::::::::::::::::
+
+:::map
+:::akey=boximaze
+:::ckey=beginner
+:::mkey=lone_target
+:::board_end
+:::title=Boximaze Test
+:::solpath=97.23.20
+
+
+
+Parameters:
+  Internal cells     = 114
+  Blocks (walls),  w = 16
+  Empty cells,     s = 65
+  Dynamic units,   u = 33
+  Density ... u/s, g = 0.5076923076923077
+
+
+E x p e c t e d    A u d i e n c e    P a r a m e t e r s
+
+    Volumability, v = rules * breeds * cells = 2.8741818181818184
+          rules     = 1 ( r, R0 = 1, 3 )
+          breeds    = 1.04 ( b, B0 = 3, 10 )
+          cells     = 2.7636363636363637 ( n, N0 = 106, 55 )
+
+    Path, Inter, ReInter: p, i, ri  = 97, 23, 20 (i,ri estimated)
+    Flat Diff,   fd = i+g(p-i)      =or less 60.56923076923077
+    reint           = 2(ri+i)/3     = 28.666666666666668
+    Difficulty,   d = reint+g(p-i)  =or less 66.23589743589744
+    Creativity,   c = d/v           =or less 23.04513131942282
+    Soko-style,   c/maxc            =or less 1.4
+    Whirlitivity, c/maxc            =or less 13.5%
+
+    Known maxc, 170.1.
+
+::::::::::::::::::::::::::::::::::::::
+
+
+- 1 - 1 2
+- A y - -
+A - B B x
+- A y 2 -
+- - - 1 y
+
+Parameters:
+  Internal cells     = 24
+  Blocks (walls),  w = 2
+  Empty cells,     s = 16
+  Dynamic units,   u = 6
+  Density ... u/s, g = 0.375
+
+
+E x p e c t e d    A u d i e n c e    P a r a m e t e r s
+
+    Volumability, v = rules * breeds * cells = 1.372400367309458
+          rules     = 1.1111111111111112 ( r, R0 = 2, 3 )
+          breeds    = 1.16 ( b, B0 = 5, 10 )
+          cells     = 1.064793388429752 ( n, N0 = 23, 55 )
+
+    Path, Inter, ReInter: p, i, ri  = 466, 101, 44 (i,ri estimated)
+    Flat Diff,   fd = i+g(p-i)      = 237.875
+    reint           = 2(ri+i)/3     = 96.66666666666667
+    Difficulty,   d = reint+g(p-i)  = 233.54166666666669
+    Creativity,   c = d/v           = 170.1702157982636
+    Soko-style,   c/maxc            = 10.0
+    Whirlitivity, c/maxc            = 100.%
+
+    Known maxc, 170.1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:::::::::::::::::::::::::::::::::::::::::
+Copyright (c) 2013 Konstantin Kirillov
+
+
+
+</pre></div>
+
+</body></html>
+
+

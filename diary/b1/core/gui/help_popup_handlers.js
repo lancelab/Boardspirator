@@ -1,12 +1,13 @@
-(function() { 	var tp   		=  $.fn.tp$  =  $.fn.tp$ || {};	
-				var core		=  tp.core;
-				var gio  		=  tp.gio    =  tp.gio   || {};
 
-				var gworkers	=  gio.gui.procs;
+( function () {		var tp   		=  $.fn.tp$  =  $.fn.tp$ || {};	
+					var core		=  tp.core;
+					var gio  		=  tp.gio    =  tp.gio   || {};
+
+					var gworkers	=  gio.gui.procs;
 
 
-				// //\\//	Prepares handlers which
-				//			are common for button-click or key-strike control events.
+					// //\\//	Prepares handlers which
+					//			are common for button-click or key-strike control events.
 
 
 
@@ -127,6 +128,9 @@
 						"</pre>";
 			}
 		}
+
+
+		res += gm.metrics.recalculated.text;
 
 
 		res += gworkers.get_map_credits('with_externals').description_table; //credits_table;

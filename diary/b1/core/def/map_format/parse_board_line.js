@@ -1,4 +1,4 @@
-(function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+( function () {	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var ceach	=  tp.core.each;
 					var cmd		=  gio.core.def.map_format;
@@ -7,19 +7,17 @@
 					var reg_ex_cont_space		= /\s+/g;					//for map sugar
 
 
-	///////////////////////////////
-	// parse board line
-	//============================
 
-	// * reserves object for races
+
+
+	//.	? reserves object for races
 	var sugar;
 	var sugar_color;
 	var sugar_range;
 	var breed2color = cmd.breed2color;
 	var color2breed = cmd.color2breed;
 
-
-	/// enters? board lines parser
+	/// Enters board lines parser
 	cmd.parse_board_lines = function(raw_board_lines, map, cbzone_bf, dtable){
 		sugar		= map.collection.sugar;
 		sugar_range	= sugar && sugar.do_colorize_randomly;
@@ -37,7 +35,7 @@
 
 
 
-
+	///	Parses board line
 	cmd.parse_board_line=function( board_y, line, map, cbzone_bf, dtable){
 
 		var w,i,j,len;
@@ -111,11 +109,7 @@
 					utoken = ww[0];
 				}				
 
-				if( utoken === sugar_speed_map_boundary ) {
-					mparsed.wall_boundary_encountered =
-						mparsed.wall_boundary_encountered || [x, board_y];
-				}
-
+				if( utoken === sugar_speed_map_boundary ) mparsed.wall_boundary_encountered = true;
 
 				var ww = dtable[ utoken ]; //.charAt(i)]; //c[i]
 				//assume wall. no validation for wrong char
@@ -179,7 +173,9 @@
 				var race = gcol.race;
 
 				// ** sugarifies
-				if(sugar_range){
+				if( sugar_range ) {
+
+					mparsed.wall_boundary_encountered = false;
 					var sugarr = sugar_range[race];
 					if(	sugarr && ( race === 'box' || race === 'hero' || race === 'target') ){
 						if(gcol.color_ix === 0){
@@ -320,9 +316,7 @@
 
 		return true;
 	};
-	//============================
-	// parse board line
-	///////////////////////////////
+	///	Parses board line
 
 
 

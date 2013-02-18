@@ -1,0 +1,76 @@
+/{
+
+		"albums" :
+		{
+			"boximaze" :
+			{
+
+				"album_name"	: "Bubble",
+				"gkey"			: "boximaze",
+
+				"collections" 	:
+				[
+					{	"ckey"		: "beginner",
+						"credits"	: { "title"		: "Beginner" }
+				 	}
+				],
+
+
+				"dresses" :
+				{ 
+					"default" :
+					{
+						"style" : {	"play" : { "backgroundColor" : "#AAAAAA" } },
+						"objective" : "Bring the hero to its target"
+					},
+
+					"give_me_my_bone" :
+					{
+
+						"skin_key" : "give_me_my_bone",
+						"chosen" : true,
+
+						"credits"	:
+						{
+								"title"		: "Give Me My Bone",
+								"license"	: "host-based"
+						},
+
+						"style"	:
+						{	"play" :
+							{	"backgroundImage" : "background.png",
+								"backgroundColor" : ""
+							}
+						},			
+
+						"tile"	: {	"width" : 40, "height" : 40 },
+
+						"rules"	: "Only one human-rubbish thing\ncan be pushed at once ...",
+
+						"objective" : "Get hero to the treasure",
+
+						"story" :
+							/"
+								Suddenly, master filled backyard with
+								strange things which separated the
+								hero from food supply.
+								These things are too heavy ...
+							/",
+
+						"hname_table" :
+						{
+							"hero_x"	: "Me",
+							"box_x"		: "Human Nonsense",
+							"htarget_x" : "Treasure"
+						}
+					}
+					// dress
+				}
+				// dresses
+			}
+			// album
+		}
+		// albums
+
+/}
+

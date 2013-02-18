@@ -17,7 +17,7 @@
 				},
 
 				{
-					"credits" : {	"title"		: "Soko Derivations" },
+					"ckey" : "soko_derivations", "credits" : {	"title"		: "Soko Derivations" },
 					"ref" : { "folder" : { fkey : 'soko_derivations.txt' } }
 				},
 

@@ -1,4 +1,5 @@
-(function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function () {	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 
 					var gstyle	=  gio.config.style;
@@ -22,7 +23,8 @@
 
 
 	/// Displays game status 
-	gio.draw_status = function( dont_redraw_won_status ) { 
+	gio.draw_status = function( dont_redraw_won_status )
+	{ 
 
 
 		var gs		= gio.getgs();
@@ -87,6 +89,7 @@
 		if( !dress_features || dress_features.statistics ) {
 		
 			//: shows statistics
+			gde.RePartsCount[iH]		= '' + round.peer_change;
 			gde.interactionsNumber[iH]	= '' + round.interacts;
 			gde.movesCount[iH]			= '' + round.current_pos_ix;
 			gde.backsCount[iH]			= '' + round.backs;
@@ -272,7 +275,8 @@
 		var won_or_not	= gm.game.won_or_not;
 		var pos			= gs.pos;
 		var WCOLOR		= gstyle.WINNING_COLOR;
-		var mcap		= gio.domwrap.headers.map_caption_div;
+		var mcap		= gio.domwrap.headers.map_caption_text_div;
+
 
 
 		//: stops show annoyances
@@ -283,6 +287,26 @@
 		mcap[iH]			=	show_annoynaces ? 'Map Level' : '';
 		if( !show_annoynaces ) {
 			gdr.dtopcenter.style.display = "none";
+		}
+
+		//: Overrules mcap indicator with rating indicator.
+		var rating_total	= gio.domwrap.headers.map_caption_total_div;
+		var w_total			= parseInt( rating_total.style.width );
+		var relative		= gm.metrics.recalculated.relative;
+		if( relative && !isNaN( w_total ) )
+		{
+			var w_width					= Math.ceil( w_total * relative / 100.0 );
+			w_width						= Math.max( Math.min( w_total, w_width ), 1 ); 
+			var rating_div				= gio.domwrap.headers.map_caption_highlighter_div;
+			rating_div.style.width		= w_width + 'px';
+			var tooltip					= 'Estimated ' + gm.metrics.recalculated.ten_rounded + ' out of 10 Whirlitivity';
+			rating_div.setAttribute		( 'title', tooltip );
+			rating_total.setAttribute	( 'title', tooltip );
+			rating_total.style.display	= 'block';
+			mcap.style.display			= 'none';
+		}else{
+			rating_total.style.display	= 'none';
+			mcap.style.display			= 'block';
 		}
 
 

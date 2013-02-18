@@ -1,0 +1,161 @@
+	
+
+
+	<h2 id="ci">Map Creativity Index ..</h2>
+
+	.. adopted in Whirly calculated as follows:
+
+		Ci = D / V,  where
+
+	D - gameplay difficulty,
+	V - volumability. Volumability is a "boring part" of difficulty.
+
+	Raw ci would be ci = d / v, where
+	Raw difficulty, d = i + ( p - i ) / 5 = 0.8i + 0.2p, where
+	
+	i = number of interactions between hero and other units,
+	p = number of moves,
+	p, i are taken for p - minimal solution,
+	v = raw volumability.
+
+	Adjusted to human difficulty, D = 0.8I + 0.2P, where
+
+	I = i - I0,
+	P = p - P0.
+
+	I0 = interaction base difficulty considered trivial for a human.
+	P0 = path base difficulty considered trivial for a human.
+
+	We take these values arbitrarily, I0 = 8, P0 = 33.
+	( We took number of pushes and moves from David W. Skinner <a href="#ref">[1], Map 1</a>
+	  making this map a point of reference for Whirly. All maps with correspondingly lesser i or p
+	  will have ci = 0. We build the scale for adults. Kids versions need different ci. )
+
+	V = v / V0.
+	V0 = base volumability considered trivial for a human.
+
+
+	Volumability is considered as non-creative factor and is eliminated by division: d / v.
+
+		When number of boxes and walls grows, difficulty is growing, but not necessarily
+		demands player to be creative.
+			Whirling up geometrical elements without increasing of their number may contribute to
+				creativity ( or may not ).
+			There also is possible increase of creativity-demand due not only complex geometry, but
+				due unexpected scenario stemmed from specific geometry.
+
+		Excessively complex rules are also part of volumability.
+
+
+		Volumability:
+
+		v = m + 3r
+
+		mechanical complexity: m = u + s / 5 = u + ( c - u ) / 5, where
+	
+		u - number of dynamic unints ( boxes, heroes ),
+		s - number of non-dynamic units: walls and empty spaces,
+		c - number of internal cells in map.
+
+		For adopted average distribution,
+	
+		u  u  u ...
+		           
+		u  u  u ...
+
+		uWWuWWuWW...
+		WWWWWWWWW...
+		WWWuWWuWW...
+		....
+		
+		each unit is surrounded by 5 static units.
+
+
+		Rules complexity, r, is counted as follows:
+
+			r = ( a - 2 ) +  3( t - 1 ), where
+	
+		a - number of colonies on a map,
+		t - number of interaction types.
+
+		Two attributes considered as base point of complexity. If we have
+		less than two different types of units, just one unit, there is
+		"nothing" it can do at all.
+
+
+		Examples for maps without hero-targets:
+
+			Sokoban:  a = 3, ( Colonies: hero, box, and target. )
+		              t = 1, ( Push. )
+		              r = 1.	
+
+			Colorban: a = 3 -- 30, ( 3 races * color )
+		              t = 1, ( Push. )
+		              r = 1 -- 28
+
+			PullPush: a = 3 -- 30,
+		              t = 2, ( Pull and push. )
+		              r = 4 -- 41.
+		
+			Monkeyban: a = 3,
+		               t = 2, ( Push or push with sticky-boxes effect. )
+		               r = 4.
+
+		    Flocks:    a = 3 -- 30,
+		               t = 2, ( Push or push with sticky-boxes effect. )
+		               r = 4 -- 41
+
+	    PushMan: a = 3, ( No targets for boxes, but htarget for hero. )
+		         r = 1.
+
+		Coefficient 3 in ( 3r ) is taken because it is a digit without corners and not very big.
+
+		Here is how we take a value for V0:
+			r = 1,
+			m = 3 + ( 14 - 3 ) / 5 = 3.22
+			V0 = m + 3r = 6.22
+		( The same map <a href="#ref">[1], Map 1</a> is used. )
+	
+	Following model taken as a base for the formula ( p - i ) / 5.
+	Player has to decide to which box to move: to left or right. One brain click.
+		
+	     $   $
+	       @  
+
+	One hand-click, one brain-click:
+	     $   $
+	      @
+
+	Three hand-clicks, no brain-clicks:
+	     @
+	     $   $
+	      
+	One interaction, one brain-click:
+	     
+	     @   $
+	     $	      
+
+	This is why brain-load counted as (p-i) / 5.
+
+	***
+
+	The disadvantage of metric ci is unknown upper bound. ci allows only to order maps, not
+	to measure them.
+
+	<a href="creativity_indices.htm">CI Examples.</a>
+
+
+	Circular Links:
+
+	<a  href="guest_readme.htm">Guest Readme</a>
+	<a  href="whirly_and_sokoban.htm">Whirly and Sokoban Variants</a>
+	<a  href="project_files.htm">Project Files</a>
+
+
+
+	<h2 id="ref">References</h2>
+
+	[1] <a href="http://users.bentonrea.com/~sasquatch/sokoban/">Sokoban puzzles by David W. Skinner. Microban (155 puzzles, April, 2000)</a>
+
+
+

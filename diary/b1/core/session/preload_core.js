@@ -1,8 +1,9 @@
 
-(function(){		var tp		= jQuery.fn.tp$ = jQuery.fn.tp$ || {};	
+( function () {		var tp		= jQuery.fn.tp$ = jQuery.fn.tp$ || {};	
 					var gio		= tp.gio   = tp.gio   || {};
 					var core	= tp.core;
 					var ceach	= core.each;
+					var exp_url	= core.expand_to_parent;
 
 					var dio		= gio.data_io;
 					var ggi		= gio.gui.init;
@@ -13,8 +14,8 @@
 					var feeder	= gconf.feeder;
 					var session	= gio.session;
 
-					var deb		= function ( string ) { gio.debly( "Preload: " + string ); };			
-					var conadd	= function ( string ) { gio.cons_add( "Preload: " + string ); };			
+					var conadd		= function ( string ) { gio.cons_add( "Preload: " + string ); };			
+					var deb			= function ( string ) { if( gio.debug) conadd( string ); };			
 
 
 
@@ -37,10 +38,15 @@
 
 
 		// //\\ LOADS GAME DEFINITIONS /////////////////////
-		var success = dio.download_defion ( 
-			{ url :	core.app_webpath_noindex + '/' +
-					gconf.defpaths.GAMES_DEF_PATH +
-					'/games.jwon.txt'
+		var success = dio.download_gamion ( 
+			{
+				galfinition : { gafion : true },
+				common :
+				{
+						link :	core.app_webpath_noindex + '/' +
+								gconf.defpaths.GAMES_DEF_PATH +
+								'/games.jwon.txt'
+				}
 			}
 		);
 		var ww = "Core folder-games load " + ( success ? 'success.' : 'failure.' );
@@ -76,7 +82,7 @@
 		//. comment
 		deb( "Downloads standalone-albums if any ..." );
 		//	all albums included via <script tag are already inserted
-		dio.add_defions();
+		dio.add_gafions();
 		gdp.normalize_album_defs( gdef.albums ); // TODM extra junk job
 		deb( "Finished standalone-albums if any ... " );
 
@@ -104,16 +110,32 @@
 		}
 
 
-		//: derives the newly loaded albums which missed derivation at load
+		//: Derives the newly loaded albums which missed derivation at load.
 		ceach( gdef.albums, function( akey, adummy ) { gdp.derive_album( akey ); });
 
 
 		if( query.aurl ) {
-			deb( "Preloading album " + query.aurl );
-			var downed_alb = dio.download_defion ( 
-				{ url : query.aurl, query : query, listify_on_top : true, penetrate_asingle : true }
-			);
-			var ww = "Album preload " + query.aurl + ( downed_alb ? ' success.' : ' failure.' );
+
+			deb( "Album from query " + query.aurl );
+			var link = exp_url ( query.aurl );
+
+			var downed_alb = dio.download_gamion (
+			{
+				galfinition :
+				{	penetrate_asingle	: true,
+					derive_at_download	: true,
+					listify_on_top		: true,
+					gafion				: true
+				},
+ 
+				common :
+				{	link				: link,
+					query_is_source		: true,
+					jwon				: query.jwon
+				}
+			});
+
+			var ww = "Album from query " + link + ( downed_alb ? ' success.' : ' failure.' );
 			if( !downed_alb ) return ww;
 			deb( ww );
 		}
@@ -131,24 +153,36 @@
 
 		/// Attaches external collection if any
 		var downed_coll = false;
-		if( query.curl ) {
-			var metag =
-			{ 	//"coll" : true,
-				env	:
-				{	akey_master : query.akey,
-					akey_advice : pakey,
-					passive		: query.cpassive,
-					query		: query
+		if( query.curl )
+		{
+
+			var link		= exp_url ( query.curl, query.aurl );
+			var downed_coll	= dio.download_gamion (
+			{
+				galfinition :
+				{	penetrate_asingle	: true,
+					//.	All album definitions are already derived.
+					//	These remaining if any will be derived at once:
+					derive_at_download	: true
 				},
-				link :
-				{	link : query.curl
+
+				mapfinition :
+				{	passive				: query.cpassive,
+					akey_master			: query.akey,
+					akey_advice			: pakey,
+					chosen				: true,
+					title				: "From Query",
+					query_credits		: query
 				},
-				list :
-				{	chosen : true  //TODM appar. overkill, aways chosen
+ 
+				common :
+				{	link				: link,
+					query_is_source		: true,
+					jwon				: query.jwon
 				}
-			};
-			var downed_coll = dio.download_gamion ( metag );
-			if( !downed_coll ) return 'Failed download coll from query.url = ' + query.curl;
+			});
+
+			if( !downed_coll ) return 'Failed download coll from query.url = ' + link;
 			deb( "Coll download success." );
 		}
 

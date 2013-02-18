@@ -1,4 +1,4 @@
-(function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+( function () {	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 
 					var core	=  tp.core;
@@ -12,7 +12,7 @@
 					var gdef	=  gio.def;
 					var gdp		=  gdef.procs;
 					var do_deb	=  gio.debug;
-					var dodeb	= function ( string ) { if( do_deb ) gio.cons_add( "FHeaderize: " + string ); };
+					var dodeb	= function ( string ) { if( do_deb ) gio.cons_add( "FileHeader: " + string ); };
 
 
 					var macro_def_match				=/^(\S+)=(.+)$/;
@@ -93,7 +93,9 @@
 
 		//.	overrides collection-shell credits with original-text credits 
 		cpaste( colln.credits, jwon_heap.credits );
-		var meg = colln.script.metag;
+		var ww = colln.script.metag;
+		var galfin	= ww.galfinition;
+		var mapfin	= ww.mapfinition;
 
 
 		///	Defines most powerful sugar, just a flat game with possible maps.
@@ -113,46 +115,52 @@
 		var estimated_master_akey = (ww && ww.key) || estimated_master_gkey ;
 
 
-		/// Compiles defion
+		/// Compiles gafion
 		if( jwon_heap.games || jwon_heap.albums ) {
 			// c cc( 'Definitions detected in scrith: ', jwon_heap );
 			deb( 'Galfinition detected.');
 
 			var w_dg = gdef.games;
 			var w_da = gdef.albums;
+			gdp.normalize_album_defs( jwon_heap.albums );
 
-			if( meg.overdefine ) {
-				//: pastes overridingly
+			if( galfin.overdefine )
+			{	//:
+				deb( 'Pastes overridingly albums or games from gamion.');
 				crpaste ( w_da, jwon_heap.albums );
 				crpaste ( w_dg, jwon_heap.games );
 				ceach( jwon_heap.games, function( gkey, game ) {
-					gdp.derive_game( gkey, meg.overdefine );
+					gdp.derive_game( gkey, true );
 				});
 			}else{
-				//: pastes preventively
+				//:
+				deb( 'Pastes preventively albums or games from gamion.');
 				crpaste ( w_da, crpaste( {}, jwon_heap.albums, w_da ) );
 				crpaste ( w_dg, crpaste( {}, jwon_heap.games, w_dg ) );
 			}
 
-
 			/// derives missed albums
-			gdp.normalize_album_defs( jwon_heap.albums );
-			ceach( jwon_heap.albums, function( albkey, walbum ) {
-				walbum.ref.link.link = colln.ref.link.link;
-				walbum.ref.list.listify_on_top = meg.env.listify_on_top;
-				walbum.ref.list.penetrate_asingle = meg.env.penetrate_asingle;
-
+			ceach( jwon_heap.albums, function( albkey, walbum )
+			{
+				var ww = walbum.ref;
+				ww.link.link				= colln.ref.link.link;
+				ww.list.listify_on_top		= galfin.listify_on_top;
+				ww.list.penetrate_asingle	= galfin.penetrate_asingle;
 				//. restricts album's child collections to db
-				if( colln.ref.db ) walbum.ref.db = true;
+				if( colln.ref.db ) ww.db	= true;
 				// c onsole.log( "Derives missed album ", walbum );
-				if( meg.derive_at_download ) gdp.derive_album( albkey, null, null, meg.overdefine );
+				if( galfin.derive_at_download )
+				{
+					deb( 'Derives album ' + albkey + ' from gamion.');
+					gdp.derive_album( albkey, ( galfin.overdefine ? 'overdefine' : '' ) );
+				}
 			});
 			colln.script.state.definitions_processed = true;
 		}
 
 		
 
-		var do_albumize = !meg.defion && !meg.env.passive;
+		var do_albumize = ! ( galfin.gafion || ( mapfin.passive && colln.state.shellified ) );
 
 		if( do_albumize ) {
 
@@ -162,9 +170,9 @@
 					do_albumize = false;
 				}else{
 					//:: trying to shellify it one more time
-					var akey_probe =	meg.env.akey_master ||
+					var akey_probe =	mapfin.akey_master ||
 										estimated_master_akey ||
-										meg.env.akey_advice ||
+										mapfin.akey_advice ||
 										gdef.default_album_key;
 					var hcoll = clonem( gdef.templates.def.coll );	
 				}
@@ -177,11 +185,11 @@
 				//.	overrides caption credits with collection credits
 				colln.credits = clonem( colln.credits, hcoll.credits );
 
-				var akey_probe =	meg.env.akey_master ||
+				var akey_probe =	mapfin.akey_master ||
 									hcoll.akey ||
 									hcoll.ref.env.akey ||
 									estimated_master_akey ||
-									meg.env.akey_advice ||
+									mapfin.akey_advice ||
 									colln.ref.list.akey ||
 									gdef.procs.get_preferred_album_def().key ||
 									gdef.default_album_key;
@@ -209,35 +217,27 @@
 		//	merges with currently parsing collection.
 		if( do_albumize ) {
 
+				var w_source	= colln.ref.link.link && ( 'from gamion link ' +  colln.ref.link.link );
+				w_source		= w_source || 'possibly from text. ';
 				//. comment
-				dodeb(	'Attaches coll to album. akey = "' + akey_probe + '" from gamion' +
-						( meg.link.link && ( ' link ' +  meg.link.link ) ) + '.'
-				);
+				dodeb(	'Attaches coll to akey = "' + akey_probe + '" ' + w_source );
 
 				//: sets data and passes data from the host colln
-				cpaste							( hcoll, gdef.templates.def.coll );
-				hcoll.ref.list.chosen			= hcoll.ref.list.chosen || meg.list.chosen; // TODM apparently overkill:
-																							// always chosen?
-				hcoll.ref.link					= clonem( colln.ref.link );
-				hcoll.credits					= clonem( colln.credits, jwon_heap.credits, hcoll.credits );
-				// c onsole.log( "Albumizes     albumizee coll.credits=", hcoll.credits );
+				gdp.normalize_cseed				( hcoll );
 
-				hcoll.map_title_source			= hcoll.map_title_source || colln.map_title_source;
+				//. sets vital reference for merging
+				hcoll.ckey						= colln.ckey;					
+				hcoll.ref.link					= clonem( colln.ref.link );
 				hcoll.ref.already_downloaded	= true;
+				hcoll.ref.list.chosen			= hcoll.ref.list.chosen || mapfin.chosen;
+				hcoll.credits					= clonem( colln.credits, jwon_heap.credits, hcoll.credits );
+				hcoll.map_title_source			= hcoll.map_title_source || colln.map_title_source;
 
 				//. derives from cseed
-				//	TODO error check:
-				var w_album						= gdp.derive_album ( akey_probe, hcoll, meg.preserve_GUI_state ); 
+				var w_album						= gdp.derive_album ( akey_probe, hcoll ); // TODO error check and // TODM aways false: why? , meg.preserve_GUI_state ); 
 				var wcoll						= w_album.collections[ w_album.collections.length -1 ];
 
-				//. preserves script already living in colln
-				delete wcoll.script;
-				//.	merges all other goodies from wcoll to colln					
-				crpaste( colln, wcoll );
-
-				//. finally coincides generated and already-alive collections
-				//	creating two album-hosts and lkey bound to wcoll
-				w_album.collections[ w_album.collections.length -1 ] = colln;
+				gdp.paste_coll_to_from			( colln, wcoll );
 
 		} /// Collection derives album if not done, 
 

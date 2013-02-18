@@ -211,9 +211,12 @@
 
 
 				/// collects statistics
-				if( int_act && recursion_depth === 1 ) {
-					new_move.action.intact = int_act;
-					move.action.intact = int_act;
+				if( int_act && recursion_depth === 1 )
+				{
+					move.action.intact		= int_act;
+					new_move.action.intact	= int_act;
+					move.action.peer		= peer;
+					new_move.action.peer	= peer;
 				}
 
 				/// breaks process if wrongly interacting unit is met

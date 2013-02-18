@@ -5,10 +5,14 @@
 
 
 
-	//\\// Configures map/path de(en)coder
 
 
-	// Inverse encoder for heros and boxes:
+
+
+					//\\// Configures map/path de(en)coder
+
+
+	// Inverse (path?) encoder for heros and boxes:
 	// Only for colorban map:
 	var breed2color = cmd.breed2color={};
 	var color2breed = cmd.color2breed={};
@@ -34,13 +38,21 @@
 
 	cmd.sugar_soko_mapcut =
 	{
+		'h0.x' : '&',
+		'h0.X' : '%',
+		'x.h0' : '&',
+		'X.h0' : '%',
+
 		'0X'   : '*',
 		'0x'   : '+',
+		'X0'   : '*',
+		'x0'   : '+',
+
 		'x'    : '@',
 		'X'    : '$',
+
 		'.h0'  : '!',
-		'h0.x' : '&',
-		'h0.X' : '%'
+		'h0.'  : '!'
 	}
 
 	///	configures pure Sokoban mapper,
@@ -70,6 +82,7 @@
 		'o':'target_x',
 		
 		' ':'ground_x',
+		// '-':'ground_x', //autoadded
 		'_':'ground_x'
 	};
 
@@ -85,6 +98,7 @@
 		// Part I. Before autobuiling, 
 		// adds a little bit Sokoban compatibility:
 
+		// '-':'ground_x', //autoadded
 		'_':'ground_x',
 		'$':'box_x',
 		'@':'hero_x',
@@ -123,12 +137,6 @@
 			var msw = game.wall_map_symbols[ ii ];
 
 
-			//Define path recognition chars only for heros:
-			//Breed to path-symbol:
-			breed2color[ tt[ cc ] ] = cc;
-			color2breed[ cc ] = tt[ cc ];
-
-
 			//////////////////////////////////////////////////////////////////////
 			// ... only the map scripot deviates from "canonical" breed names
 			//     images should follow canonical notations hero_x, ...
@@ -144,6 +152,11 @@
 			var kkk = cc;
 			var vvv = cnames.hero[ii]; 
 			tt[kkk] = vvv;    et[vvv] = kkk;
+			//:	Defines path recognition chars only for heros.
+			//	Breed to path-symbol.
+			breed2color[ tt[ cc ] ] = cc;
+			color2breed[ cc ] = tt[ cc ];
+
 
 			// decode box-breeds:
 			var kkk = cc.toUpperCase();
@@ -206,8 +219,9 @@
 
 		}
 		//important: c onsole.log(t['y'],t['Y']);	// this gives: wall_x ground_x
+		// c ccc( cmd.colorban_decoder_table, cmd.colorban_encoder_table );
 
-	}; 	// //\\ Configures colorban decoder table. Part I and II.
+	}; 	// \\// Configures colorban decoder table. Part I and II.
 
 
 

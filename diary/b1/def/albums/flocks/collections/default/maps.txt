@@ -25,7 +25,8 @@
 
 :::title=Demo
 
-:::playpath=Solved 67.11
+:::playpath=Solution
+:::solpath=67.11.7
 |a.0.d|a.0.l|a.0.l|a.0.u|a.0.R|b.0.l|b.0.l|b.0.u|b.0.l|b.0.l|b.0.u|b.0.u|b.0.R|a.0.d|a.0.r
 |a.0.d|a.0.r|a.0.r|a.0.u|a.0.u|a.0.l|a.0.L|b.0.l|b.0.d|b.0.d|b.0.r|b.0.r|b.0.d|a.0.d|a.0.l
 |a.0.l|a.0.u|a.0.u|a.0.r|b.0.r|b.0.U|b.0.r|b.0.u|b.0.L|b.0.r|a.0.u|a.0.r|a.0.r|a.0.D|a.0.D
@@ -34,7 +35,7 @@
 
 
 
-:::map
+:::map=warm_up
 - # # # # # -
 # # - - - # -
 # - 1B 2A - # #
@@ -45,7 +46,8 @@
 :::board_end
 :::title=Warm Up
 
-:::playpath=Solved 103.24
+:::playpath=Solution
+:::solpath=103.24.13
 |b.0.d|a.0.l|a.0.d|a.0.l|a.0.l|a.0.u|b.0.u|b.0.u|b.0.r|b.0.r|b.0.d|a.0.R|a.0.R|b.0.L|b.0.L
 |b.0.d|a.0.d|a.0.r|b.0.u|b.0.u|b.0.l|b.0.l|b.0.u|b.0.R|a.0.r|a.0.u|a.0.L|a.0.L|b.0.l|b.0.d
 |b.0.d|b.0.R|b.0.R|b.0.d|a.0.d|a.0.l|b.0.u|b.0.u|b.0.r|b.0.r|b.0.d|a.0.l|a.0.u|a.0.u|a.0.r
@@ -72,6 +74,7 @@
 
 
 :::playpath=solution
+:::solpath=116.24.14
 |g.0.r|g.0.u|g.0.u|g.0.l|g.0.D
 |f.0.d|f.0.l|f.0.l|f.0.u
 |g.0.r|g.0.d|g.0.L|g.0.u|g.0.u|f.0.R|f.0.R|g.0.r
@@ -110,7 +113,7 @@
 
 
 
-:::map
+:::map=Black_Manager_Squeezed
 - # # # # # -
 # # - - - # #
 # - 6F 7F g - #
@@ -124,6 +127,7 @@
 
 
 :::playpath=human solution
+:::solpath=64.15.11
 |g.0.r|g.0.d|g.0.d|x.0.R|f.0.d|f.0.r|x.0.D|x.0.u|x.0.u|f.0.l|f.0.u|f.0.l|f.0.u|f.0.R|f.0.d
 |x.0.u|x.0.l|x.0.l|x.0.D|f.0.d|x.0.l|x.0.d|x.0.d|x.0.r|x.0.R|x.0.l|x.0.l|x.0.u|x.0.u|x.0.r
 |x.0.u|x.0.r|x.0.r|x.0.d|g.0.L|f.0.u|g.0.d|g.0.L|x.0.D|f.0.l|f.0.u|f.0.u|f.0.r|f.0.R|x.0.r
@@ -155,6 +159,7 @@
 
 
 :::playpath=solution
+:::solpath=170.27.14
 |g.0.r|g.0.u|g.0.u|g.0.l|g.0.D|f.0.d|f.0.l|f.0.l|f.0.u|g.0.r|g.0.d|g.0.L|g.0.L|g.0.u|g.0.r|g.0.u
 |f.0.R|f.0.R|g.0.r|g.0.d|g.0.d
 |g.0.l|g.0.l|f.0.R|g.0.u|g.0.l|f.0.l|f.0.d|f.0.d|g.0.l|g.0.d|g.0.R|f.0.r|f.0.u|f.0.u|f.0.l
@@ -186,11 +191,13 @@
 :::dress=flocks
 :::skip
 
-:::playpath=solution
+:::playpath=Hint
+:::solpath=326.38.23
 |g.0.r|g.0.u|g.0.u|g.0.l|g.0.D|f.0.d|f.0.l|f.0.l|f.0.u|g.0.r|g.0.d|g.0.L|g.0.L|g.0.u|g.0.r
 |g.0.u|f.0.R|f.0.R|g.0.r|g.0.d|g.0.d
 |g.0.l|g.0.l|f.0.R|g.0.u|g.0.l|f.0.l|f.0.d|f.0.d|g.0.l|g.0.d|g.0.R|f.0.r|f.0.u|f.0.u|f.0.l
 |f.0.u|f.0.u|f.0.r|g.0.u|g.0.r|g.0.r|g.0.d|g.0.d|g.0.l|g.0.U|g.0.U|g.0.d|f.0.D|f.0.r|f.0.d
+
 |f.0.L|g.0.l|f.0.D|g.0.l|f.0.L|g.0.u|g.0.R|g.0.R|g.0.u|f.0.u|f.0.l|f.0.l|g.0.d|g.0.d|g.0.r
 |g.0.r|g.0.u|g.0.L|g.0.L|f.0.d|f.0.R|f.0.d|f.0.r|g.0.r|g.0.r|g.0.d|f.0.U|f.0.d|f.0.r|f.0.U
 |f.0.l|g.0.l|g.0.d|g.0.l|g.0.l|f.0.r|f.0.r|f.0.u|f.0.u|f.0.l|f.0.D|f.0.u|g.0.u|g.0.l|g.0.u
@@ -255,6 +262,7 @@
 
 
 :::map
+
 # # # # # # #
 # a A 1 - # #
 # A 6F 7F g - #
@@ -483,6 +491,7 @@
 
 
 :::playpath=solvedLX
+:::solpath=388.52.26
 |a.0.d|a.0.d|a.0.l|a.0.u|a.0.l|a.0.l|a.0.u|b.0.l|b.0.l|b.0.u|b.0.l|b.0.l|b.0.d|c.0.u|c.0.u
 |c.0.r|c.0.u|c.0.u|c.0.l|c.0.r|c.0.d|c.0.d|c.0.d|c.0.r|c.0.r|c.0.u|c.0.L|c.0.r|a.0.d|a.0.r
 |a.0.r|a.0.d|a.0.d|a.0.d|a.0.r|c.0.d|c.0.l|c.0.l|c.0.r|c.0.u|c.0.L|c.0.u|c.0.u|c.0.d|c.0.d

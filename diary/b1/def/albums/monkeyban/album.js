@@ -14,7 +14,9 @@
 		collections	: [
 
 
-				{	"credits" : {	"title"		: "Beginner" 	}  },
+				{	"ckey" : "beginner", "credits" : {	"title"		: "Beginner" 	}  },
+
+				{	"list_title"	: "Microban",		"ref" : { "folder" : { "fkey": "monkey_microban1.txt" }  } },
 
 				{	"list_title"	: "Unexplored. D. W. Skinner. Microban.",			"ref" : { "folder" : { "akey" : "sokoban", "fkey": "microban1.txt",	"ckey": "skinner" }  } },
 				{	"list_title"	: "Unexplored. D. W. Skinner. Microban II.",		"ref" : { "folder" : { "akey" : "sokoban", "fkey": "microban2.txt",	"ckey": "skinner" }  } },

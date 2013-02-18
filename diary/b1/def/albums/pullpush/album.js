@@ -11,7 +11,7 @@
 
 			collections :
 			[ 
-				{	"list_title" : "Beginner" },
+				{	"ckey": "beginner", "list_title" : "Beginner" },
 
 
 				{	"list_title"	: "Unexplored. David Holland. dh1.",				"ref" : { "folder" : {  "akey" : "sokoban", "fkey": "authentic_David_Holland_dh1.txt",	"ckey": "holland"  } }, 	

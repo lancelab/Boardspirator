@@ -1,4 +1,4 @@
-(function( ){	 	var tp  	=  $.fn.tp$  =  $.fn.tp$ || {};	
+( function( ){	 	var tp  	=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio 	=  tp.gio    =  tp.gio   || {};
 					var core	=  tp.core;
 					var ceach	=  core.each;
@@ -10,7 +10,6 @@
 
 					var gdef	=  gio.def;
 					var gdp		=  gdef.procs;
-					var tcoll	=  gio.def.templates.def.coll;
 
 					var do_deb	=  gio.debug && !isNaN(gio.debug) &&  gio.debug % 7 === 0;
 					var dodeb	=  function ( string ) { if( do_deb )		gio.cons_add( "SpawnColl: " + string ); };
@@ -57,6 +56,34 @@
 	};
 
 
+	/// Completes:	album_to ( and album_from if any )
+	//				begin to point to the same collection,
+	//				contents of collections merged:
+	//					coll_from ovrrides coll_to,
+	//					except coll_to.script which overrides coll_from.script.
+	//				coll_from still knows album_from as an owner.
+	//	Input:		coll_from and album_from must be in sync.
+	//	NOTE:		coll_from.key becomes a ckey. coll_to.ckey is lost.
+	//				album_to possibly does not exist at all.
+	gdp.paste_coll_to_from = function ( coll_to, coll_from )
+	{
+		//. preserves script already living in coll_to
+		coll_from.script = coll_to.script;
+		//.	merges all other goodies from wcoll to colln					
+		core.rpaste( coll_to, coll_from );
+
+		var akey		= coll_from.ref.list.akey;
+		var cix			= coll_from.ref.list.ix;
+		var album_from	= gio.session.stemmed_albums[ akey ];
+
+		//: fixes album_from references
+		album_from.collections[ cix ]		= coll_to;
+		album_from.coll_ref[ coll_to.ckey ]	= coll_to;
+	};
+
+
+
+
 	/// spawns collection-seed
 	//	"up" and "down" mean:
 	//		"down" -	do point to physical location: like to hard-drive folder or
@@ -65,34 +92,57 @@
 	//					dresses context ...
 	gdp.spawn_coll_up_down_links = function( album, cix, externified ) {
 
-
 		var coll			= album.collections[ cix ];
 		gdp.normalize_cseed( coll );
 
 
+		//: Cidifies and keyifies collection.
+		///	This property must be not overridden in other
+		//	places of code:
+		if( !coll.ref.cid || coll.ref.cid !== 0 )
+		{
+			coll.ref.cid = gio.def.colls.maxcid;
+			gio.def.colls.maxcid += 1;
+		}
+		var ww = coll.ckey || 'col_' + coll.ref.cid;
+
+
+		/*
+		// //\\ Abandoned
+		/// Protects against overriding existing collection.
+		var ww_item = coll.ckey && gio.def.colls.items[ coll.ckey ];
+		if(	!album_overdefines && !coll.ref.list.cix_to_insert1 &&
+			ww_item && ww_item !== coll )
+		{
+			coll.ckey = 'col_' + coll.ref.cid;
+		}
+
+		//. Sets global inventory.
+		gio.def.colls.items[ coll.ckey ] = coll;
+		// \\// Abandoned
+		*/
+
+
+		//.	Makes up album.coll_ref link.
+		album.coll_ref[ coll.ckey ] = coll;
+
+
 		// //\\ "up-links"
 
-		//: makes list-links
+		//: Makes list-links to most recent album-list owner.
 		var akey			= album.key;
 		coll.ref.list.akey	= akey;
 		coll.ref.list.ix	= cix;
 		
 
+		// //\\ establishes dgame context
 
 		//. dgame links
-		coll.ref.env.dgkey = coll.ref.env.dgkey || coll.ref.env.akey || akey;
-
-
-		// //\\ establishes dgame context
-		var cgame			= album.dgame;
+		var dgkey =	coll.ref.env.dgkey = coll.ref.env.dgkey || coll.ref.env.akey || akey;
+		var cgame = album.dgame;
 		/// finds collection redresser //TODM remove this feature if found useless
-		if( coll.ref.env.dgkey !== akey ) {
-			cgame = gdp.dressi_gami_fy_album( coll.ref.env.dgkey );
-			if( !cgame ) {
-				conadd(	'Missed game context for key ' + coll.ref.env.dgkey +
-								' for collection ' + cix );
-				return false;
-			}
+		if( dgkey !== akey ) {
+			cgame = gdp.dressi_gami_fy_album( dgkey );
 			//. combines with parent dress
 			cpaste( cgame.dresses, game.dresses );
 		}
@@ -101,7 +151,7 @@
 		// \\// establishes dgame context
 		// \\// "up-links"
 
-		if( !externified) gdp.externify_and_hostify( coll, album );
+		if( !externified ) gdp.externify_and_hostify( coll, album );
 
 
 		//. makes tooltip and credit html-table
@@ -113,6 +163,7 @@
 				coll.ref.list.akey	+ ', ' +
 				coll.ref.list.ix	+ '.' );
 
+		
 		return true;
 
 	}; /// spawns collection-seed and mutifies
@@ -152,8 +203,8 @@
 
 		if( album.ref.db ) coll.ref.dbased = true;
 
-		// //\\ establishes "down-links", credits, dom-title
-		//		non-external collections set relative to albums tree on player server
+		// //\\ Establishes "down-links", credits, dom-title,
+		//		non-external collections set relative to albums tree on player server,
 		//		external collection referenced more complex way: see externify function.
 		if( coll.ref.link.link ) {
 				//: prepares external collection
@@ -164,17 +215,18 @@
 			spawn_coll_folder_address( coll, album.key );
 		}
 		gdp.detect_ownhost_url( coll );
-		// \\// establishes "down-links"
+		// \\// Establishes "down-links"
 
 	}; 	/// Externifies and detects own host
 
 
 
 
-	///	expands definition of external collection,
-	//	should work even for non-bound-to-album-collection,
-	//	should give the same result if rerun N-times
-	var externify = function ( external_collection, xurl ) {
+	///	Expands definition of external collection.
+	//	Should work even for non-bound-to-album-collection,
+	//	should give the same result if rerun N-times.
+	var externify = function ( external_collection, xurl )
+	{
 
 		var coll		= external_collection;
 		var ext			= coll.ref.link;
@@ -223,7 +275,7 @@
 	//	as of today, called only for link-missed collections
 	var spawn_coll_folder_address =  function ( coll, akey ) {
 
-			// we don't need folder at all
+			//. We don't need folder at all
 			if( coll.ref.already_downloaded ) return;
 
 			var has_folder = core.get_first_or_null( coll.ref.folder );
@@ -255,8 +307,7 @@
 	//	Input:	coll - opt. I omitted, then coll-seed is created.
 	gdp.normalize_cseed = function ( coll ) {
 
-		coll = coll || {};
-		cpaste( coll, tcoll );
+		coll = gio.def.templates.normalize_coll( coll );
 		coll.ref.env.akey = coll.akey || coll.ref.env.akey;
 		//. deletes sugar
 		if( coll.hasOwnProperty( 'akey') ) delete coll.akey;

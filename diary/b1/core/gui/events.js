@@ -179,6 +179,11 @@
 					gio.map_editors.edit_custom_maps();
 					return false;
 
+				case 'w':
+					if(gm.load	!== 'finalized') return true;
+					gio.map_editors.display_game_path();
+					return false;
+
 				case 'p':
 					if(gm.load	!== 'finalized') return true;
 					gio.map_editors.display_game_path();

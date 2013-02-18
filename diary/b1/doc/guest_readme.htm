@@ -2,7 +2,8 @@
 
 <html>
 	<head>
-  
+
+		<meta http-equiv="Content-Type"	content="text/html; charset=UTF-8">
 		<meta name="copyright" content="2011-2012 (c) Konstantin Kirillov">
 		<meta name="description" content="Board Puzzle Framework"> 
 		<meta name="keywords" content="board game, puzzle game, on line game, game development, educational game, sokoban"> 
@@ -30,6 +31,7 @@
 
 	<h1>Guest Readme. Draft.</h1>
 
+		<a class="list" href="#pre_introduction">Pre Introduction</a>
 		<a class="list" href="#introduction">Introduction</a>
 		<a class="list" href="#loading_games">Loading Games</a>
 		<a class="list" href="#components">Games, Albums, and Collections</a>
@@ -40,6 +42,7 @@
 		<a class="list" href="#credits">Giving Credits</a>
 		<a class="list" href="#troubleshooting">Troubleshooting</a>
 		<a class="list" href="whirly.htm">Whirly</a>
+		<a class="list" href="creativity_indices.htm">Map Creativity Index</a>
 		<a class="list" href="whirly_and_sokoban.htm">Whirly and Sokoban Variants</a>
 		<a class="list" href="../?akey=kids6&asingle&curl=//def/albums/kids/6.json.txt">Kids 6</a>
 		<a class="list" href="../?akey=kids6co_colo&asingle&curl=//def/albums/kids/6co_colorban.json.txt">Kids 6 CoColo</a>
@@ -48,44 +51,61 @@
 		<a class="list" href="project_files.htm">Project Files</a>
 	<a id="introduction"> </a>
 
+	<h2 id="pre_introduction" >Pre Introduction</h2>
+
+	<span style="font-size:15px" >
+	... bad things happen ... #@title@# began work nicely far before QA-tests began ...
+	and developers where not able to resist playing it ... so they released #@title@# for 
+	their own sake and for your, user's, risk ... (QA is Quality Assurance.) 
+	... and they are still playing ... so it is unlikely QA will be completed at all ...
+
+	If you are not comfortable with this, just leave the site ... Otherwise, continue playing and
+	report bugs if encountered ...
+	</span>
+
+
 	<h2>Introduction</h2>
 
 
-	#@title@# is a Web-browser-based program to play, craft, and solve puzzles derived from root game, Whirly.
+	#@title@# is a Web-browser player to play, craft, and solve puzzles derived from root game, <a href="whirly.htm">Whirly</a>.
 
-	#@title@# acts like a player which loads collection-file and skin and converts them into games ready to play.
-	Collection-file contains game maps. Skin contain images.
+	#@title@# loads gamion and converts it into a game ready to play.
+	Gamion is a file which contains definitions of games, albums, and collection of maps.
 
-	Core-collections and core-skins are bundled with the player.
-	Other collections and skins can be read directly from Internet.
+	In "Sokoban World", gamions are simply collections of maps. Sokoban maps do not have script which
+	allows to change game rules, for example. So, we occsionally will use word  "collection" in place of "gamion". 
 
-	As in case of Sokoban, when people created probably hundreds of collections, you can craft your
-	own collections. 
+	Core-gamions are bundled with the player. Other gamions can be loaded from Internet.
 
-	Collection-files can script not only maps, but also new games, albums, and skins.
-
+	As in case of Sokoban, when people created probably hundreds of collections, you can craft your own gamions. 
 
 
-	<a id="components"> </a>
-	<h2>Games, Albums, and Collections</h2>
 
 
-	Game is a set of rules to play. "Game" here means a puzzle-game.
+	<h2 id="components">Games, Albums, Collections, and Dresses.</h2>
 
-	Album comprises four things: game, dress, collections, and listing.
+	Game is a set of rules to play. "Game" here means a puzzle-game. In context of #@title@#,
+	Game is a mathematical definition. It contains breeds, rules, and ovbjective.
+	It cannot be copyrighted, but credited.
+
+
+	Album merges together all components of playgame.
+	Album merges four things: game, dress, collection-references, and listing.
 
 		Dress is how game looks and is interpreted in words.
 		Dress includes images which are called "Skin".
+		Listing specifies how to group albums in front-page-listing.
 		Collection is a file containing maps.
-		Listing specifies how to group albums in listing or selection on front page.
 
-	Traditionally dresses and collections can be copyrighted.
+	After merging, album looks like a selection box on front-page. Game name often attached to album name.
 
-	More accurately, game is a mathematical definition. It contains breeds, rules, and ovbjective.
-	It cannot be copyrighted, but credited.
+	Traditionally dresses and maps can be copyrighted.
 
-	Games can be derived from core-games or from external-games with core-game <a href="whirly.htm">Whirly</a>
-	at the top of inheritance tree.
+	Games can be derived from core-games or from external-games which are already derived from core-games.
+
+	"Collection-references" can be references to gamions ( ... so "album-gamion" is a recursive structure ).
+	This makes possible redressing and changing game-context for existing games and gamions.
+	For example, one can land to Sokoban maps in Flocks context and apply Flock-rules to Sokoban maps.
 
 
 
@@ -100,8 +120,13 @@
 			...&aurl=http://mysite.com/mypath/myalbum.txt               - albums url, maps in target file are ignored
 			...&curl=http://users.bentonrea.com/~sasquatch/sokoban/m1   - collection url, target intends to have maps
 			...&curl=//mycollection_path/mycollection.txt
-			...&collection_ix=123
-			...&map_ix=345
+			...&cix=123                                                 - gamion index. collection index. 
+			( ...&collection_ix=123                                       - gamion index. depricated. )
+			...&ckey=yes_this_is_collection_key                         - gamion key
+			...&mix=345                                                 - map index
+			( ...&map_ix=345                                            - map index. depricated )
+			...&mkey=yes_this_is_maps_key
+			...&dkey=yes_this_is_dress_key
 			...&asingle                                                 - suppresses display of other's albums except of &aurl
 			...&slim=300000                                             - positions' number limit for solver
 
@@ -116,9 +141,9 @@
 	<h2>Map Craft .. </h2>
 
 		.. is a simplest way to craft a Game. It does not require creating new rules or dresses.
-		Just borrow already existing Games or dresses and refer your maps to them.
+		Just borrow already existing Games or dresses and apply them to your maps to them.
 		<a href="whirly.htm#deriving">This link</a> contains examples of both mapifying and derivation.
-		Just ignore derivation part of collection files.
+		To get started, ignore derivation part of these gamions.
 
 
 		&aurl and &curl can be full or relative urls:
@@ -155,7 +180,7 @@
 	<h2>Solver ..</h2>
 
 	.. is breadth-first and weak. Its power depends on size of your computer memory.
-	Solver memory limit is preset to slim=(300000 pstates) for PC with 1 Gig memory.
+	Solver memory limit is preset to slim=(300000 positions) for PC with 1 Gig memory.
 	If your computer has less, solver may freeze your browser. If you computer has more,
 	on your own risk, you may increase the limit to solve harder puzzles.
 
@@ -175,7 +200,7 @@
 		To generate new game-scenario, run solver for co-game, find "longest" solution in terms of
 		interactions or moves, then co-vert the scenario.
 		Don't switch to map other than currently under solving, because when solver finds
-		slolution, it throws it into current GUI.
+		slolution, it throws it into currently displayed map.
 
 	There are possible difficulties at the edge of Web-browser capabilities:
 		Browsers die, quit, crash differently on different OSes.
@@ -208,12 +233,12 @@
 		Following credit keywords <a href="../tp/core2_no_jquery.js">/.\	AVAILABLE CREDIT KEYS</a>
 		are supported.
 
-		Core-bundled Skins have separate page for credits. Other Skins may be credited in Dress credit fields.
+		Core-bundled Skins have <a href="credits.htm">separate page</a> for credits. Other Skins may be credited in Dress credit fields.
 
 		Credits support dependence credits, like jQuery credits are nested in #@title@# description.
 
 		As a general rule, original credits override wrapper. For example, if "original" collection-A is referred
-		from maps of collection-B, then A-credits will be on top of display with B-subcredits.
+		from maps of collection-B, then A-credits will be on top of display which will contain B-credits in subcredits fields.
 	
 
 

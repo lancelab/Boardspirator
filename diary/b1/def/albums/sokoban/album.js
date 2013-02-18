@@ -7,11 +7,11 @@
 	{
 			collections :[
 
-				{	"list_title"	: "David Holland. dh1.",					"ref" : { "folder" : { "fkey": "authentic_David_Holland_dh1.txt",	"ckey": "holland" } }, 	"map_title_source"	: "comment" },
+				{	"ckey" : "holland",		 "list_title"	: "David Holland. dh1.",					"ref" : { "folder" : { "fkey": "authentic_David_Holland_dh1.txt",	"ckey": "holland" } }, 	"map_title_source"	: "comment" },
 
-				{	"list_title"	: "David W Skinner. Microban.",				"ref" : { "folder" : { "fkey": "microban1.txt",	"ckey": "skinner"  } } },
-				{	"list_title"	: "David W Skinner. Microban II.",			"ref" : { "folder" : { "fkey": "microban2.txt",	"ckey": "skinner"  } } },
-				{	"list_title"	: "David W Skinner. Microban III.",			"ref" : { "folder" : { "fkey": "microban3.txt",	"ckey": "skinner"  } } },
+				{	"ckey" : "microban1",	 "list_title"	: "David W Skinner. Microban.",				"ref" : { "folder" : { "fkey": "microban1.txt",	"ckey": "skinner"  } } },
+				{	"ckey" : "microban2",	 "list_title"	: "David W Skinner. Microban II.",			"ref" : { "folder" : { "fkey": "microban2.txt",	"ckey": "skinner"  } } },
+				{	"ckey" : "microban3",	 "list_title"	: "David W Skinner. Microban III.",			"ref" : { "folder" : { "fkey": "microban3.txt",	"ckey": "skinner"  } } },
 				{	"list_title"	: "David W Skinner. Microban IV.",			"ref" : { "folder" : { "fkey": "microban4.txt",	"ckey": "skinner"  } } },
 				{	"list_title"	: "David W Skinner. Microban V.",			"ref" : { "folder" : { "fkey": "microban5.txt",	"ckey": "skinner"  } } },
 
@@ -40,8 +40,8 @@
 				{	"list_title"	: "David W Skinner. Sasquatch IV.", 		"ref" : { "folder" : { "fkey": "sasquatch4.txt",	"ckey": "skinner"  } } },
 				{	"list_title"	: "David W Skinner. Sasquatch V.", 			"ref" : { "folder" : { "fkey": "sasquatch5.txt",	"ckey": "skinner"  } } },
 				{	"list_title"	: "David W Skinner. Sasquatch VI.", 		"ref" : { "folder" : { "fkey": "sasquatch6.txt",	"ckey": "skinner"  } } },
-				{	"list_title"	: "David W Skinner. Sasquatch VII.", 		"ref" : { "folder" : { "fkey": "sasquatch7.txt",	"ckey": "skinner"  } } },
-				{	"list_title"	: "David W Skinner. Sasquatch VIII.", 		"ref" : { "folder" : { "fkey": "sasquatch8.txt",	"ckey": "skinner"  } } },
+				{	"ckey" : "sasquatch7",	 "list_title"	: "David W Skinner. Sasquatch VII.", 		"ref" : { "folder" : { "fkey": "sasquatch7.txt",	"ckey": "skinner"  } } },
+				{	"ckey" : "sasquatch8",	 "list_title"	: "David W Skinner. Sasquatch VIII.", 		"ref" : { "folder" : { "fkey": "sasquatch8.txt",	"ckey": "skinner"  } } },
 				{	"list_title"	: "David W Skinner. Sasquatch IX.", 		"ref" : { "folder" : { "fkey": "sasquatch9.txt",	"ckey": "skinner"  } } },
 				{	"list_title"	: "David W Skinner. Sasquatch X.", 			"ref" : { "folder" : { "fkey": "sasquatch10.txt",	"ckey": "skinner"  } } },
 				{	"list_title"	: "David W Skinner. Sasquatch XI.", 		"ref" : { "folder" : { "fkey": "sasquatch11.txt",	"ckey": "skinner"  } } },
@@ -49,13 +49,13 @@
 
 
 			{
-				"ref" : { "folder" : {	ckey: 'grigoriev', fkey: 'grigr2001.txt' } },
+				"ckey" : "egrig2001",	 "ref" : { "folder" : {	ckey: 'grigoriev', fkey: 'grigr2001.txt' } },
 				credits : { "title"		: "Evgeny Grigoriev. 2001." },
 				map_title_source	:'comment'
 			},
 
 			{
-				"ref" : { "folder" : {	ckey: 'grigoriev', fkey: 'grigr2002.txt' } },
+				"ckey" : "egrig2002",	 "ref" : { "folder" : {	ckey: 'grigoriev', fkey: 'grigr2002.txt' } },
 				credits : { "title"		: "Evgeny Grigoriev. 2002." },
 				map_title_source	:'comment'
 			},

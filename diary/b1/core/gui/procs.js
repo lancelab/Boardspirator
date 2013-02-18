@@ -1,4 +1,5 @@
-(function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function () {	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 
 					var gstyle	=  gio.config.style;
@@ -25,6 +26,41 @@
 			gio.draw_status();
 		}
 	};
+
+
+
+	/// Finds dress by dkey and sets GUI-dress to this dress
+	//	Does not refresh GUI except 
+	ggp.virtual_reselect_dress = function ( gm, dkey )
+	{
+		if( !dkey ) return;
+		var selected_ix = -1;
+		var arr = gm.dresses_wrap.arr;
+		for( var ix = 0, len = arr.length; ix < len; ix ++ )
+		{
+			var wrap = arr[ ix ];
+			if( dkey === wrap.dress.key )
+			{
+				selected_ix = ix;
+				break;
+			}
+		}
+		if( selected_ix < 0 ) return;
+
+		// c ccc( ' index is set to ' + selected_ix + ' was = ' + gm.dresses_wrap.chosen_ix );
+
+		gm.dresses_wrap.chosen_ix = selected_ix;
+		gm.dresses_wrap.chosen_dress = arr[ selected_ix ].dress; //TODM redundant. Poor design. Remove.
+
+		//.	reskinnify_board does this job
+		//gio.domwrap.headers.dress_select_el.reset_choice( selected_ix );
+
+		//: Not our responsibility
+		//	gio.gui.reskinnify_board();
+		//	gio.gui.procs.draw_status_and_scene();
+	};
+
+
 
 
 	/// Input:	"do_messagify" enforces extra messages from "round".

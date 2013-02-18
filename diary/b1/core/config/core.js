@@ -1,4 +1,5 @@
-(function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function () {	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var ceach	=  tp.core.each;
 
@@ -45,11 +46,56 @@
 										default_album_key : 'album', 
 										dresses : null,
 										inherited_games : {}, dressed_gamed_albums : {},
+
+										//.	Makes design step towards app-unique collection_key
+										//	placing the weight to gamion as a main usage unit.
+										colls :
+										{	maxcid : 0
+											//, items : {} // abandoned
+										},
+
 										colorban_map_decoder : null,
 										procs : {}
 					},
 
 					gio.def.albums[ gio.def.default_album_key ] = {};
+
+					gio.config.metrics =
+					{
+
+						///	These parameters do not tell which number of rules, cells, breeds is good or bad.
+						//	They do setup a range for "target audience".
+						//	If you don't agree with their values, this means this game is not designed for you ...
+						//	If you don't agree, simply change these parameters to fit your comfort ...
+						//	For example,	if more breeds than in Sokoban is boring for you, set BREEDS to 3.
+						//					On the other side, if diversity of units in Chess is not enough for you,
+						//					set BREEDS greater than 12.
+
+
+						EXPECTED_USER :
+						{
+							BOREDOM :
+							{
+								//: Zero-boredom
+								MIN_RULES	: 2, 	// When there are only two rules, say "push" and "pull",
+													// don't complain there are too many rules ...
+								MIN_CELLS	: 16,	// When there are only 4*4 cells, don't say: hard to manage this board ...
+								MIN_BREEDS	: 3,	// When there are only hero, goal for box, and goal for hero,
+													// don't complain about any boredom.
+
+								//: Sensible boredom
+								RULES		: 8,	// 6 th rule becames boring, Chess has ~ 7 move rules +
+													// "eat rue if on the way".
+								CELLS		: 64,	// Chess has 64, ...
+								BREEDS		: 12	// Chess has 12 (non-couting 8-th-raw-"paun"-converting-cells),
+													// assume our user starts boring ...
+							},
+							MAX_KNOWN_CREATIVITY :
+							{	SCORE : 194.9,
+								QUERY : 'akey=flocks&ckey=wells&mkey=insanely_hard&dkey=default'
+							}
+						}
+					};
 
 					gio.modes		= {	
 										//.	TODF no static and dynamic ... everythig is dynamic
@@ -64,7 +110,7 @@
 					gio.data_io		= { 
 											core : { load : {}, save : {} }, session : { load : {}, save : {} },
 											//. wraps gradual adding of albums
-											add_defions : function () { return; }
+											add_gafions : function () { return; }
 									};
 
 					gio.core		= { procs : {}, reflection : {}, def : { map_format : {} } };
@@ -173,10 +219,18 @@
 
 
 
+	gio.solver.CONSTANTS =
+	{
+		CANON_STRING		: 1,
+		CANON_ARRAY  		: 2,
+		CANON_LINKED_LIST	: 3
+	};
 
+	gio.solver.config =
+	{
 
-	gio.solver.config = {
-								CANON_IS_STRING	: true,		//true, false
+								//CANON_REPRESENTED_AS	: gio.solver.CONSTANTS.CANON_STRING,
+								CANON_REPRESENTED_AS	: gio.solver.CONSTANTS.CANON_LINKED_LIST,
 								TIME_TO_WAIT_MS : 500,
 								TIME_TO_WORK_MS : 500,
 								// Memory limit:
@@ -191,7 +245,7 @@
 								//	CRITICAL_WAIT_TIME. 
 								//		For monochrome games, we set it to
 								//		CRITICAL_VOLUME : 300000,	//canons
-								CRITICAL_VOLUME : 50000,	//canons
+								CRITICAL_VOLUME : 300000,	//canons
 
 
 								//. abandoned
@@ -209,7 +263,7 @@
 									"Shift + up arrow          to highest point\n"+
 									"Shift + down arrow        to lowest point\n"
 								
-						};
+	};
 
 
 

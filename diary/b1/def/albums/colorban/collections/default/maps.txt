@@ -22,6 +22,7 @@
 :::title=In few Steps
 
 :::playpath=Solution
+:::solpath=51.8.4
 |x.0.D|x.0.D|x.0.u|x.0.l|d.0.D|a.0.l|a.0.d|a.0.d|a.0.r|a.0.d|b.0.l|b.0.l|b.0.d|b.0.d|b.0.r
 |b.0.r|b.0.d|c.0.l|c.0.l|c.0.r|c.0.D|c.0.u|c.0.l|c.0.l|c.0.d|c.0.d|c.0.r|c.0.R|d.0.r|c.0.u
 |c.0.u|c.0.l|c.0.l|b.0.u|b.0.u|b.0.u|b.0.r|b.0.r|b.0.d|b.0.L|b.0.u|b.0.l|b.0.D|c.0.r|c.0.r
@@ -124,6 +125,7 @@
 :::board_end
 :::title=Spiral Pie
 :::playpath=Easy
+:::solpath=118.22.11
 |c.0.u|c.0.u|a.0.d|a.0.d|a.0.l|a.0.d|a.0.d|a.0.r|c.0.r|c.0.u|c.0.u|c.0.l|d.0.r|d.0.r|d.0.u
 |d.0.u|d.0.r|d.0.r|d.0.d|d.0.d|b.0.l|b.0.l|b.0.u|b.0.l|b.0.l|b.0.d|a.0.U|d.0.d|d.0.d|a.0.l
 |a.0.u|a.0.u|a.0.r|a.0.u|a.0.u|a.0.r|a.0.r|a.0.d|a.0.d|a.0.d|a.0.l|a.0.L|a.0.d|a.0.l|a.0.U

@@ -1,12 +1,12 @@
- <!DOCTYPE html>
- <html><head>
-  <!-- doctype for html 4 is only to satisfy IE -->
+<!DOCTYPE html>
+<html><head>
   
+  <meta http-equiv="Content-Type"	content="text/html; charset=UTF-8">
   <meta name="copyright" content="2011-2012 (c) Konstantin Kirillov">
   <meta name="description" content="Board Puzzle Framework, Whirly"> 
-  <meta name="keywords" content="whirly, board game, puzzle game, on line game, game development, educational game, sokoban"> 
+  <meta name="keywords" content="whirly, sokoban, sokoban variants, board game, puzzle game, brain training, game development, educational game, whirlitivity">
 
-  <title>Whirly and Sokoban Variants. Draft.</title>
+  <title>Whirly and Sokoban Variants</title>
 
 	<link rel="stylesheet" href="css/whirly.css">
 
@@ -27,13 +27,15 @@ To display this page, turn JavaScript on.
 <span style="visibility:hidden;">This token, #@title@#   , is a necessary flag to unhide this page.</span>
 <pre>
 
-	<h1>Whirly and Sokoban Variants. Draft.</h1>
+	<h1>Whirly and Sokoban Variants</h1>
 
 
-	Part of this information is from 3rd-party sources and is as reliable as they were at Reasearch Date.
-	Core Whirly games are in blue rows for color-match-games and in green rows for none-color-match games.
-
-
+	On this site, externally-sourced information is as reliable as sources were at Reasearch Date.
+	<a href="creativity_indices.htm">Creativity Metric, CM</a> depends on <a href="creativity_indices.htm#pros_and_cons">"maximum known solution".</a>
+	(<a href="creativity_indices.htm#d_not_p">Difficulty, D is not a plain number of moves or interactions.</a>)
+	If we missed some game, map, or rating, we'll be glad to receive your correction by email.
+	
+	Games in blue rows - are color-match-games and in green rows - none-color-match games.
 
 <a id="variants"> </a>
 
@@ -41,15 +43,19 @@ To display this page, turn JavaScript on.
 	<table style="position:relative; left:50px;">
 	<thead>
 		<tr>
-			<th>Reasearch<br>Date</th>
+			<th>
+				Reasearch<br>Date<br>
+				<a class="list" href="creativity_indices.htm" title="Highest known Creativity Metric of the map from this game family">CM</a>,
+				<a class="list" href="creativity_indices.htm" title="Highest known Difficulty">D</a>
+			</th>
 			<th>Name.<br>Playlink.</th>
 			<th>Description</th>
-			<th>Deriving from Whirly. <br>Script. Playlink.</th>
+			<th>Deriving from Whirly. <br>Script. Example. Playlink.</th>
 			<th>Solver</th>
 			<th>Playlink</th>
 			<th>Reference</th>
 			<th>Maps</th>
-			<th>Implementations</th>
+			<th>Implementations.<br>Development.</th>
 			<th>Research</th>
 		</tr>
 	</thead>
@@ -58,7 +64,12 @@ To display this page, turn JavaScript on.
 
 
 
-	<tr class="whirly">	<td>2013-01-03</td>
+	<tr class="whirly">
+		<td>	
+				2013-01-03<br>
+				<a href="../?akey=flocks&ckey=wells&mkey=insanely_hard&dkey=default">100% 233</a>
+		</td>
+
 	   	<td>#@Flocks@#</td>
 		<td>Heros push color-matching boxes<br>
 				Flock-effect: Neighbour boxes stick <br>to moving box. </td>
@@ -75,32 +86,33 @@ To display this page, turn JavaScript on.
 		</td>
 	</tr>
 
-	<tr class="whirly">	<td>2013-01-03</td>
-	   	<td>#@Colorban@#</td>
-		<td>Heros push color-matching boxes<br>
-			No flock-effect.</td>
-		<td>Flocks, but herd_sense = 0<br>
-		</td>
-		<td><a href="../?akey=colorban">On Line</a><br>
-		</td>
-		<td>
-		</td>
-		<td><a href="whirly.htm">Whirly</a><br>
-		</td>
-	</tr>
 
 
 
-	<tr class="whirly">	<td>2013-01-03</td>
+
+
+
+
+
+
+
+	<!-- Sokoban --------------------------------------------------------------------->
+	<tr class="whirly">
+
+		<td>	
+				2013-01-03<br>
+				<a href="../?akey=sokoban&mkey=sokoban_max&curl=//def/albums/sokoban/collections/solutions.txt">53% 178</a>
+		</td>
 
 	   	<td><a href="http://www.game-sokoban.com/index.php?mode=catalog">Sokoban</a></td>
-		<td>Monochrome Colorban. <br>
-			One hero pushes boxes. <br>
+		<td>One pusher pushes boxes <br>
+			to targets.<br>
 			No flock-effect.</td>
-		<td>#@Sokoban@# is equal to Colorban.<br>
-			No new rules added, but expects<br>
-			monohero-monochrome maps<br>
-			which makes instance of game very special<br>
+		<td>#@Colorban@# with grey <br>
+			units and single <br>
+			targetless hero	<br>
+			which makes <br>
+			instance of game very special<br>
 			due rules simplicity, famous history, <br>
 			innumerable	implementations, theory, and fun.
 		</td>
@@ -113,8 +125,10 @@ To display this page, turn JavaScript on.
 			<a href="http://sokobano.de/wiki/index.php?title=Solver_Statistics">Compare</a>
 		</td>
 		<td>
-			#@Sokoban@#<br>
+			<a href="http://sokobanonline.com">sokobanonline.com</a>
 			<a href="http://www.games4brains.de/sokobluejavaenglisch.php">Sokoblue</a><br>
+			<a href="http://sokoban.ws/sokoplayer/SokoPlayer_HTML5_en.php" title="It looks like very featured site">sokoban.ws</a><br>
+			<a href="http://logicking.com/games/CaravanSokoban/" title="Nice Graphics">CaravanSokoban</a><br>
 			...
 		</td>
 		<td>
@@ -136,11 +150,70 @@ To display this page, turn JavaScript on.
 	</tr>
 
 
-	<tr class="whirly">	<td>2013-01-03</td>
+
+
+
+	<!-- Colorban --------------------------------------------------------------------->
+	<tr class="whirly">
+		<td>	
+				2013-01-03<br>
+				<a href="../?akey=colorban&mkey=submarine&ckey=soko_derivations">52% 167</a>
+		</td>
+
+	   	<td>#@Colorban@#</td>
+		<td>Heros push color-matching boxes<br>
+			No flock-effect.</td>
+		<td>Flocks, but herd_sense = 0<br>
+		</td>
+		<td><a href="../?akey=colorban">On Line</a><br>
+		</td>
+		<td>
+		</td>
+		<td><a href="whirly.htm">Whirly</a><br>
+		</td>
+	</tr>
+
+
+
+
+
+
+	<!-- Sokomind Plus --------------------------------------------------------------------->
+	<tr>
+		<td>	
+				2013-02-17<br>
+				<a href="../?akey=colorban&mkey=submarine&ckey=soko_derivations">52% 167</a>
+		</td>
+
+	   	<td>Sokomind Plus<br>Block-o-Mania<br>(Unverified)</td>
+		<td>Numbered Sokoban</td>
+		<td>
+			#@Colorban@# with targetless grey hero.
+		</td>
+		<td><a href="../?akey=colorban">On Line</a><br>
+		</td>
+		<td>
+				<a href="http://sokobanonline.com">sokobanonline.com</a>
+		</td>
+		<td><a href="http://www.erimsever.com/sokoban8.htm">Erim Server</a> <br><a href="http://sokomind.de/">sokomind.de</a></td>
+		<td>
+		</td>
+		<td>
+				<a href="http://www.freewebs.com/sokofan/">Sokofan</a>
+		</td>
+	</tr>
+
+
+	<!-- Monkeyban --------------------------------------------------------------------->
+	<tr class="whirly">
+		<td>	
+				2013-02-17<br>
+				<a href="../?akey=monkeyban&mkey=triangle_stream&ckey=beginner">49% 111</a>
+		</td>
+
 	   	<td>#@Monkeyban@#</td>
-		<td>Monochrome-monohero #@Flocks@# <br>
-		<td>Rules the same as for Flocks, <br>
-			but expects monohero-monochrome maps<br>
+		<td>Sokoban with flock effect<br>
+		<td>#@Flocks@# with grey units<br>
 		</td>
 		<td><a href="../?akey=monkeyban">On Line</a><br>
 		<td>
@@ -166,27 +239,14 @@ To display this page, turn JavaScript on.
 
 
 
-	<tr>
-		<td>2012-10-13</td>
-	   	<td>Sokomind Plus<br>Block-o-Mania<br>(Unverified)</td>
-		<td>Numbered Sokoban</td>
-		<td>
-			#@Colorban@# with colorless hero<br>and boxes of different colors.
-		</td>
-		<td><a href="../?akey=colorban">On Line</a><br>
-		</td>
-		<td>
-		</td>
-		<td><a href="http://www.erimsever.com/sokoban8.htm">Erim Server</a> <br><a href="http://sokomind.de/">sokomind.de</a></td>
-	</tr>
-
-
 
 	<tr>
 		<td>2012-10-13</td>
 		<td>Multiban</td>
-		<td>Monochrome #@Colorban@#</td>
-		<td>Monochrome #@Colorban@#</td>
+		<td>Multipusher Sokoban</td>
+		<td>#@Colorban@# with grey units,<br>
+			and targetless heros.
+		</td>
 		<td><a href="../?akey=colorban">On Line</a><br>
 		</td>
 		<td><a href="http://www.erimsever.com/sokoban8.htm">Erim Server</a>
@@ -211,15 +271,21 @@ To display this page, turn JavaScript on.
 
 	<!-- ******************************************** middle header ************************************ -->
 	<tr class="middle_header">
-		<td>Reasearch<br>Date</td>
+		<td>
+				Reasearch<br>Date<br>
+				<a class="list" href="creativity_indices.htm" title="Highest known Creativity Metric of the map from this game family">CM</a>,
+				<a class="list" href="creativity_indices.htm" title="Highest known Difficulty">D</a>
+		</td>
+
+
 		<td>Name.<br>Playlink.</td>
 		<td>Description</td>
-		<td>Deriving from Whirly. <br>Script. Playlink.</td>
+		<td>Deriving from Whirly. <br>Script. Example. Playlink.</td>
 		<td>Solver</td>
 		<td>Playlink</td>
 		<td>Reference</td>
 		<td>Maps</td>
-		<td>Implementations</td>
+		<td>Implementations.<br>Development.</td>
 		<td>Research</td>
 	</tr>
 	<!-- ******************************************** middle header ************************************ -->
@@ -363,7 +429,63 @@ To display this page, turn JavaScript on.
 	</tr>
 
 
+	<tr class="no_color_match" id="boximaze">
+		<td>	
+				2013-02-17<br>
+				<a href="../?akey=boximaze&ckey=beginner&mkey=lone_target">13% 66</a>
+		</td>
 
+	   	<td>PushMan<br>
+			#@BoxiMaze@#</td>
+		<td>Sokoban with targets only for hero.<br>
+		<td>
+			Sokoban with no new rules.<br>
+			Rules constained by maps<br>
+			which expect goals only for</br>
+			hero.<br>
+		</td>
+		<td>#@BoxiMaze@# <!-- solver -->
+		</td>
+		<td><!-- playlink -->
+			<a href="http://gorillaarcade.com/playgame/2103/Push">Creditcardware?</a><br>
+		</td>
+
+		<td><!-- reference -->
+			<a href="http://www.arcade-museum.com/game_detail.php?game_id=9161">History</a><br>
+			<a href="https://www.youtube.com/watch?v=bbWdZknwW30">Movie</a><br>
+			<a href="https://www.youtube.com/watch?v=TyOn9EgTie4">Movie</a><br>
+		</td>
+
+		<td><!-- maps -->
+			#@BoxiMaze-maps@#
+		</td>
+
+		<td><!-- Implementation -->
+			<a href="http://skwirl2.dyndns.org/pushman.zip">pushman.zip</a><br>
+		</td>
+
+		<td><!-- Research -->
+		</td>
+	</tr>
+
+	<!-- ******************************************** middle header ************************************ -->
+	<tr class="middle_header">
+		<td>
+				Reasearch<br>Date<br>
+				<a class="list" href="creativity_indices.htm" title="Highest known Creativity Metric of the map from this game family">CM</a>,
+				<a class="list" href="creativity_indices.htm" title="Highest known Difficulty">D</a>
+		</td>
+		<td>Name.<br>Playlink.</td>
+		<td>Description</td>
+		<td>Deriving from Whirly. <br>Script. Example. Playlink.</td>
+		<td>Solver</td>
+		<td>Playlink</td>
+		<td>Reference</td>
+		<td>Maps</td>
+		<td>Implementations.<br>Development.</td>
+		<td>Research</td>
+	</tr>
+	<!-- ******************************************** middle header ************************************ -->
 
 </tbody>
 </table>
@@ -376,27 +498,24 @@ To display this page, turn JavaScript on.
 	there are: hero, box, target, htarget, wall, ground ...          6 races ...
 	10 colors ... so 60 breeds ... 20 dynamic breeds ...             20 x 60 cells
 	in interaction matrix = 1200 and
-	each cell can take independently 7 interactions ... so ...       G = 7 ^ 1200 interaction matrices or games
-	is possible ...
-	More than 10 ^ 80, <a href="http://en.wikipedia.org/wiki/Observable_universe">possible number of atoms in Observable
-	Universe</a>. 
+	each cell can take independently 7 interactions ... so ...       W = 7<sup>1200</sup> interaction matrices or games is possible ...
 
-	Each game is a subtle or strong deviation from Sokoban cannonical
-	interaction matrix and possibly stems an independent Manifold of
-	gameplays which is parallel to Sokoban Manifold.
+	( More than 10<sup>80</sup>, <a href="http://en.wikipedia.org/wiki/Observable_universe">possible number of atoms in Observable Universe</a>. )
 
-	Perhaps, 99% of these G-games can be just a junk or too complex
-	to be interesting for a human ... 
+	Sokoban is one of these games. Sokoban Gameland is full of famous maps, web sites, fans, and developments.
+	( <a href="http://www.sourcecode.se/sokoban/index.php">This site</a> claims having 22700 levels ... for Sokoban. )
 
-	Each Manifold will have own fans, depository of maps and of course, manifold.group.yahoo.com ...
-	(<a href="http://www.sourcecode.se/sokoban/index.php">This site</a> claims having 22700 levels ... for Sokoban Manifold )
+	Each other "W-game" is a subtle or strong deviation from Sokoban cannonical interaction matrix and possibly stems
+	an independent Gameland which is parallel to Sokoban.
+
+	Perhaps, 99.99% of these W-games can be just a junk or too complex to be interesting for a human, but imagine 
+	each significant Gameland has own fans, depository of maps, and of course, gameland.group.yahoo.com ...
 
 <a id="sandbox"> </a>
 
-	While yahoo.com does not have enough hard drive space for new groups, we show only a few Sandbox 
-	games below. It is up to the reader to decide are these games just a "sandbox" or stem a glorious Manifold.
+	While yahoo.com does not have enough hard drive space for new 7<sup>1200</sup> groups, we show only a few Sandbox games below.
+	The reader may evaluate can these games grow up from sandbox to a Gameland.
 	We don't know yet ...
-
 
 
 </pre>
@@ -408,16 +527,20 @@ To display this page, turn JavaScript on.
 		<th colspan="20"><h1>Sandbox Games</h1>
 	</tr>
 	<tr>
-		<th>Reasearch<br>Date</th>
-		<th>Name.<br>Playlink.</th>
-		<th>Description</th>
-		<th>Deriving from Whirly. <br>Script. Playlink.</th>
-		<th>Solver</th>
-		<th>Playlink</th>
-		<th>Reference</th>
-		<th>Maps</th>
-		<th>Implementations</th>
-		<th>Research</th>
+			<th>
+				Reasearch<br>Date<br>
+				<a class="list" href="creativity_indices.htm" title="Highest known Creativity Metric of the map from this game family">CM</a>,
+				<a class="list" href="creativity_indices.htm" title="Highest known Difficulty">D</a>
+			</th>
+			<th>Name.<br>Playlink.</th>
+			<th>Description</th>
+			<th>Deriving from Whirly. <br>Script. Example. Playlink.</th>
+			<th>Solver</th>
+			<th>Playlink</th>
+			<th>Reference</th>
+			<th>Maps</th>
+			<th>Implementations.<br>Development.</th>
+			<th>Research</th>
 	</tr>
 </thead>
 
@@ -497,7 +620,12 @@ To display this page, turn JavaScript on.
 		</td>
 	</tr>
 
-	<tr class="no_color_match">	<td>2013-01-03</td>
+	<tr class="no_color_match">
+		<td>
+				2013-01-03<br>
+				<a href="../?akey=pullpush&ckey=beginner&mkey=dinner_for_one">47% 111</a>
+		</td>
+
 	   	<td>#@PullPush@#</a>
 		</td>
 		<td>
@@ -587,6 +715,33 @@ To display this page, turn JavaScript on.
 		<td><a href="whirly.htm">Whirly</a><br>
 		</td>
 	</tr>
+
+
+
+
+	<!-- ******************************************** middle header ************************************ -->
+	<tr class="middle_header">
+		<td>
+				Reasearch<br>Date<br>
+				<a class="list" href="creativity_indices.htm" title="Highest known Creativity Metric of the map from this game family">CM</a>,
+				<a class="list" href="creativity_indices.htm" title="Highest known Difficulty">D</a>
+		</td>
+		<td>Name.<br>Playlink.</td>
+		<td>Description</td>
+		<td>Deriving from Whirly. <br>Script. Example. Playlink.</td>
+		<td>Solver</td>
+		<td>Playlink</td>
+		<td>Reference</td>
+		<td>Maps</td>
+		<td>Implementations.<br>Development.</td>
+		<td>Research</td>
+	</tr>
+	<!-- ******************************************** middle header ************************************ -->
+
+
+
+
+
 
 </tbody>
 </table>

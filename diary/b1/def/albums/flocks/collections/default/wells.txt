@@ -3,7 +3,6 @@
 	{
 		/,	title                 	Wells
 		/,	version               	1.1  
-		/,	author                	Konstantin Kirillov
 		/,	copyright             	Copyright (c) 2012 Konstantin Kirillov
 		/,	license               	This collection is free for distribution, modification, and use provided these credits are not removed.
 		/.	publication_date      	November 5 - November 25, 2012
@@ -26,8 +25,9 @@
 :::class=D2.3.1
 This is too sharp change from O1.5, should be smoother ...
 
-110-27
+
 :::playpath=Optimal
+:::optpath=110.27.14
 LruullldDRRlluurrrdrddlUddlLuuluurDldRRR
 lluurrDrDLddllUUddrruuLruullldDRRlluurrr
 dDDuuullDldRlddrUURlluurrrdrdL
@@ -52,8 +52,9 @@ UUrruullDDrrddllUluRRlluurrrdrdL
 :::title=BWells :: Triangled Chairs
 :::class=D2.3.1
 
-51-13
+
 :::playpath=Optimal
+:::optpath=51.13.8
 LruullldDRRRuullDldRlddRUUluurrrddddLruu
 uulllddrUdR
 
@@ -73,7 +74,7 @@ uulllddrUdR
 :::title=BWells :: Corner for Chicken
 :::class=D2.3.1
 
-189-47
+:::comment=exppath=189.47
 :::playpath=Hint
 LrddllluURRllddrUluRluuRDldddrrruruulDuu
 LLdDRRlllddrrrUUlluurrDrDLLLulDDurrrddll
@@ -92,8 +93,9 @@ LLdDRRlllddrrrUUlluurrDrDLLLulDDurrrddll
 :::title=BWells :: Chicken to Corners
 :::class=D2.3.2
 
-125-38
+
 :::playpath=Optimal
+:::optpath=125.38.19
 ulDLrDuuullldDRRlluurrrdrddlUllluurDldRl
 ddRUURRllluurrrDrDLLLrruullDlDRddlUUrRlu
 urrdrdLLruulldDlddrUUrruulllDDrUluRRlddd
@@ -118,8 +120,8 @@ dlUUU
 :::image=wall_x_3_2=wall_a.png
 :::image=wall_x_3_4=wall_c.png
 
-346.67
-:::playpath
+:::playpath=Solution
+:::solpath=346.67.39
 lLrruulllldDuurrrrddddllLrrruulDuruullll
 ddRddrRuuUdddlluuRlddrruUruuLLLDldRRRdrU
 UdllluurrDrddldllUdrruruululldldRDuuurrd
@@ -175,8 +177,8 @@ A - 1B B x
 :::dress=forest
 :::skip
 
-74-24
 :::playpath=Optimal
+:::optpath=74.24.10
 ulullldDuurrrdrddlUUruLddddlLuURRdrUUluL
 LDldRRRddllUUrrdrUluullDldRlddrUUU
 
@@ -202,7 +204,7 @@ A - 1B B x
 :::image=wall_x_4_4=wall_b.png
 
 
-:::map
+:::map=insanely_hard
 - 1 - 1 2
 - A y - -
 A - B B x
@@ -221,7 +223,16 @@ A - B B x
 :::image=wall_x_2_3=wall_c.png
 :::image=wall_x_4_4=wall_b.png
 
-:::solution=466.101 possibly optimal
+:::optpath=466.101.44
+
+
+
+
+
+
+
+
+
 
 :::map
 # - . - . . #

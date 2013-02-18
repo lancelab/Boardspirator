@@ -1,6 +1,24 @@
 (function(){ 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
 				var gio  =  tp.gio    =  tp.gio   || {};
-				var CANON_IS_STRING =  gio.solver.config.CANON_IS_STRING;
+
+
+				var config	= gio.solver.config;
+
+
+
+
+
+
+				// //.\\ hid
+				//			hid[did][placeholder]
+				//				did			= dynamic-colony id 
+				//				placeholder = 0..n, n = number of units in colony
+				//			array hid[did] always contains hids in ascending order
+				//				(it does not hold unit's ids, so does not have "redundancy")
+				// \\// hid
+
+
+
 
 
 	///	Constructs adapter for given solver
@@ -20,12 +38,28 @@
 		var dynamic_cols_len = dynamic_cols.length;
 		var units = gm.units;
 		var locs = gm.locs;
+		var game = gm.game;
+		
+		//:	localizes constants
+		var CANON_REPRESENTED_AS	= config.CANON_REPRESENTED_AS;
+		var wCON					= gio.solver.CONSTANTS;
+		var CANON__STRING			= CANON_REPRESENTED_AS	=== wCON.CANON_STRING;
+		var CANON__ARRAY			= CANON_REPRESENTED_AS	=== wCON.CANON_ARRAY;
+		var CANON__LINKED_LIST		= CANON_REPRESENTED_AS	=== wCON.CANON_LINKED_LIST;
 
+		//: localizes indices
+		var ww				= gio.solver.POSPOINT;
+		var STATE			= ww.STATE;
+		var HID				= ww.HID;
+		var UPLINKS			= ww.UPLINKS;
 
 
 		// //\\ Shadowed-Position. Not a current position. 
 		//		Keeps non-dynamic units unchanged. 
 		//		"Shuffles" dynamic units.
+		//		ATTENTION: must contain valid position before and after manipulation with.
+		//		ATTENTION:	can lead to a bug in multithreaded environment when two callers
+		//					change it.
 		//		APPARENTLY IS DISCARDED AFTER EVERY CONSTRUCTION OF CANON OR VICE VERSA
 		//		Helper. Reused at each "restore":
 		//		Reserves memory for l_ - variables
@@ -87,12 +121,12 @@
 		// Returns: ordered_hids
 		adapter.createdNode = function( input_pos, sphere_id, angle_id, nodes_repository ) {
 
-			var ordered_hids = [];
-			var lid2uid = input_pos.lid2uid;
-			var tops = input_pos.tops;
-			var count = 0;
-			var new_node = false;
-			var count = 0;
+			var ground_always_on_level_0 = game.rule_helpers.ground_always_on_level_0;
+
+			var ordered_hids	= [];
+			var lid2uid			= input_pos.lid2uid;
+			var tops			= input_pos.tops;
+			var count			= 0;
 
 			for(var hid=0; hid<hid2lid.length; hid++){
 
@@ -100,6 +134,7 @@
 				var xx = loc0[0];
 				var yy = loc0[1];
 				var zz = tops[xx][yy];
+				if( !zz && ground_always_on_level_0 ) continue;
 				var lid = loc2lid[xx][yy][zz];
 				var uid = lid2uid[lid];
 
@@ -110,6 +145,7 @@
 
 				// c onsole.log('activity = ',activity);
 				if( !(activity.passive || activity.active) ) continue;
+				//. dynamic unit id
 				var did = unit.col.did;
 					
 				// Slow:
@@ -123,41 +159,53 @@
 			}//for( hid=...
 			// c onsole.log(' return stored pos=', ordered_hids);
 
-			var ordered_hids_string = !CANON_IS_STRING ? '' : canon2str( ordered_hids );
 
 			if( !nodes_repository ) {
-				return CANON_IS_STRING ? ordered_hids_string : ordered_hids;
+				return CANON__ARRAY ? ordered_hids : canon2str( ordered_hids );
 			}
+
 
 			count = 0;
 			var nd = nodes_repository;
-			for(var did=0; did<dynamic_cols_len; did++){
+			for(var did=0; did < dynamic_cols_len; did++){
 				var col = dynamic_cols[did];
 				var cunits = col.units; 
 				var ulen = cunits.length;
-				for(var uix=0; uix<ulen; uix++){
+				var w_oh_did = ordered_hids[did];
+
+				for(var uix=0; uix < ulen; uix++){
 					count += 1;
-					var hid = ordered_hids[did][uix];
+					var hid = w_oh_did[uix];
 					// Node not exists:
-					var ndh = nd[hid];
-					if(!ndh || ndh === NOT_YET_FILLED){
-						new_node = true;
-						if(count === node_dimension){
-							ndh = nd[hid] = true; //good for statistics: [sphere_id, angle_id];
-							// c onsole.log('New node added: ', ndh);
-							// c onsole.log('New ordered_hids',ordered_hids);
-							return CANON_IS_STRING ? ordered_hids_string : ordered_hids;
-						}else{
-							nd[hid] = [];
+					var ndh = nd[ hid + UPLINKS ];
+					//if(!ndh || ndh === NOT_YET_FILLED){
+					if( !ndh ) {
+
+						ndh = nd[ hid + UPLINKS ] = [];
+						if( CANON__LINKED_LIST )
+						{
+							ndh[ STATE ]		= count === 1 ? null : nd;
+							ndh[ HID ]			= hid;
+						}
+						// c ccc('New ordered_hids',ordered_hids);
+						if(count === node_dimension) {
+							if( CANON__LINKED_LIST )
+							{
+								//cccc( 'Adapter: new canon =' + canon2str( ordered_hids ) + ' canode=', ndh );
+								return ndh;
+							}else{
+								nd[ hid ] = true;
+								return CANON__STRING ? canon2str( ordered_hids ) : ordered_hids;
+							}
 						}
 					}
 					// Node exists:
-					if(count === node_dimension) {
+					if( count === node_dimension ) {
 						// c onsole.log('Node: ', ndh);
-						// c onsole.log('Node ',ndh, spheres[ndh[0]][ndh[1]][0],' is already exists');
 						return null;
 					}
-					nd=nd[hid];
+
+					nd = ndh; //[ hid + UPLINKS ];
 				}
 			}
 
@@ -165,8 +213,8 @@
 
 
 
-		/// TODO bug: two solvers will run on each other together if two threads mixed ...
-		adapter.doReStorePosition=function(ordered_hids){
+		///	Converts ordered_hids to valid position.
+		adapter.doReStorePosition = function( ordered_hids ) {
 
 			// Remove all dynamic units from two masters:
 			// lid2uid and tops
@@ -212,6 +260,69 @@
 			//c onsole.log('adapter: restored l_pos=', l_pos, ' l_pos 27 ='+l_pos.lid2uid[27]);
 			return l_pos;
 		};//adapter.doReStorePosition
+
+
+		/// Converts canode to pos by bypassing canon.
+		adapter.canode2pos = function( canode ) {
+
+			//: masters
+			var l_u = l_lid2uid;
+			var l_t = l_tops;
+
+			//. used aux
+			var l_l = l_uid2lid;
+			//. non-used aux
+			var l_o = l_uid2loc;
+
+			/// Removes all dynamic units from two masters: lid2uid and tops.
+			for(var ix = 0, wlen = dynamic_units.length; ix < wlen; ix++ ) {
+				var unit				= dynamic_units[ ix ];
+				var lid					= l_l[ unit.id ];
+				l_u[ lid ]				= -1;
+				var lc					= locs[ lid ];
+				l_t[ lc[0] ][ lc[1] ]	-= 1;
+			}
+
+			var len = dynamic_cols_len;
+			// cccc( 'Adapter: canode2canon: canode=', canode);
+
+			for( var dcol = len-1; dcol > -1; dcol-- )
+			{
+				var col		= dynamic_cols[ dcol ];
+				var units	= col.units; 
+				var ulen	= units.length;
+
+				for( var dunit = ulen - 1; dunit > -1; dunit-- )
+				{
+					var uid = units[ dunit ].id;
+					var hid = canode[ HID ];
+
+					//: gets location
+					var loc0		= hid2loc[ hid ];
+					var xx			= loc0[0];
+					var yy			= loc0[1];
+					var zz			= l_t[xx][yy] + 1;
+
+					//.	sets first master: top
+					l_t[ xx ][ yy ]	= zz;
+
+					//:	sets second master: uid
+					var tlid	= loc2lid[ xx ][ yy ][ zz ];
+					l_u[ tlid ]	= uid;
+
+					//. sets inverse maps
+					l_l[ uid ]	= tlid;
+					l_o[ uid ]	= locs[ tlid ];
+					// c onsole.log(' restoring. loc='+xx+','+yy+','+zz+' uid='+uid+
+					//				' hid='+hid+' tlid='+tlid+' l_lid2uid[tlid]',l_lid2uid[tlid]);
+
+					//. steps back along canode
+					canode = canode[ 0 ];
+				}
+			}
+			//c onsole.log('adapter: restored l_pos=', l_pos, ' l_pos 27 ='+l_pos.lid2uid[27]);
+			return l_pos;
+		};	// adapter.canode2p..
 
 
 
@@ -267,6 +378,32 @@
 			// c onsole.log('str, canon =' + str, canon);
 			return canon;
 		};
+
+
+		
+		/// converts canode to canon
+		adapter.canode2canon = function( canode )
+		{	
+			var canon = [];
+			var len = dynamic_cols_len;
+			// cccc( 'Adapter: canode2canon: canode=', canode);
+
+			for( var dcol = len-1; dcol > -1; dcol-- )
+			{
+				var col = dynamic_cols[ dcol ];
+				var cunits = col.units; 
+				var ulen = cunits.length;
+				var sub_canon = canon[ dcol ] = [];
+				for( var dunit = ulen - 1; dunit > -1; dunit-- )
+				{
+					sub_canon[ dunit ] = canode[ HID ];
+					canode = canode[ 0 ];
+				}
+			}
+			//cccc( 'Adapter: canode2canon: canon =' + canon2str( canon ) + ' canon=', canon );
+			return canon;
+		};
+
 
 
 		return adapter;

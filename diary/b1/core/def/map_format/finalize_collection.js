@@ -49,7 +49,7 @@
 
 			var w='..no maps found in text';
 			colln.maps_loaded +=w;
-			if( !colln.script.metag.defion ) {
+			if( !colln.script.metag.galfinition.gafion ) {
 				//. throws warning for user
 				gio.cons(w);
 			}

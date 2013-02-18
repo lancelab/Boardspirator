@@ -1,3 +1,4 @@
+
 ( function () {		var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 				  	var gio		=  tp.gio    =  tp.gio   || {};
 					var tclone	=  tp.core.tclone;
@@ -17,6 +18,7 @@
 		// ** Cosmetics
 		round.backs+=round.current_pos_ix;
 		round.interacts = 0;
+		round.peer_change = 0;
 
 		delete round.pos;  //TODm memory leak
 		round.pos=tclone(round.start_pos);
@@ -39,6 +41,7 @@
 		// Cosmetics:
 		round.backs = 0;
 		round.interacts = 0;
+		round.peer_change = 0;
 		return round;
 	};
 
@@ -136,30 +139,75 @@
 
 		if(play_direction){
 			var pos=round.pos;
-			if(play_direction==='back'){
+			if( play_direction === 'back' )
+			{
 				if(round.current_pos_ix===0) return;
-				var move = moves[round.current_pos_ix-1];
-				gio.navig.process_move_record(gm, pos, move.steps, 'backward');
-				round.current_pos_ix--;
-				if( move.action.intact ) round.interacts -= 1;
+				var move = moves[ round.current_pos_ix - 1 ];
+
+				gio.navig.process_move_record( gm, pos, move.steps, 'backward' );
+				var pix = --round.current_pos_ix;
+
+				/// Updates metrics
+				if( move.action.intact )
+				{
+					round.interacts -= 1;
+					/// We have previous position. Was there peer change?
+					if( pix > 0 )
+					{
+						var former_move = moves[ pix - 1 ];
+						var former_peer = former_move.action.former_peer;
+						if( former_peer && former_peer !== move.action.peer ) round.peer_change -= 1;
+					}
+				}
 				round.backs++;
+
 			}else if(play_direction==='forward'){
-				if(round.current_pos_ix===moves.length) return;
-				var move = moves[round.current_pos_ix];
-				gio.navig.process_move_record(gm, pos, move.steps);
-				round.current_pos_ix++;
+
+				if( round.current_pos_ix === moves.length ) return;
+				var move = moves[ round.current_pos_ix ];
+				gio.navig.process_move_record( gm, pos, move.steps );
+				var pix = ++round.current_pos_ix;
 				round.backs--;
-				if( move.action.intact ) round.interacts += 1;
+
+				/// Updates metrics
+				if( move.action.intact )
+				{
+					round.interacts += 1;
+					/// We have previous position. Was there peer change?
+					var former_move = ( pix > 1 ) && moves[ pix - 2 ]; //TODM what is a syntax ... is array[-1] legal operation?
+					var former_peer = former_move && former_move.action.former_peer;
+					if( former_peer && former_peer !== move.action.peer ) round.peer_change += 1;
+				}
+
 			}else if(play_direction === 'to beginning'){
 				do_slide_round_to_beginning(round);
 			}
 		}else{
+
 			// ordinary move: at 1.146, happens only from map.js from do_manage_round:
-			moves[round.current_pos_ix]={steps : steps, action : action};
+			var move = { steps : steps, action : action };
+			var pix = round.current_pos_ix;
+			moves[ pix ] = move;
+
+
+			//: Carries former peer from deep past for metrics
+			var former_move		= ( pix > 0 ) && moves[ pix - 1 ];
+			var former_peer		= former_move && former_move.action.former_peer;
+			action.former_peer	= action.peer || former_peer;
+// cccc('Oridinary move: Before reset: action.peer = ', action.peer, ' former peer=', action.former_peer );
+
 			round.current_pos_ix++;
 			//remove obsolete positions beyond current_pos_ix: 
-			round.moves=moves.slice(0,round.current_pos_ix);
-			if( action.intact ) round.interacts += 1;
+			round.moves = moves.slice( 0, round.current_pos_ix );
+
+			/// Updates metrics
+			if( action.intact )
+			{
+				round.interacts += 1;
+				/// We have previous position. Was there peer change?
+				if( former_peer && former_peer !== action.peer ) round.peer_change += 1;
+
+			}
 		}
 	};
 
@@ -220,8 +268,14 @@
 
 		if( do_comap )
 		{
-			script += ":::comment: this context_akey is approximate. You may wish different one.\n";
-			script += ":::context_akey=co_" + gm.game.akey + "\n";
+			script += ":::comment: MAKE SURE THERE IS A HERO DEFINED ON THIS MAP.\n";
+			var co_game = 'co_' + gm.game.gkey;
+			var co_game = co_game.replace( /^co_co_/, '' );
+			if( gio.def.games[ co_game ] ) {
+				script += ":::context_akey=" + co_game + "\n";	
+			}else{
+				script += ":::comment: there is no co game, " + co_game + ", defined ... \n";
+			}		
 		}
 
 		var board = '';
@@ -249,12 +303,18 @@
 									cotable[ unit.cname ] :
 									table[ unit.cname ];
 					if( symbol === cmd.map_sugar.GROUND ) {
-						if( top > 0 ) continue;
+						if( top > 0 )
+						{
+							//. Drops separator even after empty symbol to 
+							//	protect long symbols.
+							if( zz_virt < top ) tower_script += '.';
+							continue;
+						}
 						symbol = cmd.map_sugar.GROUND;
 					}
 					if( symbol.length > 1 ) short_symbols = false;
-					if( zz_virt < top || top === 0 ) tower_script += '.';
 					tower_script += symbol;
+					if( zz_virt < top || top === 0 ) tower_script += '.';
 				}
 				//. sugar
 				if( short_symbols ) tower_script = tower_script.replace( dot_regex, '' );
@@ -353,14 +413,18 @@
 			}
 		});
 
-		return { path : text, co_path : (copathy && sugar_inverse_path ) || '' };
+		return {	path : text,
+					co_path : (copathy && sugar_inverse_path ) || '',
+					metrics : '' + round.moves.length + '.' + round.interacts + '.' + round.peer_change
+		};
 	};
 
-	///	Produces text from gui round
-	rman.path2texts_current=function(){
-		return rman.path2texts(gio.getgs().round);
-	};
 
+	///	Produces text from current gui round.
+	rman.path2texts_current = function()
+	{
+		return rman.path2texts( gio.getgs().round );
+	};
 
 
 
@@ -371,7 +435,8 @@
 	//								if provided, used as context,
 	//								otherwise, picked up from gs,
 	// 		Returns:	"" if no errors Otherwise - validator_err.
-	rman.text2round = function(text_, round){
+	rman.text2round = function( text_, round )
+	{
 
 		var ww					= cmd.playpath;
 		var DIRECTION			= ww.DIRECTION;

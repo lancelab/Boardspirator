@@ -1,0 +1,78 @@
+/{
+	"credits" :
+	{
+		/, title          Misc Solutions.
+		/, author         Bs. Solver.
+		/, license        Public Domain
+		/, date           Feb. 6, 2013
+		/. email          beaverscript(a)landkey(.)net
+	}
+
+/}
+
+
+::::::::::::::::::: maximal solutions ::::::::::::::::::::::
+
+
+
+:::map=sokoban_max
+:::akey=sokoban
+:::ckey=egrig2002
+:::map_index=31
+:::board_end
+
+:::solpath=454.115.40
+rDrrddddllluURRllddrrruUUruulDllulllldLD
+DDldRRRuuRRddrrruuUruLddddllluuRRllddrrr
+uUlllllddlluuuururrDDuulldlddddrruuRuuul
+lulDDDDDldRuuuuulldRurDDDDlddrUUUUUruLrr
+rdddlddLruuruuulllddddlddrUUUUUrurrdddRd
+dLLLrrrrrruulLLddlluuRuuurrdDLDRuuulldDu
+ulldldddlddrUrruuRuuulldlddDldRuuuuruulD
+DlluRRRRRRlllldDDDlddrUUUUUluRRRRdddlddL
+ruururrdLuluulllddddlddrUrrrrUUruLdddllu
+uRlddrruUlURdddrrruuLLLddllllUUUUrurrDul
+ldlluRRRlldddddrruuRlddrruUrrrUruulDLrDD
+lllddrrrUUUruL
+
+:::map_end
+
+
+
+
+
+
+
+
+
+
+:::map
+:::akey=sokoban
+:::ckey=sasquatch8
+:::map_index=0
+:::board_end
+
+:::optpath=104.29.17
+rDldRlllddrUluRUruulDlDDrU
+luRddddlUluluRddrruurrdDrddlUUrruruulDLD
+DlLLuurRDrdrUruulDrdLdlLddrUluuulluurD
+
+:::co_playpath
+rrDlddrrdddrUluuLruLulDrddlUlulDRlddLLrD
+DLDrddldllUUruulDullddlluuRdrdrUruuuuRdr
+UlDDrDrddlURdrUluurrrRurDl
+
+:::map_end
+
+
+
+:::map
+:::akey=boximaze
+:::ckey=beginner
+:::mkey=lone_target
+:::board_end
+:::title=Boximaze Test
+:::solpath=97.23.20
+:::map_end
+
+

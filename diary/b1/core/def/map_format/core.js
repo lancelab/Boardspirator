@@ -1,9 +1,16 @@
-(function(){	 	var tp			=  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function () {	 	var tp			=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio			=  tp.gio    =  tp.gio   || {};
 					var ceach		=  tp.core.each;
 					//.	core-map-decoder container
 					var cmd			=  gio.core.def.map_format;
 					var str2mline	=  tp.core.str2mline;
+
+
+					//: Works slowly. Don't misuse.
+					var conadd		= function ( string ) { gio.cons_add( "Decodes Gamion: " + string ); };			
+					var deb			= function ( string ) { if( gio.debug) conadd( string ); };			
+
 
 					//. this line is sufficient to enable this regex in all cmd subroutines
 					var trim_match	= cmd.trim_match = /^\s*|\s*$/g;
@@ -37,6 +44,10 @@
 					var sokoban_board_line_match	=/^( |-)*(#|\*|B).*(#|\*|B)(\s|-)*(?:<br>)*$/;
 					// This is stronger.
 					// var sokoban_board_line_match	=/^( |-)*#.*#(\s|-)*$/;
+
+
+
+
 
 
 
@@ -79,8 +90,8 @@
 		var cbzone_bf					= false;
 
 
-		var map_ix=-1;
-
+		var map_ix = -1;
+		var map_key = '';
 
 		// //\\ Splits text to lines
 		var maps_text = script.source_text;
@@ -104,15 +115,16 @@
 
 		if( rescan_bflag ) {
 
-			map_ix = colln.maps.length-1;
+			map_ix = colln.maps.length - 1;
 			var ww = '.. rescan began for map ix ' + ( map_ix + 1 );
 			colln.maps_loaded += ww;
-			gio.debly( ww );
+			deb( ww );
 
 		}else{
 
 			//: begins parsing yet empty collection
 			colln.maps = [];
+			colln.maps_ref = {};
 			map_ix = -1;
 			//. sets default map for gameplay
 			colln.map_ix = 0;
@@ -127,15 +139,15 @@
 		//:	Low-level protection. External collections missing jwon lead-token is
 		//	downgraded to soko_map.
 		var ww = gio.def.procs.detect_ownhost_url( colln ); //TODM slow. make test "mandatory" and logged.
-		if( !ww && !jwon.detect_format().beginner_re.test( maps_text ) ) {
+		if( !ww && !jwon.detect_format( maps_text ) ) {
 			jwon.parser_disabled_bf = true;
-			// c ccc( "disabled" );
+			deb( "Jwon format missed ... " );
 		}
 
 		//: Sets jwon ultimately
 		if( colln.ref.jwon === 'yes' )	jwon.parser_disabled_bf = false;
 		if( colln.ref.jwon === 'no' )	jwon.parser_disabled_bf = true;
-		gio.debly( 'Jwon parser = ' +	(!jwon.parser_disabled_bf) );
+		deb( 'Jwon parser = ' +	(!jwon.parser_disabled_bf) );
 
 
 		//.	lim is a flag, -1 means no postboard collection began
@@ -223,11 +235,27 @@
 					}else if(cb_detector === 'akey'){
 						if( area_flag === BOARD ) map.bundled__ref.akey = cb_match[3];
 						continue;
+
 					}else if(cb_detector === 'collection_index'){
-						if( area_flag === BOARD ) map.bundled__ref.collection_index = cb_match[3];
+						if( area_flag === BOARD ) {
+							var ww = parseInt( cb_match[3] );
+							map.bundled__ref.coll_ref = isNaN( ww ) ? '' : ww;
+						}
 						continue;
+
 					}else if(cb_detector === 'map_index'){
-						if( area_flag === BOARD ) map.bundled__ref.map_index = cb_match[3];
+						if( area_flag === BOARD ) {
+							var ww = parseInt( cb_match[3] );
+							map.bundled__ref.map_ref = isNaN( ww ) ? '' : ww;
+						}
+						continue;
+
+					}else if( cb_detector === 'mkey' ) {
+						if( area_flag === BOARD ) map.bundled__ref.map_ref = cb_match[3];
+						continue;
+
+					}else if( cb_detector === 'ckey' ) {
+						if( area_flag === BOARD ) map.bundled__ref.coll_ref = cb_match[3];
 						continue;
 
 					///	dereferences map.game to dressed game from another album
@@ -308,8 +336,9 @@
 			if( header_raised ) {
 				cmd.finalize_file_header( postboard, colln );
 				//. forcibly cancells maps parsing
-				if( colln.script.metag.defion ) {
+				if( colln.script.metag.galfinition.gafion ) {
 					//. emulates cancellation of everything for finalizing collection
+					deb( 'Ignoring mapfinitions in gafion' );
 					area_flag = MAP_LOOKUP;
 					break;
 				}
@@ -317,10 +346,10 @@
 			}
 
 
-			if(map_fin_raised){
-					var ww = cmd.finalize_map(map, postboard);
+			if( map_fin_raised ) {
+					var ww = cmd.finalize_map( map, postboard );
 					if( ww ) {
-						gio.cons_add( ww );
+						conadd( ww );
 						colln.maps_loaded += ww;
 						//. map is failed, but collection may be preserved
 						if(rescan_bflag) break;
@@ -333,9 +362,12 @@
 			//..Master loop via colln lines
 
 
-			if(map_init_raised){
+			if( map_init_raised ) {
 					map_ix++;
-					map={
+
+					/// Master initiation of map.
+					map =
+					{
 						ix : map_ix,
 						key : map_key,
 						// parents:
@@ -376,8 +408,11 @@
 						cols:[],
 						actor_cols : [],
 						dynamic_cols : [],
-						objective : { target_units : [], baton_units : [] }
+						objective : { target_units : [], baton_units : [] },
+						//. not a part of algorithms, part of statistics
+						metrics : { recalculated : { text : '' } }
 					};
+					map_key = '';
 					raw_board_lines = map.script.raw_board_lines;
 				}
 

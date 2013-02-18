@@ -1,77 +1,70 @@
 /*!
- * jQuery JavaScript Library v1.7
+ * jQuery JavaScript Library v1.9.0
  * http://jquery.com/
- *
- * Copyright 2011, John Resig
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://jquery.org/license
  *
  * Includes Sizzle.js
  * http://sizzlejs.com/
- * Copyright 2011, The Dojo Foundation
- * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Thu Nov 3 16:18:21 2011 -0400
+ * Copyright 2005, 2012 jQuery Foundation, Inc. and other contributors
+ * Released under the MIT license
+ * http://jquery.org/license
+ *
+ * Date: 2013-1-14
  */
 (function( window, undefined ) {
-var document = window.document,
-	navigator = window.navigator,
-	location = window.location;
-var jQuery = (function() {
-var jQuery = function( selector, context ) {
-		return new jQuery.fn.init( selector, context, rootjQuery );
-	},
+"use strict";
+var
+	rootjQuery,
+	readyList,
+	document = window.document,
+	location = window.location,
 	_jQuery = window.jQuery,
 	_$ = window.$,
-	rootjQuery,
-	quickExpr = /^(?:[^#<]*(<[\w\W]+>)[^>]*$|#([\w\-]*)$)/,
-	rnotwhite = /\S/,
-	trimLeft = /^\s+/,
-	trimRight = /\s+$/,
-	rdigit = /\d/,
-	rsingleTag = /^<(\w+)\s*\/?>(?:<\/\1>)?$/,
-	rvalidchars = /^[\],:{}\s]*$/,
-	rvalidescape = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,
-	rvalidtokens = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,
-	rvalidbraces = /(?:^|:|,)(?:\s*\[)+/g,
-	rwebkit = /(webkit)[ \/]([\w.]+)/,
-	ropera = /(opera)(?:.*version)?[ \/]([\w.]+)/,
-	rmsie = /(msie) ([\w.]+)/,
-	rmozilla = /(mozilla)(?:.*? rv:([\w.]+))?/,
-	rdashAlpha = /-([a-z]|[0-9])/ig,
-	rmsPrefix = /^-ms-/,
-	fcamelCase = function( all, letter ) {
-		return ( letter + "" ).toUpperCase();
+	class2type = {},
+	core_deletedIds = [],
+
+	core_version = "1.9.0",
+	core_concat = core_deletedIds.concat,
+	core_push = core_deletedIds.push,
+	core_slice = core_deletedIds.slice,
+	core_indexOf = core_deletedIds.indexOf,
+	core_toString = class2type.toString,
+	core_hasOwn = class2type.hasOwnProperty,
+	core_trim = core_version.trim,
+	jQuery = function( selector, context ) {
+		return new jQuery.fn.init( selector, context, rootjQuery );
 	},
-	userAgent = navigator.userAgent,
-	browserMatch,
-	readyList,
-	DOMContentLoaded,
-	toString = Object.prototype.toString,
-	hasOwn = Object.prototype.hasOwnProperty,
-	push = Array.prototype.push,
-	slice = Array.prototype.slice,
-	trim = String.prototype.trim,
-	indexOf = Array.prototype.indexOf,
-	class2type = {};
+	core_pnum = /[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|)/.source,
+	core_rnotwhite = /\S+/g,
+	rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,
+	rquickExpr = /^(?:(<[\w\W]+>)[^>]*|#([\w-]*))$/,
+	rsingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
+	rvalidchars = /^[\],:{}\s]*$/,
+	rvalidbraces = /(?:^|:|,)(?:\s*\[)+/g,
+	rvalidescape = /\\(?:["\\\/bfnrt]|u[\da-fA-F]{4})/g,
+	rvalidtokens = /"[^"\\\r\n]*"|true|false|null|-?(?:\d+\.|)\d+(?:[eE][+-]?\d+|)/g,
+	rmsPrefix = /^-ms-/,
+	rdashAlpha = /-([\da-z])/gi,
+	fcamelCase = function( all, letter ) {
+		return letter.toUpperCase();
+	},
+	DOMContentLoaded = function() {
+		if ( document.addEventListener ) {
+			document.removeEventListener( "DOMContentLoaded", DOMContentLoaded, false );
+			jQuery.ready();
+		} else if ( document.readyState === "complete" ) {
+			document.detachEvent( "onreadystatechange", DOMContentLoaded );
+			jQuery.ready();
+		}
+	};
 
 jQuery.fn = jQuery.prototype = {
+	jquery: core_version,
+
 	constructor: jQuery,
 	init: function( selector, context, rootjQuery ) {
-		var match, elem, ret, doc;
+		var match, elem;
 		if ( !selector ) {
-			return this;
-		}
-		if ( selector.nodeType ) {
-			this.context = this[0] = selector;
-			this.length = 1;
-			return this;
-		}
-		if ( selector === "body" && !context && document.body ) {
-			this.context = document;
-			this[0] = document.body;
-			this.selector = selector;
-			this.length = 1;
 			return this;
 		}
 		if ( typeof selector === "string" ) {
@@ -79,29 +72,27 @@ jQuery.fn = jQuery.prototype = {
 				match = [ null, selector, null ];
 
 			} else {
-				match = quickExpr.exec( selector );
+				match = rquickExpr.exec( selector );
 			}
 			if ( match && (match[1] || !context) ) {
 				if ( match[1] ) {
 					context = context instanceof jQuery ? context[0] : context;
-					doc = ( context ? context.ownerDocument || context : document );
-					ret = rsingleTag.exec( selector );
-
-					if ( ret ) {
-						if ( jQuery.isPlainObject( context ) ) {
-							selector = [ document.createElement( ret[1] ) ];
-							jQuery.fn.attr.call( selector, context, true );
-
-						} else {
-							selector = [ doc.createElement( ret[1] ) ];
+					jQuery.merge( this, jQuery.parseHTML(
+						match[1],
+						context && context.nodeType ? context.ownerDocument || context : document,
+						true
+					) );
+					if ( rsingleTag.test( match[1] ) && jQuery.isPlainObject( context ) ) {
+						for ( match in context ) {
+							if ( jQuery.isFunction( this[ match ] ) ) {
+								this[ match ]( context[ match ] );
+							} else {
+								this.attr( match, context[ match ] );
+							}
 						}
-
-					} else {
-						ret = jQuery.buildFragment( [ match[1] ], [ doc ] );
-						selector = ( ret.cacheable ? jQuery.clone(ret.fragment) : ret.fragment ).childNodes;
 					}
 
-					return jQuery.merge( this, selector );
+					return this;
 				} else {
 					elem = document.getElementById( match[2] );
 					if ( elem && elem.parentNode ) {
@@ -121,6 +112,10 @@ jQuery.fn = jQuery.prototype = {
 			} else {
 				return this.constructor( context ).find( selector );
 			}
+		} else if ( selector.nodeType ) {
+			this.context = this[0] = selector;
+			this.length = 1;
+			return this;
 		} else if ( jQuery.isFunction( selector ) ) {
 			return rootjQuery.ready( selector );
 		}
@@ -133,38 +128,23 @@ jQuery.fn = jQuery.prototype = {
 		return jQuery.makeArray( selector, this );
 	},
 	selector: "",
-	jquery: "1.7",
 	length: 0,
 	size: function() {
 		return this.length;
 	},
 
 	toArray: function() {
-		return slice.call( this, 0 );
+		return core_slice.call( this );
 	},
 	get: function( num ) {
 		return num == null ?
 			this.toArray() :
 			( num < 0 ? this[ this.length + num ] : this[ num ] );
 	},
-	pushStack: function( elems, name, selector ) {
-		var ret = this.constructor();
-
-		if ( jQuery.isArray( elems ) ) {
-			push.apply( ret, elems );
-
-		} else {
-			jQuery.merge( ret, elems );
-		}
+	pushStack: function( elems ) {
+		var ret = jQuery.merge( this.constructor(), elems );
 		ret.prevObject = this;
-
 		ret.context = this.context;
-
-		if ( name === "find" ) {
-			ret.selector = this.selector + ( this.selector ? " " : "" ) + selector;
-		} else if ( name ) {
-			ret.selector = this.selector + "." + name + "(" + selector + ")";
-		}
 		return ret;
 	},
 	each: function( callback, args ) {
@@ -172,16 +152,13 @@ jQuery.fn = jQuery.prototype = {
 	},
 
 	ready: function( fn ) {
-		jQuery.bindReady();
-		readyList.add( fn );
+		jQuery.ready.promise().done( fn );
 
 		return this;
 	},
 
-	eq: function( i ) {
-		return i === -1 ?
-			this.slice( i ) :
-			this.slice( i, +i + 1 );
+	slice: function() {
+		return this.pushStack( core_slice.apply( this, arguments ) );
 	},
 
 	first: function() {
@@ -192,9 +169,10 @@ jQuery.fn = jQuery.prototype = {
 		return this.eq( -1 );
 	},
 
-	slice: function() {
-		return this.pushStack( slice.apply( this, arguments ),
-			"slice", slice.call(arguments).join(",") );
+	eq: function( i ) {
+		var len = this.length,
+			j = +i + ( i < 0 ? len : 0 );
+		return this.pushStack( j >= 0 && j < len ? [ this[j] ] : [] );
 	},
 
 	map: function( callback ) {
@@ -206,7 +184,7 @@ jQuery.fn = jQuery.prototype = {
 	end: function() {
 		return this.prevObject || this.constructor(null);
 	},
-	push: push,
+	push: core_push,
 	sort: [].sort,
 	splice: [].splice
 };
@@ -279,45 +257,19 @@ jQuery.extend({
 		}
 	},
 	ready: function( wait ) {
-		if ( (wait === true && !--jQuery.readyWait) || (wait !== true && !jQuery.isReady) ) {
-			if ( !document.body ) {
-				return setTimeout( jQuery.ready, 1 );
-			}
-			jQuery.isReady = true;
-			if ( wait !== true && --jQuery.readyWait > 0 ) {
-				return;
-			}
-			readyList.fireWith( document, [ jQuery ] );
-			if ( jQuery.fn.trigger ) {
-				jQuery( document ).trigger( "ready" ).unbind( "ready" );
-			}
-		}
-	},
-
-	bindReady: function() {
-		if ( readyList ) {
+		if ( wait === true ? --jQuery.readyWait : jQuery.isReady ) {
 			return;
 		}
-
-		readyList = jQuery.Callbacks( "once memory" );
-		if ( document.readyState === "complete" ) {
-			return setTimeout( jQuery.ready, 1 );
+		if ( !document.body ) {
+			return setTimeout( jQuery.ready );
 		}
-		if ( document.addEventListener ) {
-			document.addEventListener( "DOMContentLoaded", DOMContentLoaded, false );
-			window.addEventListener( "load", jQuery.ready, false );
-		} else if ( document.attachEvent ) {
-			document.attachEvent( "onreadystatechange", DOMContentLoaded );
-			window.attachEvent( "onload", jQuery.ready );
-			var toplevel = false;
-
-			try {
-				toplevel = window.frameElement == null;
-			} catch(e) {}
-
-			if ( document.documentElement.doScroll && toplevel ) {
-				doScrollCheck();
-			}
+		jQuery.isReady = true;
+		if ( wait !== true && --jQuery.readyWait > 0 ) {
+			return;
+		}
+		readyList.resolveWith( document, [ jQuery ] );
+		if ( jQuery.fn.trigger ) {
+			jQuery( document ).trigger("ready").off("ready");
 		}
 	},
 	isFunction: function( obj ) {
@@ -327,18 +279,22 @@ jQuery.extend({
 	isArray: Array.isArray || function( obj ) {
 		return jQuery.type(obj) === "array";
 	},
+
 	isWindow: function( obj ) {
-		return obj && typeof obj === "object" && "setInterval" in obj;
+		return obj != null && obj == obj.window;
 	},
 
 	isNumeric: function( obj ) {
-		return obj != null && rdigit.test( obj ) && !isNaN( obj );
+		return !isNaN( parseFloat(obj) ) && isFinite( obj );
 	},
 
 	type: function( obj ) {
-		return obj == null ?
-			String( obj ) :
-			class2type[ toString.call(obj) ] || "object";
+		if ( obj == null ) {
+			return String( obj );
+		}
+		return typeof obj === "object" || typeof obj === "function" ?
+			class2type[ core_toString.call(obj) ] || "object" :
+			typeof obj;
 	},
 
 	isPlainObject: function( obj ) {
@@ -348,8 +304,8 @@ jQuery.extend({
 
 		try {
 			if ( obj.constructor &&
-				!hasOwn.call(obj, "constructor") &&
-				!hasOwn.call(obj.constructor.prototype, "isPrototypeOf") ) {
+				!core_hasOwn.call(obj, "constructor") &&
+				!core_hasOwn.call(obj.constructor.prototype, "isPrototypeOf") ) {
 				return false;
 			}
 		} catch ( e ) {
@@ -359,39 +315,72 @@ jQuery.extend({
 		var key;
 		for ( key in obj ) {}
 
-		return key === undefined || hasOwn.call( obj, key );
+		return key === undefined || core_hasOwn.call( obj, key );
 	},
 
 	isEmptyObject: function( obj ) {
-		for ( var name in obj ) {
+		var name;
+		for ( name in obj ) {
 			return false;
 		}
 		return true;
 	},
 
 	error: function( msg ) {
-		throw msg;
+		throw new Error( msg );
+	},
+	parseHTML: function( data, context, keepScripts ) {
+		if ( !data || typeof data !== "string" ) {
+			return null;
+		}
+		if ( typeof context === "boolean" ) {
+			keepScripts = context;
+			context = false;
+		}
+		context = context || document;
+
+		var parsed = rsingleTag.exec( data ),
+			scripts = !keepScripts && [];
+		if ( parsed ) {
+			return [ context.createElement( parsed[1] ) ];
+		}
+
+		parsed = jQuery.buildFragment( [ data ], context, scripts );
+		if ( scripts ) {
+			jQuery( scripts ).remove();
+		}
+		return jQuery.merge( [], parsed.childNodes );
 	},
 
 	parseJSON: function( data ) {
-		if ( typeof data !== "string" || !data ) {
-			return null;
-		}
-		data = jQuery.trim( data );
 		if ( window.JSON && window.JSON.parse ) {
 			return window.JSON.parse( data );
 		}
-		if ( rvalidchars.test( data.replace( rvalidescape, "@" )
-			.replace( rvalidtokens, "]" )
-			.replace( rvalidbraces, "")) ) {
 
-			return ( new Function( "return " + data ) )();
-
+		if ( data === null ) {
+			return data;
 		}
+
+		if ( typeof data === "string" ) {
+			data = jQuery.trim( data );
+
+			if ( data ) {
+				if ( rvalidchars.test( data.replace( rvalidescape, "@" )
+					.replace( rvalidtokens, "]" )
+					.replace( rvalidbraces, "")) ) {
+
+					return ( new Function( "return " + data ) )();
+				}
+			}
+		}
+
 		jQuery.error( "Invalid JSON: " + data );
 	},
 	parseXML: function( data ) {
 		var xml, tmp;
+		if ( !data || typeof data !== "string" ) {
+			return null;
+		}
 		try {
 			if ( window.DOMParser ) { // Standard
 				tmp = new DOMParser();
@@ -412,7 +401,7 @@ jQuery.extend({
 
 	noop: function() {},
 	globalEval: function( data ) {
-		if ( data && rnotwhite.test( data ) ) {
+		if ( data && jQuery.trim( data ) ) {
 			( window.execScript || function( data ) {
 				window[ "eval" ].call( window, data );
 			} )( data );
@@ -423,85 +412,95 @@ jQuery.extend({
 	},
 
 	nodeName: function( elem, name ) {
-		return elem.nodeName && elem.nodeName.toUpperCase() === name.toUpperCase();
+		return elem.nodeName && elem.nodeName.toLowerCase() === name.toLowerCase();
 	},
-	each: function( object, callback, args ) {
-		var name, i = 0,
-			length = object.length,
-			isObj = length === undefined || jQuery.isFunction( object );
+	each: function( obj, callback, args ) {
+		var value,
+			i = 0,
+			length = obj.length,
+			isArray = isArraylike( obj );
 
 		if ( args ) {
-			if ( isObj ) {
-				for ( name in object ) {
-					if ( callback.apply( object[ name ], args ) === false ) {
+			if ( isArray ) {
+				for ( ; i < length; i++ ) {
+					value = callback.apply( obj[ i ], args );
+
+					if ( value === false ) {
 						break;
 					}
 				}
 			} else {
-				for ( ; i < length; ) {
-					if ( callback.apply( object[ i++ ], args ) === false ) {
+				for ( i in obj ) {
+					value = callback.apply( obj[ i ], args );
+
+					if ( value === false ) {
 						break;
 					}
 				}
 			}
 		} else {
-			if ( isObj ) {
-				for ( name in object ) {
-					if ( callback.call( object[ name ], name, object[ name ] ) === false ) {
+			if ( isArray ) {
+				for ( ; i < length; i++ ) {
+					value = callback.call( obj[ i ], i, obj[ i ] );
+
+					if ( value === false ) {
 						break;
 					}
 				}
 			} else {
-				for ( ; i < length; ) {
-					if ( callback.call( object[ i ], i, object[ i++ ] ) === false ) {
+				for ( i in obj ) {
+					value = callback.call( obj[ i ], i, obj[ i ] );
+
+					if ( value === false ) {
 						break;
 					}
 				}
 			}
 		}
 
-		return object;
+		return obj;
 	},
-	trim: trim ?
+	trim: core_trim && !core_trim.call("\uFEFF\xA0") ?
 		function( text ) {
 			return text == null ?
 				"" :
-				trim.call( text );
+				core_trim.call( text );
 		} :
 		function( text ) {
 			return text == null ?
 				"" :
-				text.toString().replace( trimLeft, "" ).replace( trimRight, "" );
+				( text + "" ).replace( rtrim, "" );
 		},
-	makeArray: function( array, results ) {
+	makeArray: function( arr, results ) {
 		var ret = results || [];
 
-		if ( array != null ) {
-			var type = jQuery.type( array );
-
-			if ( array.length == null || type === "string" || type === "function" || type === "regexp" || jQuery.isWindow( array ) ) {
-				push.call( ret, array );
+		if ( arr != null ) {
+			if ( isArraylike( Object(arr) ) ) {
+				jQuery.merge( ret,
+					typeof arr === "string" ?
+					[ arr ] : arr
+				);
 			} else {
-				jQuery.merge( ret, array );
+				core_push.call( ret, arr );
 			}
 		}
 
 		return ret;
 	},
 
-	inArray: function( elem, array, i ) {
+	inArray: function( elem, arr, i ) {
 		var len;
 
-		if ( array ) {
-			if ( indexOf ) {
-				return indexOf.call( array, elem, i );
+		if ( arr ) {
+			if ( core_indexOf ) {
+				return core_indexOf.call( arr, elem, i );
 			}
 
-			len = array.length;
+			len = arr.length;
 			i = i ? i < 0 ? Math.max( 0, len + i ) : i : 0;
 
 			for ( ; i < len; i++ ) {
-				if ( i in array && array[ i ] === elem ) {
+				if ( i in arr && arr[ i ] === elem ) {
 					return i;
 				}
 			}
@@ -511,14 +510,14 @@ jQuery.extend({
 	},
 
 	merge: function( first, second ) {
-		var i = first.length,
+		var l = second.length,
+			i = first.length,
 			j = 0;
 
-		if ( typeof second.length === "number" ) {
-			for ( var l = second.length; j < l; j++ ) {
+		if ( typeof l === "number" ) {
+			for ( ; j < l; j++ ) {
 				first[ i++ ] = second[ j ];
 			}
-
 		} else {
 			while ( second[j] !== undefined ) {
 				first[ i++ ] = second[ j++ ];
@@ -531,9 +530,12 @@ jQuery.extend({
 	},
 
 	grep: function( elems, callback, inv ) {
-		var ret = [], retVal;
+		var retVal,
+			ret = [],
+			i = 0,
+			length = elems.length;
 		inv = !!inv;
-		for ( var i = 0, length = elems.length; i < length; i++ ) {
+		for ( ; i < length; i++ ) {
 			retVal = !!callback( elems[ i ], i );
 			if ( inv !== retVal ) {
 				ret.push( elems[ i ] );
@@ -543,10 +545,11 @@ jQuery.extend({
 		return ret;
 	},
 	map: function( elems, callback, arg ) {
-		var value, key, ret = [],
+		var value,
 			i = 0,
 			length = elems.length,
-			isArray = elems instanceof jQuery || length !== undefined && typeof length === "number" && ( ( length > 0 && elems[ 0 ] && elems[ length -1 ] ) || length === 0 || jQuery.isArray( elems ) ) ;
+			isArray = isArraylike( elems ),
+			ret = [];
 		if ( isArray ) {
 			for ( ; i < length; i++ ) {
 				value = callback( elems[ i ], i, arg );
@@ -556,164 +559,158 @@ jQuery.extend({
 				}
 			}
 		} else {
-			for ( key in elems ) {
-				value = callback( elems[ key ], key, arg );
+			for ( i in elems ) {
+				value = callback( elems[ i ], i, arg );
 
 				if ( value != null ) {
 					ret[ ret.length ] = value;
 				}
 			}
 		}
-		return ret.concat.apply( [], ret );
+		return core_concat.apply( [], ret );
 	},
 	guid: 1,
 	proxy: function( fn, context ) {
+		var tmp, args, proxy;
+
 		if ( typeof context === "string" ) {
-			var tmp = fn[ context ];
+			tmp = fn[ context ];
 			context = fn;
 			fn = tmp;
 		}
 		if ( !jQuery.isFunction( fn ) ) {
 			return undefined;
 		}
-		var args = slice.call( arguments, 2 ),
-			proxy = function() {
-				return fn.apply( context, args.concat( slice.call( arguments ) ) );
-			};
-		proxy.guid = fn.guid = fn.guid || proxy.guid || jQuery.guid++;
+		args = core_slice.call( arguments, 2 );
+		proxy = function() {
+			return fn.apply( context || this, args.concat( core_slice.call( arguments ) ) );
+		};
+		proxy.guid = fn.guid = fn.guid || jQuery.guid++;
 
 		return proxy;
 	},
-	access: function( elems, key, value, exec, fn, pass ) {
-		var length = elems.length;
-		if ( typeof key === "object" ) {
-			for ( var k in key ) {
-				jQuery.access( elems, k, key[k], exec, fn, value );
+	access: function( elems, fn, key, value, chainable, emptyGet, raw ) {
+		var i = 0,
+			length = elems.length,
+			bulk = key == null;
+		if ( jQuery.type( key ) === "object" ) {
+			chainable = true;
+			for ( i in key ) {
+				jQuery.access( elems, fn, i, key[i], true, emptyGet, raw );
 			}
-			return elems;
-		}
-		if ( value !== undefined ) {
-			exec = !pass && exec && jQuery.isFunction(value);
+		} else if ( value !== undefined ) {
+			chainable = true;
 
-			for ( var i = 0; i < length; i++ ) {
-				fn( elems[i], key, exec ? value.call( elems[i], i, fn( elems[i], key ) ) : value, pass );
+			if ( !jQuery.isFunction( value ) ) {
+				raw = true;
 			}
 
-			return elems;
+			if ( bulk ) {
+				if ( raw ) {
+					fn.call( elems, value );
+					fn = null;
+				} else {
+					bulk = fn;
+					fn = function( elem, key, value ) {
+						return bulk.call( jQuery( elem ), value );
+					};
+				}
+			}
+
+			if ( fn ) {
+				for ( ; i < length; i++ ) {
+					fn( elems[i], key, raw ? value : value.call( elems[i], i, fn( elems[i], key ) ) );
+				}
+			}
 		}
-		return length ? fn( elems[0], key ) : undefined;
+
+		return chainable ?
+			elems :
+			bulk ?
+				fn.call( elems ) :
+				length ? fn( elems[0], key ) : emptyGet;
 	},
 
 	now: function() {
 		return ( new Date() ).getTime();
-	},
-	uaMatch: function( ua ) {
-		ua = ua.toLowerCase();
-
-		var match = rwebkit.exec( ua ) ||
-			ropera.exec( ua ) ||
-			rmsie.exec( ua ) ||
-			ua.indexOf("compatible") < 0 && rmozilla.exec( ua ) ||
-			[];
-
-		return { browser: match[1] || "", version: match[2] || "0" };
-	},
-
-	sub: function() {
-		function jQuerySub( selector, context ) {
-			return new jQuerySub.fn.init( selector, context );
-		}
-		jQuery.extend( true, jQuerySub, this );
-		jQuerySub.superclass = this;
-		jQuerySub.fn = jQuerySub.prototype = this();
-		jQuerySub.fn.constructor = jQuerySub;
-		jQuerySub.sub = this.sub;
-		jQuerySub.fn.init = function init( selector, context ) {
-			if ( context && context instanceof jQuery && !(context instanceof jQuerySub) ) {
-				context = jQuerySub( context );
-			}
-
-			return jQuery.fn.init.call( this, selector, context, rootjQuerySub );
-		};
-		jQuerySub.fn.init.prototype = jQuerySub.fn;
-		var rootjQuerySub = jQuerySub(document);
-		return jQuerySub;
-	},
-
-	browser: {}
+	}
 });
-jQuery.each("Boolean Number String Function Array Date RegExp Object".split(" "), function(i, name) {
+
+jQuery.ready.promise = function( obj ) {
+	if ( !readyList ) {
+
+		readyList = jQuery.Deferred();
+		if ( document.readyState === "complete" ) {
+			setTimeout( jQuery.ready );
+		} else if ( document.addEventListener ) {
+			document.addEventListener( "DOMContentLoaded", DOMContentLoaded, false );
+			window.addEventListener( "load", jQuery.ready, false );
+		} else {
+			document.attachEvent( "onreadystatechange", DOMContentLoaded );
+			window.attachEvent( "onload", jQuery.ready );
+			var top = false;
+
+			try {
+				top = window.frameElement == null && document.documentElement;
+			} catch(e) {}
+
+			if ( top && top.doScroll ) {
+				(function doScrollCheck() {
+					if ( !jQuery.isReady ) {
+
+						try {
+							top.doScroll("left");
+						} catch(e) {
+							return setTimeout( doScrollCheck, 50 );
+						}
+						jQuery.ready();
+					}
+				})();
+			}
+		}
+	}
+	return readyList.promise( obj );
+};
+jQuery.each("Boolean Number String Function Array Date RegExp Object Error".split(" "), function(i, name) {
 	class2type[ "[object " + name + "]" ] = name.toLowerCase();
 });
 
-browserMatch = jQuery.uaMatch( userAgent );
-if ( browserMatch.browser ) {
-	jQuery.browser[ browserMatch.browser ] = true;
-	jQuery.browser.version = browserMatch.version;
-}
-if ( jQuery.browser.webkit ) {
-	jQuery.browser.safari = true;
-}
-if ( rnotwhite.test( "\xA0" ) ) {
-	trimLeft = /^[\s\xA0]+/;
-	trimRight = /[\s\xA0]+$/;
+function isArraylike( obj ) {
+	var length = obj.length,
+		type = jQuery.type( obj );
+
+	if ( jQuery.isWindow( obj ) ) {
+		return false;
+	}
+
+	if ( obj.nodeType === 1 && length ) {
+		return true;
+	}
+
+	return type === "array" || type !== "function" &&
+		( length === 0 ||
+		typeof length === "number" && length > 0 && ( length - 1 ) in obj );
 }
 rootjQuery = jQuery(document);
-if ( document.addEventListener ) {
-	DOMContentLoaded = function() {
-		document.removeEventListener( "DOMContentLoaded", DOMContentLoaded, false );
-		jQuery.ready();
-	};
-
-} else if ( document.attachEvent ) {
-	DOMContentLoaded = function() {
-		if ( document.readyState === "complete" ) {
-			document.detachEvent( "onreadystatechange", DOMContentLoaded );
-			jQuery.ready();
-		}
-	};
-}
-function doScrollCheck() {
-	if ( jQuery.isReady ) {
-		return;
-	}
-
-	try {
-		document.documentElement.doScroll("left");
-	} catch(e) {
-		setTimeout( doScrollCheck, 1 );
-		return;
-	}
-	jQuery.ready();
-}
-if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
-	define( "jquery", [], function () { return jQuery; } );
-}
-
-return jQuery;
-
-})();
-var flagsCache = {};
-function createFlags( flags ) {
-	var object = flagsCache[ flags ] = {},
-		i, length;
-	flags = flags.split( /\s+/ );
-	for ( i = 0, length = flags.length; i < length; i++ ) {
-		object[ flags[i] ] = true;
-	}
+var optionsCache = {};
+function createOptions( options ) {
+	var object = optionsCache[ options ] = {};
+	jQuery.each( options.match( core_rnotwhite ) || [], function( _, flag ) {
+		object[ flag ] = true;
+	});
 	return object;
 }
 
 /*
  * Create a callback list using the following parameters:
  *
- *	flags:	an optional list of space-separated flags that will change how
- *			the callback list behaves
+ *	options: an optional list of space-separated options that will change how
+ *			the callback list behaves or a more traditional option object
  *
  * By default a callback list will act like an event callback list and can be
  * "fired" multiple times.
  *
- * Possible flags:
+ * Possible options:
  *
  *	once:			will ensure the callback list can only be fired once (like a Deferred)
  *
@@ -726,113 +723,92 @@ function createFlags( flags ) {
  *	stopOnFalse:	interrupt callings when a callback returns false
  *
  */
-jQuery.Callbacks = function( flags ) {
-	flags = flags ? ( flagsCache[ flags ] || createFlags( flags ) ) : {};
+jQuery.Callbacks = function( options ) {
+	options = typeof options === "string" ?
+		( optionsCache[ options ] || createOptions( options ) ) :
+		jQuery.extend( {}, options );
 
-	var // Actual callback list
-		list = [],
-		stack = [],
+	var // Last fire value (for non-forgettable lists)
 		memory,
+		fired,
 		firing,
 		firingStart,
 		firingLength,
 		firingIndex,
-		add = function( args ) {
-			var i,
-				length,
-				elem,
-				type,
-				actual;
-			for ( i = 0, length = args.length; i < length; i++ ) {
-				elem = args[ i ];
-				type = jQuery.type( elem );
-				if ( type === "array" ) {
-					add( elem );
-				} else if ( type === "function" ) {
-					if ( !flags.unique || !self.has( elem ) ) {
-						list.push( elem );
-					}
-				}
-			}
-		},
-		fire = function( context, args ) {
-			args = args || [];
-			memory = !flags.memory || [ context, args ];
-			firing = true;
+		list = [],
+		stack = !options.once && [],
+		fire = function( data ) {
+			memory = options.memory && data;
+			fired = true;
 			firingIndex = firingStart || 0;
 			firingStart = 0;
 			firingLength = list.length;
+			firing = true;
 			for ( ; list && firingIndex < firingLength; firingIndex++ ) {
-				if ( list[ firingIndex ].apply( context, args ) === false && flags.stopOnFalse ) {
-					memory = true; // Mark as halted
+				if ( list[ firingIndex ].apply( data[ 0 ], data[ 1 ] ) === false && options.stopOnFalse ) {
+					memory = false; // To prevent further calls using add
 					break;
 				}
 			}
 			firing = false;
 			if ( list ) {
-				if ( !flags.once ) {
-					if ( stack && stack.length ) {
-						memory = stack.shift();
-						self.fireWith( memory[ 0 ], memory[ 1 ] );
+				if ( stack ) {
+					if ( stack.length ) {
+						fire( stack.shift() );
 					}
-				} else if ( memory === true ) {
-					self.disable();
-				} else {
+				} else if ( memory ) {
 					list = [];
+				} else {
+					self.disable();
 				}
 			}
 		},
 		self = {
 			add: function() {
 				if ( list ) {
-					var length = list.length;
-					add( arguments );
+					var start = list.length;
+					(function add( args ) {
+						jQuery.each( args, function( _, arg ) {
+							var type = jQuery.type( arg );
+							if ( type === "function" ) {
+								if ( !options.unique || !self.has( arg ) ) {
+									list.push( arg );
+								}
+							} else if ( arg && arg.length && type !== "string" ) {
+								add( arg );
+							}
+						});
+					})( arguments );
 					if ( firing ) {
 						firingLength = list.length;
-					} else if ( memory && memory !== true ) {
-						firingStart = length;
-						fire( memory[ 0 ], memory[ 1 ] );
+					} else if ( memory ) {
+						firingStart = start;
+						fire( memory );
 					}
 				}
 				return this;
 			},
 			remove: function() {
 				if ( list ) {
-					var args = arguments,
-						argIndex = 0,
-						argLength = args.length;
-					for ( ; argIndex < argLength ; argIndex++ ) {
-						for ( var i = 0; i < list.length; i++ ) {
-							if ( args[ argIndex ] === list[ i ] ) {
-								if ( firing ) {
-									if ( i <= firingLength ) {
-										firingLength--;
-										if ( i <= firingIndex ) {
-											firingIndex--;
-										}
-									}
+					jQuery.each( arguments, function( _, arg ) {
+						var index;
+						while( ( index = jQuery.inArray( arg, list, index ) ) > -1 ) {
+							list.splice( index, 1 );
+							if ( firing ) {
+								if ( index <= firingLength ) {
+									firingLength--;
 								}
-								list.splice( i--, 1 );
-								if ( flags.unique ) {
-									break;
+								if ( index <= firingIndex ) {
+									firingIndex--;
 								}
 							}
 						}
-					}
+					});
 				}
 				return this;
 			},
 			has: function( fn ) {
-				if ( list ) {
-					var i = 0,
-						length = list.length;
-					for ( ; i < length; i++ ) {
-						if ( fn === list[ i ] ) {
-							return true;
-						}
-					}
-				}
-				return false;
+				return jQuery.inArray( fn, list ) > -1;
 			},
 			empty: function() {
 				list = [];
@@ -847,7 +823,7 @@ jQuery.Callbacks = function( flags ) {
 			},
 			lock: function() {
 				stack = undefined;
-				if ( !memory || memory === true ) {
+				if ( !memory ) {
 					self.disable();
 				}
 				return this;
@@ -856,13 +832,13 @@ jQuery.Callbacks = function( flags ) {
 				return !stack;
 			},
 			fireWith: function( context, args ) {
-				if ( stack ) {
+				args = args || [];
+				args = [ context, args.slice ? args.slice() : args ];
+				if ( list && ( !fired || stack ) ) {
 					if ( firing ) {
-						if ( !flags.once ) {
-							stack.push( [ context, args ] );
-						}
-					} else if ( !( flags.once && memory ) ) {
-						fire( context, args );
+						stack.push( args );
+					} else {
+						fire( args );
 					}
 				}
 				return this;
@@ -872,203 +848,155 @@ jQuery.Callbacks = function( flags ) {
 				return this;
 			},
 			fired: function() {
-				return !!memory;
+				return !!fired;
 			}
 		};
 
 	return self;
 };
-
-
-
-
-var // Static reference to slice
-	sliceDeferred = [].slice;
-
 jQuery.extend({
 
 	Deferred: function( func ) {
-		var doneList = jQuery.Callbacks( "once memory" ),
-			failList = jQuery.Callbacks( "once memory" ),
-			progressList = jQuery.Callbacks( "memory" ),
+		var tuples = [
+				[ "resolve", "done", jQuery.Callbacks("once memory"), "resolved" ],
+				[ "reject", "fail", jQuery.Callbacks("once memory"), "rejected" ],
+				[ "notify", "progress", jQuery.Callbacks("memory") ]
+			],
 			state = "pending",
-			lists = {
-				resolve: doneList,
-				reject: failList,
-				notify: progressList
-			},
 			promise = {
-				done: doneList.add,
-				fail: failList.add,
-				progress: progressList.add,
-
 				state: function() {
 					return state;
 				},
-				isResolved: doneList.fired,
-				isRejected: failList.fired,
-
-				then: function( doneCallbacks, failCallbacks, progressCallbacks ) {
-					deferred.done( doneCallbacks ).fail( failCallbacks ).progress( progressCallbacks );
+				always: function() {
+					deferred.done( arguments ).fail( arguments );
 					return this;
 				},
-				always: function() {
-					return deferred.done.apply( deferred, arguments ).fail.apply( deferred, arguments );
-				},
-				pipe: function( fnDone, fnFail, fnProgress ) {
+				then: function( /* fnDone, fnFail, fnProgress */ ) {
+					var fns = arguments;
 					return jQuery.Deferred(function( newDefer ) {
-						jQuery.each( {
-							done: [ fnDone, "resolve" ],
-							fail: [ fnFail, "reject" ],
-							progress: [ fnProgress, "notify" ]
-						}, function( handler, data ) {
-							var fn = data[ 0 ],
-								action = data[ 1 ],
-								returned;
-							if ( jQuery.isFunction( fn ) ) {
-								deferred[ handler ](function() {
-									returned = fn.apply( this, arguments );
-									if ( returned && jQuery.isFunction( returned.promise ) ) {
-										returned.promise().then( newDefer.resolve, newDefer.reject, newDefer.notify );
-									} else {
-										newDefer[ action + "With" ]( this === deferred ? newDefer : this, [ returned ] );
-									}
-								});
-							} else {
-								deferred[ handler ]( newDefer[ action ] );
-							}
+						jQuery.each( tuples, function( i, tuple ) {
+							var action = tuple[ 0 ],
+								fn = jQuery.isFunction( fns[ i ] ) && fns[ i ];
+							deferred[ tuple[1] ](function() {
+								var returned = fn && fn.apply( this, arguments );
+								if ( returned && jQuery.isFunction( returned.promise ) ) {
+									returned.promise()
+										.done( newDefer.resolve )
+										.fail( newDefer.reject )
+										.progress( newDefer.notify );
+								} else {
+									newDefer[ action + "With" ]( this === promise ? newDefer.promise() : this, fn ? [ returned ] : arguments );
+								}
+							});
 						});
+						fns = null;
 					}).promise();
 				},
 				promise: function( obj ) {
-					if ( obj == null ) {
-						obj = promise;
-					} else {
-						for ( var key in promise ) {
-							obj[ key ] = promise[ key ];
-						}
-					}
-					return obj;
+					return obj != null ? jQuery.extend( obj, promise ) : promise;
 				}
 			},
-			deferred = promise.promise({}),
-			key;
-
-		for ( key in lists ) {
-			deferred[ key ] = lists[ key ].fire;
-			deferred[ key + "With" ] = lists[ key ].fireWith;
-		}
-		deferred.done( function() {
-			state = "resolved";
-		}, failList.disable, progressList.lock ).fail( function() {
-			state = "rejected";
-		}, doneList.disable, progressList.lock );
+			deferred = {};
+		promise.pipe = promise.then;
+		jQuery.each( tuples, function( i, tuple ) {
+			var list = tuple[ 2 ],
+				stateString = tuple[ 3 ];
+			promise[ tuple[1] ] = list.add;
+			if ( stateString ) {
+				list.add(function() {
+					state = stateString;
+				}, tuples[ i ^ 1 ][ 2 ].disable, tuples[ 2 ][ 2 ].lock );
+			}
+			deferred[ tuple[0] ] = function() {
+				deferred[ tuple[0] + "With" ]( this === deferred ? promise : this, arguments );
+				return this;
+			};
+			deferred[ tuple[0] + "With" ] = list.fireWith;
+		});
+		promise.promise( deferred );
 		if ( func ) {
 			func.call( deferred, deferred );
 		}
 		return deferred;
 	},
-	when: function( firstParam ) {
-		var args = sliceDeferred.call( arguments, 0 ),
-			i = 0,
-			length = args.length,
-			pValues = new Array( length ),
-			count = length,
-			pCount = length,
-			deferred = length <= 1 && firstParam && jQuery.isFunction( firstParam.promise ) ?
-				firstParam :
-				jQuery.Deferred(),
-			promise = deferred.promise();
-		function resolveFunc( i ) {
-			return function( value ) {
-				args[ i ] = arguments.length > 1 ? sliceDeferred.call( arguments, 0 ) : value;
-				if ( !( --count ) ) {
-					deferred.resolveWith( deferred, args );
-				}
-			};
-		}
-		function progressFunc( i ) {
-			return function( value ) {
-				pValues[ i ] = arguments.length > 1 ? sliceDeferred.call( arguments, 0 ) : value;
-				deferred.notifyWith( promise, pValues );
-			};
-		}
+	when: function( subordinate /* , ..., subordinateN */ ) {
+		var i = 0,
+			resolveValues = core_slice.call( arguments ),
+			length = resolveValues.length,
+			remaining = length !== 1 || ( subordinate && jQuery.isFunction( subordinate.promise ) ) ? length : 0,
+			deferred = remaining === 1 ? subordinate : jQuery.Deferred(),
+			updateFunc = function( i, contexts, values ) {
+				return function( value ) {
+					contexts[ i ] = this;
+					values[ i ] = arguments.length > 1 ? core_slice.call( arguments ) : value;
+					if( values === progressValues ) {
+						deferred.notifyWith( contexts, values );
+					} else if ( !( --remaining ) ) {
+						deferred.resolveWith( contexts, values );
+					}
+				};
+			},
+
+			progressValues, progressContexts, resolveContexts;
 		if ( length > 1 ) {
+			progressValues = new Array( length );
+			progressContexts = new Array( length );
+			resolveContexts = new Array( length );
 			for ( ; i < length; i++ ) {
-				if ( args[ i ] && args[ i ].promise && jQuery.isFunction( args[ i ].promise ) ) {
-					args[ i ].promise().then( resolveFunc(i), deferred.reject, progressFunc(i) );
+				if ( resolveValues[ i ] && jQuery.isFunction( resolveValues[ i ].promise ) ) {
+					resolveValues[ i ].promise()
+						.done( updateFunc( i, resolveContexts, resolveValues ) )
+						.fail( deferred.reject )
+						.progress( updateFunc( i, progressContexts, progressValues ) );
 				} else {
-					--count;
+					--remaining;
 				}
 			}
-			if ( !count ) {
-				deferred.resolveWith( deferred, args );
-			}
-		} else if ( deferred !== firstParam ) {
-			deferred.resolveWith( deferred, length ? [ firstParam ] : [] );
 		}
-		return promise;
+		if ( !remaining ) {
+			deferred.resolveWith( resolveContexts, resolveValues );
+		}
+
+		return deferred.promise();
 	}
 });
-
-
-
-
 jQuery.support = (function() {
 
-	var div = document.createElement( "div" ),
-		documentElement = document.documentElement,
-		all,
-		a,
-		select,
-		opt,
-		input,
-		marginDiv,
-		support,
-		fragment,
-		body,
-		testElementParent,
-		testElement,
-		testElementStyle,
-		tds,
-		events,
-		eventName,
-		i,
-		isSupported;
-	div.setAttribute("className", "t");
-	div.innerHTML = "   <link/><table></table><a href='/a' style='top:1px;float:left;opacity:.55;'>a</a><input type='checkbox'/><nav></nav>";
-
-
-	all = div.getElementsByTagName( "*" );
-	a = div.getElementsByTagName( "a" )[ 0 ];
-	if ( !all || !all.length || !a ) {
+	var support, all, a, select, opt, input, fragment, eventName, isSupported, i,
+		div = document.createElement("div");
+	div.setAttribute( "className", "t" );
+	div.innerHTML = "  <link/><table></table><a href='/a'>a</a><input type='checkbox'/>";
+	all = div.getElementsByTagName("*");
+	a = div.getElementsByTagName("a")[ 0 ];
+	if ( !all || !a || !all.length ) {
 		return {};
 	}
-	select = document.createElement( "select" );
+	select = document.createElement("select");
 	opt = select.appendChild( document.createElement("option") );
-	input = div.getElementsByTagName( "input" )[ 0 ];
+	input = div.getElementsByTagName("input")[ 0 ];
 
+	a.style.cssText = "top:1px;float:left;opacity:.5";
 	support = {
-		leadingWhitespace: ( div.firstChild.nodeType === 3 ),
-		tbody: !div.getElementsByTagName( "tbody" ).length,
-		htmlSerialize: !!div.getElementsByTagName( "link" ).length,
-		style: /top/.test( a.getAttribute("style") ),
-		hrefNormalized: ( a.getAttribute( "href" ) === "/a" ),
-		opacity: /^0.55/.test( a.style.opacity ),
-		cssFloat: !!a.style.cssFloat,
-		unknownElems: !!div.getElementsByTagName( "nav" ).length,
-		checkOn: ( input.value === "on" ),
-		optSelected: opt.selected,
 		getSetAttribute: div.className !== "t",
+		leadingWhitespace: div.firstChild.nodeType === 3,
+		tbody: !div.getElementsByTagName("tbody").length,
+		htmlSerialize: !!div.getElementsByTagName("link").length,
+		style: /top/.test( a.getAttribute("style") ),
+		hrefNormalized: a.getAttribute("href") === "/a",
+		opacity: /^0.5/.test( a.style.opacity ),
+		cssFloat: !!a.style.cssFloat,
+		checkOn: !!input.value,
+		optSelected: opt.selected,
 		enctype: !!document.createElement("form").enctype,
-		submitBubbles: true,
-		changeBubbles: true,
-		focusinBubbles: false,
+		html5Clone: document.createElement("nav").cloneNode( true ).outerHTML !== "<:nav></:nav>",
+		boxModel: document.compatMode === "CSS1Compat",
 		deleteExpando: true,
 		noCloneEvent: true,
 		inlineBlockNeedsLayout: false,
 		shrinkWrapBlocks: false,
-		reliableMarginRight: true
+		reliableMarginRight: true,
+		boxSizingReliable: true,
+		pixelPosition: false
 	};
 	input.checked = true;
 	support.noCloneChecked = input.cloneNode( true ).checked;
@@ -1079,159 +1007,215 @@ jQuery.support = (function() {
 	} catch( e ) {
 		support.deleteExpando = false;
 	}
+	input = document.createElement("input");
+	input.setAttribute( "value", "" );
+	support.input = input.getAttribute( "value" ) === "";
+	input.value = "t";
+	input.setAttribute( "type", "radio" );
+	support.radioValue = input.value === "t";
+	input.setAttribute( "checked", "t" );
+	input.setAttribute( "name", "t" );
 
-	if ( !div.addEventListener && div.attachEvent && div.fireEvent ) {
+	fragment = document.createDocumentFragment();
+	fragment.appendChild( input );
+	support.appendChecked = input.checked;
+	support.checkClone = fragment.cloneNode( true ).cloneNode( true ).lastChild.checked;
+	if ( div.attachEvent ) {
 		div.attachEvent( "onclick", function() {
 			support.noCloneEvent = false;
 		});
-		div.cloneNode( true ).fireEvent( "onclick" );
+
+		div.cloneNode( true ).click();
 	}
-	input = document.createElement("input");
-	input.value = "t";
-	input.setAttribute("type", "radio");
-	support.radioValue = input.value === "t";
+	for ( i in { submit: true, change: true, focusin: true }) {
+		div.setAttribute( eventName = "on" + i, "t" );
 
-	input.setAttribute("checked", "checked");
-	div.appendChild( input );
-	fragment = document.createDocumentFragment();
-	fragment.appendChild( div.lastChild );
-	support.checkClone = fragment.cloneNode( true ).cloneNode( true ).lastChild.checked;
-
-	div.innerHTML = "";
-	div.style.width = div.style.paddingLeft = "1px";
-	body = document.getElementsByTagName("body")[ 0 ];
-	testElement = document.createElement( body ? "div" : "body" );
-	testElementStyle = {
-		visibility: "hidden",
-		width: 0,
-		height: 0,
-		border: 0,
-		margin: 0,
-		background: "none"
-	};
-	if ( body ) {
-		jQuery.extend( testElementStyle, {
-			position: "absolute",
-			left: "-999px",
-			top: "-999px"
-		});
-	}
-	for ( i in testElementStyle ) {
-		testElement.style[ i ] = testElementStyle[ i ];
-	}
-	testElement.appendChild( div );
-	testElementParent = body || documentElement;
-	testElementParent.insertBefore( testElement, testElementParent.firstChild );
-	support.appendChecked = input.checked;
-
-	support.boxModel = div.offsetWidth === 2;
-
-	if ( "zoom" in div.style ) {
-		div.style.display = "inline";
-		div.style.zoom = 1;
-		support.inlineBlockNeedsLayout = ( div.offsetWidth === 2 );
-		div.style.display = "";
-		div.innerHTML = "<div style='width:4px;'></div>";
-		support.shrinkWrapBlocks = ( div.offsetWidth !== 2 );
+		support[ i + "Bubbles" ] = eventName in window || div.attributes[ eventName ].expando === false;
 	}
 
-	div.innerHTML = "<table><tr><td style='padding:0;border:0;display:none'></td><td>t</td></tr></table>";
-	tds = div.getElementsByTagName( "td" );
-	isSupported = ( tds[ 0 ].offsetHeight === 0 );
-
-	tds[ 0 ].style.display = "";
-	tds[ 1 ].style.display = "none";
-	support.reliableHiddenOffsets = isSupported && ( tds[ 0 ].offsetHeight === 0 );
-	div.innerHTML = "";
-	if ( document.defaultView && document.defaultView.getComputedStyle ) {
-		marginDiv = document.createElement( "div" );
-		marginDiv.style.width = "0";
-		marginDiv.style.marginRight = "0";
-		div.appendChild( marginDiv );
-		support.reliableMarginRight =
-			( parseInt( ( document.defaultView.getComputedStyle( marginDiv, null ) || { marginRight: 0 } ).marginRight, 10 ) || 0 ) === 0;
-	}
-	if ( div.attachEvent ) {
-		for( i in {
-			submit: 1,
-			change: 1,
-			focusin: 1
-		} ) {
-			eventName = "on" + i;
-			isSupported = ( eventName in div );
-			if ( !isSupported ) {
-				div.setAttribute( eventName, "return;" );
-				isSupported = ( typeof div[ eventName ] === "function" );
-			}
-			support[ i + "Bubbles" ] = isSupported;
-		}
-	}
+	div.style.backgroundClip = "content-box";
+	div.cloneNode( true ).style.backgroundClip = "";
+	support.clearCloneStyle = div.style.backgroundClip === "content-box";
 	jQuery(function() {
-		var container, outer, inner, table, td, offsetSupport,
-			conMarginTop = 1,
-			ptlm = "position:absolute;top:0;left:0;width:1px;height:1px;margin:0;",
-			vb = "visibility:hidden;border:0;",
-			style = "style='" + ptlm + "border:5px solid #000;padding:0;'",
-			html = "<div " + style + "><div></div></div>" +
-							"<table " + style + " cellpadding='0' cellspacing='0'>" +
-							"<tr><td></td></tr></table>";
-		body = document.getElementsByTagName("body")[0];
+		var container, marginDiv, tds,
+			divReset = "padding:0;margin:0;border:0;display:block;box-sizing:content-box;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;",
+			body = document.getElementsByTagName("body")[0];
+
 		if ( !body ) {
 			return;
 		}
 
 		container = document.createElement("div");
-		container.style.cssText = vb + "width:0;height:0;position:static;top:0;margin-top:" + conMarginTop + "px";
-		body.insertBefore( container, body.firstChild );
-		testElement = document.createElement("div");
-		testElement.style.cssText = ptlm + vb;
+		container.style.cssText = "border:0;width:0;height:0;position:absolute;top:0;left:-9999px;margin-top:1px";
 
-		testElement.innerHTML = html;
-		container.appendChild( testElement );
-		outer = testElement.firstChild;
-		inner = outer.firstChild;
-		td = outer.nextSibling.firstChild.firstChild;
+		body.appendChild( container ).appendChild( div );
+		div.innerHTML = "<table><tr><td></td><td>t</td></tr></table>";
+		tds = div.getElementsByTagName("td");
+		tds[ 0 ].style.cssText = "padding:0;margin:0;border:0;display:none";
+		isSupported = ( tds[ 0 ].offsetHeight === 0 );
 
-		offsetSupport = {
-			doesNotAddBorder: ( inner.offsetTop !== 5 ),
-			doesAddBorderForTableAndCells: ( td.offsetTop === 5 )
-		};
+		tds[ 0 ].style.display = "";
+		tds[ 1 ].style.display = "none";
+		support.reliableHiddenOffsets = isSupported && ( tds[ 0 ].offsetHeight === 0 );
+		div.innerHTML = "";
+		div.style.cssText = "box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;padding:1px;border:1px;display:block;width:4px;margin-top:1%;position:absolute;top:1%;";
+		support.boxSizing = ( div.offsetWidth === 4 );
+		support.doesNotIncludeMarginInBodyOffset = ( body.offsetTop !== 1 );
+		if ( window.getComputedStyle ) {
+			support.pixelPosition = ( window.getComputedStyle( div, null ) || {} ).top !== "1%";
+			support.boxSizingReliable = ( window.getComputedStyle( div, null ) || { width: "4px" } ).width === "4px";
+			marginDiv = div.appendChild( document.createElement("div") );
+			marginDiv.style.cssText = div.style.cssText = divReset;
+			marginDiv.style.marginRight = marginDiv.style.width = "0";
+			div.style.width = "1px";
 
-		inner.style.position = "fixed";
-		inner.style.top = "20px";
-		offsetSupport.fixedPosition = ( inner.offsetTop === 20 || inner.offsetTop === 15 );
-		inner.style.position = inner.style.top = "";
+			support.reliableMarginRight =
+				!parseFloat( ( window.getComputedStyle( marginDiv, null ) || {} ).marginRight );
+		}
 
-		outer.style.overflow = "hidden";
-		outer.style.position = "relative";
-
-		offsetSupport.subtractsBorderForOverflowNotVisible = ( inner.offsetTop === -5 );
-		offsetSupport.doesNotIncludeMarginInBodyOffset = ( body.offsetTop !== conMarginTop );
+		if ( typeof div.style.zoom !== "undefined" ) {
+			div.innerHTML = "";
+			div.style.cssText = divReset + "width:1px;padding:1px;display:inline;zoom:1";
+			support.inlineBlockNeedsLayout = ( div.offsetWidth === 3 );
+			div.style.display = "block";
+			div.innerHTML = "<div></div>";
+			div.firstChild.style.width = "5px";
+			support.shrinkWrapBlocks = ( div.offsetWidth !== 3 );
+			body.style.zoom = 1;
+		}
 
 		body.removeChild( container );
-		testElement = container = null;
-
-		jQuery.extend( support, offsetSupport );
+		container = div = tds = marginDiv = null;
 	});
-
-	testElement.innerHTML = "";
-	testElementParent.removeChild( testElement );
-	testElement = fragment = select = opt = body = marginDiv = div = input = null;
+	all = select = fragment = opt = a = input = null;
 
 	return support;
 })();
-jQuery.boxModel = jQuery.support.boxModel;
 
-
-
-
-var rbrace = /^(?:\{.*\}|\[.*\])$/,
+var rbrace = /(?:\{[\s\S]*\}|\[[\s\S]*\])$/,
 	rmultiDash = /([A-Z])/g;
+	
+function internalData( elem, name, data, pvt /* Internal Use Only */ ){
+	if ( !jQuery.acceptData( elem ) ) {
+		return;
+	}
+
+	var thisCache, ret,
+		internalKey = jQuery.expando,
+		getByName = typeof name === "string",
+		isNode = elem.nodeType,
+		cache = isNode ? jQuery.cache : elem,
+		id = isNode ? elem[ internalKey ] : elem[ internalKey ] && internalKey;
+	if ( (!id || !cache[id] || (!pvt && !cache[id].data)) && getByName && data === undefined ) {
+		return;
+	}
+
+	if ( !id ) {
+		if ( isNode ) {
+			elem[ internalKey ] = id = core_deletedIds.pop() || jQuery.guid++;
+		} else {
+			id = internalKey;
+		}
+	}
+
+	if ( !cache[ id ] ) {
+		cache[ id ] = {};
+		if ( !isNode ) {
+			cache[ id ].toJSON = jQuery.noop;
+		}
+	}
+	if ( typeof name === "object" || typeof name === "function" ) {
+		if ( pvt ) {
+			cache[ id ] = jQuery.extend( cache[ id ], name );
+		} else {
+			cache[ id ].data = jQuery.extend( cache[ id ].data, name );
+		}
+	}
+
+	thisCache = cache[ id ];
+	if ( !pvt ) {
+		if ( !thisCache.data ) {
+			thisCache.data = {};
+		}
+
+		thisCache = thisCache.data;
+	}
+
+	if ( data !== undefined ) {
+		thisCache[ jQuery.camelCase( name ) ] = data;
+	}
+	if ( getByName ) {
+		ret = thisCache[ name ];
+		if ( ret == null ) {
+			ret = thisCache[ jQuery.camelCase( name ) ];
+		}
+	} else {
+		ret = thisCache;
+	}
+
+	return ret;
+}
+
+function internalRemoveData( elem, name, pvt /* For internal use only */ ){
+	if ( !jQuery.acceptData( elem ) ) {
+		return;
+	}
+
+	var thisCache, i, l,
+
+		isNode = elem.nodeType,
+		cache = isNode ? jQuery.cache : elem,
+		id = isNode ? elem[ jQuery.expando ] : jQuery.expando;
+	if ( !cache[ id ] ) {
+		return;
+	}
+
+	if ( name ) {
+
+		thisCache = pvt ? cache[ id ] : cache[ id ].data;
+
+		if ( thisCache ) {
+			if ( !jQuery.isArray( name ) ) {
+				if ( name in thisCache ) {
+					name = [ name ];
+				} else {
+					name = jQuery.camelCase( name );
+					if ( name in thisCache ) {
+						name = [ name ];
+					} else {
+						name = name.split(" ");
+					}
+				}
+			} else {
+				name = name.concat( jQuery.map( name, jQuery.camelCase ) );
+			}
+
+			for ( i = 0, l = name.length; i < l; i++ ) {
+				delete thisCache[ name[i] ];
+			}
+			if ( !( pvt ? isEmptyDataObject : jQuery.isEmptyObject )( thisCache ) ) {
+				return;
+			}
+		}
+	}
+	if ( !pvt ) {
+		delete cache[ id ].data;
+		if ( !isEmptyDataObject( cache[ id ] ) ) {
+			return;
+		}
+	}
+	if ( isNode ) {
+		jQuery.cleanData( [ elem ], true );
+	} else if ( jQuery.support.deleteExpando || cache != cache.window ) {
+		delete cache[ id ];
+	} else {
+		cache[ id ] = null;
+	}
+}
 
 jQuery.extend({
 	cache: {},
-	uuid: 0,
-	expando: "jQuery" + ( jQuery.fn.jquery + Math.random() ).replace( /\D/g, "" ),
+	expando: "jQuery" + ( core_version + Math.random() ).replace( /\D/g, "" ),
 	noData: {
 		"embed": true,
 		"object": "clsid:D27CDB6E-AE6D-11cf-96B8-444553540000",
@@ -1243,205 +1227,69 @@ jQuery.extend({
 		return !!elem && !isEmptyDataObject( elem );
 	},
 
-	data: function( elem, name, data, pvt /* Internal Use Only */ ) {
-		if ( !jQuery.acceptData( elem ) ) {
-			return;
-		}
-
-		var privateCache, thisCache, ret,
-			internalKey = jQuery.expando,
-			getByName = typeof name === "string",
-			isNode = elem.nodeType,
-			cache = isNode ? jQuery.cache : elem,
-			id = isNode ? elem[ jQuery.expando ] : elem[ jQuery.expando ] && jQuery.expando,
-			isEvents = name === "events";
-		if ( (!id || !cache[id] || (!isEvents && !pvt && !cache[id].data)) && getByName && data === undefined ) {
-			return;
-		}
-
-		if ( !id ) {
-			if ( isNode ) {
-				elem[ jQuery.expando ] = id = ++jQuery.uuid;
-			} else {
-				id = jQuery.expando;
-			}
-		}
-
-		if ( !cache[ id ] ) {
-			cache[ id ] = {};
-			if ( !isNode ) {
-				cache[ id ].toJSON = jQuery.noop;
-			}
-		}
-		if ( typeof name === "object" || typeof name === "function" ) {
-			if ( pvt ) {
-				cache[ id ] = jQuery.extend( cache[ id ], name );
-			} else {
-				cache[ id ].data = jQuery.extend( cache[ id ].data, name );
-			}
-		}
-
-		privateCache = thisCache = cache[ id ];
-		if ( !pvt ) {
-			if ( !thisCache.data ) {
-				thisCache.data = {};
-			}
-
-			thisCache = thisCache.data;
-		}
-
-		if ( data !== undefined ) {
-			thisCache[ jQuery.camelCase( name ) ] = data;
-		}
-		if ( isEvents && !thisCache[ name ] ) {
-			return privateCache.events;
-		}
-		if ( getByName ) {
-			ret = thisCache[ name ];
-			if ( ret == null ) {
-				ret = thisCache[ jQuery.camelCase( name ) ];
-			}
-		} else {
-			ret = thisCache;
-		}
-
-		return ret;
+	data: function( elem, name, data ) {
+		return internalData( elem, name, data, false );
 	},
 
-	removeData: function( elem, name, pvt /* Internal Use Only */ ) {
-		if ( !jQuery.acceptData( elem ) ) {
-			return;
-		}
-
-		var thisCache, i, l,
-			internalKey = jQuery.expando,
-
-			isNode = elem.nodeType,
-			cache = isNode ? jQuery.cache : elem,
-			id = isNode ? elem[ jQuery.expando ] : jQuery.expando;
-		if ( !cache[ id ] ) {
-			return;
-		}
-
-		if ( name ) {
-
-			thisCache = pvt ? cache[ id ] : cache[ id ].data;
-
-			if ( thisCache ) {
-				if ( jQuery.isArray( name ) ) {
-					name = name;
-				} else if ( name in thisCache ) {
-					name = [ name ];
-				} else {
-					name = jQuery.camelCase( name );
-					if ( name in thisCache ) {
-						name = [ name ];
-					} else {
-						name = name.split( " " );
-					}
-				}
-
-				for ( i = 0, l = name.length; i < l; i++ ) {
-					delete thisCache[ name[i] ];
-				}
-				if ( !( pvt ? isEmptyDataObject : jQuery.isEmptyObject )( thisCache ) ) {
-					return;
-				}
-			}
-		}
-		if ( !pvt ) {
-			delete cache[ id ].data;
-			if ( !isEmptyDataObject(cache[ id ]) ) {
-				return;
-			}
-		}
-		if ( jQuery.support.deleteExpando || !cache.setInterval ) {
-			delete cache[ id ];
-		} else {
-			cache[ id ] = null;
-		}
-		if ( isNode ) {
-			if ( jQuery.support.deleteExpando ) {
-				delete elem[ jQuery.expando ];
-			} else if ( elem.removeAttribute ) {
-				elem.removeAttribute( jQuery.expando );
-			} else {
-				elem[ jQuery.expando ] = null;
-			}
-		}
+	removeData: function( elem, name ) {
+		return internalRemoveData( elem, name, false );
 	},
 	_data: function( elem, name, data ) {
-		return jQuery.data( elem, name, data, true );
+		return internalData( elem, name, data, true );
+	},
+	
+	_removeData: function( elem, name ) {
+		return internalRemoveData( elem, name, true );
 	},
 	acceptData: function( elem ) {
-		if ( elem.nodeName ) {
-			var match = jQuery.noData[ elem.nodeName.toLowerCase() ];
-
-			if ( match ) {
-				return !(match === true || elem.getAttribute("classid") !== match);
-			}
-		}
-
-		return true;
+		var noData = elem.nodeName && jQuery.noData[ elem.nodeName.toLowerCase() ];
+		return !noData || noData !== true && elem.getAttribute("classid") === noData;
 	}
 });
 
 jQuery.fn.extend({
 	data: function( key, value ) {
-		var parts, attr, name,
+		var attrs, name,
+			elem = this[0],
+			i = 0,
 			data = null;
-
-		if ( typeof key === "undefined" ) {
+		if ( key === undefined ) {
 			if ( this.length ) {
-				data = jQuery.data( this[0] );
+				data = jQuery.data( elem );
 
-				if ( this[0].nodeType === 1 && !jQuery._data( this[0], "parsedAttrs" ) ) {
-					attr = this[0].attributes;
-					for ( var i = 0, l = attr.length; i < l; i++ ) {
-						name = attr[i].name;
+				if ( elem.nodeType === 1 && !jQuery._data( elem, "parsedAttrs" ) ) {
+					attrs = elem.attributes;
+					for ( ; i < attrs.length; i++ ) {
+						name = attrs[i].name;
 
-						if ( name.indexOf( "data-" ) === 0 ) {
+						if ( !name.indexOf( "data-" ) ) {
 							name = jQuery.camelCase( name.substring(5) );
 
-							dataAttr( this[0], name, data[ name ] );
+							dataAttr( elem, name, data[ name ] );
 						}
 					}
-					jQuery._data( this[0], "parsedAttrs", true );
+					jQuery._data( elem, "parsedAttrs", true );
 				}
 			}
 
 			return data;
-
-		} else if ( typeof key === "object" ) {
+		}
+		if ( typeof key === "object" ) {
 			return this.each(function() {
 				jQuery.data( this, key );
 			});
 		}
 
-		parts = key.split(".");
-		parts[1] = parts[1] ? "." + parts[1] : "";
+		return jQuery.access( this, function( value ) {
 
-		if ( value === undefined ) {
-			data = this.triggerHandler("getData" + parts[1] + "!", [parts[0]]);
-			if ( data === undefined && this.length ) {
-				data = jQuery.data( this[0], key );
-				data = dataAttr( this[0], key, data );
+			if ( value === undefined ) {
+				return elem ? dataAttr( elem, key, jQuery.data( elem, key ) ) : null;
 			}
 
-			return data === undefined && parts[1] ?
-				this.data( parts[0] ) :
-				data;
-
-		} else {
-			return this.each(function() {
-				var $this = jQuery( this ),
-					args = [ parts[0], value ];
-
-				$this.triggerHandler( "setData" + parts[1] + "!", args );
+			this.each(function() {
 				jQuery.data( this, key, value );
-				$this.triggerHandler( "changeData" + parts[1] + "!", args );
 			});
-		}
+		}, null, value, arguments.length > 1, null, true );
 	},
 
 	removeData: function( key ) {
@@ -1463,8 +1311,8 @@ function dataAttr( elem, key, data ) {
 				data = data === "true" ? true :
 				data === "false" ? false :
 				data === "null" ? null :
-				jQuery.isNumeric( data ) ? parseFloat( data ) :
-					rbrace.test( data ) ? jQuery.parseJSON( data ) :
+				+data + "" === data ? +data :
+				rbrace.test( data ) ? jQuery.parseJSON( data ) :
 					data;
 			} catch( e ) {}
 			jQuery.data( elem, key, data );
@@ -1477,7 +1325,8 @@ function dataAttr( elem, key, data ) {
 	return data;
 }
 function isEmptyDataObject( obj ) {
-	for ( var name in obj ) {
+	var name;
+	for ( name in obj ) {
 		if ( name === "data" && jQuery.isEmptyObject( obj[name] ) ) {
 			continue;
 		}
@@ -1488,69 +1337,21 @@ function isEmptyDataObject( obj ) {
 
 	return true;
 }
-
-
-
-
-function handleQueueMarkDefer( elem, type, src ) {
-	var deferDataKey = type + "defer",
-		queueDataKey = type + "queue",
-		markDataKey = type + "mark",
-		defer = jQuery._data( elem, deferDataKey );
-	if ( defer &&
-		( src === "queue" || !jQuery._data(elem, queueDataKey) ) &&
-		( src === "mark" || !jQuery._data(elem, markDataKey) ) ) {
-		setTimeout( function() {
-			if ( !jQuery._data( elem, queueDataKey ) &&
-				!jQuery._data( elem, markDataKey ) ) {
-				jQuery.removeData( elem, deferDataKey, true );
-				defer.fire();
-			}
-		}, 0 );
-	}
-}
-
 jQuery.extend({
-
-	_mark: function( elem, type ) {
-		if ( elem ) {
-			type = ( type || "fx" ) + "mark";
-			jQuery._data( elem, type, (jQuery._data( elem, type ) || 0) + 1 );
-		}
-	},
-
-	_unmark: function( force, elem, type ) {
-		if ( force !== true ) {
-			type = elem;
-			elem = force;
-			force = false;
-		}
-		if ( elem ) {
-			type = type || "fx";
-			var key = type + "mark",
-				count = force ? 0 : ( (jQuery._data( elem, key ) || 1) - 1 );
-			if ( count ) {
-				jQuery._data( elem, key, count );
-			} else {
-				jQuery.removeData( elem, key, true );
-				handleQueueMarkDefer( elem, type, "mark" );
-			}
-		}
-	},
-
 	queue: function( elem, type, data ) {
-		var q;
+		var queue;
+
 		if ( elem ) {
 			type = ( type || "fx" ) + "queue";
-			q = jQuery._data( elem, type );
+			queue = jQuery._data( elem, type );
 			if ( data ) {
-				if ( !q || jQuery.isArray(data) ) {
-					q = jQuery._data( elem, type, jQuery.makeArray(data) );
+				if ( !queue || jQuery.isArray(data) ) {
+					queue = jQuery._data( elem, type, jQuery.makeArray(data) );
 				} else {
-					q.push( data );
+					queue.push( data );
 				}
 			}
-			return q || [];
+			return queue || [];
 		}
 	},
 
@@ -1558,47 +1359,65 @@ jQuery.extend({
 		type = type || "fx";
 
 		var queue = jQuery.queue( elem, type ),
+			startLength = queue.length,
 			fn = queue.shift(),
-			hooks = {};
+			hooks = jQuery._queueHooks( elem, type ),
+			next = function() {
+				jQuery.dequeue( elem, type );
+			};
 		if ( fn === "inprogress" ) {
 			fn = queue.shift();
+			startLength--;
 		}
 
+		hooks.cur = fn;
 		if ( fn ) {
 			if ( type === "fx" ) {
 				queue.unshift( "inprogress" );
 			}
-
-			jQuery._data( elem, type + ".run", hooks );
-			fn.call( elem, function() {
-				jQuery.dequeue( elem, type );
-			}, hooks );
+			delete hooks.stop;
+			fn.call( elem, next, hooks );
 		}
 
-		if ( !queue.length ) {
-			jQuery.removeData( elem, type + "queue " + type + ".run", true );
-			handleQueueMarkDefer( elem, type, "queue" );
+		if ( !startLength && hooks ) {
+			hooks.empty.fire();
 		}
+	},
+	_queueHooks: function( elem, type ) {
+		var key = type + "queueHooks";
+		return jQuery._data( elem, key ) || jQuery._data( elem, key, {
+			empty: jQuery.Callbacks("once memory").add(function() {
+				jQuery._removeData( elem, type + "queue" );
+				jQuery._removeData( elem, key );
+			})
+		});
 	}
 });
 
 jQuery.fn.extend({
 	queue: function( type, data ) {
+		var setter = 2;
+
 		if ( typeof type !== "string" ) {
 			data = type;
 			type = "fx";
+			setter--;
 		}
 
-		if ( data === undefined ) {
+		if ( arguments.length < setter ) {
 			return jQuery.queue( this[0], type );
 		}
-		return this.each(function() {
-			var queue = jQuery.queue( this, type, data );
 
-			if ( type === "fx" && queue[0] !== "inprogress" ) {
-				jQuery.dequeue( this, type );
-			}
-		});
+		return data === undefined ?
+			this :
+			this.each(function() {
+				var queue = jQuery.queue( this, type, data );
+				jQuery._queueHooks( this, type );
+
+				if ( type === "fx" && queue[0] !== "inprogress" ) {
+					jQuery.dequeue( this, type );
+				}
+			});
 	},
 	dequeue: function( type ) {
 		return this.each(function() {
@@ -1619,55 +1438,48 @@ jQuery.fn.extend({
 	clearQueue: function( type ) {
 		return this.queue( type || "fx", [] );
 	},
-	promise: function( type, object ) {
+	promise: function( type, obj ) {
+		var tmp,
+			count = 1,
+			defer = jQuery.Deferred(),
+			elements = this,
+			i = this.length,
+			resolve = function() {
+				if ( !( --count ) ) {
+					defer.resolveWith( elements, [ elements ] );
+				}
+			};
+
 		if ( typeof type !== "string" ) {
-			object = type;
+			obj = type;
 			type = undefined;
 		}
 		type = type || "fx";
-		var defer = jQuery.Deferred(),
-			elements = this,
-			i = elements.length,
-			count = 1,
-			deferDataKey = type + "defer",
-			queueDataKey = type + "queue",
-			markDataKey = type + "mark",
-			tmp;
-		function resolve() {
-			if ( !( --count ) ) {
-				defer.resolveWith( elements, [ elements ] );
-			}
-		}
+
 		while( i-- ) {
-			if (( tmp = jQuery.data( elements[ i ], deferDataKey, undefined, true ) ||
-					( jQuery.data( elements[ i ], queueDataKey, undefined, true ) ||
-						jQuery.data( elements[ i ], markDataKey, undefined, true ) ) &&
-					jQuery.data( elements[ i ], deferDataKey, jQuery.Callbacks( "once memory" ), true ) )) {
+			tmp = jQuery._data( elements[ i ], type + "queueHooks" );
+			if ( tmp && tmp.empty ) {
 				count++;
-				tmp.add( resolve );
+				tmp.empty.add( resolve );
 			}
 		}
 		resolve();
-		return defer.promise();
+		return defer.promise( obj );
 	}
 });
-
-
-
-
-var rclass = /[\n\t\r]/g,
-	rspace = /\s+/,
+var nodeHook, boolHook,
+	rclass = /[\t\r\n]/g,
 	rreturn = /\r/g,
-	rtype = /^(?:button|input)$/i,
-	rfocusable = /^(?:button|input|object|select|textarea)$/i,
-	rclickable = /^a(?:rea)?$/i,
-	rboolean = /^(?:autofocus|autoplay|async|checked|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped|selected)$/i,
+	rfocusable = /^(?:input|select|textarea|button|object)$/i,
+	rclickable = /^(?:a|area)$/i,
+	rboolean = /^(?:checked|selected|autofocus|autoplay|async|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped)$/i,
+	ruseDefault = /^(?:checked|selected)$/i,
 	getSetAttribute = jQuery.support.getSetAttribute,
-	nodeHook, boolHook, fixSpecified;
+	getSetInput = jQuery.support.input;
 
 jQuery.fn.extend({
 	attr: function( name, value ) {
-		return jQuery.access( this, name, value, true, jQuery.attr );
+		return jQuery.access( this, jQuery.attr, name, value, arguments.length > 1 );
 	},
 
 	removeAttr: function( name ) {
@@ -1677,7 +1489,7 @@ jQuery.fn.extend({
 	},
 
 	prop: function( name, value ) {
-		return jQuery.access( this, name, value, true, jQuery.prop );
+		return jQuery.access( this, jQuery.prop, name, value, arguments.length > 1 );
 	},
 
 	removeProp: function( name ) {
@@ -1691,35 +1503,36 @@ jQuery.fn.extend({
 	},
 
 	addClass: function( value ) {
-		var classNames, i, l, elem,
-			setClass, c, cl;
+		var classes, elem, cur, clazz, j,
+			i = 0,
+			len = this.length,
+			proceed = typeof value === "string" && value;
 
 		if ( jQuery.isFunction( value ) ) {
 			return this.each(function( j ) {
-				jQuery( this ).addClass( value.call(this, j, this.className) );
+				jQuery( this ).addClass( value.call( this, j, this.className ) );
 			});
 		}
 
-		if ( value && typeof value === "string" ) {
-			classNames = value.split( rspace );
+		if ( proceed ) {
+			classes = ( value || "" ).match( core_rnotwhite ) || [];
 
-			for ( i = 0, l = this.length; i < l; i++ ) {
+			for ( ; i < len; i++ ) {
 				elem = this[ i ];
+				cur = elem.nodeType === 1 && ( elem.className ?
+					( " " + elem.className + " " ).replace( rclass, " " ) :
+					" "
+				);
 
-				if ( elem.nodeType === 1 ) {
-					if ( !elem.className && classNames.length === 1 ) {
-						elem.className = value;
-
-					} else {
-						setClass = " " + elem.className + " ";
-
-						for ( c = 0, cl = classNames.length; c < cl; c++ ) {
-							if ( !~setClass.indexOf( " " + classNames[ c ] + " " ) ) {
-								setClass += classNames[ c ] + " ";
-							}
+				if ( cur ) {
+					j = 0;
+					while ( (clazz = classes[j++]) ) {
+						if ( cur.indexOf( " " + clazz + " " ) < 0 ) {
+							cur += clazz + " ";
 						}
-						elem.className = jQuery.trim( setClass );
 					}
+					elem.className = jQuery.trim( cur );
+
 				}
 			}
 		}
@@ -1728,31 +1541,34 @@ jQuery.fn.extend({
 	},
 
 	removeClass: function( value ) {
-		var classNames, i, l, elem, className, c, cl;
+		var classes, elem, cur, clazz, j,
+			i = 0,
+			len = this.length,
+			proceed = arguments.length === 0 || typeof value === "string" && value;
 
 		if ( jQuery.isFunction( value ) ) {
 			return this.each(function( j ) {
-				jQuery( this ).removeClass( value.call(this, j, this.className) );
+				jQuery( this ).removeClass( value.call( this, j, this.className ) );
 			});
 		}
+		if ( proceed ) {
+			classes = ( value || "" ).match( core_rnotwhite ) || [];
 
-		if ( (value && typeof value === "string") || value === undefined ) {
-			classNames = ( value || "" ).split( rspace );
-
-			for ( i = 0, l = this.length; i < l; i++ ) {
+			for ( ; i < len; i++ ) {
 				elem = this[ i ];
+				cur = elem.nodeType === 1 && ( elem.className ?
+					( " " + elem.className + " " ).replace( rclass, " " ) :
+					""
+				);
 
-				if ( elem.nodeType === 1 && elem.className ) {
-					if ( value ) {
-						className = (" " + elem.className + " ").replace( rclass, " " );
-						for ( c = 0, cl = classNames.length; c < cl; c++ ) {
-							className = className.replace(" " + classNames[ c ] + " ", " ");
+				if ( cur ) {
+					j = 0;
+					while ( (clazz = classes[j++]) ) {
+						while ( cur.indexOf( " " + clazz + " " ) >= 0 ) {
+							cur = cur.replace( " " + clazz + " ", " " );
 						}
-						elem.className = jQuery.trim( className );
-
-					} else {
-						elem.className = "";
 					}
+					elem.className = value ? jQuery.trim( cur ) : "";
 				}
 			}
 		}
@@ -1776,13 +1592,12 @@ jQuery.fn.extend({
 					i = 0,
 					self = jQuery( this ),
 					state = stateVal,
-					classNames = value.split( rspace );
+					classNames = value.match( core_rnotwhite ) || [];
 
 				while ( (className = classNames[ i++ ]) ) {
 					state = isBool ? state : !self.hasClass( className );
 					self[ state ? "addClass" : "removeClass" ]( className );
 				}
-
 			} else if ( type === "undefined" || type === "boolean" ) {
 				if ( this.className ) {
 					jQuery._data( this, "__className__", this.className );
@@ -1797,7 +1612,7 @@ jQuery.fn.extend({
 			i = 0,
 			l = this.length;
 		for ( ; i < l; i++ ) {
-			if ( this[i].nodeType === 1 && (" " + this[i].className + " ").replace(rclass, " ").indexOf( className ) > -1 ) {
+			if ( this[i].nodeType === 1 && (" " + this[i].className + " ").replace(rclass, " ").indexOf( className ) >= 0 ) {
 				return true;
 			}
 		}
@@ -1811,7 +1626,7 @@ jQuery.fn.extend({
 
 		if ( !arguments.length ) {
 			if ( elem ) {
-				hooks = jQuery.valHooks[ elem.nodeName.toLowerCase() ] || jQuery.valHooks[ elem.type ];
+				hooks = jQuery.valHooks[ elem.type ] || jQuery.valHooks[ elem.nodeName.toLowerCase() ];
 
 				if ( hooks && "get" in hooks && (ret = hooks.get( elem, "value" )) !== undefined ) {
 					return ret;
@@ -1824,13 +1639,14 @@ jQuery.fn.extend({
 					ret == null ? "" : ret;
 			}
 
-			return undefined;
+			return;
 		}
 
 		isFunction = jQuery.isFunction( value );
 
 		return this.each(function( i ) {
-			var self = jQuery(this), val;
+			var val,
+				self = jQuery(this);
 
 			if ( this.nodeType !== 1 ) {
 				return;
@@ -1851,7 +1667,7 @@ jQuery.fn.extend({
 				});
 			}
 
-			hooks = jQuery.valHooks[ this.nodeName.toLowerCase() ] || jQuery.valHooks[ this.type ];
+			hooks = jQuery.valHooks[ this.type ] || jQuery.valHooks[ this.nodeName.toLowerCase() ];
 			if ( !hooks || !("set" in hooks) || hooks.set( this, val, "value" ) === undefined ) {
 				this.value = val;
 			}
@@ -1869,29 +1685,26 @@ jQuery.extend({
 		},
 		select: {
 			get: function( elem ) {
-				var value, i, max, option,
-					index = elem.selectedIndex,
-					values = [],
+				var value, option,
 					options = elem.options,
-					one = elem.type === "select-one";
-				if ( index < 0 ) {
-					return null;
-				}
-				i = one ? index : 0;
-				max = one ? index + 1 : options.length;
+					index = elem.selectedIndex,
+					one = elem.type === "select-one" || index < 0,
+					values = one ? null : [],
+					max = one ? index + 1 : options.length,
+					i = index < 0 ?
+						max :
+						one ? index : 0;
 				for ( ; i < max; i++ ) {
 					option = options[ i ];
-					if ( option.selected && (jQuery.support.optDisabled ? !option.disabled : option.getAttribute("disabled") === null) &&
-							(!option.parentNode.disabled || !jQuery.nodeName( option.parentNode, "optgroup" )) ) {
+					if ( ( option.selected || i === index ) &&
+							( jQuery.support.optDisabled ? !option.disabled : option.getAttribute("disabled") === null ) &&
+							( !option.parentNode.disabled || !jQuery.nodeName( option.parentNode, "optgroup" ) ) ) {
 						value = jQuery( option ).val();
 						if ( one ) {
 							return value;
 						}
 						values.push( value );
 					}
-				}
-				if ( one && !values.length && options.length ) {
-					return jQuery( options[ index ] ).val();
 				}
 
 				return values;
@@ -1912,28 +1725,13 @@ jQuery.extend({
 		}
 	},
 
-	attrFn: {
-		val: true,
-		css: true,
-		html: true,
-		text: true,
-		data: true,
-		width: true,
-		height: true,
-		offset: true
-	},
-
-	attr: function( elem, name, value, pass ) {
+	attr: function( elem, name, value ) {
 		var ret, hooks, notxml,
 			nType = elem.nodeType;
 		if ( !elem || nType === 3 || nType === 8 || nType === 2 ) {
-			return undefined;
+			return;
 		}
-
-		if ( pass && name in jQuery.attrFn ) {
-			return jQuery( elem )[ name ]( value );
-		}
-		if ( !("getAttribute" in elem) ) {
+		if ( typeof elem.getAttribute === "undefined" ) {
 			return jQuery.prop( elem, name, value );
 		}
 
@@ -1947,44 +1745,48 @@ jQuery.extend({
 
 			if ( value === null ) {
 				jQuery.removeAttr( elem, name );
-				return undefined;
 
-			} else if ( hooks && "set" in hooks && notxml && (ret = hooks.set( elem, value, name )) !== undefined ) {
+			} else if ( hooks && notxml && "set" in hooks && (ret = hooks.set( elem, value, name )) !== undefined ) {
 				return ret;
 
 			} else {
-				elem.setAttribute( name, "" + value );
+				elem.setAttribute( name, value + "" );
 				return value;
 			}
 
-		} else if ( hooks && "get" in hooks && notxml && (ret = hooks.get( elem, name )) !== null ) {
+		} else if ( hooks && notxml && "get" in hooks && (ret = hooks.get( elem, name )) !== null ) {
 			return ret;
 
 		} else {
-
-			ret = elem.getAttribute( name );
-			return ret === null ?
+			if ( typeof elem.getAttribute !== "undefined" ) {
+				ret =  elem.getAttribute( name );
+			}
+			return ret == null ?
 				undefined :
 				ret;
 		}
 	},
 
 	removeAttr: function( elem, value ) {
-		var propName, attrNames, name, l,
-			i = 0;
+		var name, propName,
+			i = 0,
+			attrNames = value && value.match( core_rnotwhite );
 
-		if ( elem.nodeType === 1 ) {
-			attrNames = ( value || "" ).split( rspace );
-			l = attrNames.length;
-
-			for ( ; i < l; i++ ) {
-				name = attrNames[ i ].toLowerCase();
+		if ( attrNames && elem.nodeType === 1 ) {
+			while ( (name = attrNames[i++]) ) {
 				propName = jQuery.propFix[ name ] || name;
-				jQuery.attr( elem, name, "" );
-				elem.removeAttribute( getSetAttribute ? name : propName );
-				if ( rboolean.test( name ) && propName in elem ) {
-					elem[ propName ] = false;
+				if ( rboolean.test( name ) ) {
+					if ( !getSetAttribute && ruseDefault.test( name ) ) {
+						elem[ jQuery.camelCase( "default-" + name ) ] =
+							elem[ propName ] = false;
+					} else {
+						elem[ propName ] = false;
+					}
+				} else {
+					jQuery.attr( elem, name, "" );
 				}
+
+				elem.removeAttribute( getSetAttribute ? name : propName );
 			}
 		}
 	},
@@ -1992,9 +1794,7 @@ jQuery.extend({
 	attrHooks: {
 		type: {
 			set: function( elem, value ) {
-				if ( rtype.test( elem.nodeName ) && elem.parentNode ) {
-					jQuery.error( "type property can't be changed" );
-				} else if ( !jQuery.support.radioValue && value === "radio" && jQuery.nodeName(elem, "input") ) {
+				if ( !jQuery.support.radioValue && value === "radio" && jQuery.nodeName(elem, "input") ) {
 					var val = elem.value;
 					elem.setAttribute( "type", value );
 					if ( val ) {
@@ -2002,22 +1802,6 @@ jQuery.extend({
 					}
 					return value;
 				}
-			}
-		},
-		value: {
-			get: function( elem, name ) {
-				if ( nodeHook && jQuery.nodeName( elem, "button" ) ) {
-					return nodeHook.get( elem, name );
-				}
-				return name in elem ?
-					elem.value :
-					null;
-			},
-			set: function( elem, value, name ) {
-				if ( nodeHook && jQuery.nodeName( elem, "button" ) ) {
-					return nodeHook.set( elem, value, name );
-				}
-				elem.value = value;
 			}
 		}
 	},
@@ -2041,7 +1825,7 @@ jQuery.extend({
 		var ret, hooks, notxml,
 			nType = elem.nodeType;
 		if ( !elem || nType === 3 || nType === 8 || nType === 2 ) {
-			return undefined;
+			return;
 		}
 
 		notxml = nType !== 1 || !jQuery.isXMLDoc( elem );
@@ -2083,54 +1867,82 @@ jQuery.extend({
 		}
 	}
 });
-jQuery.attrHooks.tabindex = jQuery.propHooks.tabIndex;
 boolHook = {
 	get: function( elem, name ) {
-		var attrNode,
-			property = jQuery.prop( elem, name );
-		return property === true || typeof property !== "boolean" && ( attrNode = elem.getAttributeNode(name) ) && attrNode.nodeValue !== false ?
+		var
+			prop = jQuery.prop( elem, name ),
+			attr = typeof prop === "boolean" && elem.getAttribute( name ),
+			detail = typeof prop === "boolean" ?
+
+				getSetInput && getSetAttribute ?
+					attr != null :
+					ruseDefault.test( name ) ?
+						elem[ jQuery.camelCase( "default-" + name ) ] :
+						!!attr :
+				elem.getAttributeNode( name );
+
+		return detail && detail.value !== false ?
 			name.toLowerCase() :
 			undefined;
 	},
 	set: function( elem, value, name ) {
-		var propName;
 		if ( value === false ) {
 			jQuery.removeAttr( elem, name );
+		} else if ( getSetInput && getSetAttribute || !ruseDefault.test( name ) ) {
+			elem.setAttribute( !getSetAttribute && jQuery.propFix[ name ] || name, name );
 		} else {
-			propName = jQuery.propFix[ name ] || name;
-			if ( propName in elem ) {
-				elem[ propName ] = true;
-			}
-
-			elem.setAttribute( name, name.toLowerCase() );
+			elem[ jQuery.camelCase( "default-" + name ) ] = elem[ name ] = true;
 		}
+
 		return name;
 	}
 };
-if ( !getSetAttribute ) {
+if ( !getSetInput || !getSetAttribute ) {
+	jQuery.attrHooks.value = {
+		get: function( elem, name ) {
+			var ret = elem.getAttributeNode( name );
+			return jQuery.nodeName( elem, "input" ) ?
+				elem.defaultValue :
 
-	fixSpecified = {
-		name: true,
-		id: true
+				ret && ret.specified ? ret.value : undefined;
+		},
+		set: function( elem, value, name ) {
+			if ( jQuery.nodeName( elem, "input" ) ) {
+				elem.defaultValue = value;
+			} else {
+				return nodeHook && nodeHook.set( elem, value, name );
+			}
+		}
 	};
+}
+if ( !getSetAttribute ) {
 	nodeHook = jQuery.valHooks.button = {
 		get: function( elem, name ) {
-			var ret;
-			ret = elem.getAttributeNode( name );
-			return ret && ( fixSpecified[ name ] ? ret.nodeValue !== "" : ret.specified ) ?
-				ret.nodeValue :
+			var ret = elem.getAttributeNode( name );
+			return ret && ( name === "id" || name === "name" || name === "coords" ? ret.value !== "" : ret.specified ) ?
+				ret.value :
 				undefined;
 		},
 		set: function( elem, value, name ) {
 			var ret = elem.getAttributeNode( name );
 			if ( !ret ) {
-				ret = document.createAttribute( name );
-				elem.setAttributeNode( ret );
+				elem.setAttributeNode(
+					(ret = elem.ownerDocument.createAttribute( name ))
+				);
 			}
-			return ( ret.nodeValue = value + "" );
+
+			ret.value = value += "";
+			return name === "value" || value === elem.getAttribute( name ) ?
+				value :
+				undefined;
 		}
 	};
-	jQuery.attrHooks.tabindex.set = nodeHook.set;
+	jQuery.attrHooks.contenteditable = {
+		get: nodeHook.get,
+		set: function( elem, value, name ) {
+			nodeHook.set( elem, value === "" ? false : value, name );
+		}
+	};
 	jQuery.each([ "width", "height" ], function( i, name ) {
 		jQuery.attrHooks[ name ] = jQuery.extend( jQuery.attrHooks[ name ], {
 			set: function( elem, value ) {
@@ -2141,34 +1953,32 @@ if ( !getSetAttribute ) {
 			}
 		});
 	});
-	jQuery.attrHooks.contenteditable = {
-		get: nodeHook.get,
-		set: function( elem, value, name ) {
-			if ( value === "" ) {
-				value = "false";
-			}
-			nodeHook.set( elem, value, name );
-		}
-	};
 }
 if ( !jQuery.support.hrefNormalized ) {
 	jQuery.each([ "href", "src", "width", "height" ], function( i, name ) {
 		jQuery.attrHooks[ name ] = jQuery.extend( jQuery.attrHooks[ name ], {
 			get: function( elem ) {
 				var ret = elem.getAttribute( name, 2 );
-				return ret === null ? undefined : ret;
+				return ret == null ? undefined : ret;
 			}
 		});
+	});
+	jQuery.each([ "href", "src" ], function( i, name ) {
+		jQuery.propHooks[ name ] = {
+			get: function( elem ) {
+				return elem.getAttribute( name, 4 );
+			}
+		};
 	});
 }
 
 if ( !jQuery.support.style ) {
 	jQuery.attrHooks.style = {
 		get: function( elem ) {
-			return elem.style.cssText.toLowerCase() || undefined;
+			return elem.style.cssText || undefined;
 		},
 		set: function( elem, value ) {
-			return ( elem.style.cssText = "" + value );
+			return ( elem.style.cssText = value + "" );
 		}
 	};
 }
@@ -2208,38 +2018,19 @@ jQuery.each([ "radio", "checkbox" ], function() {
 		}
 	});
 });
-
-
-
-
-var rnamespaces = /\.(.*)$/,
-	rformElems = /^(?:textarea|input|select)$/i,
-	rperiod = /\./g,
-	rspaces = / /g,
-	rescape = /[^\w\s.|`]/g,
-	rtypenamespace = /^([^\.]*)?(?:\.(.+))?$/,
-	rhoverHack = /\bhover(\.\S+)?/,
+var rformElems = /^(?:input|select|textarea)$/i,
 	rkeyEvent = /^key/,
 	rmouseEvent = /^(?:mouse|contextmenu)|click/,
-	rquickIs = /^(\w*)(?:#([\w\-]+))?(?:\.([\w\-]+))?$/,
-	quickParse = function( selector ) {
-		var quick = rquickIs.exec( selector );
-		if ( quick ) {
-			quick[1] = ( quick[1] || "" ).toLowerCase();
-			quick[3] = quick[3] && new RegExp( "(?:^|\\s)" + quick[3] + "(?:\\s|$)" );
-		}
-		return quick;
-	},
-	quickIs = function( elem, m ) {
-		return (
-			(!m[1] || elem.nodeName.toLowerCase() === m[1]) &&
-			(!m[2] || elem.id === m[2]) &&
-			(!m[3] || m[3].test( elem.className ))
-		);
-	},
-	hoverHack = function( events ) {
-		return jQuery.event.special.hover ? events : events.replace( rhoverHack, "mouseenter$1 mouseleave$1" );
-	};
+	rfocusMorph = /^(?:focusinfocus|focusoutblur)$/,
+	rtypenamespace = /^([^.]*)(?:\.(.+)|)$/;
+
+function returnTrue() {
+	return true;
+}
+
+function returnFalse() {
+	return false;
+}
 
 /*
  * Helper functions for managing events -- not part of the public interface.
@@ -2247,60 +2038,57 @@ var rnamespaces = /\.(.*)$/,
  */
 jQuery.event = {
 
+	global: {},
+
 	add: function( elem, types, handler, data, selector ) {
 
-		var elemData, eventHandle, events,
-			t, tns, type, namespaces, handleObj,
-			handleObjIn, quick, handlers, special;
-		if ( elem.nodeType === 3 || elem.nodeType === 8 || !types || !handler || !(elemData = jQuery._data( elem )) ) {
+		var handleObjIn, eventHandle, tmp,
+			events, t, handleObj,
+			special, handlers, type, namespaces, origType,
+			elemData = elem.nodeType !== 3 && elem.nodeType !== 8 && jQuery._data( elem );
+
+		if ( !elemData ) {
 			return;
 		}
 		if ( handler.handler ) {
 			handleObjIn = handler;
 			handler = handleObjIn.handler;
+			selector = handleObjIn.selector;
 		}
 		if ( !handler.guid ) {
 			handler.guid = jQuery.guid++;
 		}
-		events = elemData.events;
-		if ( !events ) {
-			elemData.events = events = {};
+		if ( !(events = elemData.events) ) {
+			events = elemData.events = {};
 		}
-		eventHandle = elemData.handle;
-		if ( !eventHandle ) {
-			elemData.handle = eventHandle = function( e ) {
+		if ( !(eventHandle = elemData.handle) ) {
+			eventHandle = elemData.handle = function( e ) {
 				return typeof jQuery !== "undefined" && (!e || jQuery.event.triggered !== e.type) ?
 					jQuery.event.dispatch.apply( eventHandle.elem, arguments ) :
 					undefined;
 			};
 			eventHandle.elem = elem;
 		}
-		types = hoverHack(types).split( " " );
-		for ( t = 0; t < types.length; t++ ) {
-
-			tns = rtypenamespace.exec( types[t] ) || [];
-			type = tns[1];
-			namespaces = ( tns[2] || "" ).split( "." ).sort();
+		types = ( types || "" ).match( core_rnotwhite ) || [""];
+		t = types.length;
+		while ( t-- ) {
+			tmp = rtypenamespace.exec( types[t] ) || [];
+			type = origType = tmp[1];
+			namespaces = ( tmp[2] || "" ).split( "." ).sort();
 			special = jQuery.event.special[ type ] || {};
 			type = ( selector ? special.delegateType : special.bindType ) || type;
 			special = jQuery.event.special[ type ] || {};
 			handleObj = jQuery.extend({
 				type: type,
-				origType: tns[1],
+				origType: origType,
 				data: data,
 				handler: handler,
 				guid: handler.guid,
 				selector: selector,
+				needsContext: selector && jQuery.expr.match.needsContext.test( selector ),
 				namespace: namespaces.join(".")
 			}, handleObjIn );
-			if ( selector ) {
-				handleObj.quick = quickParse( selector );
-				if ( !handleObj.quick && jQuery.expr.match.POS.test( selector ) ) {
-					handleObj.isPositional = true;
-				}
-			}
-			handlers = events[ type ];
-			if ( !handlers ) {
+			if ( !(handlers = events[ type ]) ) {
 				handlers = events[ type ] = [];
 				handlers.delegateCount = 0;
 				if ( !special.setup || special.setup.call( elem, data, namespaces, eventHandle ) === false ) {
@@ -2329,59 +2117,53 @@ jQuery.event = {
 		}
 		elem = null;
 	},
+	remove: function( elem, types, handler, selector, mappedTypes ) {
 
-	global: {},
-	remove: function( elem, types, handler, selector ) {
-
-		var elemData = jQuery.hasData( elem ) && jQuery._data( elem ),
-			t, tns, type, namespaces, origCount,
-			j, events, special, handle, eventType, handleObj;
+		var j, origCount, tmp,
+			events, t, handleObj,
+			special, handlers, type, namespaces, origType,
+			elemData = jQuery.hasData( elem ) && jQuery._data( elem );
 
 		if ( !elemData || !(events = elemData.events) ) {
 			return;
 		}
-		types = hoverHack( types || "" ).split(" ");
-		for ( t = 0; t < types.length; t++ ) {
-			tns = rtypenamespace.exec( types[t] ) || [];
-			type = tns[1];
-			namespaces = tns[2];
+		types = ( types || "" ).match( core_rnotwhite ) || [""];
+		t = types.length;
+		while ( t-- ) {
+			tmp = rtypenamespace.exec( types[t] ) || [];
+			type = origType = tmp[1];
+			namespaces = ( tmp[2] || "" ).split( "." ).sort();
 			if ( !type ) {
-				namespaces = namespaces? "." + namespaces : "";
-				for ( j in events ) {
-					jQuery.event.remove( elem, j + namespaces, handler, selector );
+				for ( type in events ) {
+					jQuery.event.remove( elem, type + types[ t ], handler, selector, true );
 				}
-				return;
+				continue;
 			}
 
 			special = jQuery.event.special[ type ] || {};
-			type = ( selector? special.delegateType : special.bindType ) || type;
-			eventType = events[ type ] || [];
-			origCount = eventType.length;
-			namespaces = namespaces ? new RegExp("(^|\\.)" + namespaces.split(".").sort().join("\\.(?:.*\\.)?") + "(\\.|$)") : null;
-			if ( handler || namespaces || selector || special.remove ) {
-				for ( j = 0; j < eventType.length; j++ ) {
-					handleObj = eventType[ j ];
+			type = ( selector ? special.delegateType : special.bindType ) || type;
+			handlers = events[ type ] || [];
+			tmp = tmp[2] && new RegExp( "(^|\\.)" + namespaces.join("\\.(?:.*\\.|)") + "(\\.|$)" );
+			origCount = j = handlers.length;
+			while ( j-- ) {
+				handleObj = handlers[ j ];
 
-					if ( !handler || handler.guid === handleObj.guid ) {
-						if ( !namespaces || namespaces.test( handleObj.namespace ) ) {
-							if ( !selector || selector === handleObj.selector || selector === "**" && handleObj.selector ) {
-								eventType.splice( j--, 1 );
+				if ( ( mappedTypes || origType === handleObj.origType ) &&
+					( !handler || handler.guid === handleObj.guid ) &&
+					( !tmp || tmp.test( handleObj.namespace ) ) &&
+					( !selector || selector === handleObj.selector || selector === "**" && handleObj.selector ) ) {
+					handlers.splice( j, 1 );
 
-								if ( handleObj.selector ) {
-									eventType.delegateCount--;
-								}
-								if ( special.remove ) {
-									special.remove.call( elem, handleObj );
-								}
-							}
-						}
+					if ( handleObj.selector ) {
+						handlers.delegateCount--;
+					}
+					if ( special.remove ) {
+						special.remove.call( elem, handleObj );
 					}
 				}
-			} else {
-				eventType.length = 0;
 			}
-			if ( eventType.length === 0 && origCount !== eventType.length ) {
-				if ( !special.teardown || special.teardown.call( elem, namespaces ) === false ) {
+			if ( origCount && !handlers.length ) {
+				if ( !special.teardown || special.teardown.call( elem, namespaces, elemData.handle ) === false ) {
 					jQuery.removeEvent( elem, type, elemData.handle );
 				}
 
@@ -2389,122 +2171,101 @@ jQuery.event = {
 			}
 		}
 		if ( jQuery.isEmptyObject( events ) ) {
-			handle = elemData.handle;
-			if ( handle ) {
-				handle.elem = null;
-			}
-			jQuery.removeData( elem, [ "events", "handle" ], true );
+			delete elemData.handle;
+			jQuery._removeData( elem, "events" );
 		}
-	},
-	customEvent: {
-		"getData": true,
-		"setData": true,
-		"changeData": true
 	},
 
 	trigger: function( event, data, elem, onlyHandlers ) {
-		if ( elem && (elem.nodeType === 3 || elem.nodeType === 8) ) {
+
+		var i, cur, tmp, bubbleType, ontype, handle, special,
+			eventPath = [ elem || document ],
+			type = event.type || event,
+			namespaces = event.namespace ? event.namespace.split(".") : [];
+
+		cur = tmp = elem = elem || document;
+		if ( elem.nodeType === 3 || elem.nodeType === 8 ) {
 			return;
 		}
-		var type = event.type || event,
-			namespaces = [],
-			cache, exclusive, i, cur, old, ontype, special, handle, eventPath, bubbleType;
-
-		if ( type.indexOf( "!" ) >= 0 ) {
-			type = type.slice(0, -1);
-			exclusive = true;
+		if ( rfocusMorph.test( type + jQuery.event.triggered ) ) {
+			return;
 		}
 
-		if ( type.indexOf( "." ) >= 0 ) {
+		if ( type.indexOf(".") >= 0 ) {
 			namespaces = type.split(".");
 			type = namespaces.shift();
 			namespaces.sort();
 		}
+		ontype = type.indexOf(":") < 0 && "on" + type;
+		event = event[ jQuery.expando ] ?
+			event :
+			new jQuery.Event( type, typeof event === "object" && event );
 
-		if ( (!elem || jQuery.event.customEvent[ type ]) && !jQuery.event.global[ type ] ) {
-			return;
-		}
-		event = typeof event === "object" ?
-			event[ jQuery.expando ] ? event :
-			new jQuery.Event( type, event ) :
-			new jQuery.Event( type );
-
-		event.type = type;
 		event.isTrigger = true;
-		event.exclusive = exclusive;
-		event.namespace = namespaces.join( "." );
-		event.namespace_re = event.namespace? new RegExp("(^|\\.)" + namespaces.join("\\.(?:.*\\.)?") + "(\\.|$)") : null;
-		ontype = type.indexOf( ":" ) < 0 ? "on" + type : "";
-		if ( onlyHandlers || !elem ) {
-			event.preventDefault();
-		}
-		if ( !elem ) {
-			cache = jQuery.cache;
-			for ( i in cache ) {
-				if ( cache[ i ].events && cache[ i ].events[ type ] ) {
-					jQuery.event.trigger( event, data, cache[ i ].handle.elem, true );
-				}
-			}
-			return;
-		}
+		event.namespace = namespaces.join(".");
+		event.namespace_re = event.namespace ?
+			new RegExp( "(^|\\.)" + namespaces.join("\\.(?:.*\\.|)") + "(\\.|$)" ) :
+			null;
 		event.result = undefined;
 		if ( !event.target ) {
 			event.target = elem;
 		}
-		data = data != null ? jQuery.makeArray( data ) : [];
-		data.unshift( event );
+		data = data == null ?
+			[ event ] :
+			jQuery.makeArray( data, [ event ] );
 		special = jQuery.event.special[ type ] || {};
-		if ( special.trigger && special.trigger.apply( elem, data ) === false ) {
+		if ( !onlyHandlers && special.trigger && special.trigger.apply( elem, data ) === false ) {
 			return;
 		}
-		eventPath = [[ elem, special.bindType || type ]];
 		if ( !onlyHandlers && !special.noBubble && !jQuery.isWindow( elem ) ) {
 
 			bubbleType = special.delegateType || type;
-			old = null;
-			for ( cur = elem.parentNode; cur; cur = cur.parentNode ) {
-				eventPath.push([ cur, bubbleType ]);
-				old = cur;
+			if ( !rfocusMorph.test( bubbleType + type ) ) {
+				cur = cur.parentNode;
 			}
-			if ( old && old === elem.ownerDocument ) {
-				eventPath.push([ old.defaultView || old.parentWindow || window, bubbleType ]);
+			for ( ; cur; cur = cur.parentNode ) {
+				eventPath.push( cur );
+				tmp = cur;
+			}
+			if ( tmp === (elem.ownerDocument || document) ) {
+				eventPath.push( tmp.defaultView || tmp.parentWindow || window );
 			}
 		}
-		for ( i = 0; i < eventPath.length; i++ ) {
+		i = 0;
+		while ( (cur = eventPath[i++]) && !event.isPropagationStopped() ) {
 
-			cur = eventPath[i][0];
-			event.type = eventPath[i][1];
-
+			event.type = i > 1 ?
+				bubbleType :
+				special.bindType || type;
 			handle = ( jQuery._data( cur, "events" ) || {} )[ event.type ] && jQuery._data( cur, "handle" );
 			if ( handle ) {
 				handle.apply( cur, data );
 			}
 			handle = ontype && cur[ ontype ];
-			if ( handle && jQuery.acceptData( cur ) ) {
-				handle.apply( cur, data );
-			}
-
-			if ( event.isPropagationStopped() ) {
-				break;
+			if ( handle && jQuery.acceptData( cur ) && handle.apply && handle.apply( cur, data ) === false ) {
+				event.preventDefault();
 			}
 		}
 		event.type = type;
-		if ( !event.isDefaultPrevented() ) {
+		if ( !onlyHandlers && !event.isDefaultPrevented() ) {
 
 			if ( (!special._default || special._default.apply( elem.ownerDocument, data ) === false) &&
 				!(type === "click" && jQuery.nodeName( elem, "a" )) && jQuery.acceptData( elem ) ) {
-				if ( ontype && elem[ type ] && ((type !== "focus" && type !== "blur") || event.target.offsetWidth !== 0) && !jQuery.isWindow( elem ) ) {
-					old = elem[ ontype ];
+				if ( ontype && elem[ type ] && !jQuery.isWindow( elem ) ) {
+					tmp = elem[ ontype ];
 
-					if ( old ) {
+					if ( tmp ) {
 						elem[ ontype ] = null;
 					}
 					jQuery.event.triggered = type;
-					elem[ type ]();
+					try {
+						elem[ type ]();
+					} catch ( e ) {
+					}
 					jQuery.event.triggered = undefined;
 
-					if ( old ) {
-						elem[ ontype ] = old;
+					if ( tmp ) {
+						elem[ ontype ] = tmp;
 					}
 				}
 			}
@@ -2514,60 +2275,35 @@ jQuery.event = {
 	},
 
 	dispatch: function( event ) {
-		event = jQuery.event.fix( event || window.event );
+		event = jQuery.event.fix( event );
 
-		var handlers = ( (jQuery._data( this, "events" ) || {} )[ event.type ] || []),
-			delegateCount = handlers.delegateCount,
-			args = [].slice.call( arguments, 0 ),
-			run_all = !event.exclusive && !event.namespace,
-			specialHandle = ( jQuery.event.special[ event.type ] || {} ).handle,
+		var i, j, ret, matched, handleObj,
 			handlerQueue = [],
-			i, j, cur, ret, selMatch, matched, matches, handleObj, sel, hit, related;
+			args = core_slice.call( arguments ),
+			handlers = ( jQuery._data( this, "events" ) || {} )[ event.type ] || [],
+			special = jQuery.event.special[ event.type ] || {};
 		args[0] = event;
 		event.delegateTarget = this;
-		if ( delegateCount && !event.target.disabled && !(event.button && event.type === "click") ) {
-
-			for ( cur = event.target; cur != this; cur = cur.parentNode || this ) {
-				selMatch = {};
-				matches = [];
-				for ( i = 0; i < delegateCount; i++ ) {
-					handleObj = handlers[ i ];
-					sel = handleObj.selector;
-					hit = selMatch[ sel ];
-
-					if ( handleObj.isPositional ) {
-						hit = ( hit || (selMatch[ sel ] = jQuery( sel )) ).index( cur ) >= 0;
-					} else if ( hit === undefined ) {
-						hit = selMatch[ sel ] = ( handleObj.quick ? quickIs( cur, handleObj.quick ) : jQuery( cur ).is( sel ) );
-					}
-					if ( hit ) {
-						matches.push( handleObj );
-					}
-				}
-				if ( matches.length ) {
-					handlerQueue.push({ elem: cur, matches: matches });
-				}
-			}
+		if ( special.preDispatch && special.preDispatch.call( this, event ) === false ) {
+			return;
 		}
-		if ( handlers.length > delegateCount ) {
-			handlerQueue.push({ elem: this, matches: handlers.slice( delegateCount ) });
-		}
-		for ( i = 0; i < handlerQueue.length && !event.isPropagationStopped(); i++ ) {
-			matched = handlerQueue[ i ];
+		handlerQueue = jQuery.event.handlers.call( this, event, handlers );
+		i = 0;
+		while ( (matched = handlerQueue[ i++ ]) && !event.isPropagationStopped() ) {
 			event.currentTarget = matched.elem;
 
-			for ( j = 0; j < matched.matches.length && !event.isImmediatePropagationStopped(); j++ ) {
-				handleObj = matched.matches[ j ];
-				if ( run_all || (!event.namespace && !handleObj.namespace) || event.namespace_re && event.namespace_re.test( handleObj.namespace ) ) {
+			j = 0;
+			while ( (handleObj = matched.handlers[ j++ ]) && !event.isImmediatePropagationStopped() ) {
+				if ( !event.namespace_re || event.namespace_re.test( handleObj.namespace ) ) {
 
-					event.data = handleObj.data;
 					event.handleObj = handleObj;
+					event.data = handleObj.data;
 
-					ret = ( specialHandle || handleObj.handler ).apply( matched.elem, args );
+					ret = ( (jQuery.event.special[ handleObj.origType ] || {}).handle || handleObj.handler )
+							.apply( matched.elem, args );
 
 					if ( ret !== undefined ) {
-						event.result = ret;
-						if ( ret === false ) {
+						if ( (event.result = ret) === false ) {
 							event.preventDefault();
 							event.stopPropagation();
 						}
@@ -2575,10 +2311,76 @@ jQuery.event = {
 				}
 			}
 		}
+		if ( special.postDispatch ) {
+			special.postDispatch.call( this, event );
+		}
 
 		return event.result;
 	},
-	props: "attrChange attrName relatedNode srcElement altKey bubbles cancelable ctrlKey currentTarget eventPhase metaKey relatedTarget shiftKey target timeStamp view which".split(" "),
+
+	handlers: function( event, handlers ) {
+		var i, matches, sel, handleObj,
+			handlerQueue = [],
+			delegateCount = handlers.delegateCount,
+			cur = event.target;
+		if ( delegateCount && cur.nodeType && (!event.button || event.type !== "click") ) {
+
+			for ( ; cur != this; cur = cur.parentNode || this ) {
+				if ( cur.disabled !== true || event.type !== "click" ) {
+					matches = [];
+					for ( i = 0; i < delegateCount; i++ ) {
+						handleObj = handlers[ i ];
+						sel = handleObj.selector + " ";
+
+						if ( matches[ sel ] === undefined ) {
+							matches[ sel ] = handleObj.needsContext ?
+								jQuery( sel, this ).index( cur ) >= 0 :
+								jQuery.find( sel, this, null, [ cur ] ).length;
+						}
+						if ( matches[ sel ] ) {
+							matches.push( handleObj );
+						}
+					}
+					if ( matches.length ) {
+						handlerQueue.push({ elem: cur, handlers: matches });
+					}
+				}
+			}
+		}
+		if ( delegateCount < handlers.length ) {
+			handlerQueue.push({ elem: this, handlers: handlers.slice( delegateCount ) });
+		}
+
+		return handlerQueue;
+	},
+
+	fix: function( event ) {
+		if ( event[ jQuery.expando ] ) {
+			return event;
+		}
+		var i, prop,
+			originalEvent = event,
+			fixHook = jQuery.event.fixHooks[ event.type ] || {},
+			copy = fixHook.props ? this.props.concat( fixHook.props ) : this.props;
+
+		event = new jQuery.Event( originalEvent );
+
+		i = copy.length;
+		while ( i-- ) {
+			prop = copy[ i ];
+			event[ prop ] = originalEvent[ prop ];
+		}
+		if ( !event.target ) {
+			event.target = originalEvent.srcElement || document;
+		}
+		if ( event.target.nodeType === 3 ) {
+			event.target = event.target.parentNode;
+		}
+		event.metaKey = !!event.metaKey;
+
+		return fixHook.filter ? fixHook.filter( event, originalEvent ) : event;
+	},
+	props: "altKey bubbles cancelable ctrlKey currentTarget eventPhase metaKey relatedTarget shiftKey target timeStamp view which".split(" "),
 
 	fixHooks: {},
 
@@ -2594,7 +2396,7 @@ jQuery.event = {
 	},
 
 	mouseHooks: {
-		props: "button buttons clientX clientY fromElement offsetX offsetY pageX pageY screenX screenY toElement wheelDelta".split(" "),
+		props: "button buttons clientX clientY fromElement offsetX offsetY pageX pageY screenX screenY toElement".split(" "),
 		filter: function( event, original ) {
 			var eventDoc, doc, body,
 				button = original.button,
@@ -2618,58 +2420,44 @@ jQuery.event = {
 		}
 	},
 
-	fix: function( event ) {
-		if ( event[ jQuery.expando ] ) {
-			return event;
-		}
-		var i, prop,
-			originalEvent = event,
-			fixHook = jQuery.event.fixHooks[ event.type ] || {},
-			copy = fixHook.props ? this.props.concat( fixHook.props ) : this.props;
-
-		event = jQuery.Event( originalEvent );
-
-		for ( i = copy.length; i; ) {
-			prop = copy[ --i ];
-			event[ prop ] = originalEvent[ prop ];
-		}
-		if ( !event.target ) {
-			event.target = originalEvent.srcElement || document;
-		}
-		if ( event.target.nodeType === 3 ) {
-			event.target = event.target.parentNode;
-		}
-		if ( event.metaKey === undefined ) {
-			event.metaKey = event.ctrlKey;
-		}
-
-		return fixHook.filter? fixHook.filter( event, originalEvent ) : event;
-	},
-
 	special: {
-		ready: {
-			setup: jQuery.bindReady
-		},
-
-		focus: {
-			delegateType: "focusin",
+		load: {
 			noBubble: true
+		},
+		click: {
+			trigger: function() {
+				if ( jQuery.nodeName( this, "input" ) && this.type === "checkbox" && this.click ) {
+					this.click();
+					return false;
+				}
+			}
+		},
+		focus: {
+			trigger: function() {
+				if ( this !== document.activeElement && this.focus ) {
+					try {
+						this.focus();
+						return false;
+					} catch ( e ) {
+					}
+				}
+			},
+			delegateType: "focusin"
 		},
 		blur: {
-			delegateType: "focusout",
-			noBubble: true
+			trigger: function() {
+				if ( this === document.activeElement && this.blur ) {
+					this.blur();
+					return false;
+				}
+			},
+			delegateType: "focusout"
 		},
 
 		beforeunload: {
-			setup: function( data, namespaces, eventHandle ) {
-				if ( jQuery.isWindow( this ) ) {
-					this.onbeforeunload = eventHandle;
-				}
-			},
-
-			teardown: function( namespaces, eventHandle ) {
-				if ( this.onbeforeunload === eventHandle ) {
-					this.onbeforeunload = null;
+			postDispatch: function( event ) {
+				if ( event.result !== undefined ) {
+					event.originalEvent.returnValue = event.result;
 				}
 			}
 		}
@@ -2694,7 +2482,6 @@ jQuery.event = {
 		}
 	}
 };
-jQuery.event.handle = jQuery.event.dispatch;
 
 jQuery.removeEvent = document.removeEventListener ?
 	function( elem, type, handle ) {
@@ -2703,8 +2490,14 @@ jQuery.removeEvent = document.removeEventListener ?
 		}
 	} :
 	function( elem, type, handle ) {
+		var name = "on" + type;
+
 		if ( elem.detachEvent ) {
-			elem.detachEvent( "on" + type, handle );
+			if ( typeof elem[ name ] === "undefined" ) {
+				elem[ name ] = null;
+			}
+
+			elem.detachEvent( name, handle );
 		}
 	};
 
@@ -2726,18 +2519,15 @@ jQuery.Event = function( src, props ) {
 	this.timeStamp = src && src.timeStamp || jQuery.now();
 	this[ jQuery.expando ] = true;
 };
-
-function returnFalse() {
-	return false;
-}
-function returnTrue() {
-	return true;
-}
 jQuery.Event.prototype = {
-	preventDefault: function() {
-		this.isDefaultPrevented = returnTrue;
+	isDefaultPrevented: returnFalse,
+	isPropagationStopped: returnFalse,
+	isImmediatePropagationStopped: returnFalse,
 
+	preventDefault: function() {
 		var e = this.originalEvent;
+
+		this.isDefaultPrevented = returnTrue;
 		if ( !e ) {
 			return;
 		}
@@ -2748,9 +2538,9 @@ jQuery.Event.prototype = {
 		}
 	},
 	stopPropagation: function() {
-		this.isPropagationStopped = returnTrue;
-
 		var e = this.originalEvent;
+
+		this.isPropagationStopped = returnTrue;
 		if ( !e ) {
 			return;
 		}
@@ -2762,30 +2552,25 @@ jQuery.Event.prototype = {
 	stopImmediatePropagation: function() {
 		this.isImmediatePropagationStopped = returnTrue;
 		this.stopPropagation();
-	},
-	isDefaultPrevented: returnFalse,
-	isPropagationStopped: returnFalse,
-	isImmediatePropagationStopped: returnFalse
+	}
 };
 jQuery.each({
 	mouseenter: "mouseover",
 	mouseleave: "mouseout"
 }, function( orig, fix ) {
-	jQuery.event.special[ orig ] = jQuery.event.special[ fix ] = {
+	jQuery.event.special[ orig ] = {
 		delegateType: fix,
 		bindType: fix,
 
 		handle: function( event ) {
-			var target = this,
+			var ret,
+				target = this,
 				related = event.relatedTarget,
-				handleObj = event.handleObj,
-				selector = handleObj.selector,
-				oldType, ret;
-			if ( !related || handleObj.origType === event.type || (related !== target && !jQuery.contains( target, related )) ) {
-				oldType = event.type;
+				handleObj = event.handleObj;
+			if ( !related || (related !== target && !jQuery.contains( target, related )) ) {
 				event.type = handleObj.origType;
 				ret = handleObj.handler.apply( this, arguments );
-				event.type = oldType;
+				event.type = fix;
 			}
 			return ret;
 		}
@@ -2801,15 +2586,22 @@ if ( !jQuery.support.submitBubbles ) {
 			jQuery.event.add( this, "click._submit keypress._submit", function( e ) {
 				var elem = e.target,
 					form = jQuery.nodeName( elem, "input" ) || jQuery.nodeName( elem, "button" ) ? elem.form : undefined;
-				if ( form && !form._submit_attached ) {
+				if ( form && !jQuery._data( form, "submitBubbles" ) ) {
 					jQuery.event.add( form, "submit._submit", function( event ) {
-						if ( this.parentNode ) {
-							jQuery.event.simulate( "submit", this.parentNode, event, true );
-						}
+						event._submit_bubble = true;
 					});
-					form._submit_attached = true;
+					jQuery._data( form, "submitBubbles", true );
 				}
 			});
+		},
+
+		postDispatch: function( event ) {
+			if ( event._submit_bubble ) {
+				delete event._submit_bubble;
+				if ( this.parentNode && !event.isTrigger ) {
+					jQuery.event.simulate( "submit", this.parentNode, event, true );
+				}
+			}
 		},
 
 		teardown: function() {
@@ -2834,10 +2626,10 @@ if ( !jQuery.support.changeBubbles ) {
 						}
 					});
 					jQuery.event.add( this, "click._change", function( event ) {
-						if ( this._just_changed ) {
+						if ( this._just_changed && !event.isTrigger ) {
 							this._just_changed = false;
-							jQuery.event.simulate( "change", this, event, true );
 						}
+						jQuery.event.simulate( "change", this, event, true );
 					});
 				}
 				return false;
@@ -2845,13 +2637,13 @@ if ( !jQuery.support.changeBubbles ) {
 			jQuery.event.add( this, "beforeactivate._change", function( e ) {
 				var elem = e.target;
 
-				if ( rformElems.test( elem.nodeName ) && !elem._change_attached ) {
+				if ( rformElems.test( elem.nodeName ) && !jQuery._data( elem, "changeBubbles" ) ) {
 					jQuery.event.add( elem, "change._change", function( event ) {
-						if ( this.parentNode && !event.isSimulated ) {
+						if ( this.parentNode && !event.isSimulated && !event.isTrigger ) {
 							jQuery.event.simulate( "change", this.parentNode, event, true );
 						}
 					});
-					elem._change_attached = true;
+					jQuery._data( elem, "changeBubbles", true );
 				}
 			});
 		},
@@ -2866,7 +2658,7 @@ if ( !jQuery.support.changeBubbles ) {
 		teardown: function() {
 			jQuery.event.remove( this, "._change" );
 
-			return rformElems.test( this.nodeName );
+			return !rformElems.test( this.nodeName );
 		}
 	};
 }
@@ -2898,7 +2690,7 @@ jQuery.fn.extend({
 		var origFn, type;
 		if ( typeof types === "object" ) {
 			if ( typeof selector !== "string" ) {
-				data = selector;
+				data = data || selector;
 				selector = undefined;
 			}
 			for ( type in types ) {
@@ -2939,20 +2731,21 @@ jQuery.fn.extend({
 		});
 	},
 	one: function( types, selector, data, fn ) {
-		return this.on.call( this, types, selector, data, fn, 1 );
+		return this.on( types, selector, data, fn, 1 );
 	},
 	off: function( types, selector, fn ) {
+		var handleObj, type;
 		if ( types && types.preventDefault && types.handleObj ) {
-			var handleObj = types.handleObj;
+			handleObj = types.handleObj;
 			jQuery( types.delegateTarget ).off(
-				handleObj.namespace? handleObj.type + "." + handleObj.namespace : handleObj.type,
+				handleObj.namespace ? handleObj.origType + "." + handleObj.namespace : handleObj.origType,
 				handleObj.selector,
 				handleObj.handler
 			);
 			return this;
 		}
 		if ( typeof types === "object" ) {
-			for ( var type in types ) {
+			for ( type in types ) {
 				this.off( type, selector, types[ type ] );
 			}
 			return this;
@@ -2976,20 +2769,11 @@ jQuery.fn.extend({
 		return this.off( types, null, fn );
 	},
 
-	live: function( types, data, fn ) {
-		jQuery( this.context ).on( types, this.selector, data, fn );
-		return this;
-	},
-	die: function( types, fn ) {
-		jQuery( this.context ).off( types, this.selector || "**", fn );
-		return this;
-	},
-
 	delegate: function( selector, types, data, fn ) {
 		return this.on( types, selector, data, fn );
 	},
 	undelegate: function( selector, types, fn ) {
-		return arguments.length == 1? this.off( selector, "**" ) : this.off( types, selector, fn );
+		return arguments.length === 1 ? this.off( selector, "**" ) : this.off( types, selector || "**", fn );
 	},
 
 	trigger: function( type, data ) {
@@ -2998,27 +2782,10 @@ jQuery.fn.extend({
 		});
 	},
 	triggerHandler: function( type, data ) {
-		if ( this[0] ) {
-			return jQuery.event.trigger( type, data, this[0], true );
+		var elem = this[0];
+		if ( elem ) {
+			return jQuery.event.trigger( type, data, elem, true );
 		}
-	},
-
-	toggle: function( fn ) {
-		var args = arguments,
-			guid = fn.guid || jQuery.guid++,
-			i = 0,
-			toggler = function( event ) {
-				var lastToggle = ( jQuery._data( this, "lastToggle" + fn.guid ) || 0 ) % i;
-				jQuery._data( this, "lastToggle" + fn.guid, lastToggle + 1 );
-				event.preventDefault();
-				return args[ lastToggle ].apply( this, arguments ) || false;
-			};
-		toggler.guid = guid;
-		while ( i < args.length ) {
-			args[ i++ ].guid = guid;
-		}
-
-		return this.click( toggler );
 	},
 
 	hover: function( fnOver, fnOut ) {
@@ -3030,19 +2797,10 @@ jQuery.each( ("blur focus focusin focusout load resize scroll unload click dblcl
 	"mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
 	"change select submit keydown keypress keyup error contextmenu").split(" "), function( i, name ) {
 	jQuery.fn[ name ] = function( data, fn ) {
-		if ( fn == null ) {
-			fn = data;
-			data = null;
-		}
-
 		return arguments.length > 0 ?
-			this.bind( name, data, fn ) :
+			this.on( name, null, data, fn ) :
 			this.trigger( name );
 	};
-
-	if ( jQuery.attrFn ) {
-		jQuery.attrFn[ name ] = true;
-	}
 
 	if ( rkeyEvent.test( name ) ) {
 		jQuery.event.fixHooks[ name ] = jQuery.event.keyHooks;
@@ -3052,1341 +2810,1487 @@ jQuery.each( ("blur focus focusin focusout load resize scroll unload click dblcl
 		jQuery.event.fixHooks[ name ] = jQuery.event.mouseHooks;
 	}
 });
-
-
-
 /*!
  * Sizzle CSS Selector Engine
- *  Copyright 2011, The Dojo Foundation
- *  Released under the MIT, BSD, and GPL Licenses.
- *  More information: http://sizzlejs.com/
+ * Copyright 2012 jQuery Foundation and other contributors
+ * Released under the MIT license
+ * http://sizzlejs.com/
  */
-(function(){
+(function( window, undefined ) {
 
-var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[^\[\]'"]+)+\]|\\.|[^ >+~,(\[\\]+)+|[>+~])(\s*,\s*)?((?:.|\r|\n)*)/g,
-	expando = "sizcache" + (Math.random() + '').replace('.', ''),
+var i,
+	cachedruns,
+	Expr,
+	getText,
+	isXML,
+	compile,
+	hasDuplicate,
+	outermostContext,
+	setDocument,
+	document,
+	docElem,
+	documentIsXML,
+	rbuggyQSA,
+	rbuggyMatches,
+	matches,
+	contains,
+	sortOrder,
+	expando = "sizzle" + -(new Date()),
+	preferredDoc = window.document,
+	support = {},
+	dirruns = 0,
 	done = 0,
-	toString = Object.prototype.toString,
-	hasDuplicate = false,
-	baseHasDuplicate = true,
-	rBackslash = /\\/g,
-	rReturn = /\r\n/g,
-	rNonWord = /\W/;
-[0, 0].sort(function() {
-	baseHasDuplicate = false;
-	return 0;
-});
+	classCache = createCache(),
+	tokenCache = createCache(),
+	compilerCache = createCache(),
+	strundefined = typeof undefined,
+	MAX_NEGATIVE = 1 << 31,
+	arr = [],
+	pop = arr.pop,
+	push = arr.push,
+	slice = arr.slice,
+	indexOf = arr.indexOf || function( elem ) {
+		var i = 0,
+			len = this.length;
+		for ( ; i < len; i++ ) {
+			if ( this[i] === elem ) {
+				return i;
+			}
+		}
+		return -1;
+	},
+	whitespace = "[\\x20\\t\\r\\n\\f]",
+	characterEncoding = "(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+",
+	identifier = characterEncoding.replace( "w", "w#" ),
+	operators = "([*^$|!~]?=)",
+	attributes = "\\[" + whitespace + "*(" + characterEncoding + ")" + whitespace +
+		"*(?:" + operators + whitespace + "*(?:(['\"])((?:\\\\.|[^\\\\])*?)\\3|(" + identifier + ")|)|)" + whitespace + "*\\]",
+	pseudos = ":(" + characterEncoding + ")(?:\\(((['\"])((?:\\\\.|[^\\\\])*?)\\3|((?:\\\\.|[^\\\\()[\\]]|" + attributes.replace( 3, 8 ) + ")*)|.*)\\)|)",
+	rtrim = new RegExp( "^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + whitespace + "+$", "g" ),
 
-var Sizzle = function( selector, context, results, seed ) {
-	results = results || [];
-	context = context || document;
+	rcomma = new RegExp( "^" + whitespace + "*," + whitespace + "*" ),
+	rcombinators = new RegExp( "^" + whitespace + "*([\\x20\\t\\r\\n\\f>+~])" + whitespace + "*" ),
+	rpseudo = new RegExp( pseudos ),
+	ridentifier = new RegExp( "^" + identifier + "$" ),
 
-	var origContext = context;
+	matchExpr = {
+		"ID": new RegExp( "^#(" + characterEncoding + ")" ),
+		"CLASS": new RegExp( "^\\.(" + characterEncoding + ")" ),
+		"NAME": new RegExp( "^\\[name=['\"]?(" + characterEncoding + ")['\"]?\\]" ),
+		"TAG": new RegExp( "^(" + characterEncoding.replace( "w", "w*" ) + ")" ),
+		"ATTR": new RegExp( "^" + attributes ),
+		"PSEUDO": new RegExp( "^" + pseudos ),
+		"CHILD": new RegExp( "^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\(" + whitespace +
+			"*(even|odd|(([+-]|)(\\d*)n|)" + whitespace + "*(?:([+-]|)" + whitespace +
+			"*(\\d+)|))" + whitespace + "*\\)|)", "i" ),
+		"needsContext": new RegExp( "^" + whitespace + "*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(" +
+			whitespace + "*((?:-\\d)?\\d*)" + whitespace + "*\\)|)(?=[^-]|$)", "i" )
+	},
 
-	if ( context.nodeType !== 1 && context.nodeType !== 9 ) {
-		return [];
+	rsibling = /[\x20\t\r\n\f]*[+~]/,
+
+	rnative = /\{\s*\[native code\]\s*\}/,
+	rquickExpr = /^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/,
+
+	rinputs = /^(?:input|select|textarea|button)$/i,
+	rheader = /^h\d$/i,
+
+	rescape = /'|\\/g,
+	rattributeQuotes = /\=[\x20\t\r\n\f]*([^'"\]]*)[\x20\t\r\n\f]*\]/g,
+	runescape = /\\([\da-fA-F]{1,6}[\x20\t\r\n\f]?|.)/g,
+	funescape = function( _, escaped ) {
+		var high = "0x" + escaped - 0x10000;
+		return high !== high ?
+			escaped :
+			high < 0 ?
+				String.fromCharCode( high + 0x10000 ) :
+				String.fromCharCode( high >> 10 | 0xD800, high & 0x3FF | 0xDC00 );
+	};
+try {
+	slice.call( docElem.childNodes, 0 )[0].nodeType;
+} catch ( e ) {
+	slice = function( i ) {
+		var elem,
+			results = [];
+		for ( ; (elem = this[i]); i++ ) {
+			results.push( elem );
+		}
+		return results;
+	};
+}
+
+/**
+ * For feature detection
+ * @param {Function} fn The function to test for native support
+ */
+function isNative( fn ) {
+	return rnative.test( fn + "" );
+}
+
+/**
+ * Create key-value caches of limited size
+ * @returns {Function(string, Object)} Returns the Object data after storing it on itself with
+ *	property name the (space-suffixed) string and (if the cache is larger than Expr.cacheLength)
+ *	deleting the oldest entry
+ */
+function createCache() {
+	var cache,
+		keys = [];
+
+	return (cache = function( key, value ) {
+		if ( keys.push( key += " " ) > Expr.cacheLength ) {
+			delete cache[ keys.shift() ];
+		}
+		return (cache[ key ] = value);
+	});
+}
+
+/**
+ * Mark a function for special use by Sizzle
+ * @param {Function} fn The function to mark
+ */
+function markFunction( fn ) {
+	fn[ expando ] = true;
+	return fn;
+}
+
+/**
+ * Support testing using an element
+ * @param {Function} fn Passed the created div and expects a boolean result
+ */
+function assert( fn ) {
+	var div = document.createElement("div");
+
+	try {
+		return fn( div );
+	} catch (e) {
+		return false;
+	} finally {
+		div = null;
 	}
-	
+}
+
+function Sizzle( selector, context, results, seed ) {
+	var match, elem, m, nodeType,
+		i, groups, old, nid, newContext, newSelector;
+
+	if ( ( context ? context.ownerDocument || context : preferredDoc ) !== document ) {
+		setDocument( context );
+	}
+
+	context = context || document;
+	results = results || [];
+
 	if ( !selector || typeof selector !== "string" ) {
 		return results;
 	}
 
-	var m, set, checkSet, extra, ret, cur, pop, i,
-		prune = true,
-		contextXML = Sizzle.isXML( context ),
-		parts = [],
-		soFar = selector;
-	do {
-		chunker.exec( "" );
-		m = chunker.exec( soFar );
-
-		if ( m ) {
-			soFar = m[3];
-		
-			parts.push( m[1] );
-		
-			if ( m[2] ) {
-				extra = m[3];
-				break;
-			}
-		}
-	} while ( m );
-
-	if ( parts.length > 1 && origPOS.exec( selector ) ) {
-
-		if ( parts.length === 2 && Expr.relative[ parts[0] ] ) {
-			set = posProcess( parts[0] + parts[1], context, seed );
-
-		} else {
-			set = Expr.relative[ parts[0] ] ?
-				[ context ] :
-				Sizzle( parts.shift(), context );
-
-			while ( parts.length ) {
-				selector = parts.shift();
-
-				if ( Expr.relative[ selector ] ) {
-					selector += parts.shift();
-				}
-				
-				set = posProcess( selector, set, seed );
-			}
-		}
-
-	} else {
-		if ( !seed && parts.length > 1 && context.nodeType === 9 && !contextXML &&
-				Expr.match.ID.test(parts[0]) && !Expr.match.ID.test(parts[parts.length - 1]) ) {
-
-			ret = Sizzle.find( parts.shift(), context, contextXML );
-			context = ret.expr ?
-				Sizzle.filter( ret.expr, ret.set )[0] :
-				ret.set[0];
-		}
-
-		if ( context ) {
-			ret = seed ?
-				{ expr: parts.pop(), set: makeArray(seed) } :
-				Sizzle.find( parts.pop(), parts.length === 1 && (parts[0] === "~" || parts[0] === "+") && context.parentNode ? context.parentNode : context, contextXML );
-
-			set = ret.expr ?
-				Sizzle.filter( ret.expr, ret.set ) :
-				ret.set;
-
-			if ( parts.length > 0 ) {
-				checkSet = makeArray( set );
-
-			} else {
-				prune = false;
-			}
-
-			while ( parts.length ) {
-				cur = parts.pop();
-				pop = cur;
-
-				if ( !Expr.relative[ cur ] ) {
-					cur = "";
-				} else {
-					pop = parts.pop();
-				}
-
-				if ( pop == null ) {
-					pop = context;
-				}
-
-				Expr.relative[ cur ]( checkSet, pop, contextXML );
-			}
-
-		} else {
-			checkSet = parts = [];
-		}
-	}
-
-	if ( !checkSet ) {
-		checkSet = set;
-	}
-
-	if ( !checkSet ) {
-		Sizzle.error( cur || selector );
-	}
-
-	if ( toString.call(checkSet) === "[object Array]" ) {
-		if ( !prune ) {
-			results.push.apply( results, checkSet );
-
-		} else if ( context && context.nodeType === 1 ) {
-			for ( i = 0; checkSet[i] != null; i++ ) {
-				if ( checkSet[i] && (checkSet[i] === true || checkSet[i].nodeType === 1 && Sizzle.contains(context, checkSet[i])) ) {
-					results.push( set[i] );
-				}
-			}
-
-		} else {
-			for ( i = 0; checkSet[i] != null; i++ ) {
-				if ( checkSet[i] && checkSet[i].nodeType === 1 ) {
-					results.push( set[i] );
-				}
-			}
-		}
-
-	} else {
-		makeArray( checkSet, results );
-	}
-
-	if ( extra ) {
-		Sizzle( extra, origContext, results, seed );
-		Sizzle.uniqueSort( results );
-	}
-
-	return results;
-};
-
-Sizzle.uniqueSort = function( results ) {
-	if ( sortOrder ) {
-		hasDuplicate = baseHasDuplicate;
-		results.sort( sortOrder );
-
-		if ( hasDuplicate ) {
-			for ( var i = 1; i < results.length; i++ ) {
-				if ( results[i] === results[ i - 1 ] ) {
-					results.splice( i--, 1 );
-				}
-			}
-		}
-	}
-
-	return results;
-};
-
-Sizzle.matches = function( expr, set ) {
-	return Sizzle( expr, null, null, set );
-};
-
-Sizzle.matchesSelector = function( node, expr ) {
-	return Sizzle( expr, null, null, [node] ).length > 0;
-};
-
-Sizzle.find = function( expr, context, isXML ) {
-	var set, i, len, match, type, left;
-
-	if ( !expr ) {
+	if ( (nodeType = context.nodeType) !== 1 && nodeType !== 9 ) {
 		return [];
 	}
 
-	for ( i = 0, len = Expr.order.length; i < len; i++ ) {
-		type = Expr.order[i];
-		
-		if ( (match = Expr.leftMatch[ type ].exec( expr )) ) {
-			left = match[1];
-			match.splice( 1, 1 );
-
-			if ( left.substr( left.length - 1 ) !== "\\" ) {
-				match[1] = (match[1] || "").replace( rBackslash, "" );
-				set = Expr.find[ type ]( match, context, isXML );
-
-				if ( set != null ) {
-					expr = expr.replace( Expr.match[ type ], "" );
-					break;
-				}
-			}
-		}
-	}
-
-	if ( !set ) {
-		set = typeof context.getElementsByTagName !== "undefined" ?
-			context.getElementsByTagName( "*" ) :
-			[];
-	}
-
-	return { set: set, expr: expr };
-};
-
-Sizzle.filter = function( expr, set, inplace, not ) {
-	var match, anyFound,
-		type, found, item, filter, left,
-		i, pass,
-		old = expr,
-		result = [],
-		curLoop = set,
-		isXMLFilter = set && set[0] && Sizzle.isXML( set[0] );
-
-	while ( expr && set.length ) {
-		for ( type in Expr.filter ) {
-			if ( (match = Expr.leftMatch[ type ].exec( expr )) != null && match[2] ) {
-				filter = Expr.filter[ type ];
-				left = match[1];
-
-				anyFound = false;
-
-				match.splice(1,1);
-
-				if ( left.substr( left.length - 1 ) === "\\" ) {
-					continue;
-				}
-
-				if ( curLoop === result ) {
-					result = [];
-				}
-
-				if ( Expr.preFilter[ type ] ) {
-					match = Expr.preFilter[ type ]( match, curLoop, inplace, result, not, isXMLFilter );
-
-					if ( !match ) {
-						anyFound = found = true;
-
-					} else if ( match === true ) {
-						continue;
-					}
-				}
-
-				if ( match ) {
-					for ( i = 0; (item = curLoop[i]) != null; i++ ) {
-						if ( item ) {
-							found = filter( item, match, i, curLoop );
-							pass = not ^ found;
-
-							if ( inplace && found != null ) {
-								if ( pass ) {
-									anyFound = true;
-
-								} else {
-									curLoop[i] = false;
-								}
-
-							} else if ( pass ) {
-								result.push( item );
-								anyFound = true;
-							}
+	if ( !documentIsXML && !seed ) {
+		if ( (match = rquickExpr.exec( selector )) ) {
+			if ( (m = match[1]) ) {
+				if ( nodeType === 9 ) {
+					elem = context.getElementById( m );
+					if ( elem && elem.parentNode ) {
+						if ( elem.id === m ) {
+							results.push( elem );
+							return results;
 						}
+					} else {
+						return results;
+					}
+				} else {
+					if ( context.ownerDocument && (elem = context.ownerDocument.getElementById( m )) &&
+						contains( context, elem ) && elem.id === m ) {
+						results.push( elem );
+						return results;
 					}
 				}
+			} else if ( match[2] ) {
+				push.apply( results, slice.call(context.getElementsByTagName( selector ), 0) );
+				return results;
+			} else if ( (m = match[3]) && support.getByClassName && context.getElementsByClassName ) {
+				push.apply( results, slice.call(context.getElementsByClassName( m ), 0) );
+				return results;
+			}
+		}
+		if ( support.qsa && !rbuggyQSA.test(selector) ) {
+			old = true;
+			nid = expando;
+			newContext = context;
+			newSelector = nodeType === 9 && selector;
+			if ( nodeType === 1 && context.nodeName.toLowerCase() !== "object" ) {
+				groups = tokenize( selector );
 
-				if ( found !== undefined ) {
-					if ( !inplace ) {
-						curLoop = result;
+				if ( (old = context.getAttribute("id")) ) {
+					nid = old.replace( rescape, "\\$&" );
+				} else {
+					context.setAttribute( "id", nid );
+				}
+				nid = "[id='" + nid + "'] ";
+
+				i = groups.length;
+				while ( i-- ) {
+					groups[i] = nid + toSelector( groups[i] );
+				}
+				newContext = rsibling.test( selector ) && context.parentNode || context;
+				newSelector = groups.join(",");
+			}
+
+			if ( newSelector ) {
+				try {
+					push.apply( results, slice.call( newContext.querySelectorAll(
+						newSelector
+					), 0 ) );
+					return results;
+				} catch(qsaError) {
+				} finally {
+					if ( !old ) {
+						context.removeAttribute("id");
 					}
-
-					expr = expr.replace( Expr.match[ type ], "" );
-
-					if ( !anyFound ) {
-						return [];
-					}
-
-					break;
 				}
 			}
 		}
-		if ( expr === old ) {
-			if ( anyFound == null ) {
-				Sizzle.error( expr );
-
-			} else {
-				break;
-			}
-		}
-
-		old = expr;
 	}
+	return select( selector.replace( rtrim, "$1" ), context, results, seed );
+}
 
-	return curLoop;
-};
-
-Sizzle.error = function( msg ) {
-	throw "Syntax error, unrecognized expression: " + msg;
+/**
+ * Detect xml
+ * @param {Element|Object} elem An element or a document
+ */
+isXML = Sizzle.isXML = function( elem ) {
+	var documentElement = elem && (elem.ownerDocument || elem).documentElement;
+	return documentElement ? documentElement.nodeName !== "HTML" : false;
 };
 
 /**
- * Utility function for retreiving the text value of an array of DOM nodes
- * @param {Array|Element} elem
+ * Sets document-related variables once based on the current document
+ * @param {Element|Object} [doc] An element or document object to use to set the document
+ * @returns {Object} Returns the current document
  */
-var getText = Sizzle.getText = function( elem ) {
-    var i, node,
-		nodeType = elem.nodeType,
-		ret = "";
-
-	if ( nodeType ) {
-		if ( nodeType === 1 ) {
-			if ( typeof elem.textContent === 'string' ) {
-				return elem.textContent;
-			} else if ( typeof elem.innerText === 'string' ) {
-				return elem.innerText.replace( rReturn, '' );
-			} else {
-				for ( elem = elem.firstChild; elem; elem = elem.nextSibling) {
-					ret += getText( elem );
-				}
-			}
-		} else if ( nodeType === 3 || nodeType === 4 ) {
-			return elem.nodeValue;
-		}
-	} else {
-		for ( i = 0; (node = elem[i]); i++ ) {
-			if ( node.nodeType !== 8 ) {
-				ret += getText( node );
-			}
-		}
+setDocument = Sizzle.setDocument = function( node ) {
+	var doc = node ? node.ownerDocument || node : preferredDoc;
+	if ( doc === document || doc.nodeType !== 9 || !doc.documentElement ) {
+		return document;
 	}
-	return ret;
-};
-
-var Expr = Sizzle.selectors = {
-	order: [ "ID", "NAME", "TAG" ],
-
-	match: {
-		ID: /#((?:[\w\u00c0-\uFFFF\-]|\\.)+)/,
-		CLASS: /\.((?:[\w\u00c0-\uFFFF\-]|\\.)+)/,
-		NAME: /\[name=['"]*((?:[\w\u00c0-\uFFFF\-]|\\.)+)['"]*\]/,
-		ATTR: /\[\s*((?:[\w\u00c0-\uFFFF\-]|\\.)+)\s*(?:(\S?=)\s*(?:(['"])(.*?)\3|(#?(?:[\w\u00c0-\uFFFF\-]|\\.)*)|)|)\s*\]/,
-		TAG: /^((?:[\w\u00c0-\uFFFF\*\-]|\\.)+)/,
-		CHILD: /:(only|nth|last|first)-child(?:\(\s*(even|odd|(?:[+\-]?\d+|(?:[+\-]?\d*)?n\s*(?:[+\-]\s*\d+)?))\s*\))?/,
-		POS: /:(nth|eq|gt|lt|first|last|even|odd)(?:\((\d*)\))?(?=[^\-]|$)/,
-		PSEUDO: /:((?:[\w\u00c0-\uFFFF\-]|\\.)+)(?:\((['"]?)((?:\([^\)]+\)|[^\(\)]*)+)\2\))?/
-	},
-
-	leftMatch: {},
-
-	attrMap: {
-		"class": "className",
-		"for": "htmlFor"
-	},
-
-	attrHandle: {
-		href: function( elem ) {
-			return elem.getAttribute( "href" );
-		},
-		type: function( elem ) {
-			return elem.getAttribute( "type" );
+	document = doc;
+	docElem = doc.documentElement;
+	documentIsXML = isXML( doc );
+	support.tagNameNoComments = assert(function( div ) {
+		div.appendChild( doc.createComment("") );
+		return !div.getElementsByTagName("*").length;
+	});
+	support.attributes = assert(function( div ) {
+		div.innerHTML = "<select></select>";
+		var type = typeof div.lastChild.getAttribute("multiple");
+		return type !== "boolean" && type !== "string";
+	});
+	support.getByClassName = assert(function( div ) {
+		div.innerHTML = "<div class='hidden e'></div><div class='hidden'></div>";
+		if ( !div.getElementsByClassName || !div.getElementsByClassName("e").length ) {
+			return false;
 		}
-	},
+		div.lastChild.className = "e";
+		return div.getElementsByClassName("e").length === 2;
+	});
+	support.getByName = assert(function( div ) {
+		div.id = expando + 0;
+		div.innerHTML = "<a name='" + expando + "'></a><div name='" + expando + "'></div>";
+		docElem.insertBefore( div, docElem.firstChild );
+		var pass = doc.getElementsByName &&
+			doc.getElementsByName( expando ).length === 2 +
+			doc.getElementsByName( expando + 0 ).length;
+		support.getIdNotName = !doc.getElementById( expando );
+		docElem.removeChild( div );
 
-	relative: {
-		"+": function(checkSet, part){
-			var isPartStr = typeof part === "string",
-				isTag = isPartStr && !rNonWord.test( part ),
-				isPartStrNotTag = isPartStr && !isTag;
-
-			if ( isTag ) {
-				part = part.toLowerCase();
+		return pass;
+	});
+	Expr.attrHandle = assert(function( div ) {
+		div.innerHTML = "<a href='#'></a>";
+		return div.firstChild && typeof div.firstChild.getAttribute !== strundefined &&
+			div.firstChild.getAttribute("href") === "#";
+	}) ?
+		{} :
+		{
+			"href": function( elem ) {
+				return elem.getAttribute( "href", 2 );
+			},
+			"type": function( elem ) {
+				return elem.getAttribute("type");
 			}
-
-			for ( var i = 0, l = checkSet.length, elem; i < l; i++ ) {
-				if ( (elem = checkSet[i]) ) {
-					while ( (elem = elem.previousSibling) && elem.nodeType !== 1 ) {}
-
-					checkSet[i] = isPartStrNotTag || elem && elem.nodeName.toLowerCase() === part ?
-						elem || false :
-						elem === part;
-				}
-			}
-
-			if ( isPartStrNotTag ) {
-				Sizzle.filter( part, checkSet, true );
-			}
-		},
-
-		">": function( checkSet, part ) {
-			var elem,
-				isPartStr = typeof part === "string",
-				i = 0,
-				l = checkSet.length;
-
-			if ( isPartStr && !rNonWord.test( part ) ) {
-				part = part.toLowerCase();
-
-				for ( ; i < l; i++ ) {
-					elem = checkSet[i];
-
-					if ( elem ) {
-						var parent = elem.parentNode;
-						checkSet[i] = parent.nodeName.toLowerCase() === part ? parent : false;
-					}
-				}
-
-			} else {
-				for ( ; i < l; i++ ) {
-					elem = checkSet[i];
-
-					if ( elem ) {
-						checkSet[i] = isPartStr ?
-							elem.parentNode :
-							elem.parentNode === part;
-					}
-				}
-
-				if ( isPartStr ) {
-					Sizzle.filter( part, checkSet, true );
-				}
-			}
-		},
-
-		"": function(checkSet, part, isXML){
-			var nodeCheck,
-				doneName = done++,
-				checkFn = dirCheck;
-
-			if ( typeof part === "string" && !rNonWord.test( part ) ) {
-				part = part.toLowerCase();
-				nodeCheck = part;
-				checkFn = dirNodeCheck;
-			}
-
-			checkFn( "parentNode", part, doneName, checkSet, nodeCheck, isXML );
-		},
-
-		"~": function( checkSet, part, isXML ) {
-			var nodeCheck,
-				doneName = done++,
-				checkFn = dirCheck;
-
-			if ( typeof part === "string" && !rNonWord.test( part ) ) {
-				part = part.toLowerCase();
-				nodeCheck = part;
-				checkFn = dirNodeCheck;
-			}
-
-			checkFn( "previousSibling", part, doneName, checkSet, nodeCheck, isXML );
-		}
-	},
-
-	find: {
-		ID: function( match, context, isXML ) {
-			if ( typeof context.getElementById !== "undefined" && !isXML ) {
-				var m = context.getElementById(match[1]);
+		};
+	if ( support.getIdNotName ) {
+		Expr.find["ID"] = function( id, context ) {
+			if ( typeof context.getElementById !== strundefined && !documentIsXML ) {
+				var m = context.getElementById( id );
 				return m && m.parentNode ? [m] : [];
 			}
-		},
-
-		NAME: function( match, context ) {
-			if ( typeof context.getElementsByName !== "undefined" ) {
-				var ret = [],
-					results = context.getElementsByName( match[1] );
-
-				for ( var i = 0, l = results.length; i < l; i++ ) {
-					if ( results[i].getAttribute("name") === match[1] ) {
-						ret.push( results[i] );
-					}
-				}
-
-				return ret.length === 0 ? null : ret;
-			}
-		},
-
-		TAG: function( match, context ) {
-			if ( typeof context.getElementsByTagName !== "undefined" ) {
-				return context.getElementsByTagName( match[1] );
-			}
-		}
-	},
-	preFilter: {
-		CLASS: function( match, curLoop, inplace, result, not, isXML ) {
-			match = " " + match[1].replace( rBackslash, "" ) + " ";
-
-			if ( isXML ) {
-				return match;
-			}
-
-			for ( var i = 0, elem; (elem = curLoop[i]) != null; i++ ) {
-				if ( elem ) {
-					if ( not ^ (elem.className && (" " + elem.className + " ").replace(/[\t\n\r]/g, " ").indexOf(match) >= 0) ) {
-						if ( !inplace ) {
-							result.push( elem );
-						}
-
-					} else if ( inplace ) {
-						curLoop[i] = false;
-					}
-				}
-			}
-
-			return false;
-		},
-
-		ID: function( match ) {
-			return match[1].replace( rBackslash, "" );
-		},
-
-		TAG: function( match, curLoop ) {
-			return match[1].replace( rBackslash, "" ).toLowerCase();
-		},
-
-		CHILD: function( match ) {
-			if ( match[1] === "nth" ) {
-				if ( !match[2] ) {
-					Sizzle.error( match[0] );
-				}
-
-				match[2] = match[2].replace(/^\+|\s*/g, '');
-				var test = /(-?)(\d*)(?:n([+\-]?\d*))?/.exec(
-					match[2] === "even" && "2n" || match[2] === "odd" && "2n+1" ||
-					!/\D/.test( match[2] ) && "0n+" + match[2] || match[2]);
-				match[2] = (test[1] + (test[2] || 1)) - 0;
-				match[3] = test[3] - 0;
-			}
-			else if ( match[2] ) {
-				Sizzle.error( match[0] );
-			}
-			match[0] = done++;
-
-			return match;
-		},
-
-		ATTR: function( match, curLoop, inplace, result, not, isXML ) {
-			var name = match[1] = match[1].replace( rBackslash, "" );
-			
-			if ( !isXML && Expr.attrMap[name] ) {
-				match[1] = Expr.attrMap[name];
-			}
-			match[4] = ( match[4] || match[5] || "" ).replace( rBackslash, "" );
-
-			if ( match[2] === "~=" ) {
-				match[4] = " " + match[4] + " ";
-			}
-
-			return match;
-		},
-
-		PSEUDO: function( match, curLoop, inplace, result, not ) {
-			if ( match[1] === "not" ) {
-				if ( ( chunker.exec(match[3]) || "" ).length > 1 || /^\w/.test(match[3]) ) {
-					match[3] = Sizzle(match[3], null, null, curLoop);
-
-				} else {
-					var ret = Sizzle.filter(match[3], curLoop, inplace, true ^ not);
-
-					if ( !inplace ) {
-						result.push.apply( result, ret );
-					}
-
-					return false;
-				}
-
-			} else if ( Expr.match.POS.test( match[0] ) || Expr.match.CHILD.test( match[0] ) ) {
-				return true;
-			}
-			
-			return match;
-		},
-
-		POS: function( match ) {
-			match.unshift( true );
-
-			return match;
-		}
-	},
-	
-	filters: {
-		enabled: function( elem ) {
-			return elem.disabled === false && elem.type !== "hidden";
-		},
-
-		disabled: function( elem ) {
-			return elem.disabled === true;
-		},
-
-		checked: function( elem ) {
-			return elem.checked === true;
-		},
-		
-		selected: function( elem ) {
-			if ( elem.parentNode ) {
-				elem.parentNode.selectedIndex;
-			}
-			
-			return elem.selected === true;
-		},
-
-		parent: function( elem ) {
-			return !!elem.firstChild;
-		},
-
-		empty: function( elem ) {
-			return !elem.firstChild;
-		},
-
-		has: function( elem, i, match ) {
-			return !!Sizzle( match[3], elem ).length;
-		},
-
-		header: function( elem ) {
-			return (/h\d/i).test( elem.nodeName );
-		},
-
-		text: function( elem ) {
-			var attr = elem.getAttribute( "type" ), type = elem.type;
-			return elem.nodeName.toLowerCase() === "input" && "text" === type && ( attr === type || attr === null );
-		},
-
-		radio: function( elem ) {
-			return elem.nodeName.toLowerCase() === "input" && "radio" === elem.type;
-		},
-
-		checkbox: function( elem ) {
-			return elem.nodeName.toLowerCase() === "input" && "checkbox" === elem.type;
-		},
-
-		file: function( elem ) {
-			return elem.nodeName.toLowerCase() === "input" && "file" === elem.type;
-		},
-
-		password: function( elem ) {
-			return elem.nodeName.toLowerCase() === "input" && "password" === elem.type;
-		},
-
-		submit: function( elem ) {
-			var name = elem.nodeName.toLowerCase();
-			return (name === "input" || name === "button") && "submit" === elem.type;
-		},
-
-		image: function( elem ) {
-			return elem.nodeName.toLowerCase() === "input" && "image" === elem.type;
-		},
-
-		reset: function( elem ) {
-			var name = elem.nodeName.toLowerCase();
-			return (name === "input" || name === "button") && "reset" === elem.type;
-		},
-
-		button: function( elem ) {
-			var name = elem.nodeName.toLowerCase();
-			return name === "input" && "button" === elem.type || name === "button";
-		},
-
-		input: function( elem ) {
-			return (/input|select|textarea|button/i).test( elem.nodeName );
-		},
-
-		focus: function( elem ) {
-			return elem === elem.ownerDocument.activeElement;
-		}
-	},
-	setFilters: {
-		first: function( elem, i ) {
-			return i === 0;
-		},
-
-		last: function( elem, i, match, array ) {
-			return i === array.length - 1;
-		},
-
-		even: function( elem, i ) {
-			return i % 2 === 0;
-		},
-
-		odd: function( elem, i ) {
-			return i % 2 === 1;
-		},
-
-		lt: function( elem, i, match ) {
-			return i < match[3] - 0;
-		},
-
-		gt: function( elem, i, match ) {
-			return i > match[3] - 0;
-		},
-
-		nth: function( elem, i, match ) {
-			return match[3] - 0 === i;
-		},
-
-		eq: function( elem, i, match ) {
-			return match[3] - 0 === i;
-		}
-	},
-	filter: {
-		PSEUDO: function( elem, match, i, array ) {
-			var name = match[1],
-				filter = Expr.filters[ name ];
-
-			if ( filter ) {
-				return filter( elem, i, match, array );
-
-			} else if ( name === "contains" ) {
-				return (elem.textContent || elem.innerText || getText([ elem ]) || "").indexOf(match[3]) >= 0;
-
-			} else if ( name === "not" ) {
-				var not = match[3];
-
-				for ( var j = 0, l = not.length; j < l; j++ ) {
-					if ( not[j] === elem ) {
-						return false;
-					}
-				}
-
-				return true;
-
-			} else {
-				Sizzle.error( name );
-			}
-		},
-
-		CHILD: function( elem, match ) {
-			var first, last,
-				doneName, parent, cache,
-				count, diff,
-				type = match[1],
-				node = elem;
-
-			switch ( type ) {
-				case "only":
-				case "first":
-					while ( (node = node.previousSibling) )	 {
-						if ( node.nodeType === 1 ) { 
-							return false; 
-						}
-					}
-
-					if ( type === "first" ) { 
-						return true; 
-					}
-
-					node = elem;
-
-				case "last":
-					while ( (node = node.nextSibling) )	 {
-						if ( node.nodeType === 1 ) { 
-							return false; 
-						}
-					}
-
-					return true;
-
-				case "nth":
-					first = match[2];
-					last = match[3];
-
-					if ( first === 1 && last === 0 ) {
-						return true;
-					}
-					
-					doneName = match[0];
-					parent = elem.parentNode;
-	
-					if ( parent && (parent[ expando ] !== doneName || !elem.nodeIndex) ) {
-						count = 0;
-						
-						for ( node = parent.firstChild; node; node = node.nextSibling ) {
-							if ( node.nodeType === 1 ) {
-								node.nodeIndex = ++count;
-							}
-						} 
-
-						parent[ expando ] = doneName;
-					}
-					
-					diff = elem.nodeIndex - last;
-
-					if ( first === 0 ) {
-						return diff === 0;
-
-					} else {
-						return ( diff % first === 0 && diff / first >= 0 );
-					}
-			}
-		},
-
-		ID: function( elem, match ) {
-			return elem.nodeType === 1 && elem.getAttribute("id") === match;
-		},
-
-		TAG: function( elem, match ) {
-			return (match === "*" && elem.nodeType === 1) || !!elem.nodeName && elem.nodeName.toLowerCase() === match;
-		},
-		
-		CLASS: function( elem, match ) {
-			return (" " + (elem.className || elem.getAttribute("class")) + " ")
-				.indexOf( match ) > -1;
-		},
-
-		ATTR: function( elem, match ) {
-			var name = match[1],
-				result = Sizzle.attr ?
-					Sizzle.attr( elem, name ) :
-					Expr.attrHandle[ name ] ?
-					Expr.attrHandle[ name ]( elem ) :
-					elem[ name ] != null ?
-						elem[ name ] :
-						elem.getAttribute( name ),
-				value = result + "",
-				type = match[2],
-				check = match[4];
-
-			return result == null ?
-				type === "!=" :
-				!type && Sizzle.attr ?
-				result != null :
-				type === "=" ?
-				value === check :
-				type === "*=" ?
-				value.indexOf(check) >= 0 :
-				type === "~=" ?
-				(" " + value + " ").indexOf(check) >= 0 :
-				!check ?
-				value && result !== false :
-				type === "!=" ?
-				value !== check :
-				type === "^=" ?
-				value.indexOf(check) === 0 :
-				type === "$=" ?
-				value.substr(value.length - check.length) === check :
-				type === "|=" ?
-				value === check || value.substr(0, check.length + 1) === check + "-" :
-				false;
-		},
-
-		POS: function( elem, match, i, array ) {
-			var name = match[2],
-				filter = Expr.setFilters[ name ];
-
-			if ( filter ) {
-				return filter( elem, i, match, array );
-			}
-		}
-	}
-};
-
-var origPOS = Expr.match.POS,
-	fescape = function(all, num){
-		return "\\" + (num - 0 + 1);
-	};
-
-for ( var type in Expr.match ) {
-	Expr.match[ type ] = new RegExp( Expr.match[ type ].source + (/(?![^\[]*\])(?![^\(]*\))/.source) );
-	Expr.leftMatch[ type ] = new RegExp( /(^(?:.|\r|\n)*?)/.source + Expr.match[ type ].source.replace(/\\(\d+)/g, fescape) );
-}
-
-var makeArray = function( array, results ) {
-	array = Array.prototype.slice.call( array, 0 );
-
-	if ( results ) {
-		results.push.apply( results, array );
-		return results;
-	}
-	
-	return array;
-};
-try {
-	Array.prototype.slice.call( document.documentElement.childNodes, 0 )[0].nodeType;
-} catch( e ) {
-	makeArray = function( array, results ) {
-		var i = 0,
-			ret = results || [];
-
-		if ( toString.call(array) === "[object Array]" ) {
-			Array.prototype.push.apply( ret, array );
-
-		} else {
-			if ( typeof array.length === "number" ) {
-				for ( var l = array.length; i < l; i++ ) {
-					ret.push( array[i] );
-				}
-
-			} else {
-				for ( ; array[i]; i++ ) {
-					ret.push( array[i] );
-				}
-			}
-		}
-
-		return ret;
-	};
-}
-
-var sortOrder, siblingCheck;
-
-if ( document.documentElement.compareDocumentPosition ) {
-	sortOrder = function( a, b ) {
-		if ( a === b ) {
-			hasDuplicate = true;
-			return 0;
-		}
-
-		if ( !a.compareDocumentPosition || !b.compareDocumentPosition ) {
-			return a.compareDocumentPosition ? -1 : 1;
-		}
-
-		return a.compareDocumentPosition(b) & 4 ? -1 : 1;
-	};
-
-} else {
-	sortOrder = function( a, b ) {
-		if ( a === b ) {
-			hasDuplicate = true;
-			return 0;
-		} else if ( a.sourceIndex && b.sourceIndex ) {
-			return a.sourceIndex - b.sourceIndex;
-		}
-
-		var al, bl,
-			ap = [],
-			bp = [],
-			aup = a.parentNode,
-			bup = b.parentNode,
-			cur = aup;
-		if ( aup === bup ) {
-			return siblingCheck( a, b );
-		} else if ( !aup ) {
-			return -1;
-
-		} else if ( !bup ) {
-			return 1;
-		}
-		while ( cur ) {
-			ap.unshift( cur );
-			cur = cur.parentNode;
-		}
-
-		cur = bup;
-
-		while ( cur ) {
-			bp.unshift( cur );
-			cur = cur.parentNode;
-		}
-
-		al = ap.length;
-		bl = bp.length;
-		for ( var i = 0; i < al && i < bl; i++ ) {
-			if ( ap[i] !== bp[i] ) {
-				return siblingCheck( ap[i], bp[i] );
-			}
-		}
-		return i === al ?
-			siblingCheck( a, bp[i], -1 ) :
-			siblingCheck( ap[i], b, 1 );
-	};
-
-	siblingCheck = function( a, b, ret ) {
-		if ( a === b ) {
-			return ret;
-		}
-
-		var cur = a.nextSibling;
-
-		while ( cur ) {
-			if ( cur === b ) {
-				return -1;
-			}
-
-			cur = cur.nextSibling;
-		}
-
-		return 1;
-	};
-}
-(function(){
-	var form = document.createElement("div"),
-		id = "script" + (new Date()).getTime(),
-		root = document.documentElement;
-
-	form.innerHTML = "<a name='" + id + "'/>";
-	root.insertBefore( form, root.firstChild );
-	if ( document.getElementById( id ) ) {
-		Expr.find.ID = function( match, context, isXML ) {
-			if ( typeof context.getElementById !== "undefined" && !isXML ) {
-				var m = context.getElementById(match[1]);
+		};
+		Expr.filter["ID"] = function( id ) {
+			var attrId = id.replace( runescape, funescape );
+			return function( elem ) {
+				return elem.getAttribute("id") === attrId;
+			};
+		};
+	} else {
+		Expr.find["ID"] = function( id, context ) {
+			if ( typeof context.getElementById !== strundefined && !documentIsXML ) {
+				var m = context.getElementById( id );
 
 				return m ?
-					m.id === match[1] || typeof m.getAttributeNode !== "undefined" && m.getAttributeNode("id").nodeValue === match[1] ?
+					m.id === id || typeof m.getAttributeNode !== strundefined && m.getAttributeNode("id").value === id ?
 						[m] :
 						undefined :
 					[];
 			}
 		};
-
-		Expr.filter.ID = function( elem, match ) {
-			var node = typeof elem.getAttributeNode !== "undefined" && elem.getAttributeNode("id");
-
-			return elem.nodeType === 1 && node && node.nodeValue === match;
+		Expr.filter["ID"] =  function( id ) {
+			var attrId = id.replace( runescape, funescape );
+			return function( elem ) {
+				var node = typeof elem.getAttributeNode !== strundefined && elem.getAttributeNode("id");
+				return node && node.value === attrId;
+			};
 		};
 	}
-
-	root.removeChild( form );
-	root = form = null;
-})();
-
-(function(){
-	var div = document.createElement("div");
-	div.appendChild( document.createComment("") );
-	if ( div.getElementsByTagName("*").length > 0 ) {
-		Expr.find.TAG = function( match, context ) {
-			var results = context.getElementsByTagName( match[1] );
-			if ( match[1] === "*" ) {
-				var tmp = [];
-
-				for ( var i = 0; results[i]; i++ ) {
-					if ( results[i].nodeType === 1 ) {
-						tmp.push( results[i] );
+	Expr.find["TAG"] = support.tagNameNoComments ?
+		function( tag, context ) {
+			if ( typeof context.getElementsByTagName !== strundefined ) {
+				return context.getElementsByTagName( tag );
+			}
+		} :
+		function( tag, context ) {
+			var elem,
+				tmp = [],
+				i = 0,
+				results = context.getElementsByTagName( tag );
+			if ( tag === "*" ) {
+				for ( ; (elem = results[i]); i++ ) {
+					if ( elem.nodeType === 1 ) {
+						tmp.push( elem );
 					}
 				}
 
-				results = tmp;
+				return tmp;
 			}
-
 			return results;
 		};
-	}
-	div.innerHTML = "<a href='#'></a>";
-
-	if ( div.firstChild && typeof div.firstChild.getAttribute !== "undefined" &&
-			div.firstChild.getAttribute("href") !== "#" ) {
-
-		Expr.attrHandle.href = function( elem ) {
-			return elem.getAttribute( "href", 2 );
-		};
-	}
-	div = null;
-})();
-
-if ( document.querySelectorAll ) {
-	(function(){
-		var oldSizzle = Sizzle,
-			div = document.createElement("div"),
-			id = "__sizzle__";
-
-		div.innerHTML = "<p class='TEST'></p>";
-		if ( div.querySelectorAll && div.querySelectorAll(".TEST").length === 0 ) {
-			return;
-		}
-	
-		Sizzle = function( query, context, extra, seed ) {
-			context = context || document;
-			if ( !seed && !Sizzle.isXML(context) ) {
-				var match = /^(\w+$)|^\.([\w\-]+$)|^#([\w\-]+$)/.exec( query );
-				
-				if ( match && (context.nodeType === 1 || context.nodeType === 9) ) {
-					if ( match[1] ) {
-						return makeArray( context.getElementsByTagName( query ), extra );
-					} else if ( match[2] && Expr.find.CLASS && context.getElementsByClassName ) {
-						return makeArray( context.getElementsByClassName( match[2] ), extra );
-					}
-				}
-				
-				if ( context.nodeType === 9 ) {
-					if ( query === "body" && context.body ) {
-						return makeArray( [ context.body ], extra );
-					} else if ( match && match[3] ) {
-						var elem = context.getElementById( match[3] );
-						if ( elem && elem.parentNode ) {
-							if ( elem.id === match[3] ) {
-								return makeArray( [ elem ], extra );
-							}
-							
-						} else {
-							return makeArray( [], extra );
-						}
-					}
-					
-					try {
-						return makeArray( context.querySelectorAll(query), extra );
-					} catch(qsaError) {}
-				} else if ( context.nodeType === 1 && context.nodeName.toLowerCase() !== "object" ) {
-					var oldContext = context,
-						old = context.getAttribute( "id" ),
-						nid = old || id,
-						hasParent = context.parentNode,
-						relativeHierarchySelector = /^\s*[+~]/.test( query );
-
-					if ( !old ) {
-						context.setAttribute( "id", nid );
-					} else {
-						nid = nid.replace( /'/g, "\\$&" );
-					}
-					if ( relativeHierarchySelector && hasParent ) {
-						context = context.parentNode;
-					}
-
-					try {
-						if ( !relativeHierarchySelector || hasParent ) {
-							return makeArray( context.querySelectorAll( "[id='" + nid + "'] " + query ), extra );
-						}
-
-					} catch(pseudoError) {
-					} finally {
-						if ( !old ) {
-							oldContext.removeAttribute( "id" );
-						}
-					}
-				}
-			}
-		
-			return oldSizzle(query, context, extra, seed);
-		};
-
-		for ( var prop in oldSizzle ) {
-			Sizzle[ prop ] = oldSizzle[ prop ];
-		}
-		div = null;
-	})();
-}
-
-(function(){
-	var html = document.documentElement,
-		matches = html.matchesSelector || html.mozMatchesSelector || html.webkitMatchesSelector || html.msMatchesSelector;
-
-	if ( matches ) {
-		var disconnectedMatch = !matches.call( document.createElement( "div" ), "div" ),
-			pseudoWorks = false;
-
-		try {
-			matches.call( document.documentElement, "[test!='']:sizzle" );
-	
-		} catch( pseudoError ) {
-			pseudoWorks = true;
-		}
-
-		Sizzle.matchesSelector = function( node, expr ) {
-			expr = expr.replace(/\=\s*([^'"\]]*)\s*\]/g, "='$1']");
-
-			if ( !Sizzle.isXML( node ) ) {
-				try { 
-					if ( pseudoWorks || !Expr.match.PSEUDO.test( expr ) && !/!=/.test( expr ) ) {
-						var ret = matches.call( node, expr );
-						if ( ret || !disconnectedMatch ||
-								node.document && node.document.nodeType !== 11 ) {
-							return ret;
-						}
-					}
-				} catch(e) {}
-			}
-
-			return Sizzle(expr, null, null, [node]).length > 0;
-		};
-	}
-})();
-
-(function(){
-	var div = document.createElement("div");
-
-	div.innerHTML = "<div class='test e'></div><div class='test'></div>";
-	if ( !div.getElementsByClassName || div.getElementsByClassName("e").length === 0 ) {
-		return;
-	}
-	div.lastChild.className = "e";
-
-	if ( div.getElementsByClassName("e").length === 1 ) {
-		return;
-	}
-	
-	Expr.order.splice(1, 0, "CLASS");
-	Expr.find.CLASS = function( match, context, isXML ) {
-		if ( typeof context.getElementsByClassName !== "undefined" && !isXML ) {
-			return context.getElementsByClassName(match[1]);
+	Expr.find["NAME"] = support.getByName && function( tag, context ) {
+		if ( typeof context.getElementsByName !== strundefined ) {
+			return context.getElementsByName( name );
 		}
 	};
-	div = null;
-})();
+	Expr.find["CLASS"] = support.getByClassName && function( className, context ) {
+		if ( typeof context.getElementsByClassName !== strundefined && !documentIsXML ) {
+			return context.getElementsByClassName( className );
+		}
+	};
+	rbuggyMatches = [];
+	rbuggyQSA = [ ":focus" ];
 
-function dirNodeCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
-	for ( var i = 0, l = checkSet.length; i < l; i++ ) {
-		var elem = checkSet[i];
-
-		if ( elem ) {
-			var match = false;
-
-			elem = elem[dir];
-
-			while ( elem ) {
-				if ( elem[ expando ] === doneName ) {
-					match = checkSet[elem.sizset];
-					break;
-				}
-
-				if ( elem.nodeType === 1 && !isXML ){
-					elem[ expando ] = doneName;
-					elem.sizset = i;
-				}
-
-				if ( elem.nodeName.toLowerCase() === cur ) {
-					match = elem;
-					break;
-				}
-
-				elem = elem[dir];
+	if ( (support.qsa = isNative(doc.querySelectorAll)) ) {
+		assert(function( div ) {
+			div.innerHTML = "<select><option selected=''></option></select>";
+			if ( !div.querySelectorAll("[selected]").length ) {
+				rbuggyQSA.push( "\\[" + whitespace + "*(?:checked|disabled|ismap|multiple|readonly|selected|value)" );
 			}
+			if ( !div.querySelectorAll(":checked").length ) {
+				rbuggyQSA.push(":checked");
+			}
+		});
 
-			checkSet[i] = match;
+		assert(function( div ) {
+			div.innerHTML = "<input type='hidden' i=''/>";
+			if ( div.querySelectorAll("[i^='']").length ) {
+				rbuggyQSA.push( "[*^$]=" + whitespace + "*(?:\"\"|'')" );
+			}
+			if ( !div.querySelectorAll(":enabled").length ) {
+				rbuggyQSA.push( ":enabled", ":disabled" );
+			}
+			div.querySelectorAll("*,:x");
+			rbuggyQSA.push(",.*:");
+		});
+	}
+
+	if ( (support.matchesSelector = isNative( (matches = docElem.matchesSelector ||
+		docElem.mozMatchesSelector ||
+		docElem.webkitMatchesSelector ||
+		docElem.oMatchesSelector ||
+		docElem.msMatchesSelector) )) ) {
+
+		assert(function( div ) {
+			support.disconnectedMatch = matches.call( div, "div" );
+			matches.call( div, "[s!='']:x" );
+			rbuggyMatches.push( "!=", pseudos );
+		});
+	}
+
+	rbuggyQSA = new RegExp( rbuggyQSA.join("|") );
+	rbuggyMatches = new RegExp( rbuggyMatches.join("|") );
+	contains = isNative(docElem.contains) || docElem.compareDocumentPosition ?
+		function( a, b ) {
+			var adown = a.nodeType === 9 ? a.documentElement : a,
+				bup = b && b.parentNode;
+			return a === bup || !!( bup && bup.nodeType === 1 && (
+				adown.contains ?
+					adown.contains( bup ) :
+					a.compareDocumentPosition && a.compareDocumentPosition( bup ) & 16
+			));
+		} :
+		function( a, b ) {
+			if ( b ) {
+				while ( (b = b.parentNode) ) {
+					if ( b === a ) {
+						return true;
+					}
+				}
+			}
+			return false;
+		};
+	sortOrder = docElem.compareDocumentPosition ?
+	function( a, b ) {
+		var compare;
+
+		if ( a === b ) {
+			hasDuplicate = true;
+			return 0;
+		}
+
+		if ( (compare = b.compareDocumentPosition && a.compareDocumentPosition && a.compareDocumentPosition( b )) ) {
+			if ( compare & 1 || a.parentNode && a.parentNode.nodeType === 11 ) {
+				if ( a === doc || contains( preferredDoc, a ) ) {
+					return -1;
+				}
+				if ( b === doc || contains( preferredDoc, b ) ) {
+					return 1;
+				}
+				return 0;
+			}
+			return compare & 4 ? -1 : 1;
+		}
+
+		return a.compareDocumentPosition ? -1 : 1;
+	} :
+	function( a, b ) {
+		var cur,
+			i = 0,
+			aup = a.parentNode,
+			bup = b.parentNode,
+			ap = [ a ],
+			bp = [ b ];
+		if ( a === b ) {
+			hasDuplicate = true;
+			return 0;
+		} else if ( a.sourceIndex && b.sourceIndex ) {
+			return ( ~b.sourceIndex || MAX_NEGATIVE ) - ( contains( preferredDoc, a ) && ~a.sourceIndex || MAX_NEGATIVE );
+		} else if ( !aup || !bup ) {
+			return a === doc ? -1 :
+				b === doc ? 1 :
+				aup ? -1 :
+				bup ? 1 :
+				0;
+		} else if ( aup === bup ) {
+			return siblingCheck( a, b );
+		}
+		cur = a;
+		while ( (cur = cur.parentNode) ) {
+			ap.unshift( cur );
+		}
+		cur = b;
+		while ( (cur = cur.parentNode) ) {
+			bp.unshift( cur );
+		}
+		while ( ap[i] === bp[i] ) {
+			i++;
+		}
+
+		return i ?
+			siblingCheck( ap[i], bp[i] ) :
+			ap[i] === preferredDoc ? -1 :
+			bp[i] === preferredDoc ? 1 :
+			0;
+	};
+	hasDuplicate = false;
+	[0, 0].sort( sortOrder );
+	support.detectDuplicates = hasDuplicate;
+
+	return document;
+};
+
+Sizzle.matches = function( expr, elements ) {
+	return Sizzle( expr, null, null, elements );
+};
+
+Sizzle.matchesSelector = function( elem, expr ) {
+	if ( ( elem.ownerDocument || elem ) !== document ) {
+		setDocument( elem );
+	}
+	expr = expr.replace( rattributeQuotes, "='$1']" );
+	if ( support.matchesSelector && !documentIsXML && (!rbuggyMatches || !rbuggyMatches.test(expr)) && !rbuggyQSA.test(expr) ) {
+		try {
+			var ret = matches.call( elem, expr );
+			if ( ret || support.disconnectedMatch ||
+					elem.document && elem.document.nodeType !== 11 ) {
+				return ret;
+			}
+		} catch(e) {}
+	}
+
+	return Sizzle( expr, document, null, [elem] ).length > 0;
+};
+
+Sizzle.contains = function( context, elem ) {
+	if ( ( context.ownerDocument || context ) !== document ) {
+		setDocument( context );
+	}
+	return contains( context, elem );
+};
+
+Sizzle.attr = function( elem, name ) {
+	var val;
+	if ( ( elem.ownerDocument || elem ) !== document ) {
+		setDocument( elem );
+	}
+
+	if ( !documentIsXML ) {
+		name = name.toLowerCase();
+	}
+	if ( (val = Expr.attrHandle[ name ]) ) {
+		return val( elem );
+	}
+	if ( documentIsXML || support.attributes ) {
+		return elem.getAttribute( name );
+	}
+	return ( (val = elem.getAttributeNode( name )) || elem.getAttribute( name ) ) && elem[ name ] === true ?
+		name :
+		val && val.specified ? val.value : null;
+};
+
+Sizzle.error = function( msg ) {
+	throw new Error( "Syntax error, unrecognized expression: " + msg );
+};
+Sizzle.uniqueSort = function( results ) {
+	var elem,
+		duplicates = [],
+		i = 1,
+		j = 0;
+	hasDuplicate = !support.detectDuplicates;
+	results.sort( sortOrder );
+
+	if ( hasDuplicate ) {
+		for ( ; (elem = results[i]); i++ ) {
+			if ( elem === results[ i - 1 ] ) {
+				j = duplicates.push( i );
+			}
+		}
+		while ( j-- ) {
+			results.splice( duplicates[ j ], 1 );
 		}
 	}
+
+	return results;
+};
+
+function siblingCheck( a, b ) {
+	var cur = a && b && a.nextSibling;
+
+	for ( ; cur; cur = cur.nextSibling ) {
+		if ( cur === b ) {
+			return -1;
+		}
+	}
+
+	return a ? 1 : -1;
+}
+function createInputPseudo( type ) {
+	return function( elem ) {
+		var name = elem.nodeName.toLowerCase();
+		return name === "input" && elem.type === type;
+	};
+}
+function createButtonPseudo( type ) {
+	return function( elem ) {
+		var name = elem.nodeName.toLowerCase();
+		return (name === "input" || name === "button") && elem.type === type;
+	};
+}
+function createPositionalPseudo( fn ) {
+	return markFunction(function( argument ) {
+		argument = +argument;
+		return markFunction(function( seed, matches ) {
+			var j,
+				matchIndexes = fn( [], seed.length, argument ),
+				i = matchIndexes.length;
+			while ( i-- ) {
+				if ( seed[ (j = matchIndexes[i]) ] ) {
+					seed[j] = !(matches[j] = seed[j]);
+				}
+			}
+		});
+	});
 }
 
-function dirCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
-	for ( var i = 0, l = checkSet.length; i < l; i++ ) {
-		var elem = checkSet[i];
+/**
+ * Utility function for retrieving the text value of an array of DOM nodes
+ * @param {Array|Element} elem
+ */
+getText = Sizzle.getText = function( elem ) {
+	var node,
+		ret = "",
+		i = 0,
+		nodeType = elem.nodeType;
 
-		if ( elem ) {
-			var match = false;
-			
-			elem = elem[dir];
+	if ( !nodeType ) {
+		for ( ; (node = elem[i]); i++ ) {
+			ret += getText( node );
+		}
+	} else if ( nodeType === 1 || nodeType === 9 || nodeType === 11 ) {
+		if ( typeof elem.textContent === "string" ) {
+			return elem.textContent;
+		} else {
+			for ( elem = elem.firstChild; elem; elem = elem.nextSibling ) {
+				ret += getText( elem );
+			}
+		}
+	} else if ( nodeType === 3 || nodeType === 4 ) {
+		return elem.nodeValue;
+	}
 
-			while ( elem ) {
-				if ( elem[ expando ] === doneName ) {
-					match = checkSet[elem.sizset];
-					break;
+	return ret;
+};
+
+Expr = Sizzle.selectors = {
+	cacheLength: 50,
+
+	createPseudo: markFunction,
+
+	match: matchExpr,
+
+	find: {},
+
+	relative: {
+		">": { dir: "parentNode", first: true },
+		" ": { dir: "parentNode" },
+		"+": { dir: "previousSibling", first: true },
+		"~": { dir: "previousSibling" }
+	},
+
+	preFilter: {
+		"ATTR": function( match ) {
+			match[1] = match[1].replace( runescape, funescape );
+			match[3] = ( match[4] || match[5] || "" ).replace( runescape, funescape );
+
+			if ( match[2] === "~=" ) {
+				match[3] = " " + match[3] + " ";
+			}
+
+			return match.slice( 0, 4 );
+		},
+
+		"CHILD": function( match ) {
+			/* matches from matchExpr["CHILD"]
+				1 type (only|nth|...)
+				2 what (child|of-type)
+				3 argument (even|odd|\d*|\d*n([+-]\d+)?|...)
+				4 xn-component of xn+y argument ([+-]?\d*n|)
+				5 sign of xn-component
+				6 x of xn-component
+				7 sign of y-component
+				8 y of y-component
+			*/
+			match[1] = match[1].toLowerCase();
+
+			if ( match[1].slice( 0, 3 ) === "nth" ) {
+				if ( !match[3] ) {
+					Sizzle.error( match[0] );
+				}
+				match[4] = +( match[4] ? match[5] + (match[6] || 1) : 2 * ( match[3] === "even" || match[3] === "odd" ) );
+				match[5] = +( ( match[7] + match[8] ) || match[3] === "odd" );
+			} else if ( match[3] ) {
+				Sizzle.error( match[0] );
+			}
+
+			return match;
+		},
+
+		"PSEUDO": function( match ) {
+			var excess,
+				unquoted = !match[5] && match[2];
+
+			if ( matchExpr["CHILD"].test( match[0] ) ) {
+				return null;
+			}
+			if ( match[4] ) {
+				match[2] = match[4];
+			} else if ( unquoted && rpseudo.test( unquoted ) &&
+				(excess = tokenize( unquoted, true )) &&
+				(excess = unquoted.indexOf( ")", unquoted.length - excess ) - unquoted.length) ) {
+				match[0] = match[0].slice( 0, excess );
+				match[2] = unquoted.slice( 0, excess );
+			}
+			return match.slice( 0, 3 );
+		}
+	},
+
+	filter: {
+
+		"TAG": function( nodeName ) {
+			if ( nodeName === "*" ) {
+				return function() { return true; };
+			}
+
+			nodeName = nodeName.replace( runescape, funescape ).toLowerCase();
+			return function( elem ) {
+				return elem.nodeName && elem.nodeName.toLowerCase() === nodeName;
+			};
+		},
+
+		"CLASS": function( className ) {
+			var pattern = classCache[ className + " " ];
+
+			return pattern ||
+				(pattern = new RegExp( "(^|" + whitespace + ")" + className + "(" + whitespace + "|$)" )) &&
+				classCache( className, function( elem ) {
+					return pattern.test( elem.className || (typeof elem.getAttribute !== strundefined && elem.getAttribute("class")) || "" );
+				});
+		},
+
+		"ATTR": function( name, operator, check ) {
+			return function( elem ) {
+				var result = Sizzle.attr( elem, name );
+
+				if ( result == null ) {
+					return operator === "!=";
+				}
+				if ( !operator ) {
+					return true;
 				}
 
-				if ( elem.nodeType === 1 ) {
-					if ( !isXML ) {
-						elem[ expando ] = doneName;
-						elem.sizset = i;
-					}
+				result += "";
 
-					if ( typeof cur !== "string" ) {
-						if ( elem === cur ) {
-							match = true;
-							break;
+				return operator === "=" ? result === check :
+					operator === "!=" ? result !== check :
+					operator === "^=" ? check && result.indexOf( check ) === 0 :
+					operator === "*=" ? check && result.indexOf( check ) > -1 :
+					operator === "$=" ? check && result.substr( result.length - check.length ) === check :
+					operator === "~=" ? ( " " + result + " " ).indexOf( check ) > -1 :
+					operator === "|=" ? result === check || result.substr( 0, check.length + 1 ) === check + "-" :
+					false;
+			};
+		},
+
+		"CHILD": function( type, what, argument, first, last ) {
+			var simple = type.slice( 0, 3 ) !== "nth",
+				forward = type.slice( -4 ) !== "last",
+				ofType = what === "of-type";
+
+			return first === 1 && last === 0 ?
+				function( elem ) {
+					return !!elem.parentNode;
+				} :
+
+				function( elem, context, xml ) {
+					var cache, outerCache, node, diff, nodeIndex, start,
+						dir = simple !== forward ? "nextSibling" : "previousSibling",
+						parent = elem.parentNode,
+						name = ofType && elem.nodeName.toLowerCase(),
+						useCache = !xml && !ofType;
+
+					if ( parent ) {
+						if ( simple ) {
+							while ( dir ) {
+								node = elem;
+								while ( (node = node[ dir ]) ) {
+									if ( ofType ? node.nodeName.toLowerCase() === name : node.nodeType === 1 ) {
+										return false;
+									}
+								}
+								start = dir = type === "only" && !start && "nextSibling";
+							}
+							return true;
 						}
 
-					} else if ( Sizzle.filter( cur, [elem] ).length > 0 ) {
-						match = elem;
+						start = [ forward ? parent.firstChild : parent.lastChild ];
+						if ( forward && useCache ) {
+							outerCache = parent[ expando ] || (parent[ expando ] = {});
+							cache = outerCache[ type ] || [];
+							nodeIndex = cache[0] === dirruns && cache[1];
+							diff = cache[0] === dirruns && cache[2];
+							node = nodeIndex && parent.childNodes[ nodeIndex ];
+
+							while ( (node = ++nodeIndex && node && node[ dir ] ||
+								(diff = nodeIndex = 0) || start.pop()) ) {
+								if ( node.nodeType === 1 && ++diff && node === elem ) {
+									outerCache[ type ] = [ dirruns, nodeIndex, diff ];
+									break;
+								}
+							}
+						} else if ( useCache && (cache = (elem[ expando ] || (elem[ expando ] = {}))[ type ]) && cache[0] === dirruns ) {
+							diff = cache[1];
+						} else {
+							while ( (node = ++nodeIndex && node && node[ dir ] ||
+								(diff = nodeIndex = 0) || start.pop()) ) {
+
+								if ( ( ofType ? node.nodeName.toLowerCase() === name : node.nodeType === 1 ) && ++diff ) {
+									if ( useCache ) {
+										(node[ expando ] || (node[ expando ] = {}))[ type ] = [ dirruns, diff ];
+									}
+
+									if ( node === elem ) {
+										break;
+									}
+								}
+							}
+						}
+						diff -= last;
+						return diff === first || ( diff % first === 0 && diff / first >= 0 );
+					}
+				};
+		},
+
+		"PSEUDO": function( pseudo, argument ) {
+			var args,
+				fn = Expr.pseudos[ pseudo ] || Expr.setFilters[ pseudo.toLowerCase() ] ||
+					Sizzle.error( "unsupported pseudo: " + pseudo );
+			if ( fn[ expando ] ) {
+				return fn( argument );
+			}
+			if ( fn.length > 1 ) {
+				args = [ pseudo, pseudo, "", argument ];
+				return Expr.setFilters.hasOwnProperty( pseudo.toLowerCase() ) ?
+					markFunction(function( seed, matches ) {
+						var idx,
+							matched = fn( seed, argument ),
+							i = matched.length;
+						while ( i-- ) {
+							idx = indexOf.call( seed, matched[i] );
+							seed[ idx ] = !( matches[ idx ] = matched[i] );
+						}
+					}) :
+					function( elem ) {
+						return fn( elem, 0, args );
+					};
+			}
+
+			return fn;
+		}
+	},
+
+	pseudos: {
+		"not": markFunction(function( selector ) {
+			var input = [],
+				results = [],
+				matcher = compile( selector.replace( rtrim, "$1" ) );
+
+			return matcher[ expando ] ?
+				markFunction(function( seed, matches, context, xml ) {
+					var elem,
+						unmatched = matcher( seed, null, xml, [] ),
+						i = seed.length;
+					while ( i-- ) {
+						if ( (elem = unmatched[i]) ) {
+							seed[i] = !(matches[i] = elem);
+						}
+					}
+				}) :
+				function( elem, context, xml ) {
+					input[0] = elem;
+					matcher( input, null, xml, results );
+					return !results.pop();
+				};
+		}),
+
+		"has": markFunction(function( selector ) {
+			return function( elem ) {
+				return Sizzle( selector, elem ).length > 0;
+			};
+		}),
+
+		"contains": markFunction(function( text ) {
+			return function( elem ) {
+				return ( elem.textContent || elem.innerText || getText( elem ) ).indexOf( text ) > -1;
+			};
+		}),
+		"lang": markFunction( function( lang ) {
+			if ( !ridentifier.test(lang || "") ) {
+				Sizzle.error( "unsupported lang: " + lang );
+			}
+			lang = lang.replace( runescape, funescape ).toLowerCase();
+			return function( elem ) {
+				var elemLang;
+				do {
+					if ( (elemLang = documentIsXML ?
+						elem.getAttribute("xml:lang") || elem.getAttribute("lang") :
+						elem.lang) ) {
+
+						elemLang = elemLang.toLowerCase();
+						return elemLang === lang || elemLang.indexOf( lang + "-" ) === 0;
+					}
+				} while ( (elem = elem.parentNode) && elem.nodeType === 1 );
+				return false;
+			};
+		}),
+		"target": function( elem ) {
+			var hash = window.location && window.location.hash;
+			return hash && hash.slice( 1 ) === elem.id;
+		},
+
+		"root": function( elem ) {
+			return elem === docElem;
+		},
+
+		"focus": function( elem ) {
+			return elem === document.activeElement && (!document.hasFocus || document.hasFocus()) && !!(elem.type || elem.href || ~elem.tabIndex);
+		},
+		"enabled": function( elem ) {
+			return elem.disabled === false;
+		},
+
+		"disabled": function( elem ) {
+			return elem.disabled === true;
+		},
+
+		"checked": function( elem ) {
+			var nodeName = elem.nodeName.toLowerCase();
+			return (nodeName === "input" && !!elem.checked) || (nodeName === "option" && !!elem.selected);
+		},
+
+		"selected": function( elem ) {
+			if ( elem.parentNode ) {
+				elem.parentNode.selectedIndex;
+			}
+
+			return elem.selected === true;
+		},
+		"empty": function( elem ) {
+			for ( elem = elem.firstChild; elem; elem = elem.nextSibling ) {
+				if ( elem.nodeName > "@" || elem.nodeType === 3 || elem.nodeType === 4 ) {
+					return false;
+				}
+			}
+			return true;
+		},
+
+		"parent": function( elem ) {
+			return !Expr.pseudos["empty"]( elem );
+		},
+		"header": function( elem ) {
+			return rheader.test( elem.nodeName );
+		},
+
+		"input": function( elem ) {
+			return rinputs.test( elem.nodeName );
+		},
+
+		"button": function( elem ) {
+			var name = elem.nodeName.toLowerCase();
+			return name === "input" && elem.type === "button" || name === "button";
+		},
+
+		"text": function( elem ) {
+			var attr;
+			return elem.nodeName.toLowerCase() === "input" &&
+				elem.type === "text" &&
+				( (attr = elem.getAttribute("type")) == null || attr.toLowerCase() === elem.type );
+		},
+		"first": createPositionalPseudo(function() {
+			return [ 0 ];
+		}),
+
+		"last": createPositionalPseudo(function( matchIndexes, length ) {
+			return [ length - 1 ];
+		}),
+
+		"eq": createPositionalPseudo(function( matchIndexes, length, argument ) {
+			return [ argument < 0 ? argument + length : argument ];
+		}),
+
+		"even": createPositionalPseudo(function( matchIndexes, length ) {
+			var i = 0;
+			for ( ; i < length; i += 2 ) {
+				matchIndexes.push( i );
+			}
+			return matchIndexes;
+		}),
+
+		"odd": createPositionalPseudo(function( matchIndexes, length ) {
+			var i = 1;
+			for ( ; i < length; i += 2 ) {
+				matchIndexes.push( i );
+			}
+			return matchIndexes;
+		}),
+
+		"lt": createPositionalPseudo(function( matchIndexes, length, argument ) {
+			var i = argument < 0 ? argument + length : argument;
+			for ( ; --i >= 0; ) {
+				matchIndexes.push( i );
+			}
+			return matchIndexes;
+		}),
+
+		"gt": createPositionalPseudo(function( matchIndexes, length, argument ) {
+			var i = argument < 0 ? argument + length : argument;
+			for ( ; ++i < length; ) {
+				matchIndexes.push( i );
+			}
+			return matchIndexes;
+		})
+	}
+};
+for ( i in { radio: true, checkbox: true, file: true, password: true, image: true } ) {
+	Expr.pseudos[ i ] = createInputPseudo( i );
+}
+for ( i in { submit: true, reset: true } ) {
+	Expr.pseudos[ i ] = createButtonPseudo( i );
+}
+
+function tokenize( selector, parseOnly ) {
+	var matched, match, tokens, type,
+		soFar, groups, preFilters,
+		cached = tokenCache[ selector + " " ];
+
+	if ( cached ) {
+		return parseOnly ? 0 : cached.slice( 0 );
+	}
+
+	soFar = selector;
+	groups = [];
+	preFilters = Expr.preFilter;
+
+	while ( soFar ) {
+		if ( !matched || (match = rcomma.exec( soFar )) ) {
+			if ( match ) {
+				soFar = soFar.slice( match[0].length ) || soFar;
+			}
+			groups.push( tokens = [] );
+		}
+
+		matched = false;
+		if ( (match = rcombinators.exec( soFar )) ) {
+			matched = match.shift();
+			tokens.push( {
+				value: matched,
+				type: match[0].replace( rtrim, " " )
+			} );
+			soFar = soFar.slice( matched.length );
+		}
+		for ( type in Expr.filter ) {
+			if ( (match = matchExpr[ type ].exec( soFar )) && (!preFilters[ type ] ||
+				(match = preFilters[ type ]( match ))) ) {
+				matched = match.shift();
+				tokens.push( {
+					value: matched,
+					type: type,
+					matches: match
+				} );
+				soFar = soFar.slice( matched.length );
+			}
+		}
+
+		if ( !matched ) {
+			break;
+		}
+	}
+	return parseOnly ?
+		soFar.length :
+		soFar ?
+			Sizzle.error( selector ) :
+			tokenCache( selector, groups ).slice( 0 );
+}
+
+function toSelector( tokens ) {
+	var i = 0,
+		len = tokens.length,
+		selector = "";
+	for ( ; i < len; i++ ) {
+		selector += tokens[i].value;
+	}
+	return selector;
+}
+
+function addCombinator( matcher, combinator, base ) {
+	var dir = combinator.dir,
+		checkNonElements = base && combinator.dir === "parentNode",
+		doneName = done++;
+
+	return combinator.first ?
+		function( elem, context, xml ) {
+			while ( (elem = elem[ dir ]) ) {
+				if ( elem.nodeType === 1 || checkNonElements ) {
+					return matcher( elem, context, xml );
+				}
+			}
+		} :
+		function( elem, context, xml ) {
+			var data, cache, outerCache,
+				dirkey = dirruns + " " + doneName;
+			if ( xml ) {
+				while ( (elem = elem[ dir ]) ) {
+					if ( elem.nodeType === 1 || checkNonElements ) {
+						if ( matcher( elem, context, xml ) ) {
+							return true;
+						}
+					}
+				}
+			} else {
+				while ( (elem = elem[ dir ]) ) {
+					if ( elem.nodeType === 1 || checkNonElements ) {
+						outerCache = elem[ expando ] || (elem[ expando ] = {});
+						if ( (cache = outerCache[ dir ]) && cache[0] === dirkey ) {
+							if ( (data = cache[1]) === true || data === cachedruns ) {
+								return data === true;
+							}
+						} else {
+							cache = outerCache[ dir ] = [ dirkey ];
+							cache[1] = matcher( elem, context, xml ) || cachedruns;
+							if ( cache[1] === true ) {
+								return true;
+							}
+						}
+					}
+				}
+			}
+		};
+}
+
+function elementMatcher( matchers ) {
+	return matchers.length > 1 ?
+		function( elem, context, xml ) {
+			var i = matchers.length;
+			while ( i-- ) {
+				if ( !matchers[i]( elem, context, xml ) ) {
+					return false;
+				}
+			}
+			return true;
+		} :
+		matchers[0];
+}
+
+function condense( unmatched, map, filter, context, xml ) {
+	var elem,
+		newUnmatched = [],
+		i = 0,
+		len = unmatched.length,
+		mapped = map != null;
+
+	for ( ; i < len; i++ ) {
+		if ( (elem = unmatched[i]) ) {
+			if ( !filter || filter( elem, context, xml ) ) {
+				newUnmatched.push( elem );
+				if ( mapped ) {
+					map.push( i );
+				}
+			}
+		}
+	}
+
+	return newUnmatched;
+}
+
+function setMatcher( preFilter, selector, matcher, postFilter, postFinder, postSelector ) {
+	if ( postFilter && !postFilter[ expando ] ) {
+		postFilter = setMatcher( postFilter );
+	}
+	if ( postFinder && !postFinder[ expando ] ) {
+		postFinder = setMatcher( postFinder, postSelector );
+	}
+	return markFunction(function( seed, results, context, xml ) {
+		var temp, i, elem,
+			preMap = [],
+			postMap = [],
+			preexisting = results.length,
+			elems = seed || multipleContexts( selector || "*", context.nodeType ? [ context ] : context, [] ),
+			matcherIn = preFilter && ( seed || !selector ) ?
+				condense( elems, preMap, preFilter, context, xml ) :
+				elems,
+
+			matcherOut = matcher ?
+				postFinder || ( seed ? preFilter : preexisting || postFilter ) ?
+					[] :
+					results :
+				matcherIn;
+		if ( matcher ) {
+			matcher( matcherIn, matcherOut, context, xml );
+		}
+		if ( postFilter ) {
+			temp = condense( matcherOut, postMap );
+			postFilter( temp, [], context, xml );
+			i = temp.length;
+			while ( i-- ) {
+				if ( (elem = temp[i]) ) {
+					matcherOut[ postMap[i] ] = !(matcherIn[ postMap[i] ] = elem);
+				}
+			}
+		}
+
+		if ( seed ) {
+			if ( postFinder || preFilter ) {
+				if ( postFinder ) {
+					temp = [];
+					i = matcherOut.length;
+					while ( i-- ) {
+						if ( (elem = matcherOut[i]) ) {
+							temp.push( (matcherIn[i] = elem) );
+						}
+					}
+					postFinder( null, (matcherOut = []), temp, xml );
+				}
+				i = matcherOut.length;
+				while ( i-- ) {
+					if ( (elem = matcherOut[i]) &&
+						(temp = postFinder ? indexOf.call( seed, elem ) : preMap[i]) > -1 ) {
+
+						seed[temp] = !(results[temp] = elem);
+					}
+				}
+			}
+		} else {
+			matcherOut = condense(
+				matcherOut === results ?
+					matcherOut.splice( preexisting, matcherOut.length ) :
+					matcherOut
+			);
+			if ( postFinder ) {
+				postFinder( null, results, matcherOut, xml );
+			} else {
+				push.apply( results, matcherOut );
+			}
+		}
+	});
+}
+
+function matcherFromTokens( tokens ) {
+	var checkContext, matcher, j,
+		len = tokens.length,
+		leadingRelative = Expr.relative[ tokens[0].type ],
+		implicitRelative = leadingRelative || Expr.relative[" "],
+		i = leadingRelative ? 1 : 0,
+		matchContext = addCombinator( function( elem ) {
+			return elem === checkContext;
+		}, implicitRelative, true ),
+		matchAnyContext = addCombinator( function( elem ) {
+			return indexOf.call( checkContext, elem ) > -1;
+		}, implicitRelative, true ),
+		matchers = [ function( elem, context, xml ) {
+			return ( !leadingRelative && ( xml || context !== outermostContext ) ) || (
+				(checkContext = context).nodeType ?
+					matchContext( elem, context, xml ) :
+					matchAnyContext( elem, context, xml ) );
+		} ];
+
+	for ( ; i < len; i++ ) {
+		if ( (matcher = Expr.relative[ tokens[i].type ]) ) {
+			matchers = [ addCombinator(elementMatcher( matchers ), matcher) ];
+		} else {
+			matcher = Expr.filter[ tokens[i].type ].apply( null, tokens[i].matches );
+			if ( matcher[ expando ] ) {
+				j = ++i;
+				for ( ; j < len; j++ ) {
+					if ( Expr.relative[ tokens[j].type ] ) {
 						break;
 					}
 				}
-
-				elem = elem[dir];
+				return setMatcher(
+					i > 1 && elementMatcher( matchers ),
+					i > 1 && toSelector( tokens.slice( 0, i - 1 ) ).replace( rtrim, "$1" ),
+					matcher,
+					i < j && matcherFromTokens( tokens.slice( i, j ) ),
+					j < len && matcherFromTokens( (tokens = tokens.slice( j )) ),
+					j < len && toSelector( tokens )
+				);
 			}
-
-			checkSet[i] = match;
+			matchers.push( matcher );
 		}
 	}
+
+	return elementMatcher( matchers );
 }
 
-if ( document.documentElement.contains ) {
-	Sizzle.contains = function( a, b ) {
-		return a !== b && (a.contains ? a.contains(b) : true);
-	};
+function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
+	var matcherCachedRuns = 0,
+		bySet = setMatchers.length > 0,
+		byElement = elementMatchers.length > 0,
+		superMatcher = function( seed, context, xml, results, expandContext ) {
+			var elem, j, matcher,
+				setMatched = [],
+				matchedCount = 0,
+				i = "0",
+				unmatched = seed && [],
+				outermost = expandContext != null,
+				contextBackup = outermostContext,
+				elems = seed || byElement && Expr.find["TAG"]( "*", expandContext && context.parentNode || context ),
+				dirrunsUnique = (dirruns += contextBackup == null ? 1 : Math.E);
 
-} else if ( document.documentElement.compareDocumentPosition ) {
-	Sizzle.contains = function( a, b ) {
-		return !!(a.compareDocumentPosition(b) & 16);
-	};
+			if ( outermost ) {
+				outermostContext = context !== document && context;
+				cachedruns = matcherCachedRuns;
+			}
+			for ( ; (elem = elems[i]) != null; i++ ) {
+				if ( byElement && elem ) {
+					for ( j = 0; (matcher = elementMatchers[j]); j++ ) {
+						if ( matcher( elem, context, xml ) ) {
+							results.push( elem );
+							break;
+						}
+					}
+					if ( outermost ) {
+						dirruns = dirrunsUnique;
+						cachedruns = ++matcherCachedRuns;
+					}
+				}
+				if ( bySet ) {
+					if ( (elem = !matcher && elem) ) {
+						matchedCount--;
+					}
+					if ( seed ) {
+						unmatched.push( elem );
+					}
+				}
+			}
+			matchedCount += i;
+			if ( bySet && i !== matchedCount ) {
+				for ( j = 0; (matcher = setMatchers[j]); j++ ) {
+					matcher( unmatched, setMatched, context, xml );
+				}
 
-} else {
-	Sizzle.contains = function() {
-		return false;
-	};
+				if ( seed ) {
+					if ( matchedCount > 0 ) {
+						while ( i-- ) {
+							if ( !(unmatched[i] || setMatched[i]) ) {
+								setMatched[i] = pop.call( results );
+							}
+						}
+					}
+					setMatched = condense( setMatched );
+				}
+				push.apply( results, setMatched );
+				if ( outermost && !seed && setMatched.length > 0 &&
+					( matchedCount + setMatchers.length ) > 1 ) {
+
+					Sizzle.uniqueSort( results );
+				}
+			}
+			if ( outermost ) {
+				dirruns = dirrunsUnique;
+				outermostContext = contextBackup;
+			}
+
+			return unmatched;
+		};
+
+	return bySet ?
+		markFunction( superMatcher ) :
+		superMatcher;
 }
 
-Sizzle.isXML = function( elem ) {
-	var documentElement = (elem ? elem.ownerDocument || elem : 0).documentElement;
+compile = Sizzle.compile = function( selector, group /* Internal Use Only */ ) {
+	var i,
+		setMatchers = [],
+		elementMatchers = [],
+		cached = compilerCache[ selector + " " ];
 
-	return documentElement ? documentElement.nodeName !== "HTML" : false;
+	if ( !cached ) {
+		if ( !group ) {
+			group = tokenize( selector );
+		}
+		i = group.length;
+		while ( i-- ) {
+			cached = matcherFromTokens( group[i] );
+			if ( cached[ expando ] ) {
+				setMatchers.push( cached );
+			} else {
+				elementMatchers.push( cached );
+			}
+		}
+		cached = compilerCache( selector, matcherFromGroupMatchers( elementMatchers, setMatchers ) );
+	}
+	return cached;
 };
 
-var posProcess = function( selector, context, seed ) {
-	var match,
-		tmpSet = [],
-		later = "",
-		root = context.nodeType ? [context] : context;
-	while ( (match = Expr.match.PSEUDO.exec( selector )) ) {
-		later += match[0];
-		selector = selector.replace( Expr.match.PSEUDO, "" );
+function multipleContexts( selector, contexts, results ) {
+	var i = 0,
+		len = contexts.length;
+	for ( ; i < len; i++ ) {
+		Sizzle( selector, contexts[i], results );
 	}
+	return results;
+}
 
-	selector = Expr.relative[selector] ? selector + "*" : selector;
+function select( selector, context, results, seed ) {
+	var i, tokens, token, type, find,
+		match = tokenize( selector );
 
-	for ( var i = 0, l = root.length; i < l; i++ ) {
-		Sizzle( selector, root[i], tmpSet, seed );
+	if ( !seed ) {
+		if ( match.length === 1 ) {
+			tokens = match[0] = match[0].slice( 0 );
+			if ( tokens.length > 2 && (token = tokens[0]).type === "ID" &&
+					context.nodeType === 9 && !documentIsXML &&
+					Expr.relative[ tokens[1].type ] ) {
+
+				context = Expr.find["ID"]( token.matches[0].replace( runescape, funescape ), context )[0];
+				if ( !context ) {
+					return results;
+				}
+
+				selector = selector.slice( tokens.shift().value.length );
+			}
+			for ( i = matchExpr["needsContext"].test( selector ) ? -1 : tokens.length - 1; i >= 0; i-- ) {
+				token = tokens[i];
+				if ( Expr.relative[ (type = token.type) ] ) {
+					break;
+				}
+				if ( (find = Expr.find[ type ]) ) {
+					if ( (seed = find(
+						token.matches[0].replace( runescape, funescape ),
+						rsibling.test( tokens[0].type ) && context.parentNode || context
+					)) ) {
+						tokens.splice( i, 1 );
+						selector = seed.length && toSelector( tokens );
+						if ( !selector ) {
+							push.apply( results, slice.call( seed, 0 ) );
+							return results;
+						}
+
+						break;
+					}
+				}
+			}
+		}
 	}
-
-	return Sizzle.filter( later, tmpSet );
-};
+	compile( selector, match )(
+		seed,
+		context,
+		documentIsXML,
+		results,
+		rsibling.test( selector )
+	);
+	return results;
+}
+Expr.pseudos["nth"] = Expr.pseudos["eq"];
+function setFilters() {}
+Expr.filters = setFilters.prototype = Expr.pseudos;
+Expr.setFilters = new setFilters();
+setDocument();
 Sizzle.attr = jQuery.attr;
-Sizzle.selectors.attrMap = {};
 jQuery.find = Sizzle;
 jQuery.expr = Sizzle.selectors;
-jQuery.expr[":"] = jQuery.expr.filters;
+jQuery.expr[":"] = jQuery.expr.pseudos;
 jQuery.unique = Sizzle.uniqueSort;
 jQuery.text = Sizzle.getText;
 jQuery.isXMLDoc = Sizzle.isXML;
 jQuery.contains = Sizzle.contains;
 
 
-})();
-
-
+})( window );
 var runtil = /Until$/,
-	rparentsprev = /^(?:parents|prevUntil|prevAll)/,
-	rmultiselector = /,/,
+	rparentsprev = /^(?:parents|prev(?:Until|All))/,
 	isSimple = /^.[^:#\[\.,]*$/,
-	slice = Array.prototype.slice,
-	POS = jQuery.expr.match.POS,
+	rneedsContext = jQuery.expr.match.needsContext,
 	guaranteedUnique = {
 		children: true,
 		contents: true,
@@ -4396,45 +4300,35 @@ var runtil = /Until$/,
 
 jQuery.fn.extend({
 	find: function( selector ) {
-		var self = this,
-			i, l;
+		var i, ret, self;
 
 		if ( typeof selector !== "string" ) {
-			return jQuery( selector ).filter(function() {
-				for ( i = 0, l = self.length; i < l; i++ ) {
+			self = this;
+			return this.pushStack( jQuery( selector ).filter(function() {
+				for ( i = 0; i < self.length; i++ ) {
 					if ( jQuery.contains( self[ i ], this ) ) {
 						return true;
 					}
 				}
-			});
+			}) );
 		}
 
-		var ret = this.pushStack( "", "find", selector ),
-			length, n, r;
-
-		for ( i = 0, l = this.length; i < l; i++ ) {
-			length = ret.length;
-			jQuery.find( selector, this[i], ret );
-
-			if ( i > 0 ) {
-				for ( n = length; n < ret.length; n++ ) {
-					for ( r = 0; r < length; r++ ) {
-						if ( ret[r] === ret[n] ) {
-							ret.splice(n--, 1);
-							break;
-						}
-					}
-				}
-			}
+		ret = [];
+		for ( i = 0; i < this.length; i++ ) {
+			jQuery.find( selector, this[ i ], ret );
 		}
-
+		ret = this.pushStack( jQuery.unique( ret ) );
+		ret.selector = ( this.selector ? this.selector + " " : "" ) + selector;
 		return ret;
 	},
 
 	has: function( target ) {
-		var targets = jQuery( target );
+		var i,
+			targets = jQuery( target, this ),
+			len = targets.length;
+
 		return this.filter(function() {
-			for ( var i = 0, l = targets.length; i < l; i++ ) {
+			for ( i = 0; i < len; i++ ) {
 				if ( jQuery.contains( this, targets[i] ) ) {
 					return true;
 				}
@@ -4443,69 +4337,48 @@ jQuery.fn.extend({
 	},
 
 	not: function( selector ) {
-		return this.pushStack( winnow(this, selector, false), "not", selector);
+		return this.pushStack( winnow(this, selector, false) );
 	},
 
 	filter: function( selector ) {
-		return this.pushStack( winnow(this, selector, true), "filter", selector );
+		return this.pushStack( winnow(this, selector, true) );
 	},
 
 	is: function( selector ) {
-		return !!selector && ( 
+		return !!selector && (
 			typeof selector === "string" ?
-				POS.test( selector ) ? 
+				rneedsContext.test( selector ) ?
 					jQuery( selector, this.context ).index( this[0] ) >= 0 :
 					jQuery.filter( selector, this ).length > 0 :
 				this.filter( selector ).length > 0 );
 	},
 
 	closest: function( selectors, context ) {
-		var ret = [], i, l, cur = this[0];
-		if ( jQuery.isArray( selectors ) ) {
-			var level = 1;
-
-			while ( cur && cur.ownerDocument && cur !== context ) {
-				for ( i = 0; i < selectors.length; i++ ) {
-
-					if ( jQuery( cur ).is( selectors[ i ] ) ) {
-						ret.push({ selector: selectors[ i ], elem: cur, level: level });
-					}
-				}
-
-				cur = cur.parentNode;
-				level++;
-			}
-
-			return ret;
-		}
-		var pos = POS.test( selectors ) || typeof selectors !== "string" ?
+		var cur,
+			i = 0,
+			l = this.length,
+			ret = [],
+			pos = rneedsContext.test( selectors ) || typeof selectors !== "string" ?
 				jQuery( selectors, context || this.context ) :
 				0;
 
-		for ( i = 0, l = this.length; i < l; i++ ) {
+		for ( ; i < l; i++ ) {
 			cur = this[i];
 
-			while ( cur ) {
+			while ( cur && cur.ownerDocument && cur !== context && cur.nodeType !== 11 ) {
 				if ( pos ? pos.index(cur) > -1 : jQuery.find.matchesSelector(cur, selectors) ) {
 					ret.push( cur );
 					break;
-
-				} else {
-					cur = cur.parentNode;
-					if ( !cur || !cur.ownerDocument || cur === context || cur.nodeType === 11 ) {
-						break;
-					}
 				}
+				cur = cur.parentNode;
 			}
 		}
 
-		ret = ret.length > 1 ? jQuery.unique( ret ) : ret;
-
-		return this.pushStack( ret, "closest", selectors );
+		return this.pushStack( ret.length > 1 ? jQuery.unique( ret ) : ret );
 	},
 	index: function( elem ) {
 		if ( !elem ) {
-			return ( this[0] && this[0].parentNode ) ? this.prevAll().length : -1;
+			return ( this[0] && this[0].parentNode ) ? this.first().prevAll().length : -1;
 		}
 		if ( typeof elem === "string" ) {
 			return jQuery.inArray( this[0], jQuery( elem ) );
@@ -4520,17 +4393,24 @@ jQuery.fn.extend({
 				jQuery.makeArray( selector && selector.nodeType ? [ selector ] : selector ),
 			all = jQuery.merge( this.get(), set );
 
-		return this.pushStack( isDisconnected( set[0] ) || isDisconnected( all[0] ) ?
-			all :
-			jQuery.unique( all ) );
+		return this.pushStack( jQuery.unique(all) );
 	},
 
-	andSelf: function() {
-		return this.add( this.prevObject );
+	addBack: function( selector ) {
+		return this.add( selector == null ?
+			this.prevObject : this.prevObject.filter(selector)
+		);
 	}
 });
-function isDisconnected( node ) {
-	return !node || !node.parentNode || node.parentNode.nodeType === 11;
+
+jQuery.fn.andSelf = jQuery.fn.addBack;
+
+function sibling( cur, dir ) {
+	do {
+		cur = cur[ dir ];
+	} while ( cur && cur.nodeType !== 1 );
+
+	return cur;
 }
 
 jQuery.each({
@@ -4545,10 +4425,10 @@ jQuery.each({
 		return jQuery.dir( elem, "parentNode", until );
 	},
 	next: function( elem ) {
-		return jQuery.nth( elem, 2, "nextSibling" );
+		return sibling( elem, "nextSibling" );
 	},
 	prev: function( elem ) {
-		return jQuery.nth( elem, 2, "previousSibling" );
+		return sibling( elem, "previousSibling" );
 	},
 	nextAll: function( elem ) {
 		return jQuery.dir( elem, "nextSibling" );
@@ -4563,7 +4443,7 @@ jQuery.each({
 		return jQuery.dir( elem, "previousSibling", until );
 	},
 	siblings: function( elem ) {
-		return jQuery.sibling( elem.parentNode.firstChild, elem );
+		return jQuery.sibling( ( elem.parentNode || {} ).firstChild, elem );
 	},
 	children: function( elem ) {
 		return jQuery.sibling( elem.firstChild );
@@ -4571,12 +4451,11 @@ jQuery.each({
 	contents: function( elem ) {
 		return jQuery.nodeName( elem, "iframe" ) ?
 			elem.contentDocument || elem.contentWindow.document :
-			jQuery.makeArray( elem.childNodes );
+			jQuery.merge( [], elem.childNodes );
 	}
 }, function( name, fn ) {
 	jQuery.fn[ name ] = function( until, selector ) {
-		var ret = jQuery.map( this, fn, until ),
-			args = slice.call(arguments);
+		var ret = jQuery.map( this, fn, until );
 
 		if ( !runtil.test( name ) ) {
 			selector = until;
@@ -4588,11 +4467,11 @@ jQuery.each({
 
 		ret = this.length > 1 && !guaranteedUnique[ name ] ? jQuery.unique( ret ) : ret;
 
-		if ( (this.length > 1 || rmultiselector.test( selector )) && rparentsprev.test( name ) ) {
+		if ( this.length > 1 && rparentsprev.test( name ) ) {
 			ret = ret.reverse();
 		}
 
-		return this.pushStack( ret, name, args.join(",") );
+		return this.pushStack( ret );
 	};
 });
 
@@ -4620,19 +4499,6 @@ jQuery.extend({
 		return matched;
 	},
 
-	nth: function( cur, result, dir, elem ) {
-		result = result || 1;
-		var num = 0;
-
-		for ( ; cur; cur = cur[dir] ) {
-			if ( cur.nodeType === 1 && ++num === result ) {
-				break;
-			}
-		}
-
-		return cur;
-	},
-
 	sibling: function( n, elem ) {
 		var r = [];
 
@@ -4655,7 +4521,7 @@ function winnow( elements, qualifier, keep ) {
 		});
 
 	} else if ( qualifier.nodeType ) {
-		return jQuery.grep(elements, function( elem, i ) {
+		return jQuery.grep(elements, function( elem ) {
 			return ( elem === qualifier ) === keep;
 		});
 
@@ -4671,17 +4537,13 @@ function winnow( elements, qualifier, keep ) {
 		}
 	}
 
-	return jQuery.grep(elements, function( elem, i ) {
+	return jQuery.grep(elements, function( elem ) {
 		return ( jQuery.inArray( elem, qualifier ) >= 0 ) === keep;
 	});
 }
-
-
-
-
 function createSafeFragment( document ) {
-	var list = nodeNames.split( " " ),
-	safeFrag = document.createDocumentFragment();
+	var list = nodeNames.split( "|" ),
+		safeFrag = document.createDocumentFragment();
 
 	if ( safeFrag.createElement ) {
 		while ( list.length ) {
@@ -4693,54 +4555,46 @@ function createSafeFragment( document ) {
 	return safeFrag;
 }
 
-var nodeNames = "abbr article aside audio canvas datalist details figcaption figure footer " +
-		"header hgroup mark meter nav output progress section summary time video",
-	rinlinejQuery = / jQuery\d+="(?:\d+|null)"/g,
+var nodeNames = "abbr|article|aside|audio|bdi|canvas|data|datalist|details|figcaption|figure|footer|" +
+		"header|hgroup|mark|meter|nav|output|progress|section|summary|time|video",
+	rinlinejQuery = / jQuery\d+="(?:null|\d+)"/g,
+	rnoshimcache = new RegExp("<(?:" + nodeNames + ")[\\s/>]", "i"),
 	rleadingWhitespace = /^\s+/,
-	rxhtmlTag = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/ig,
+	rxhtmlTag = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi,
 	rtagName = /<([\w:]+)/,
 	rtbody = /<tbody/i,
 	rhtml = /<|&#?\w+;/,
-	rnoInnerhtml = /<(?:script|style)/i,
-	rnocache = /<(?:script|object|embed|option|style)/i,
-	rnoshimcache = new RegExp("<(?:" + nodeNames.replace(" ", "|") + ")", "i"),
+	rnoInnerhtml = /<(?:script|style|link)/i,
+	manipulation_rcheckableType = /^(?:checkbox|radio)$/i,
 	rchecked = /checked\s*(?:[^=]|=\s*.checked.)/i,
-	rscriptType = /\/(java|ecma)script/i,
-	rcleanScript = /^\s*<!(?:\[CDATA\[|\-\-)/,
+	rscriptType = /^$|\/(?:java|ecma)script/i,
+	rscriptTypeMasked = /^true\/(.*)/,
+	rcleanScript = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g,
 	wrapMap = {
 		option: [ 1, "<select multiple='multiple'>", "</select>" ],
 		legend: [ 1, "<fieldset>", "</fieldset>" ],
+		area: [ 1, "<map>", "</map>" ],
+		param: [ 1, "<object>", "</object>" ],
 		thead: [ 1, "<table>", "</table>" ],
 		tr: [ 2, "<table><tbody>", "</tbody></table>" ],
-		td: [ 3, "<table><tbody><tr>", "</tr></tbody></table>" ],
 		col: [ 2, "<table><tbody></tbody><colgroup>", "</colgroup></table>" ],
-		area: [ 1, "<map>", "</map>" ],
-		_default: [ 0, "", "" ]
+		td: [ 3, "<table><tbody><tr>", "</tr></tbody></table>" ],
+		_default: jQuery.support.htmlSerialize ? [ 0, "", "" ] : [ 1, "X<div>", "</div>"  ]
 	},
-	safeFragment = createSafeFragment( document );
+	safeFragment = createSafeFragment( document ),
+	fragmentDiv = safeFragment.appendChild( document.createElement("div") );
 
 wrapMap.optgroup = wrapMap.option;
 wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
 wrapMap.th = wrapMap.td;
-if ( !jQuery.support.htmlSerialize ) {
-	wrapMap._default = [ 1, "div<div>", "</div>" ];
-}
 
 jQuery.fn.extend({
-	text: function( text ) {
-		if ( jQuery.isFunction(text) ) {
-			return this.each(function(i) {
-				var self = jQuery( this );
-
-				self.text( text.call(this, i, self.text()) );
-			});
-		}
-
-		if ( typeof text !== "object" && text !== undefined ) {
-			return this.empty().append( (this[0] && this[0].ownerDocument || document).createTextNode( text ) );
-		}
-
-		return jQuery.text( this );
+	text: function( value ) {
+		return jQuery.access( this, function( value ) {
+			return value === undefined ?
+				jQuery.text( this ) :
+				this.empty().append( ( this[0] && this[0].ownerDocument || document ).createTextNode( value ) );
+		}, null, value, arguments.length );
 	},
 
 	wrapAll: function( html ) {
@@ -4792,8 +4646,10 @@ jQuery.fn.extend({
 	},
 
 	wrap: function( html ) {
-		return this.each(function() {
-			jQuery( this ).wrapAll( html );
+		var isFunction = jQuery.isFunction( html );
+
+		return this.each(function(i) {
+			jQuery( this ).wrapAll( isFunction ? html.call(this, i) : html );
 		});
 	},
 
@@ -4807,7 +4663,7 @@ jQuery.fn.extend({
 
 	append: function() {
 		return this.domManip(arguments, true, function( elem ) {
-			if ( this.nodeType === 1 ) {
+			if ( this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9 ) {
 				this.appendChild( elem );
 			}
 		});
@@ -4815,44 +4671,41 @@ jQuery.fn.extend({
 
 	prepend: function() {
 		return this.domManip(arguments, true, function( elem ) {
-			if ( this.nodeType === 1 ) {
+			if ( this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9 ) {
 				this.insertBefore( elem, this.firstChild );
 			}
 		});
 	},
 
 	before: function() {
-		if ( this[0] && this[0].parentNode ) {
-			return this.domManip(arguments, false, function( elem ) {
+		return this.domManip( arguments, false, function( elem ) {
+			if ( this.parentNode ) {
 				this.parentNode.insertBefore( elem, this );
-			});
-		} else if ( arguments.length ) {
-			var set = jQuery(arguments[0]);
-			set.push.apply( set, this.toArray() );
-			return this.pushStack( set, "before", arguments );
-		}
+			}
+		});
 	},
 
 	after: function() {
-		if ( this[0] && this[0].parentNode ) {
-			return this.domManip(arguments, false, function( elem ) {
+		return this.domManip( arguments, false, function( elem ) {
+			if ( this.parentNode ) {
 				this.parentNode.insertBefore( elem, this.nextSibling );
-			});
-		} else if ( arguments.length ) {
-			var set = this.pushStack( this, "after", arguments );
-			set.push.apply( set, jQuery(arguments[0]).toArray() );
-			return set;
-		}
+			}
+		});
 	},
 	remove: function( selector, keepData ) {
-		for ( var i = 0, elem; (elem = this[i]) != null; i++ ) {
-			if ( !selector || jQuery.filter( selector, [ elem ] ).length ) {
+		var elem,
+			i = 0;
+
+		for ( ; (elem = this[i]) != null; i++ ) {
+			if ( !selector || jQuery.filter( selector, [ elem ] ).length > 0 ) {
 				if ( !keepData && elem.nodeType === 1 ) {
-					jQuery.cleanData( elem.getElementsByTagName("*") );
-					jQuery.cleanData( [ elem ] );
+					jQuery.cleanData( getAll( elem ) );
 				}
 
 				if ( elem.parentNode ) {
+					if ( keepData && jQuery.contains( elem.ownerDocument, elem ) ) {
+						setGlobalEval( getAll( elem, "script" ) );
+					}
 					elem.parentNode.removeChild( elem );
 				}
 			}
@@ -4862,12 +4715,18 @@ jQuery.fn.extend({
 	},
 
 	empty: function() {
-		for ( var i = 0, elem; (elem = this[i]) != null; i++ ) {
+		var elem,
+			i = 0;
+
+		for ( ; (elem = this[i]) != null; i++ ) {
 			if ( elem.nodeType === 1 ) {
-				jQuery.cleanData( elem.getElementsByTagName("*") );
+				jQuery.cleanData( getAll( elem, false ) );
 			}
 			while ( elem.firstChild ) {
 				elem.removeChild( elem.firstChild );
+			}
+			if ( elem.options && jQuery.nodeName( elem, "select" ) ) {
+				elem.options.length = 0;
 			}
 		}
 
@@ -4884,71 +4743,63 @@ jQuery.fn.extend({
 	},
 
 	html: function( value ) {
-		if ( value === undefined ) {
-			return this[0] && this[0].nodeType === 1 ?
-				this[0].innerHTML.replace(rinlinejQuery, "") :
-				null;
-		} else if ( typeof value === "string" && !rnoInnerhtml.test( value ) &&
-			(jQuery.support.leadingWhitespace || !rleadingWhitespace.test( value )) &&
-			!wrapMap[ (rtagName.exec( value ) || ["", ""])[1].toLowerCase() ] ) {
+		return jQuery.access( this, function( value ) {
+			var elem = this[0] || {},
+				i = 0,
+				l = this.length;
 
-			value = value.replace(rxhtmlTag, "<$1></$2>");
+			if ( value === undefined ) {
+				return elem.nodeType === 1 ?
+					elem.innerHTML.replace( rinlinejQuery, "" ) :
+					undefined;
+			}
+			if ( typeof value === "string" && !rnoInnerhtml.test( value ) &&
+				( jQuery.support.htmlSerialize || !rnoshimcache.test( value )  ) &&
+				( jQuery.support.leadingWhitespace || !rleadingWhitespace.test( value ) ) &&
+				!wrapMap[ ( rtagName.exec( value ) || ["", ""] )[1].toLowerCase() ] ) {
 
-			try {
-				for ( var i = 0, l = this.length; i < l; i++ ) {
-					if ( this[i].nodeType === 1 ) {
-						jQuery.cleanData( this[i].getElementsByTagName("*") );
-						this[i].innerHTML = value;
+				value = value.replace( rxhtmlTag, "<$1></$2>" );
+
+				try {
+					for (; i < l; i++ ) {
+						elem = this[i] || {};
+						if ( elem.nodeType === 1 ) {
+							jQuery.cleanData( getAll( elem, false ) );
+							elem.innerHTML = value;
+						}
 					}
-				}
-			} catch(e) {
-				this.empty().append( value );
+
+					elem = 0;
+				} catch(e) {}
 			}
 
-		} else if ( jQuery.isFunction( value ) ) {
-			this.each(function(i){
-				var self = jQuery( this );
-
-				self.html( value.call(this, i, self.html()) );
-			});
-
-		} else {
-			this.empty().append( value );
-		}
-
-		return this;
+			if ( elem ) {
+				this.empty().append( value );
+			}
+		}, null, value, arguments.length );
 	},
 
 	replaceWith: function( value ) {
-		if ( this[0] && this[0].parentNode ) {
-			if ( jQuery.isFunction( value ) ) {
-				return this.each(function(i) {
-					var self = jQuery(this), old = self.html();
-					self.replaceWith( value.call( this, i, old ) );
-				});
-			}
+		var isFunc = jQuery.isFunction( value );
+		if ( !isFunc && typeof value !== "string" ) {
+			value = jQuery( value ).not( this ).detach();
+		}
 
-			if ( typeof value !== "string" ) {
-				value = jQuery( value ).detach();
-			}
+		return this.domManip( [ value ], true, function( elem ) {
+			var next = this.nextSibling,
+				parent = this.parentNode;
 
-			return this.each(function() {
-				var next = this.nextSibling,
-					parent = this.parentNode;
+			if ( parent && this.nodeType === 1 || this.nodeType === 11 ) {
 
 				jQuery( this ).remove();
 
 				if ( next ) {
-					jQuery(next).before( value );
+					next.parentNode.insertBefore( elem, next );
 				} else {
-					jQuery(parent).append( value );
+					parent.appendChild( elem );
 				}
-			});
-		} else {
-			return this.length ?
-				this.pushStack( jQuery(jQuery.isFunction(value) ? value() : value), "replaceWith", value ) :
-				this;
-		}
+			}
+		});
 	},
 
 	detach: function( selector ) {
@@ -4956,57 +4807,80 @@ jQuery.fn.extend({
 	},
 
 	domManip: function( args, table, callback ) {
-		var results, first, fragment, parent,
-			value = args[0],
-			scripts = [];
-		if ( !jQuery.support.checkClone && arguments.length === 3 && typeof value === "string" && rchecked.test( value ) ) {
-			return this.each(function() {
-				jQuery(this).domManip( args, table, callback, true );
-			});
-		}
+		args = core_concat.apply( [], args );
 
-		if ( jQuery.isFunction(value) ) {
-			return this.each(function(i) {
-				var self = jQuery(this);
-				args[0] = value.call(this, i, table ? self.html() : undefined);
+		var fragment, first, scripts, hasScripts, node, doc,
+			i = 0,
+			l = this.length,
+			set = this,
+			iNoClone = l - 1,
+			value = args[0],
+			isFunction = jQuery.isFunction( value );
+		if ( isFunction || !( l <= 1 || typeof value !== "string" || jQuery.support.checkClone || !rchecked.test( value ) ) ) {
+			return this.each(function( index ) {
+				var self = set.eq( index );
+				if ( isFunction ) {
+					args[0] = value.call( this, index, table ? self.html() : undefined );
+				}
 				self.domManip( args, table, callback );
 			});
 		}
 
-		if ( this[0] ) {
-			parent = value && value.parentNode;
-			if ( jQuery.support.parentNode && parent && parent.nodeType === 11 && parent.childNodes.length === this.length ) {
-				results = { fragment: parent };
-
-			} else {
-				results = jQuery.buildFragment( args, this, scripts );
-			}
-
-			fragment = results.fragment;
+		if ( l ) {
+			fragment = jQuery.buildFragment( args, this[ 0 ].ownerDocument, false, this );
+			first = fragment.firstChild;
 
 			if ( fragment.childNodes.length === 1 ) {
-				first = fragment = fragment.firstChild;
-			} else {
-				first = fragment.firstChild;
+				fragment = first;
 			}
 
 			if ( first ) {
 				table = table && jQuery.nodeName( first, "tr" );
+				scripts = jQuery.map( getAll( fragment, "script" ), disableScript );
+				hasScripts = scripts.length;
+				for ( ; i < l; i++ ) {
+					node = fragment;
 
-				for ( var i = 0, l = this.length, lastIndex = l - 1; i < l; i++ ) {
+					if ( i !== iNoClone ) {
+						node = jQuery.clone( node, true, true );
+						if ( hasScripts ) {
+							jQuery.merge( scripts, getAll( node, "script" ) );
+						}
+					}
+
 					callback.call(
-						table ?
-							root(this[i], first) :
+						table && jQuery.nodeName( this[i], "table" ) ?
+							findOrAppend( this[i], "tbody" ) :
 							this[i],
-						results.cacheable || ( l > 1 && i < lastIndex ) ?
-							jQuery.clone( fragment, true, true ) :
-							fragment
+						node,
+						i
 					);
 				}
-			}
 
-			if ( scripts.length ) {
-				jQuery.each( scripts, evalScript );
+				if ( hasScripts ) {
+					doc = scripts[ scripts.length - 1 ].ownerDocument;
+					jQuery.map( scripts, restoreScript );
+					for ( i = 0; i < hasScripts; i++ ) {
+						node = scripts[ i ];
+						if ( rscriptType.test( node.type || "" ) &&
+							!jQuery._data( node, "globalEval" ) && jQuery.contains( doc, node ) ) {
+
+							if ( node.src ) {
+								jQuery.ajax({
+									url: node.src,
+									type: "GET",
+									dataType: "script",
+									async: false,
+									global: false,
+									"throws": true
+								});
+							} else {
+								jQuery.globalEval( ( node.text || node.textContent || node.innerHTML || "" ).replace( rcleanScript, "" ) );
+							}
+						}
+					}
+				}
+				fragment = first = null;
 			}
 		}
 
@@ -5014,11 +4888,29 @@ jQuery.fn.extend({
 	}
 });
 
-function root( elem, cur ) {
-	return jQuery.nodeName(elem, "table") ?
-		(elem.getElementsByTagName("tbody")[0] ||
-		elem.appendChild(elem.ownerDocument.createElement("tbody"))) :
-		elem;
+function findOrAppend( elem, tag ) {
+	return elem.getElementsByTagName( tag )[0] || elem.appendChild( elem.ownerDocument.createElement( tag ) );
+}
+function disableScript( elem ) {
+	var attr = elem.getAttributeNode("type");
+	elem.type = ( attr && attr.specified ) + "/" + elem.type;
+	return elem;
+}
+function restoreScript( elem ) {
+	var match = rscriptTypeMasked.exec( elem.type );
+	if ( match ) {
+		elem.type = match[1];
+	} else {
+		elem.removeAttribute("type");
+	}
+	return elem;
+}
+function setGlobalEval( elems, refElements ) {
+	var elem,
+		i = 0;
+	for ( ; (elem = elems[i]) != null; i++ ) {
+		jQuery._data( elem, "globalEval", !refElements || jQuery._data( refElements[i], "globalEval" ) );
+	}
 }
 
 function cloneCopyEvent( src, dest ) {
@@ -5038,7 +4930,7 @@ function cloneCopyEvent( src, dest ) {
 
 		for ( type in events ) {
 			for ( i = 0, l = events[ type ].length; i < l; i++ ) {
-				jQuery.event.add( dest, type + ( events[ type ][ i ].namespace ? "." : "" ) + events[ type ][ i ].namespace, events[ type ][ i ], events[ type ][ i ].data );
+				jQuery.event.add( dest, type, events[ type ][ i ] );
 			}
 		}
 	}
@@ -5047,72 +4939,44 @@ function cloneCopyEvent( src, dest ) {
 	}
 }
 
-function cloneFixAttributes( src, dest ) {
-	var nodeName;
+function fixCloneNodeIssues( src, dest ) {
+	var nodeName, data, e;
 	if ( dest.nodeType !== 1 ) {
 		return;
 	}
-	if ( dest.clearAttributes ) {
-		dest.clearAttributes();
-	}
-	if ( dest.mergeAttributes ) {
-		dest.mergeAttributes( src );
-	}
 
 	nodeName = dest.nodeName.toLowerCase();
-	if ( nodeName === "object" ) {
-		dest.outerHTML = src.outerHTML;
+	if ( !jQuery.support.noCloneEvent && dest[ jQuery.expando ] ) {
+		data = jQuery._data( dest );
 
-	} else if ( nodeName === "input" && (src.type === "checkbox" || src.type === "radio") ) {
-		if ( src.checked ) {
-			dest.defaultChecked = dest.checked = src.checked;
+		for ( e in data.events ) {
+			jQuery.removeEvent( dest, e, data.handle );
 		}
+		dest.removeAttribute( jQuery.expando );
+	}
+	if ( nodeName === "script" && dest.text !== src.text ) {
+		disableScript( dest ).text = src.text;
+		restoreScript( dest );
+	} else if ( nodeName === "object" ) {
+		if ( dest.parentNode ) {
+			dest.outerHTML = src.outerHTML;
+		}
+		if ( jQuery.support.html5Clone && ( src.innerHTML && !jQuery.trim(dest.innerHTML) ) ) {
+			dest.innerHTML = src.innerHTML;
+		}
+
+	} else if ( nodeName === "input" && manipulation_rcheckableType.test( src.type ) ) {
+
+		dest.defaultChecked = dest.checked = src.checked;
 		if ( dest.value !== src.value ) {
 			dest.value = src.value;
 		}
 	} else if ( nodeName === "option" ) {
-		dest.selected = src.defaultSelected;
+		dest.defaultSelected = dest.selected = src.defaultSelected;
 	} else if ( nodeName === "input" || nodeName === "textarea" ) {
 		dest.defaultValue = src.defaultValue;
 	}
-	dest.removeAttribute( jQuery.expando );
 }
-
-jQuery.buildFragment = function( args, nodes, scripts ) {
-	var fragment, cacheable, cacheresults, doc,
-	first = args[ 0 ];
-	if ( nodes && nodes[0] ) {
-		doc = nodes[0].ownerDocument || nodes[0];
-	}
-	if ( !doc.createDocumentFragment ) {
-		doc = document;
-	}
-	if ( args.length === 1 && typeof first === "string" && first.length < 512 && doc === document &&
-		first.charAt(0) === "<" && !rnocache.test( first ) &&
-		(jQuery.support.checkClone || !rchecked.test( first )) &&
-		(!jQuery.support.unknownElems && rnoshimcache.test( first )) ) {
-
-		cacheable = true;
-
-		cacheresults = jQuery.fragments[ first ];
-		if ( cacheresults && cacheresults !== 1 ) {
-			fragment = cacheresults;
-		}
-	}
-
-	if ( !fragment ) {
-		fragment = doc.createDocumentFragment();
-		jQuery.clean( args, doc, fragment, scripts );
-	}
-
-	if ( cacheable ) {
-		jQuery.fragments[ first ] = cacheresults ? fragment : 1;
-	}
-
-	return { fragment: fragment, cacheable: cacheable };
-};
-
-jQuery.fragments = {};
 
 jQuery.each({
 	appendTo: "append",
@@ -5122,287 +4986,356 @@ jQuery.each({
 	replaceAll: "replaceWith"
 }, function( name, original ) {
 	jQuery.fn[ name ] = function( selector ) {
-		var ret = [],
+		var elems,
+			i = 0,
+			ret = [],
 			insert = jQuery( selector ),
-			parent = this.length === 1 && this[0].parentNode;
+			last = insert.length - 1;
 
-		if ( parent && parent.nodeType === 11 && parent.childNodes.length === 1 && insert.length === 1 ) {
-			insert[ original ]( this[0] );
-			return this;
-
-		} else {
-			for ( var i = 0, l = insert.length; i < l; i++ ) {
-				var elems = ( i > 0 ? this.clone(true) : this ).get();
-				jQuery( insert[i] )[ original ]( elems );
-				ret = ret.concat( elems );
-			}
-
-			return this.pushStack( ret, name, insert.selector );
+		for ( ; i <= last; i++ ) {
+			elems = i === last ? this : this.clone(true);
+			jQuery( insert[i] )[ original ]( elems );
+			core_push.apply( ret, elems.get() );
 		}
+
+		return this.pushStack( ret );
 	};
 });
 
-function getAll( elem ) {
-	if ( typeof elem.getElementsByTagName !== "undefined" ) {
-		return elem.getElementsByTagName( "*" );
+function getAll( context, tag ) {
+	var elems, elem,
+		i = 0,
+		found = typeof context.getElementsByTagName !== "undefined" ? context.getElementsByTagName( tag || "*" ) :
+			typeof context.querySelectorAll !== "undefined" ? context.querySelectorAll( tag || "*" ) :
+			undefined;
 
-	} else if ( typeof elem.querySelectorAll !== "undefined" ) {
-		return elem.querySelectorAll( "*" );
-
-	} else {
-		return [];
+	if ( !found ) {
+		for ( found = [], elems = context.childNodes || context; (elem = elems[i]) != null; i++ ) {
+			if ( !tag || jQuery.nodeName( elem, tag ) ) {
+				found.push( elem );
+			} else {
+				jQuery.merge( found, getAll( elem, tag ) );
+			}
+		}
 	}
+
+	return tag === undefined || tag && jQuery.nodeName( context, tag ) ?
+		jQuery.merge( [ context ], found ) :
+		found;
 }
 function fixDefaultChecked( elem ) {
-	if ( elem.type === "checkbox" || elem.type === "radio" ) {
+	if ( manipulation_rcheckableType.test( elem.type ) ) {
 		elem.defaultChecked = elem.checked;
-	}
-}
-function findInputs( elem ) {
-	var nodeName = ( elem.nodeName || "" ).toLowerCase();
-	if ( nodeName === "input" ) {
-		fixDefaultChecked( elem );
-	} else if ( nodeName !== "script" && typeof elem.getElementsByTagName !== "undefined" ) {
-		jQuery.grep( elem.getElementsByTagName("input"), fixDefaultChecked );
 	}
 }
 
 jQuery.extend({
 	clone: function( elem, dataAndEvents, deepDataAndEvents ) {
-		var clone = elem.cloneNode(true),
-				srcElements,
-				destElements,
-				i;
+		var destElements, srcElements, node, i, clone,
+			inPage = jQuery.contains( elem.ownerDocument, elem );
+
+		if ( jQuery.support.html5Clone || jQuery.isXMLDoc(elem) || !rnoshimcache.test( "<" + elem.nodeName + ">" ) ) {
+			clone = elem.cloneNode( true );
+		} else {
+			fragmentDiv.innerHTML = elem.outerHTML;
+			fragmentDiv.removeChild( clone = fragmentDiv.firstChild );
+		}
 
 		if ( (!jQuery.support.noCloneEvent || !jQuery.support.noCloneChecked) &&
 				(elem.nodeType === 1 || elem.nodeType === 11) && !jQuery.isXMLDoc(elem) ) {
-
-			cloneFixAttributes( elem, clone );
-			srcElements = getAll( elem );
 			destElements = getAll( clone );
-			for ( i = 0; srcElements[i]; ++i ) {
+			srcElements = getAll( elem );
+			for ( i = 0; (node = srcElements[i]) != null; ++i ) {
 				if ( destElements[i] ) {
-					cloneFixAttributes( srcElements[i], destElements[i] );
+					fixCloneNodeIssues( node, destElements[i] );
 				}
 			}
 		}
 		if ( dataAndEvents ) {
-			cloneCopyEvent( elem, clone );
-
 			if ( deepDataAndEvents ) {
-				srcElements = getAll( elem );
-				destElements = getAll( clone );
+				srcElements = srcElements || getAll( elem );
+				destElements = destElements || getAll( clone );
 
-				for ( i = 0; srcElements[i]; ++i ) {
-					cloneCopyEvent( srcElements[i], destElements[i] );
+				for ( i = 0; (node = srcElements[i]) != null; i++ ) {
+					cloneCopyEvent( node, destElements[i] );
 				}
+			} else {
+				cloneCopyEvent( elem, clone );
 			}
 		}
+		destElements = getAll( clone, "script" );
+		if ( destElements.length > 0 ) {
+			setGlobalEval( destElements, !inPage && getAll( elem, "script" ) );
+		}
 
-		srcElements = destElements = null;
+		destElements = srcElements = node = null;
 		return clone;
 	},
 
-	clean: function( elems, context, fragment, scripts ) {
-		var checkScriptType;
+	buildFragment: function( elems, context, scripts, selection ) {
+		var contains, elem, tag, tmp, wrap, tbody, j,
+			l = elems.length,
+			safe = createSafeFragment( context ),
 
-		context = context || document;
-		if ( typeof context.createElement === "undefined" ) {
-			context = context.ownerDocument || context[0] && context[0].ownerDocument || document;
-		}
+			nodes = [],
+			i = 0;
 
-		var ret = [], j;
+		for ( ; i < l; i++ ) {
+			elem = elems[ i ];
 
-		for ( var i = 0, elem; (elem = elems[i]) != null; i++ ) {
-			if ( typeof elem === "number" ) {
-				elem += "";
-			}
-
-			if ( !elem ) {
-				continue;
-			}
-			if ( typeof elem === "string" ) {
-				if ( !rhtml.test( elem ) ) {
-					elem = context.createTextNode( elem );
+			if ( elem || elem === 0 ) {
+				if ( jQuery.type( elem ) === "object" ) {
+					jQuery.merge( nodes, elem.nodeType ? [ elem ] : elem );
+				} else if ( !rhtml.test( elem ) ) {
+					nodes.push( context.createTextNode( elem ) );
 				} else {
-					elem = elem.replace(rxhtmlTag, "<$1></$2>");
-					var tag = ( rtagName.exec( elem ) || ["", ""] )[1].toLowerCase(),
-						wrap = wrapMap[ tag ] || wrapMap._default,
-						depth = wrap[0],
-						div = context.createElement("div");
-					if ( context === document ) {
-						safeFragment.appendChild( div );
-					} else {
-						createSafeFragment( context ).appendChild( div );
+					tmp = tmp || safe.appendChild( context.createElement("div") );
+					tag = ( rtagName.exec( elem ) || ["", ""] )[1].toLowerCase();
+					wrap = wrapMap[ tag ] || wrapMap._default;
+
+					tmp.innerHTML = wrap[1] + elem.replace( rxhtmlTag, "<$1></$2>" ) + wrap[2];
+					j = wrap[0];
+					while ( j-- ) {
+						tmp = tmp.lastChild;
 					}
-					div.innerHTML = wrap[1] + elem + wrap[2];
-					while ( depth-- ) {
-						div = div.lastChild;
+					if ( !jQuery.support.leadingWhitespace && rleadingWhitespace.test( elem ) ) {
+						nodes.push( context.createTextNode( rleadingWhitespace.exec( elem )[0] ) );
 					}
 					if ( !jQuery.support.tbody ) {
-						var hasBody = rtbody.test(elem),
-							tbody = tag === "table" && !hasBody ?
-								div.firstChild && div.firstChild.childNodes :
-								wrap[1] === "<table>" && !hasBody ?
-									div.childNodes :
-									[];
+						elem = tag === "table" && !rtbody.test( elem ) ?
+							tmp.firstChild :
+							wrap[1] === "<table>" && !rtbody.test( elem ) ?
+								tmp :
+								0;
 
-						for ( j = tbody.length - 1; j >= 0 ; --j ) {
-							if ( jQuery.nodeName( tbody[ j ], "tbody" ) && !tbody[ j ].childNodes.length ) {
-								tbody[ j ].parentNode.removeChild( tbody[ j ] );
+						j = elem && elem.childNodes.length;
+						while ( j-- ) {
+							if ( jQuery.nodeName( (tbody = elem.childNodes[j]), "tbody" ) && !tbody.childNodes.length ) {
+								elem.removeChild( tbody );
 							}
 						}
 					}
-					if ( !jQuery.support.leadingWhitespace && rleadingWhitespace.test( elem ) ) {
-						div.insertBefore( context.createTextNode( rleadingWhitespace.exec(elem)[0] ), div.firstChild );
+
+					jQuery.merge( nodes, tmp.childNodes );
+					tmp.textContent = "";
+					while ( tmp.firstChild ) {
+						tmp.removeChild( tmp.firstChild );
 					}
-
-					elem = div.childNodes;
-				}
-			}
-			var len;
-			if ( !jQuery.support.appendChecked ) {
-				if ( elem[0] && typeof (len = elem.length) === "number" ) {
-					for ( j = 0; j < len; j++ ) {
-						findInputs( elem[j] );
-					}
-				} else {
-					findInputs( elem );
-				}
-			}
-
-			if ( elem.nodeType ) {
-				ret.push( elem );
-			} else {
-				ret = jQuery.merge( ret, elem );
-			}
-		}
-
-		if ( fragment ) {
-			checkScriptType = function( elem ) {
-				return !elem.type || rscriptType.test( elem.type );
-			};
-			for ( i = 0; ret[i]; i++ ) {
-				if ( scripts && jQuery.nodeName( ret[i], "script" ) && (!ret[i].type || ret[i].type.toLowerCase() === "text/javascript") ) {
-					scripts.push( ret[i].parentNode ? ret[i].parentNode.removeChild( ret[i] ) : ret[i] );
-
-				} else {
-					if ( ret[i].nodeType === 1 ) {
-						var jsTags = jQuery.grep( ret[i].getElementsByTagName( "script" ), checkScriptType );
-
-						ret.splice.apply( ret, [i + 1, 0].concat( jsTags ) );
-					}
-					fragment.appendChild( ret[i] );
+					tmp = safe.lastChild;
 				}
 			}
 		}
+		if ( tmp ) {
+			safe.removeChild( tmp );
+		}
+		if ( !jQuery.support.appendChecked ) {
+			jQuery.grep( getAll( nodes, "input" ), fixDefaultChecked );
+		}
 
-		return ret;
-	},
-
-	cleanData: function( elems ) {
-		var data, id,
-			cache = jQuery.cache,
-			special = jQuery.event.special,
-			deleteExpando = jQuery.support.deleteExpando;
-
-		for ( var i = 0, elem; (elem = elems[i]) != null; i++ ) {
-			if ( elem.nodeName && jQuery.noData[elem.nodeName.toLowerCase()] ) {
+		i = 0;
+		while ( (elem = nodes[ i++ ]) ) {
+			if ( selection && jQuery.inArray( elem, selection ) !== -1 ) {
 				continue;
 			}
 
-			id = elem[ jQuery.expando ];
+			contains = jQuery.contains( elem.ownerDocument, elem );
+			tmp = getAll( safe.appendChild( elem ), "script" );
+			if ( contains ) {
+				setGlobalEval( tmp );
+			}
+			if ( scripts ) {
+				j = 0;
+				while ( (elem = tmp[ j++ ]) ) {
+					if ( rscriptType.test( elem.type || "" ) ) {
+						scripts.push( elem );
+					}
+				}
+			}
+		}
 
-			if ( id ) {
-				data = cache[ id ];
+		tmp = null;
 
-				if ( data && data.events ) {
-					for ( var type in data.events ) {
-						if ( special[ type ] ) {
-							jQuery.event.remove( elem, type );
-						} else {
-							jQuery.removeEvent( elem, type, data.handle );
+		return safe;
+	},
+
+	cleanData: function( elems, /* internal */ acceptData ) {
+		var data, id, elem, type,
+			i = 0,
+			internalKey = jQuery.expando,
+			cache = jQuery.cache,
+			deleteExpando = jQuery.support.deleteExpando,
+			special = jQuery.event.special;
+
+		for ( ; (elem = elems[i]) != null; i++ ) {
+
+			if ( acceptData || jQuery.acceptData( elem ) ) {
+
+				id = elem[ internalKey ];
+				data = id && cache[ id ];
+
+				if ( data ) {
+					if ( data.events ) {
+						for ( type in data.events ) {
+							if ( special[ type ] ) {
+								jQuery.event.remove( elem, type );
+							} else {
+								jQuery.removeEvent( elem, type, data.handle );
+							}
 						}
 					}
-					if ( data.handle ) {
-						data.handle.elem = null;
+					if ( cache[ id ] ) {
+
+						delete cache[ id ];
+						if ( deleteExpando ) {
+							delete elem[ internalKey ];
+
+						} else if ( typeof elem.removeAttribute !== "undefined" ) {
+							elem.removeAttribute( internalKey );
+
+						} else {
+							elem[ internalKey ] = null;
+						}
+
+						core_deletedIds.push( id );
 					}
 				}
-
-				if ( deleteExpando ) {
-					delete elem[ jQuery.expando ];
-
-				} else if ( elem.removeAttribute ) {
-					elem.removeAttribute( jQuery.expando );
-				}
-
-				delete cache[ id ];
 			}
 		}
 	}
 });
-
-function evalScript( i, elem ) {
-	if ( elem.src ) {
-		jQuery.ajax({
-			url: elem.src,
-			async: false,
-			dataType: "script"
-		});
-	} else {
-		jQuery.globalEval( ( elem.text || elem.textContent || elem.innerHTML || "" ).replace( rcleanScript, "/*$0*/" ) );
-	}
-
-	if ( elem.parentNode ) {
-		elem.parentNode.removeChild( elem );
-	}
-}
-
-
-
-
-var ralpha = /alpha\([^)]*\)/i,
-	ropacity = /opacity=([^)]*)/,
-	rupper = /([A-Z]|^ms)/g,
-	rnumpx = /^-?\d+(?:px)?$/i,
-	rnum = /^-?\d/,
-	rrelNum = /^([\-+])=([\-+.\de]+)/,
+var curCSS, getStyles, iframe,
+	ralpha = /alpha\([^)]*\)/i,
+	ropacity = /opacity\s*=\s*([^)]*)/,
+	rposition = /^(top|right|bottom|left)$/,
+	rdisplayswap = /^(none|table(?!-c[ea]).+)/,
+	rmargin = /^margin/,
+	rnumsplit = new RegExp( "^(" + core_pnum + ")(.*)$", "i" ),
+	rnumnonpx = new RegExp( "^(" + core_pnum + ")(?!px)[a-z%]+$", "i" ),
+	rrelNum = new RegExp( "^([+-])=(" + core_pnum + ")", "i" ),
+	elemdisplay = { BODY: "block" },
 
 	cssShow = { position: "absolute", visibility: "hidden", display: "block" },
-	cssWidth = [ "Left", "Right" ],
-	cssHeight = [ "Top", "Bottom" ],
-	curCSS,
+	cssNormalTransform = {
+		letterSpacing: 0,
+		fontWeight: 400
+	},
 
-	getComputedStyle,
-	currentStyle;
+	cssExpand = [ "Top", "Right", "Bottom", "Left" ],
+	cssPrefixes = [ "Webkit", "O", "Moz", "ms" ];
+function vendorPropName( style, name ) {
+	if ( name in style ) {
+		return name;
+	}
+	var capName = name.charAt(0).toUpperCase() + name.slice(1),
+		origName = name,
+		i = cssPrefixes.length;
 
-jQuery.fn.css = function( name, value ) {
-	if ( arguments.length === 2 && value === undefined ) {
-		return this;
+	while ( i-- ) {
+		name = cssPrefixes[ i ] + capName;
+		if ( name in style ) {
+			return name;
+		}
 	}
 
-	return jQuery.access( this, name, value, true, function( elem, name, value ) {
-		return value !== undefined ?
-			jQuery.style( elem, name, value ) :
-			jQuery.css( elem, name );
-	});
-};
+	return origName;
+}
+
+function isHidden( elem, el ) {
+	elem = el || elem;
+	return jQuery.css( elem, "display" ) === "none" || !jQuery.contains( elem.ownerDocument, elem );
+}
+
+function showHide( elements, show ) {
+	var elem,
+		values = [],
+		index = 0,
+		length = elements.length;
+
+	for ( ; index < length; index++ ) {
+		elem = elements[ index ];
+		if ( !elem.style ) {
+			continue;
+		}
+		values[ index ] = jQuery._data( elem, "olddisplay" );
+		if ( show ) {
+			if ( !values[ index ] && elem.style.display === "none" ) {
+				elem.style.display = "";
+			}
+			if ( elem.style.display === "" && isHidden( elem ) ) {
+				values[ index ] = jQuery._data( elem, "olddisplay", css_defaultDisplay(elem.nodeName) );
+			}
+		} else if ( !values[ index ] && !isHidden( elem ) ) {
+			jQuery._data( elem, "olddisplay", jQuery.css( elem, "display" ) );
+		}
+	}
+	for ( index = 0; index < length; index++ ) {
+		elem = elements[ index ];
+		if ( !elem.style ) {
+			continue;
+		}
+		if ( !show || elem.style.display === "none" || elem.style.display === "" ) {
+			elem.style.display = show ? values[ index ] || "" : "none";
+		}
+	}
+
+	return elements;
+}
+
+jQuery.fn.extend({
+	css: function( name, value ) {
+		return jQuery.access( this, function( elem, name, value ) {
+			var styles, len,
+				map = {},
+				i = 0;
+
+			if ( jQuery.isArray( name ) ) {
+				styles = getStyles( elem );
+				len = name.length;
+
+				for ( ; i < len; i++ ) {
+					map[ name[ i ] ] = jQuery.css( elem, name[ i ], false, styles );
+				}
+
+				return map;
+			}
+
+			return value !== undefined ?
+				jQuery.style( elem, name, value ) :
+				jQuery.css( elem, name );
+		}, name, value, arguments.length > 1 );
+	},
+	show: function() {
+		return showHide( this, true );
+	},
+	hide: function() {
+		return showHide( this );
+	},
+	toggle: function( state ) {
+		var bool = typeof state === "boolean";
+
+		return this.each(function() {
+			if ( bool ? state : isHidden( this ) ) {
+				jQuery( this ).show();
+			} else {
+				jQuery( this ).hide();
+			}
+		});
+	}
+});
 
 jQuery.extend({
 	cssHooks: {
 		opacity: {
 			get: function( elem, computed ) {
 				if ( computed ) {
-					var ret = curCSS( elem, "opacity", "opacity" );
+					var ret = curCSS( elem, "opacity" );
 					return ret === "" ? "1" : ret;
-
-				} else {
-					return elem.style.opacity;
 				}
 			}
 		}
 	},
 	cssNumber: {
+		"columnCount": true,
 		"fillOpacity": true,
 		"fontWeight": true,
 		"lineHeight": true,
@@ -5419,14 +5352,16 @@ jQuery.extend({
 		if ( !elem || elem.nodeType === 3 || elem.nodeType === 8 || !elem.style ) {
 			return;
 		}
-		var ret, type, origName = jQuery.camelCase( name ),
-			style = elem.style, hooks = jQuery.cssHooks[ origName ];
+		var ret, type, hooks,
+			origName = jQuery.camelCase( name ),
+			style = elem.style;
 
-		name = jQuery.cssProps[ origName ] || origName;
+		name = jQuery.cssProps[ origName ] || ( jQuery.cssProps[ origName ] = vendorPropName( style, origName ) );
+		hooks = jQuery.cssHooks[ name ] || jQuery.cssHooks[ origName ];
 		if ( value !== undefined ) {
 			type = typeof value;
 			if ( type === "string" && (ret = rrelNum.exec( value )) ) {
-				value = ( +( ret[1] + 1) * +ret[2] ) + parseFloat( jQuery.css( elem, name ) );
+				value = ( ret[1] + 1 ) * ret[2] + parseFloat( jQuery.css( elem, name ) );
 				type = "number";
 			}
 			if ( value == null || type === "number" && isNaN( value ) ) {
@@ -5435,7 +5370,10 @@ jQuery.extend({
 			if ( type === "number" && !jQuery.cssNumber[ origName ] ) {
 				value += "px";
 			}
-			if ( !hooks || !("set" in hooks) || (value = hooks.set( elem, value )) !== undefined ) {
+			if ( !jQuery.support.clearCloneStyle && value === "" && name.indexOf("background") === 0 ) {
+				style[ name ] = "inherit";
+			}
+			if ( !hooks || !("set" in hooks) || (value = hooks.set( elem, value, extra )) !== undefined ) {
 				try {
 					style[ name ] = value;
 				} catch(e) {}
@@ -5449,64 +5387,220 @@ jQuery.extend({
 		}
 	},
 
-	css: function( elem, name, extra ) {
-		var ret, hooks;
-		name = jQuery.camelCase( name );
-		hooks = jQuery.cssHooks[ name ];
-		name = jQuery.cssProps[ name ] || name;
-		if ( name === "cssFloat" ) {
-			name = "float";
+	css: function( elem, name, extra, styles ) {
+		var val, num, hooks,
+			origName = jQuery.camelCase( name );
+		name = jQuery.cssProps[ origName ] || ( jQuery.cssProps[ origName ] = vendorPropName( elem.style, origName ) );
+		hooks = jQuery.cssHooks[ name ] || jQuery.cssHooks[ origName ];
+		if ( hooks && "get" in hooks ) {
+			val = hooks.get( elem, true, extra );
 		}
-		if ( hooks && "get" in hooks && (ret = hooks.get( elem, true, extra )) !== undefined ) {
-			return ret;
-		} else if ( curCSS ) {
-			return curCSS( elem, name );
+		if ( val === undefined ) {
+			val = curCSS( elem, name, styles );
 		}
+		if ( val === "normal" && name in cssNormalTransform ) {
+			val = cssNormalTransform[ name ];
+		}
+		if ( extra ) {
+			num = parseFloat( val );
+			return extra === true || jQuery.isNumeric( num ) ? num || 0 : val;
+		}
+		return val;
 	},
-	swap: function( elem, options, callback ) {
-		var old = {};
-		for ( var name in options ) {
+	swap: function( elem, options, callback, args ) {
+		var ret, name,
+			old = {};
+		for ( name in options ) {
 			old[ name ] = elem.style[ name ];
 			elem.style[ name ] = options[ name ];
 		}
 
-		callback.call( elem );
+		ret = callback.apply( elem, args || [] );
 		for ( name in options ) {
 			elem.style[ name ] = old[ name ];
 		}
+
+		return ret;
 	}
 });
-jQuery.curCSS = jQuery.css;
+if ( window.getComputedStyle ) {
+	getStyles = function( elem ) {
+		return window.getComputedStyle( elem, null );
+	};
 
-jQuery.each(["height", "width"], function( i, name ) {
+	curCSS = function( elem, name, _computed ) {
+		var width, minWidth, maxWidth,
+			computed = _computed || getStyles( elem ),
+			ret = computed ? computed.getPropertyValue( name ) || computed[ name ] : undefined,
+			style = elem.style;
+
+		if ( computed ) {
+
+			if ( ret === "" && !jQuery.contains( elem.ownerDocument, elem ) ) {
+				ret = jQuery.style( elem, name );
+			}
+			if ( rnumnonpx.test( ret ) && rmargin.test( name ) ) {
+				width = style.width;
+				minWidth = style.minWidth;
+				maxWidth = style.maxWidth;
+				style.minWidth = style.maxWidth = style.width = ret;
+				ret = computed.width;
+				style.width = width;
+				style.minWidth = minWidth;
+				style.maxWidth = maxWidth;
+			}
+		}
+
+		return ret;
+	};
+} else if ( document.documentElement.currentStyle ) {
+	getStyles = function( elem ) {
+		return elem.currentStyle;
+	};
+
+	curCSS = function( elem, name, _computed ) {
+		var left, rs, rsLeft,
+			computed = _computed || getStyles( elem ),
+			ret = computed ? computed[ name ] : undefined,
+			style = elem.style;
+		if ( ret == null && style && style[ name ] ) {
+			ret = style[ name ];
+		}
+		if ( rnumnonpx.test( ret ) && !rposition.test( name ) ) {
+			left = style.left;
+			rs = elem.runtimeStyle;
+			rsLeft = rs && rs.left;
+			if ( rsLeft ) {
+				rs.left = elem.currentStyle.left;
+			}
+			style.left = name === "fontSize" ? "1em" : ret;
+			ret = style.pixelLeft + "px";
+			style.left = left;
+			if ( rsLeft ) {
+				rs.left = rsLeft;
+			}
+		}
+
+		return ret === "" ? "auto" : ret;
+	};
+}
+
+function setPositiveNumber( elem, value, subtract ) {
+	var matches = rnumsplit.exec( value );
+	return matches ?
+		Math.max( 0, matches[ 1 ] - ( subtract || 0 ) ) + ( matches[ 2 ] || "px" ) :
+		value;
+}
+
+function augmentWidthOrHeight( elem, name, extra, isBorderBox, styles ) {
+	var i = extra === ( isBorderBox ? "border" : "content" ) ?
+		4 :
+		name === "width" ? 1 : 0,
+
+		val = 0;
+
+	for ( ; i < 4; i += 2 ) {
+		if ( extra === "margin" ) {
+			val += jQuery.css( elem, extra + cssExpand[ i ], true, styles );
+		}
+
+		if ( isBorderBox ) {
+			if ( extra === "content" ) {
+				val -= jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
+			}
+			if ( extra !== "margin" ) {
+				val -= jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
+			}
+		} else {
+			val += jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
+			if ( extra !== "padding" ) {
+				val += jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
+			}
+		}
+	}
+
+	return val;
+}
+
+function getWidthOrHeight( elem, name, extra ) {
+	var valueIsBorderBox = true,
+		val = name === "width" ? elem.offsetWidth : elem.offsetHeight,
+		styles = getStyles( elem ),
+		isBorderBox = jQuery.support.boxSizing && jQuery.css( elem, "boxSizing", false, styles ) === "border-box";
+	if ( val <= 0 || val == null ) {
+		val = curCSS( elem, name, styles );
+		if ( val < 0 || val == null ) {
+			val = elem.style[ name ];
+		}
+		if ( rnumnonpx.test(val) ) {
+			return val;
+		}
+		valueIsBorderBox = isBorderBox && ( jQuery.support.boxSizingReliable || val === elem.style[ name ] );
+		val = parseFloat( val ) || 0;
+	}
+	return ( val +
+		augmentWidthOrHeight(
+			elem,
+			name,
+			extra || ( isBorderBox ? "border" : "content" ),
+			valueIsBorderBox,
+			styles
+		)
+	) + "px";
+}
+function css_defaultDisplay( nodeName ) {
+	var doc = document,
+		display = elemdisplay[ nodeName ];
+
+	if ( !display ) {
+		display = actualDisplay( nodeName, doc );
+		if ( display === "none" || !display ) {
+			iframe = ( iframe ||
+				jQuery("<iframe frameborder='0' width='0' height='0'/>")
+				.css( "cssText", "display:block !important" )
+			).appendTo( doc.documentElement );
+			doc = ( iframe[0].contentWindow || iframe[0].contentDocument ).document;
+			doc.write("<!doctype html><html><body>");
+			doc.close();
+
+			display = actualDisplay( nodeName, doc );
+			iframe.detach();
+		}
+		elemdisplay[ nodeName ] = display;
+	}
+
+	return display;
+}
+function actualDisplay( name, doc ) {
+	var elem = jQuery( doc.createElement( name ) ).appendTo( doc.body ),
+		display = jQuery.css( elem[0], "display" );
+	elem.remove();
+	return display;
+}
+
+jQuery.each([ "height", "width" ], function( i, name ) {
 	jQuery.cssHooks[ name ] = {
 		get: function( elem, computed, extra ) {
-			var val;
-
 			if ( computed ) {
-				if ( elem.offsetWidth !== 0 ) {
-					return getWH( elem, name, extra );
-				} else {
+				return elem.offsetWidth === 0 && rdisplayswap.test( jQuery.css( elem, "display" ) ) ?
 					jQuery.swap( elem, cssShow, function() {
-						val = getWH( elem, name, extra );
-					});
-				}
-
-				return val;
+						return getWidthOrHeight( elem, name, extra );
+					}) :
+					getWidthOrHeight( elem, name, extra );
 			}
 		},
 
-		set: function( elem, value ) {
-			if ( rnumpx.test( value ) ) {
-				value = parseFloat( value );
-
-				if ( value >= 0 ) {
-					return value + "px";
-				}
-
-			} else {
-				return value;
-			}
+		set: function( elem, value, extra ) {
+			var styles = extra && getStyles( elem );
+			return setPositiveNumber( elem, value, extra ?
+				augmentWidthOrHeight(
+					elem,
+					name,
+					extra,
+					jQuery.support.boxSizing && jQuery.css( elem, "boxSizing", false, styles ) === "border-box",
+					styles
+				) : 0
+			);
 		}
 	};
 });
@@ -5515,7 +5609,7 @@ if ( !jQuery.support.opacity ) {
 	jQuery.cssHooks.opacity = {
 		get: function( elem, computed ) {
 			return ropacity.test( (computed && elem.currentStyle ? elem.currentStyle.filter : elem.style.filter) || "" ) ?
-				( parseFloat( RegExp.$1 ) / 100 ) + "" :
+				( 0.01 * parseFloat( RegExp.$1 ) ) + "" :
 				computed ? "1" : "";
 		},
 
@@ -5525,9 +5619,11 @@ if ( !jQuery.support.opacity ) {
 				opacity = jQuery.isNumeric( value ) ? "alpha(opacity=" + value * 100 + ")" : "",
 				filter = currentStyle && currentStyle.filter || style.filter || "";
 			style.zoom = 1;
-			if ( value >= 1 && jQuery.trim( filter.replace( ralpha, "" ) ) === "" ) {
+			if ( ( value >= 1 || value === "" ) &&
+					jQuery.trim( filter.replace( ralpha, "" ) ) === "" &&
+					style.removeAttribute ) {
 				style.removeAttribute( "filter" );
-				if ( currentStyle && !currentStyle.filter ) {
+				if ( value === "" || currentStyle && !currentStyle.filter ) {
 					return;
 				}
 			}
@@ -5537,145 +5633,160 @@ if ( !jQuery.support.opacity ) {
 		}
 	};
 }
-
 jQuery(function() {
 	if ( !jQuery.support.reliableMarginRight ) {
 		jQuery.cssHooks.marginRight = {
 			get: function( elem, computed ) {
-				var ret;
-				jQuery.swap( elem, { "display": "inline-block" }, function() {
-					if ( computed ) {
-						ret = curCSS( elem, "margin-right", "marginRight" );
-					} else {
-						ret = elem.style.marginRight;
-					}
-				});
-				return ret;
+				if ( computed ) {
+					return jQuery.swap( elem, { "display": "inline-block" },
+						curCSS, [ elem, "marginRight" ] );
+				}
 			}
 		};
 	}
-});
-
-if ( document.defaultView && document.defaultView.getComputedStyle ) {
-	getComputedStyle = function( elem, name ) {
-		var ret, defaultView, computedStyle;
-
-		name = name.replace( rupper, "-$1" ).toLowerCase();
-
-		if ( !(defaultView = elem.ownerDocument.defaultView) ) {
-			return undefined;
-		}
-
-		if ( (computedStyle = defaultView.getComputedStyle( elem, null )) ) {
-			ret = computedStyle.getPropertyValue( name );
-			if ( ret === "" && !jQuery.contains( elem.ownerDocument.documentElement, elem ) ) {
-				ret = jQuery.style( elem, name );
-			}
-		}
-
-		return ret;
-	};
-}
-
-if ( document.documentElement.currentStyle ) {
-	currentStyle = function( elem, name ) {
-		var left, rsLeft, uncomputed,
-			ret = elem.currentStyle && elem.currentStyle[ name ],
-			style = elem.style;
-		if ( ret === null && style && (uncomputed = style[ name ]) ) {
-			ret = uncomputed;
-		}
-		if ( !rnumpx.test( ret ) && rnum.test( ret ) ) {
-			left = style.left;
-			rsLeft = elem.runtimeStyle && elem.runtimeStyle.left;
-			if ( rsLeft ) {
-				elem.runtimeStyle.left = elem.currentStyle.left;
-			}
-			style.left = name === "fontSize" ? "1em" : ( ret || 0 );
-			ret = style.pixelLeft + "px";
-			style.left = left;
-			if ( rsLeft ) {
-				elem.runtimeStyle.left = rsLeft;
-			}
-		}
-
-		return ret === "" ? "auto" : ret;
-	};
-}
-
-curCSS = getComputedStyle || currentStyle;
-
-function getWH( elem, name, extra ) {
-	var val = name === "width" ? elem.offsetWidth : elem.offsetHeight,
-		which = name === "width" ? cssWidth : cssHeight;
-
-	if ( val > 0 ) {
-		if ( extra !== "border" ) {
-			jQuery.each( which, function() {
-				if ( !extra ) {
-					val -= parseFloat( jQuery.css( elem, "padding" + this ) ) || 0;
+	if ( !jQuery.support.pixelPosition && jQuery.fn.position ) {
+		jQuery.each( [ "top", "left" ], function( i, prop ) {
+			jQuery.cssHooks[ prop ] = {
+				get: function( elem, computed ) {
+					if ( computed ) {
+						computed = curCSS( elem, prop );
+						return rnumnonpx.test( computed ) ?
+							jQuery( elem ).position()[ prop ] + "px" :
+							computed;
+					}
 				}
-				if ( extra === "margin" ) {
-					val += parseFloat( jQuery.css( elem, extra + this ) ) || 0;
-				} else {
-					val -= parseFloat( jQuery.css( elem, "border" + this + "Width" ) ) || 0;
-				}
-			});
-		}
-
-		return val + "px";
-	}
-	val = curCSS( elem, name, name );
-	if ( val < 0 || val == null ) {
-		val = elem.style[ name ] || 0;
-	}
-	val = parseFloat( val ) || 0;
-	if ( extra ) {
-		jQuery.each( which, function() {
-			val += parseFloat( jQuery.css( elem, "padding" + this ) ) || 0;
-			if ( extra !== "padding" ) {
-				val += parseFloat( jQuery.css( elem, "border" + this + "Width" ) ) || 0;
-			}
-			if ( extra === "margin" ) {
-				val += parseFloat( jQuery.css( elem, extra + this ) ) || 0;
-			}
+			};
 		});
 	}
 
-	return val + "px";
-}
+});
 
 if ( jQuery.expr && jQuery.expr.filters ) {
 	jQuery.expr.filters.hidden = function( elem ) {
-		var width = elem.offsetWidth,
-			height = elem.offsetHeight;
-
-		return ( width === 0 && height === 0 ) || (!jQuery.support.reliableHiddenOffsets && ((elem.style && elem.style.display) || jQuery.css( elem, "display" )) === "none");
+		return ( elem.offsetWidth === 0 && elem.offsetHeight === 0 ) || (!jQuery.support.reliableHiddenOffsets && ((elem.style && elem.style.display) || jQuery.css( elem, "display" )) === "none");
 	};
 
 	jQuery.expr.filters.visible = function( elem ) {
 		return !jQuery.expr.filters.hidden( elem );
 	};
 }
+jQuery.each({
+	margin: "",
+	padding: "",
+	border: "Width"
+}, function( prefix, suffix ) {
+	jQuery.cssHooks[ prefix + suffix ] = {
+		expand: function( value ) {
+			var i = 0,
+				expanded = {},
+				parts = typeof value === "string" ? value.split(" ") : [ value ];
 
+			for ( ; i < 4; i++ ) {
+				expanded[ prefix + cssExpand[ i ] + suffix ] =
+					parts[ i ] || parts[ i - 2 ] || parts[ 0 ];
+			}
 
+			return expanded;
+		}
+	};
 
-
+	if ( !rmargin.test( prefix ) ) {
+		jQuery.cssHooks[ prefix + suffix ].set = setPositiveNumber;
+	}
+});
 var r20 = /%20/g,
 	rbracket = /\[\]$/,
 	rCRLF = /\r?\n/g,
+	rsubmitterTypes = /^(?:submit|button|image|reset)$/i,
+	rsubmittable = /^(?:input|select|textarea|keygen)/i;
+
+jQuery.fn.extend({
+	serialize: function() {
+		return jQuery.param( this.serializeArray() );
+	},
+	serializeArray: function() {
+		return this.map(function(){
+			var elements = jQuery.prop( this, "elements" );
+			return elements ? jQuery.makeArray( elements ) : this;
+		})
+		.filter(function(){
+			var type = this.type;
+			return this.name && !jQuery( this ).is( ":disabled" ) &&
+				rsubmittable.test( this.nodeName ) && !rsubmitterTypes.test( type ) &&
+				( this.checked || !manipulation_rcheckableType.test( type ) );
+		})
+		.map(function( i, elem ){
+			var val = jQuery( this ).val();
+
+			return val == null ?
+				null :
+				jQuery.isArray( val ) ?
+					jQuery.map( val, function( val ){
+						return { name: elem.name, value: val.replace( rCRLF, "\r\n" ) };
+					}) :
+					{ name: elem.name, value: val.replace( rCRLF, "\r\n" ) };
+		}).get();
+	}
+});
+jQuery.param = function( a, traditional ) {
+	var prefix,
+		s = [],
+		add = function( key, value ) {
+			value = jQuery.isFunction( value ) ? value() : ( value == null ? "" : value );
+			s[ s.length ] = encodeURIComponent( key ) + "=" + encodeURIComponent( value );
+		};
+	if ( traditional === undefined ) {
+		traditional = jQuery.ajaxSettings && jQuery.ajaxSettings.traditional;
+	}
+	if ( jQuery.isArray( a ) || ( a.jquery && !jQuery.isPlainObject( a ) ) ) {
+		jQuery.each( a, function() {
+			add( this.name, this.value );
+		});
+
+	} else {
+		for ( prefix in a ) {
+			buildParams( prefix, a[ prefix ], traditional, add );
+		}
+	}
+	return s.join( "&" ).replace( r20, "+" );
+};
+
+function buildParams( prefix, obj, traditional, add ) {
+	var name;
+
+	if ( jQuery.isArray( obj ) ) {
+		jQuery.each( obj, function( i, v ) {
+			if ( traditional || rbracket.test( prefix ) ) {
+				add( prefix, v );
+
+			} else {
+				buildParams( prefix + "[" + ( typeof v === "object" ? i : "" ) + "]", v, traditional, add );
+			}
+		});
+
+	} else if ( !traditional && jQuery.type( obj ) === "object" ) {
+		for ( name in obj ) {
+			buildParams( prefix + "[" + name + "]", obj[ name ], traditional, add );
+		}
+
+	} else {
+		add( prefix, obj );
+	}
+}
+var
+	ajaxLocParts,
+	ajaxLocation,
+	
+	ajax_nonce = jQuery.now(),
+
+	ajax_rquery = /\?/,
 	rhash = /#.*$/,
+	rts = /([?&])_=[^&]*/,
 	rheaders = /^(.*?):[ \t]*([^\r\n]*)\r?$/mg, // IE leaves an \r character at EOL
-	rinput = /^(?:color|date|datetime|datetime-local|email|hidden|month|number|password|range|search|tel|text|time|url|week)$/i,
-	rlocalProtocol = /^(?:about|app|app\-storage|.+\-extension|file|res|widget):$/,
+	rlocalProtocol = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/,
 	rnoContent = /^(?:GET|HEAD)$/,
 	rprotocol = /^\/\//,
-	rquery = /\?/,
-	rscript = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
-	rselectTextarea = /^(?:select|textarea)/i,
-	rspacesAjax = /\s+/,
-	rts = /([?&])_=[^&]*/,
-	rurl = /^([\w\+\.\-]+:)(?:\/\/([^\/?#:]*)(?::(\d+))?)?/,
+	rurl = /^([\w.+-]+:)(?:\/\/([^\/?#:]*)(?::(\d+)|)|)/,
 	_load = jQuery.fn.load,
 
 	/* Prefilters
@@ -5695,9 +5806,7 @@ var r20 = /%20/g,
 	 * 3) selection will start with transport dataType and THEN go to "*" if needed
 	 */
 	transports = {},
-	ajaxLocation,
-	ajaxLocParts,
-	allTypes = ["*/"] + ["*"];
+	allTypes = "*/".concat("*");
 try {
 	ajaxLocation = location.href;
 } catch( e ) {
@@ -5714,151 +5823,103 @@ function addToPrefiltersOrTransports( structure ) {
 			dataTypeExpression = "*";
 		}
 
+		var dataType,
+			i = 0,
+			dataTypes = dataTypeExpression.toLowerCase().match( core_rnotwhite ) || [];
+
 		if ( jQuery.isFunction( func ) ) {
-			var dataTypes = dataTypeExpression.toLowerCase().split( rspacesAjax ),
-				i = 0,
-				length = dataTypes.length,
-				dataType,
-				list,
-				placeBefore;
-			for ( ; i < length; i++ ) {
-				dataType = dataTypes[ i ];
-				placeBefore = /^\+/.test( dataType );
-				if ( placeBefore ) {
-					dataType = dataType.substr( 1 ) || "*";
+			while ( (dataType = dataTypes[i++]) ) {
+				if ( dataType[0] === "+" ) {
+					dataType = dataType.slice( 1 ) || "*";
+					(structure[ dataType ] = structure[ dataType ] || []).unshift( func );
+				} else {
+					(structure[ dataType ] = structure[ dataType ] || []).push( func );
 				}
-				list = structure[ dataType ] = structure[ dataType ] || [];
-				list[ placeBefore ? "unshift" : "push" ]( func );
 			}
 		}
 	};
 }
-function inspectPrefiltersOrTransports( structure, options, originalOptions, jqXHR,
-		dataType /* internal */, inspected /* internal */ ) {
+function inspectPrefiltersOrTransports( structure, options, originalOptions, jqXHR ) {
 
-	dataType = dataType || options.dataTypes[ 0 ];
-	inspected = inspected || {};
+	var inspected = {},
+		seekingTransport = ( structure === transports );
 
-	inspected[ dataType ] = true;
-
-	var list = structure[ dataType ],
-		i = 0,
-		length = list ? list.length : 0,
-		executeOnly = ( structure === prefilters ),
-		selection;
-
-	for ( ; i < length && ( executeOnly || !selection ); i++ ) {
-		selection = list[ i ]( options, originalOptions, jqXHR );
-		if ( typeof selection === "string" ) {
-			if ( !executeOnly || inspected[ selection ] ) {
-				selection = undefined;
-			} else {
-				options.dataTypes.unshift( selection );
-				selection = inspectPrefiltersOrTransports(
-						structure, options, originalOptions, jqXHR, selection, inspected );
+	function inspect( dataType ) {
+		var selected;
+		inspected[ dataType ] = true;
+		jQuery.each( structure[ dataType ] || [], function( _, prefilterOrFactory ) {
+			var dataTypeOrTransport = prefilterOrFactory( options, originalOptions, jqXHR );
+			if( typeof dataTypeOrTransport === "string" && !seekingTransport && !inspected[ dataTypeOrTransport ] ) {
+				options.dataTypes.unshift( dataTypeOrTransport );
+				inspect( dataTypeOrTransport );
+				return false;
+			} else if ( seekingTransport ) {
+				return !( selected = dataTypeOrTransport );
 			}
-		}
+		});
+		return selected;
 	}
-	if ( ( executeOnly || !selection ) && !inspected[ "*" ] ) {
-		selection = inspectPrefiltersOrTransports(
-				structure, options, originalOptions, jqXHR, "*", inspected );
-	}
-	return selection;
+
+	return inspect( options.dataTypes[ 0 ] ) || !inspected[ "*" ] && inspect( "*" );
 }
 function ajaxExtend( target, src ) {
 	var key, deep,
 		flatOptions = jQuery.ajaxSettings.flatOptions || {};
+
 	for ( key in src ) {
 		if ( src[ key ] !== undefined ) {
-			( flatOptions[ key ] ? target : ( deep || ( deep = {} ) ) )[ key ] = src[ key ];
+			( flatOptions[ key ] ? target : ( deep || (deep = {}) ) )[ key ] = src[ key ];
 		}
 	}
 	if ( deep ) {
 		jQuery.extend( true, target, deep );
 	}
+
+	return target;
 }
 
-jQuery.fn.extend({
-	load: function( url, params, callback ) {
-		if ( typeof url !== "string" && _load ) {
-			return _load.apply( this, arguments );
-		} else if ( !this.length ) {
-			return this;
-		}
+jQuery.fn.load = function( url, params, callback ) {
+	if ( typeof url !== "string" && _load ) {
+		return _load.apply( this, arguments );
+	}
 
-		var off = url.indexOf( " " );
-		if ( off >= 0 ) {
-			var selector = url.slice( off, url.length );
-			url = url.slice( 0, off );
-		}
-		var type = "GET";
-		if ( params ) {
-			if ( jQuery.isFunction( params ) ) {
-				callback = params;
-				params = undefined;
-			} else if ( typeof params === "object" ) {
-				params = jQuery.param( params, jQuery.ajaxSettings.traditional );
-				type = "POST";
-			}
-		}
+	var selector, type, response,
+		self = this,
+		off = url.indexOf(" ");
 
-		var self = this;
+	if ( off >= 0 ) {
+		selector = url.slice( off, url.length );
+		url = url.slice( 0, off );
+	}
+	if ( jQuery.isFunction( params ) ) {
+		callback = params;
+		params = undefined;
+	} else if ( params && typeof params === "object" ) {
+		type = "POST";
+	}
+	if ( self.length > 0 ) {
 		jQuery.ajax({
 			url: url,
 			type: type,
 			dataType: "html",
-			data: params,
-			complete: function( jqXHR, status, responseText ) {
-				responseText = jqXHR.responseText;
-				if ( jqXHR.isResolved() ) {
-					jqXHR.done(function( r ) {
-						responseText = r;
-					});
-					self.html( selector ?
-						jQuery("<div>")
-							.append(responseText.replace(rscript, ""))
-							.find(selector) :
-						responseText );
-				}
+			data: params
+		}).done(function( responseText ) {
+			response = arguments;
 
-				if ( callback ) {
-					self.each( callback, [ responseText, status, jqXHR ] );
-				}
-			}
+			self.html( selector ?
+				jQuery("<div>").append( jQuery.parseHTML( responseText ) ).find( selector ) :
+				responseText );
+
+		}).complete( callback && function( jqXHR, status ) {
+			self.each( callback, response || [ jqXHR.responseText, status, jqXHR ] );
 		});
-
-		return this;
-	},
-
-	serialize: function() {
-		return jQuery.param( this.serializeArray() );
-	},
-
-	serializeArray: function() {
-		return this.map(function(){
-			return this.elements ? jQuery.makeArray( this.elements ) : this;
-		})
-		.filter(function(){
-			return this.name && !this.disabled &&
-				( this.checked || rselectTextarea.test( this.nodeName ) ||
-					rinput.test( this.type ) );
-		})
-		.map(function( i, elem ){
-			var val = jQuery( this ).val();
-
-			return val == null ?
-				null :
-				jQuery.isArray( val ) ?
-					jQuery.map( val, function( val, i ){
-						return { name: elem.name, value: val.replace( rCRLF, "\r\n" ) };
-					}) :
-					{ name: elem.name, value: val.replace( rCRLF, "\r\n" ) };
-		}).get();
 	}
-});
-jQuery.each( "ajaxStart ajaxStop ajaxComplete ajaxError ajaxSuccess ajaxSend".split( " " ), function( i, o ){
-	jQuery.fn[ o ] = function( f ){
-		return this.bind( o, f );
+
+	return this;
+};
+jQuery.each( [ "ajaxStart", "ajaxStop", "ajaxComplete", "ajaxError", "ajaxSuccess", "ajaxSend" ], function( i, type ){
+	jQuery.fn[ type ] = function( fn ){
+		return this.on( type, fn );
 	};
 });
 
@@ -5871,43 +5932,28 @@ jQuery.each( [ "get", "post" ], function( i, method ) {
 		}
 
 		return jQuery.ajax({
-			type: method,
 			url: url,
+			type: method,
+			dataType: type,
 			data: data,
-			success: callback,
-			dataType: type
+			success: callback
 		});
 	};
 });
 
 jQuery.extend({
-
-	getScript: function( url, callback ) {
-		return jQuery.get( url, undefined, callback, "script" );
-	},
-
-	getJSON: function( url, data, callback ) {
-		return jQuery.get( url, data, callback, "json" );
-	},
-	ajaxSetup: function( target, settings ) {
-		if ( settings ) {
-			ajaxExtend( target, jQuery.ajaxSettings );
-		} else {
-			settings = target;
-			target = jQuery.ajaxSettings;
-		}
-		ajaxExtend( target, settings );
-		return target;
-	},
+	active: 0,
+	lastModified: {},
+	etag: {},
 
 	ajaxSettings: {
 		url: ajaxLocation,
+		type: "GET",
 		isLocal: rlocalProtocol.test( ajaxLocParts[ 1 ] ),
 		global: true,
-		type: "GET",
-		contentType: "application/x-www-form-urlencoded",
 		processData: true,
 		async: true,
+		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 		/*
 		timeout: 0,
 		data: null,
@@ -5915,16 +5961,17 @@ jQuery.extend({
 		username: null,
 		password: null,
 		cache: null,
+		throws: false,
 		traditional: false,
 		headers: {},
 		*/
 
 		accepts: {
-			xml: "application/xml, text/xml",
-			html: "text/html",
+			"*": allTypes,
 			text: "text/plain",
-			json: "application/json, text/javascript",
-			"*": allTypes
+			html: "text/html",
+			xml: "application/xml, text/xml",
+			json: "application/json, text/javascript"
 		},
 
 		contents: {
@@ -5944,9 +5991,14 @@ jQuery.extend({
 			"text xml": jQuery.parseXML
 		},
 		flatOptions: {
-			context: true,
-			url: true
+			url: true,
+			context: true
 		}
+	},
+	ajaxSetup: function( target, settings ) {
+		return settings ?
+			ajaxExtend( ajaxExtend( target, jQuery.ajaxSettings ), settings ) :
+			ajaxExtend( jQuery.ajaxSettings, target );
 	},
 
 	ajaxPrefilter: addToPrefiltersOrTransports( prefilters ),
@@ -5958,52 +6010,51 @@ jQuery.extend({
 		}
 		options = options || {};
 
-		var // Create the final options object
-			s = jQuery.ajaxSetup( {}, options ),
-			callbackContext = s.context || s,
-			globalEventContext = callbackContext !== s &&
-				( callbackContext.nodeType || callbackContext instanceof jQuery ) ?
-						jQuery( callbackContext ) : jQuery.event,
-			deferred = jQuery.Deferred(),
-			completeDeferred = jQuery.Callbacks( "once memory" ),
-			statusCode = s.statusCode || {},
-			ifModifiedKey,
-			requestHeaders = {},
-			requestHeadersNames = {},
+		var transport,
+			cacheURL,
 			responseHeadersString,
 			responseHeaders,
-			transport,
 			timeoutTimer,
 			parts,
-			state = 0,
 			fireGlobals,
 			i,
+			s = jQuery.ajaxSetup( {}, options ),
+			callbackContext = s.context || s,
+			globalEventContext = s.context && ( callbackContext.nodeType || callbackContext.jquery ) ?
+				jQuery( callbackContext ) :
+				jQuery.event,
+			deferred = jQuery.Deferred(),
+			completeDeferred = jQuery.Callbacks("once memory"),
+			statusCode = s.statusCode || {},
+			requestHeaders = {},
+			requestHeadersNames = {},
+			state = 0,
+			strAbort = "canceled",
 			jqXHR = {
-
 				readyState: 0,
-				setRequestHeader: function( name, value ) {
-					if ( !state ) {
-						var lname = name.toLowerCase();
-						name = requestHeadersNames[ lname ] = requestHeadersNames[ lname ] || name;
-						requestHeaders[ name ] = value;
-					}
-					return this;
-				},
-				getAllResponseHeaders: function() {
-					return state === 2 ? responseHeadersString : null;
-				},
 				getResponseHeader: function( key ) {
 					var match;
 					if ( state === 2 ) {
 						if ( !responseHeaders ) {
 							responseHeaders = {};
-							while( ( match = rheaders.exec( responseHeadersString ) ) ) {
+							while ( (match = rheaders.exec( responseHeadersString )) ) {
 								responseHeaders[ match[1].toLowerCase() ] = match[ 2 ];
 							}
 						}
 						match = responseHeaders[ key.toLowerCase() ];
 					}
-					return match === undefined ? null : match;
+					return match == null ? null : match;
+				},
+				getAllResponseHeaders: function() {
+					return state === 2 ? responseHeadersString : null;
+				},
+				setRequestHeader: function( name, value ) {
+					var lname = name.toLowerCase();
+					if ( !state ) {
+						name = requestHeadersNames[ lname ] = requestHeadersNames[ lname ] || name;
+						requestHeaders[ name ] = value;
+					}
+					return this;
 				},
 				overrideMimeType: function( type ) {
 					if ( !state ) {
@@ -6011,115 +6062,38 @@ jQuery.extend({
 					}
 					return this;
 				},
-				abort: function( statusText ) {
-					statusText = statusText || "abort";
-					if ( transport ) {
-						transport.abort( statusText );
+				statusCode: function( map ) {
+					var code;
+					if ( map ) {
+						if ( state < 2 ) {
+							for ( code in map ) {
+								statusCode[ code ] = [ statusCode[ code ], map[ code ] ];
+							}
+						} else {
+							jqXHR.always( map[ jqXHR.status ] );
+						}
 					}
-					done( 0, statusText );
+					return this;
+				},
+				abort: function( statusText ) {
+					var finalText = statusText || strAbort;
+					if ( transport ) {
+						transport.abort( finalText );
+					}
+					done( 0, finalText );
 					return this;
 				}
 			};
-		function done( status, nativeStatusText, responses, headers ) {
-			if ( state === 2 ) {
-				return;
-			}
-			state = 2;
-			if ( timeoutTimer ) {
-				clearTimeout( timeoutTimer );
-			}
-			transport = undefined;
-			responseHeadersString = headers || "";
-			jqXHR.readyState = status > 0 ? 4 : 0;
-
-			var isSuccess,
-				success,
-				error,
-				statusText = nativeStatusText,
-				response = responses ? ajaxHandleResponses( s, jqXHR, responses ) : undefined,
-				lastModified,
-				etag;
-			if ( status >= 200 && status < 300 || status === 304 ) {
-				if ( s.ifModified ) {
-
-					if ( ( lastModified = jqXHR.getResponseHeader( "Last-Modified" ) ) ) {
-						jQuery.lastModified[ ifModifiedKey ] = lastModified;
-					}
-					if ( ( etag = jqXHR.getResponseHeader( "Etag" ) ) ) {
-						jQuery.etag[ ifModifiedKey ] = etag;
-					}
-				}
-				if ( status === 304 ) {
-
-					statusText = "notmodified";
-					isSuccess = true;
-				} else {
-
-					try {
-						success = ajaxConvert( s, response );
-						statusText = "success";
-						isSuccess = true;
-					} catch(e) {
-						statusText = "parsererror";
-						error = e;
-					}
-				}
-			} else {
-				error = statusText;
-				if ( !statusText || status ) {
-					statusText = "error";
-					if ( status < 0 ) {
-						status = 0;
-					}
-				}
-			}
-			jqXHR.status = status;
-			jqXHR.statusText = "" + ( nativeStatusText || statusText );
-			if ( isSuccess ) {
-				deferred.resolveWith( callbackContext, [ success, statusText, jqXHR ] );
-			} else {
-				deferred.rejectWith( callbackContext, [ jqXHR, statusText, error ] );
-			}
-			jqXHR.statusCode( statusCode );
-			statusCode = undefined;
-
-			if ( fireGlobals ) {
-				globalEventContext.trigger( "ajax" + ( isSuccess ? "Success" : "Error" ),
-						[ jqXHR, s, isSuccess ? success : error ] );
-			}
-			completeDeferred.fireWith( callbackContext, [ jqXHR, statusText ] );
-
-			if ( fireGlobals ) {
-				globalEventContext.trigger( "ajaxComplete", [ jqXHR, s ] );
-				if ( !( --jQuery.active ) ) {
-					jQuery.event.trigger( "ajaxStop" );
-				}
-			}
-		}
-		deferred.promise( jqXHR );
+		deferred.promise( jqXHR ).complete = completeDeferred.add;
 		jqXHR.success = jqXHR.done;
 		jqXHR.error = jqXHR.fail;
-		jqXHR.complete = completeDeferred.add;
-		jqXHR.statusCode = function( map ) {
-			if ( map ) {
-				var tmp;
-				if ( state < 2 ) {
-					for ( tmp in map ) {
-						statusCode[ tmp ] = [ statusCode[tmp], map[tmp] ];
-					}
-				} else {
-					tmp = map[ jqXHR.status ];
-					jqXHR.then( tmp, tmp );
-				}
-			}
-			return this;
-		};
-		s.url = ( ( url || s.url ) + "" ).replace( rhash, "" ).replace( rprotocol, ajaxLocParts[ 1 ] + "//" );
-		s.dataTypes = jQuery.trim( s.dataType || "*" ).toLowerCase().split( rspacesAjax );
+		s.url = ( ( url || s.url || ajaxLocation ) + "" ).replace( rhash, "" ).replace( rprotocol, ajaxLocParts[ 1 ] + "//" );
+		s.type = options.method || options.type || s.method || s.type;
+		s.dataTypes = jQuery.trim( s.dataType || "*" ).toLowerCase().match( core_rnotwhite ) || [""];
 		if ( s.crossDomain == null ) {
 			parts = rurl.exec( s.url.toLowerCase() );
 			s.crossDomain = !!( parts &&
-				( parts[ 1 ] != ajaxLocParts[ 1 ] || parts[ 2 ] != ajaxLocParts[ 2 ] ||
+				( parts[ 1 ] !== ajaxLocParts[ 1 ] || parts[ 2 ] !== ajaxLocParts[ 2 ] ||
 					( parts[ 3 ] || ( parts[ 1 ] === "http:" ? 80 : 443 ) ) !=
 						( ajaxLocParts[ 3 ] || ( ajaxLocParts[ 1 ] === "http:" ? 80 : 443 ) ) )
 			);
@@ -6129,38 +6103,36 @@ jQuery.extend({
 		}
 		inspectPrefiltersOrTransports( prefilters, s, options, jqXHR );
 		if ( state === 2 ) {
-			return false;
+			return jqXHR;
 		}
 		fireGlobals = s.global;
+		if ( fireGlobals && jQuery.active++ === 0 ) {
+			jQuery.event.trigger("ajaxStart");
+		}
 		s.type = s.type.toUpperCase();
 		s.hasContent = !rnoContent.test( s.type );
-		if ( fireGlobals && jQuery.active++ === 0 ) {
-			jQuery.event.trigger( "ajaxStart" );
-		}
+		cacheURL = s.url;
 		if ( !s.hasContent ) {
 			if ( s.data ) {
-				s.url += ( rquery.test( s.url ) ? "&" : "?" ) + s.data;
+				cacheURL = ( s.url += ( ajax_rquery.test( cacheURL ) ? "&" : "?" ) + s.data );
 				delete s.data;
 			}
-			ifModifiedKey = s.url;
 			if ( s.cache === false ) {
-
-				var ts = jQuery.now(),
-					ret = s.url.replace( rts, "$1_=" + ts );
-				s.url = ret + ( ( ret === s.url ) ? ( rquery.test( s.url ) ? "&" : "?" ) + "_=" + ts : "" );
+				s.url = rts.test( cacheURL ) ?
+					cacheURL.replace( rts, "$1_=" + ajax_nonce++ ) :
+					cacheURL + ( ajax_rquery.test( cacheURL ) ? "&" : "?" ) + "_=" + ajax_nonce++;
+			}
+		}
+		if ( s.ifModified ) {
+			if ( jQuery.lastModified[ cacheURL ] ) {
+				jqXHR.setRequestHeader( "If-Modified-Since", jQuery.lastModified[ cacheURL ] );
+			}
+			if ( jQuery.etag[ cacheURL ] ) {
+				jqXHR.setRequestHeader( "If-None-Match", jQuery.etag[ cacheURL ] );
 			}
 		}
 		if ( s.data && s.hasContent && s.contentType !== false || options.contentType ) {
 			jqXHR.setRequestHeader( "Content-Type", s.contentType );
-		}
-		if ( s.ifModified ) {
-			ifModifiedKey = ifModifiedKey || s.url;
-			if ( jQuery.lastModified[ ifModifiedKey ] ) {
-				jqXHR.setRequestHeader( "If-Modified-Since", jQuery.lastModified[ ifModifiedKey ] );
-			}
-			if ( jQuery.etag[ ifModifiedKey ] ) {
-				jqXHR.setRequestHeader( "If-None-Match", jQuery.etag[ ifModifiedKey ] );
-			}
 		}
 		jqXHR.setRequestHeader(
 			"Accept",
@@ -6172,10 +6144,9 @@ jQuery.extend({
 			jqXHR.setRequestHeader( i, s.headers[ i ] );
 		}
 		if ( s.beforeSend && ( s.beforeSend.call( callbackContext, jqXHR, s ) === false || state === 2 ) ) {
-				jqXHR.abort();
-				return false;
-
+			return jqXHR.abort();
 		}
+		strAbort = "abort";
 		for ( i in { success: 1, error: 1, complete: 1 } ) {
 			jqXHR[ i ]( s[ i ] );
 		}
@@ -6188,73 +6159,102 @@ jQuery.extend({
 				globalEventContext.trigger( "ajaxSend", [ jqXHR, s ] );
 			}
 			if ( s.async && s.timeout > 0 ) {
-				timeoutTimer = setTimeout( function(){
-					jqXHR.abort( "timeout" );
+				timeoutTimer = setTimeout(function() {
+					jqXHR.abort("timeout");
 				}, s.timeout );
 			}
 
 			try {
 				state = 1;
 				transport.send( requestHeaders, done );
-			} catch (e) {
+			} catch ( e ) {
 				if ( state < 2 ) {
 					done( -1, e );
 				} else {
-					jQuery.error( e );
+					throw e;
+				}
+			}
+		}
+		function done( status, nativeStatusText, responses, headers ) {
+			var isSuccess, success, error, response, modified,
+				statusText = nativeStatusText;
+			if ( state === 2 ) {
+				return;
+			}
+			state = 2;
+			if ( timeoutTimer ) {
+				clearTimeout( timeoutTimer );
+			}
+			transport = undefined;
+			responseHeadersString = headers || "";
+			jqXHR.readyState = status > 0 ? 4 : 0;
+			if ( responses ) {
+				response = ajaxHandleResponses( s, jqXHR, responses );
+			}
+			if ( status >= 200 && status < 300 || status === 304 ) {
+				if ( s.ifModified ) {
+					modified = jqXHR.getResponseHeader("Last-Modified");
+					if ( modified ) {
+						jQuery.lastModified[ cacheURL ] = modified;
+					}
+					modified = jqXHR.getResponseHeader("etag");
+					if ( modified ) {
+						jQuery.etag[ cacheURL ] = modified;
+					}
+				}
+				if ( status === 304 ) {
+					isSuccess = true;
+					statusText = "notmodified";
+				} else {
+					isSuccess = ajaxConvert( s, response );
+					statusText = isSuccess.state;
+					success = isSuccess.data;
+					error = isSuccess.error;
+					isSuccess = !error;
+				}
+			} else {
+				error = statusText;
+				if ( status || !statusText ) {
+					statusText = "error";
+					if ( status < 0 ) {
+						status = 0;
+					}
+				}
+			}
+			jqXHR.status = status;
+			jqXHR.statusText = ( nativeStatusText || statusText ) + "";
+			if ( isSuccess ) {
+				deferred.resolveWith( callbackContext, [ success, statusText, jqXHR ] );
+			} else {
+				deferred.rejectWith( callbackContext, [ jqXHR, statusText, error ] );
+			}
+			jqXHR.statusCode( statusCode );
+			statusCode = undefined;
+
+			if ( fireGlobals ) {
+				globalEventContext.trigger( isSuccess ? "ajaxSuccess" : "ajaxError",
+					[ jqXHR, s, isSuccess ? success : error ] );
+			}
+			completeDeferred.fireWith( callbackContext, [ jqXHR, statusText ] );
+
+			if ( fireGlobals ) {
+				globalEventContext.trigger( "ajaxComplete", [ jqXHR, s ] );
+				if ( !( --jQuery.active ) ) {
+					jQuery.event.trigger("ajaxStop");
 				}
 			}
 		}
 
 		return jqXHR;
 	},
-	param: function( a, traditional ) {
-		var s = [],
-			add = function( key, value ) {
-				value = jQuery.isFunction( value ) ? value() : value;
-				s[ s.length ] = encodeURIComponent( key ) + "=" + encodeURIComponent( value );
-			};
-		if ( traditional === undefined ) {
-			traditional = jQuery.ajaxSettings.traditional;
-		}
-		if ( jQuery.isArray( a ) || ( a.jquery && !jQuery.isPlainObject( a ) ) ) {
-			jQuery.each( a, function() {
-				add( this.name, this.value );
-			});
 
-		} else {
-			for ( var prefix in a ) {
-				buildParams( prefix, a[ prefix ], traditional, add );
-			}
-		}
-		return s.join( "&" ).replace( r20, "+" );
+	getScript: function( url, callback ) {
+		return jQuery.get( url, undefined, callback, "script" );
+	},
+
+	getJSON: function( url, data, callback ) {
+		return jQuery.get( url, data, callback, "json" );
 	}
-});
-
-function buildParams( prefix, obj, traditional, add ) {
-	if ( jQuery.isArray( obj ) ) {
-		jQuery.each( obj, function( i, v ) {
-			if ( traditional || rbracket.test( prefix ) ) {
-				add( prefix, v );
-
-			} else {
-				buildParams( prefix + "[" + ( typeof v === "object" || jQuery.isArray(v) ? i : "" ) + "]", v, traditional, add );
-			}
-		});
-
-	} else if ( !traditional && obj != null && typeof obj === "object" ) {
-		for ( var name in obj ) {
-			buildParams( prefix + "[" + name + "]", obj[ name ], traditional, add );
-		}
-
-	} else {
-		add( prefix, obj );
-	}
-}
-jQuery.extend({
-	active: 0,
-	lastModified: {},
-	etag: {}
-
 });
 
 /* Handles responses to an ajax request:
@@ -6264,13 +6264,10 @@ jQuery.extend({
  */
 function ajaxHandleResponses( s, jqXHR, responses ) {
 
-	var contents = s.contents,
+	var ct, type, finalDataType, firstDataType,
+		contents = s.contents,
 		dataTypes = s.dataTypes,
-		responseFields = s.responseFields,
-		ct,
-		type,
-		finalDataType,
-		firstDataType;
+		responseFields = s.responseFields;
 	for ( type in responseFields ) {
 		if ( type in responses ) {
 			jqXHR[ responseFields[type] ] = responses[ type ];
@@ -6279,7 +6276,7 @@ function ajaxHandleResponses( s, jqXHR, responses ) {
 	while( dataTypes[ 0 ] === "*" ) {
 		dataTypes.shift();
 		if ( ct === undefined ) {
-			ct = s.mimeType || jqXHR.getResponseHeader( "content-type" );
+			ct = s.mimeType || jqXHR.getResponseHeader("Content-Type");
 		}
 	}
 	if ( ct ) {
@@ -6312,133 +6309,67 @@ function ajaxHandleResponses( s, jqXHR, responses ) {
 	}
 }
 function ajaxConvert( s, response ) {
+
+	var conv, conv2, current, tmp,
+		converters = {},
+		i = 0,
+		dataTypes = s.dataTypes.slice(),
+		prev = dataTypes[ 0 ];
 	if ( s.dataFilter ) {
 		response = s.dataFilter( response, s.dataType );
 	}
-
-	var dataTypes = s.dataTypes,
-		converters = {},
-		i,
-		key,
-		length = dataTypes.length,
-		tmp,
-		current = dataTypes[ 0 ],
-		prev,
-		conversion,
-		conv,
-		conv1,
-		conv2;
-	for ( i = 1; i < length; i++ ) {
-		if ( i === 1 ) {
-			for ( key in s.converters ) {
-				if ( typeof key === "string" ) {
-					converters[ key.toLowerCase() ] = s.converters[ key ];
-				}
-			}
+	if ( dataTypes[ 1 ] ) {
+		for ( conv in s.converters ) {
+			converters[ conv.toLowerCase() ] = s.converters[ conv ];
 		}
-		prev = current;
-		current = dataTypes[ i ];
-		if ( current === "*" ) {
-			current = prev;
-		} else if ( prev !== "*" && prev !== current ) {
-			conversion = prev + " " + current;
-			conv = converters[ conversion ] || converters[ "* " + current ];
-			if ( !conv ) {
-				conv2 = undefined;
-				for ( conv1 in converters ) {
-					tmp = conv1.split( " " );
-					if ( tmp[ 0 ] === prev || tmp[ 0 ] === "*" ) {
-						conv2 = converters[ tmp[1] + " " + current ];
-						if ( conv2 ) {
-							conv1 = converters[ conv1 ];
-							if ( conv1 === true ) {
-								conv = conv2;
-							} else if ( conv2 === true ) {
-								conv = conv1;
+	}
+	for ( ; (current = dataTypes[++i]); ) {
+		if ( current !== "*" ) {
+			if ( prev !== "*" && prev !== current ) {
+				conv = converters[ prev + " " + current ] || converters[ "* " + current ];
+				if ( !conv ) {
+					for ( conv2 in converters ) {
+						tmp = conv2.split(" ");
+						if ( tmp[ 1 ] === current ) {
+							conv = converters[ prev + " " + tmp[ 0 ] ] ||
+								converters[ "* " + tmp[ 0 ] ];
+							if ( conv ) {
+								if ( conv === true ) {
+									conv = converters[ conv2 ];
+								} else if ( converters[ conv2 ] !== true ) {
+									current = tmp[ 0 ];
+									dataTypes.splice( i--, 0, current );
+								}
+
+								break;
 							}
-							break;
+						}
+					}
+				}
+				if ( conv !== true ) {
+					if ( conv && s["throws"] ) {
+						response = conv( response );
+					} else {
+						try {
+							response = conv( response );
+						} catch ( e ) {
+							return { state: "parsererror", error: conv ? e : "No conversion from " + prev + " to " + current };
 						}
 					}
 				}
 			}
-			if ( !( conv || conv2 ) ) {
-				jQuery.error( "No conversion from " + conversion.replace(" "," to ") );
-			}
-			if ( conv !== true ) {
-				response = conv ? conv( response ) : conv2( conv1(response) );
-			}
+			prev = current;
 		}
 	}
-	return response;
+
+	return { state: "success", data: response };
 }
-
-
-
-
-var jsc = jQuery.now(),
-	jsre = /(\=)\?(&|$)|\?\?/i;
-jQuery.ajaxSetup({
-	jsonp: "callback",
-	jsonpCallback: function() {
-		return jQuery.expando + "_" + ( jsc++ );
-	}
-});
-jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
-
-	var inspectData = s.contentType === "application/x-www-form-urlencoded" &&
-		( typeof s.data === "string" );
-
-	if ( s.dataTypes[ 0 ] === "jsonp" ||
-		s.jsonp !== false && ( jsre.test( s.url ) ||
-				inspectData && jsre.test( s.data ) ) ) {
-
-		var responseContainer,
-			jsonpCallback = s.jsonpCallback =
-				jQuery.isFunction( s.jsonpCallback ) ? s.jsonpCallback() : s.jsonpCallback,
-			previous = window[ jsonpCallback ],
-			url = s.url,
-			data = s.data,
-			replace = "$1" + jsonpCallback + "$2";
-
-		if ( s.jsonp !== false ) {
-			url = url.replace( jsre, replace );
-			if ( s.url === url ) {
-				if ( inspectData ) {
-					data = data.replace( jsre, replace );
-				}
-				if ( s.data === data ) {
-					url += (/\?/.test( url ) ? "&" : "?") + s.jsonp + "=" + jsonpCallback;
-				}
-			}
-		}
-
-		s.url = url;
-		s.data = data;
-		window[ jsonpCallback ] = function( response ) {
-			responseContainer = [ response ];
-		};
-		jqXHR.always(function() {
-			window[ jsonpCallback ] = previous;
-			if ( responseContainer && jQuery.isFunction( previous ) ) {
-				window[ jsonpCallback ]( responseContainer[ 0 ] );
-			}
-		});
-		s.converters["script json"] = function() {
-			if ( !responseContainer ) {
-				jQuery.error( jsonpCallback + " was not called" );
-			}
-			return responseContainer[ 0 ];
-		};
-		s.dataTypes[ 0 ] = "json";
-		return "script";
-	}
-});
 jQuery.ajaxSetup({
 	accepts: {
 		script: "text/javascript, application/javascript, application/ecmascript, application/x-ecmascript"
 	},
 	contents: {
-		script: /javascript|ecmascript/
+		script: /(?:java|ecma)script/
 	},
 	converters: {
 		"text script": function( text ) {
@@ -6460,15 +6391,15 @@ jQuery.ajaxTransport( "script", function(s) {
 	if ( s.crossDomain ) {
 
 		var script,
-			head = document.head || document.getElementsByTagName( "head" )[0] || document.documentElement;
+			head = document.head || jQuery("head")[0] || document.documentElement;
 
 		return {
 
 			send: function( _, callback ) {
 
-				script = document.createElement( "script" );
+				script = document.createElement("script");
 
-				script.async = "async";
+				script.async = true;
 
 				if ( s.scriptCharset ) {
 					script.charset = s.scriptCharset;
@@ -6479,10 +6410,10 @@ jQuery.ajaxTransport( "script", function(s) {
 
 					if ( isAbort || !script.readyState || /loaded|complete/.test( script.readyState ) ) {
 						script.onload = script.onreadystatechange = null;
-						if ( head && script.parentNode ) {
-							head.removeChild( script );
+						if ( script.parentNode ) {
+							script.parentNode.removeChild( script );
 						}
-						script = undefined;
+						script = null;
 						if ( !isAbort ) {
 							callback( 200, "success" );
 						}
@@ -6493,24 +6424,72 @@ jQuery.ajaxTransport( "script", function(s) {
 
 			abort: function() {
 				if ( script ) {
-					script.onload( 0, 1 );
+					script.onload( undefined, true );
 				}
 			}
 		};
 	}
 });
+var oldCallbacks = [],
+	rjsonp = /(=)\?(?=&|$)|\?\?/;
+jQuery.ajaxSetup({
+	jsonp: "callback",
+	jsonpCallback: function() {
+		var callback = oldCallbacks.pop() || ( jQuery.expando + "_" + ( ajax_nonce++ ) );
+		this[ callback ] = true;
+		return callback;
+	}
+});
+jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 
-
-
-
-var // #5280: Internet Explorer will keep connections alive if we don't abort on unload
-	xhrOnUnloadAbort = window.ActiveXObject ? function() {
-		for ( var key in xhrCallbacks ) {
-			xhrCallbacks[ key ]( 0, 1 );
+	var callbackName, overwritten, responseContainer,
+		jsonProp = s.jsonp !== false && ( rjsonp.test( s.url ) ?
+			"url" :
+			typeof s.data === "string" && !( s.contentType || "" ).indexOf("application/x-www-form-urlencoded") && rjsonp.test( s.data ) && "data"
+		);
+	if ( jsonProp || s.dataTypes[ 0 ] === "jsonp" ) {
+		callbackName = s.jsonpCallback = jQuery.isFunction( s.jsonpCallback ) ?
+			s.jsonpCallback() :
+			s.jsonpCallback;
+		if ( jsonProp ) {
+			s[ jsonProp ] = s[ jsonProp ].replace( rjsonp, "$1" + callbackName );
+		} else if ( s.jsonp !== false ) {
+			s.url += ( ajax_rquery.test( s.url ) ? "&" : "?" ) + s.jsonp + "=" + callbackName;
 		}
-	} : false,
+		s.converters["script json"] = function() {
+			if ( !responseContainer ) {
+				jQuery.error( callbackName + " was not called" );
+			}
+			return responseContainer[ 0 ];
+		};
+		s.dataTypes[ 0 ] = "json";
+		overwritten = window[ callbackName ];
+		window[ callbackName ] = function() {
+			responseContainer = arguments;
+		};
+		jqXHR.always(function() {
+			window[ callbackName ] = overwritten;
+			if ( s[ callbackName ] ) {
+				s.jsonpCallback = originalSettings.jsonpCallback;
+				oldCallbacks.push( callbackName );
+			}
+			if ( responseContainer && jQuery.isFunction( overwritten ) ) {
+				overwritten( responseContainer[ 0 ] );
+			}
+
+			responseContainer = overwritten = undefined;
+		});
+		return "script";
+	}
+});
+var xhrCallbacks, xhrSupported,
 	xhrId = 0,
-	xhrCallbacks;
+	xhrOnUnloadAbort = window.ActiveXObject && function() {
+		var key;
+		for ( key in xhrCallbacks ) {
+			xhrCallbacks[ key ]( undefined, true );
+		}
+	};
 function createStandardXHR() {
 	try {
 		return new window.XMLHttpRequest();
@@ -6519,7 +6498,7 @@ function createStandardXHR() {
 
 function createActiveXHR() {
 	try {
-		return new window.ActiveXObject( "Microsoft.XMLHTTP" );
+		return new window.ActiveXObject("Microsoft.XMLHTTP");
 	} catch( e ) {}
 }
 jQuery.ajaxSettings.xhr = window.ActiveXObject ?
@@ -6533,13 +6512,10 @@ jQuery.ajaxSettings.xhr = window.ActiveXObject ?
 		return !this.isLocal && createStandardXHR() || createActiveXHR();
 	} :
 	createStandardXHR;
-(function( xhr ) {
-	jQuery.extend( jQuery.support, {
-		ajax: !!xhr,
-		cors: !!xhr && ( "withCredentials" in xhr )
-	});
-})( jQuery.ajaxSettings.xhr() );
-if ( jQuery.support.ajax ) {
+xhrSupported = jQuery.ajaxSettings.xhr();
+jQuery.support.cors = !!xhrSupported && ( "withCredentials" in xhrSupported );
+xhrSupported = jQuery.support.ajax = !!xhrSupported;
+if ( xhrSupported ) {
 
 	jQuery.ajaxTransport(function( s ) {
 		if ( !s.crossDomain || jQuery.support.cors ) {
@@ -6548,9 +6524,8 @@ if ( jQuery.support.ajax ) {
 
 			return {
 				send: function( headers, complete ) {
-					var xhr = s.xhr(),
-						handle,
-						i;
+					var handle, i,
+						xhr = s.xhr();
 					if ( s.username ) {
 						xhr.open( s.type, s.url, s.async, s.username, s.password );
 					} else {
@@ -6565,13 +6540,13 @@ if ( jQuery.support.ajax ) {
 						xhr.overrideMimeType( s.mimeType );
 					}
 					if ( !s.crossDomain && !headers["X-Requested-With"] ) {
-						headers[ "X-Requested-With" ] = "XMLHttpRequest";
+						headers["X-Requested-With"] = "XMLHttpRequest";
 					}
 					try {
 						for ( i in headers ) {
 							xhr.setRequestHeader( i, headers[ i ] );
 						}
-					} catch( _ ) {}
+					} catch( err ) {}
 					xhr.send( ( s.hasContent && s.data ) || null );
 					callback = function( _, isAbort ) {
 
@@ -6594,14 +6569,16 @@ if ( jQuery.support.ajax ) {
 										xhr.abort();
 									}
 								} else {
-									status = xhr.status;
-									responseHeaders = xhr.getAllResponseHeaders();
 									responses = {};
+									status = xhr.status;
 									xml = xhr.responseXML;
+									responseHeaders = xhr.getAllResponseHeaders();
 									if ( xml && xml.documentElement /* #4958 */ ) {
 										responses.xml = xml;
 									}
-									responses.text = xhr.responseText;
+									if ( typeof xhr.responseText === "string" ) {
+										responses.text = xhr.responseText;
+									}
 									try {
 										statusText = xhr.statusText;
 									} catch( e ) {
@@ -6623,8 +6600,11 @@ if ( jQuery.support.ajax ) {
 							complete( status, statusText, responses, responseHeaders );
 						}
 					};
-					if ( !s.async || xhr.readyState === 4 ) {
+
+					if ( !s.async ) {
 						callback();
+					} else if ( xhr.readyState === 4 ) {
+						setTimeout( callback );
 					} else {
 						handle = ++xhrId;
 						if ( xhrOnUnloadAbort ) {
@@ -6640,224 +6620,451 @@ if ( jQuery.support.ajax ) {
 
 				abort: function() {
 					if ( callback ) {
-						callback(0,1);
+						callback( undefined, true );
 					}
 				}
 			};
 		}
 	});
 }
-
-
-
-
-var elemdisplay = {},
-	iframe, iframeDoc,
+var fxNow, timerId,
 	rfxtypes = /^(?:toggle|show|hide)$/,
-	rfxnum = /^([+\-]=)?([\d+.\-]+)([a-z%]*)$/i,
-	timerId,
-	fxAttrs = [
-		[ "height", "marginTop", "marginBottom", "paddingTop", "paddingBottom" ],
-		[ "width", "marginLeft", "marginRight", "paddingLeft", "paddingRight" ],
-		[ "opacity" ]
-	],
-	fxNow;
+	rfxnum = new RegExp( "^(?:([+-])=|)(" + core_pnum + ")([a-z%]*)$", "i" ),
+	rrun = /queueHooks$/,
+	animationPrefilters = [ defaultPrefilter ],
+	tweeners = {
+		"*": [function( prop, value ) {
+			var end, unit,
+				tween = this.createTween( prop, value ),
+				parts = rfxnum.exec( value ),
+				target = tween.cur(),
+				start = +target || 0,
+				scale = 1,
+				maxIterations = 20;
+
+			if ( parts ) {
+				end = +parts[2];
+				unit = parts[3] || ( jQuery.cssNumber[ prop ] ? "" : "px" );
+				if ( unit !== "px" && start ) {
+					start = jQuery.css( tween.elem, prop, true ) || end || 1;
+
+					do {
+						scale = scale || ".5";
+						start = start / scale;
+						jQuery.style( tween.elem, prop, start + unit );
+					} while ( scale !== (scale = tween.cur() / target) && scale !== 1 && --maxIterations );
+				}
+
+				tween.unit = unit;
+				tween.start = start;
+				tween.end = parts[1] ? start + ( parts[1] + 1 ) * end : end;
+			}
+			return tween;
+		}]
+	};
+function createFxNow() {
+	setTimeout(function() {
+		fxNow = undefined;
+	});
+	return ( fxNow = jQuery.now() );
+}
+
+function createTweens( animation, props ) {
+	jQuery.each( props, function( prop, value ) {
+		var collection = ( tweeners[ prop ] || [] ).concat( tweeners[ "*" ] ),
+			index = 0,
+			length = collection.length;
+		for ( ; index < length; index++ ) {
+			if ( collection[ index ].call( animation, prop, value ) ) {
+				return;
+			}
+		}
+	});
+}
+
+function Animation( elem, properties, options ) {
+	var result,
+		stopped,
+		index = 0,
+		length = animationPrefilters.length,
+		deferred = jQuery.Deferred().always( function() {
+			delete tick.elem;
+		}),
+		tick = function() {
+			if ( stopped ) {
+				return false;
+			}
+			var currentTime = fxNow || createFxNow(),
+				remaining = Math.max( 0, animation.startTime + animation.duration - currentTime ),
+				temp = remaining / animation.duration || 0,
+				percent = 1 - temp,
+				index = 0,
+				length = animation.tweens.length;
+
+			for ( ; index < length ; index++ ) {
+				animation.tweens[ index ].run( percent );
+			}
+
+			deferred.notifyWith( elem, [ animation, percent, remaining ]);
+
+			if ( percent < 1 && length ) {
+				return remaining;
+			} else {
+				deferred.resolveWith( elem, [ animation ] );
+				return false;
+			}
+		},
+		animation = deferred.promise({
+			elem: elem,
+			props: jQuery.extend( {}, properties ),
+			opts: jQuery.extend( true, { specialEasing: {} }, options ),
+			originalProperties: properties,
+			originalOptions: options,
+			startTime: fxNow || createFxNow(),
+			duration: options.duration,
+			tweens: [],
+			createTween: function( prop, end ) {
+				var tween = jQuery.Tween( elem, animation.opts, prop, end,
+						animation.opts.specialEasing[ prop ] || animation.opts.easing );
+				animation.tweens.push( tween );
+				return tween;
+			},
+			stop: function( gotoEnd ) {
+				var index = 0,
+					length = gotoEnd ? animation.tweens.length : 0;
+				if ( stopped ) {
+					return this;
+				}
+				stopped = true;
+				for ( ; index < length ; index++ ) {
+					animation.tweens[ index ].run( 1 );
+				}
+				if ( gotoEnd ) {
+					deferred.resolveWith( elem, [ animation, gotoEnd ] );
+				} else {
+					deferred.rejectWith( elem, [ animation, gotoEnd ] );
+				}
+				return this;
+			}
+		}),
+		props = animation.props;
+
+	propFilter( props, animation.opts.specialEasing );
+
+	for ( ; index < length ; index++ ) {
+		result = animationPrefilters[ index ].call( animation, elem, props, animation.opts );
+		if ( result ) {
+			return result;
+		}
+	}
+
+	createTweens( animation, props );
+
+	if ( jQuery.isFunction( animation.opts.start ) ) {
+		animation.opts.start.call( elem, animation );
+	}
+
+	jQuery.fx.timer(
+		jQuery.extend( tick, {
+			elem: elem,
+			anim: animation,
+			queue: animation.opts.queue
+		})
+	);
+	return animation.progress( animation.opts.progress )
+		.done( animation.opts.done, animation.opts.complete )
+		.fail( animation.opts.fail )
+		.always( animation.opts.always );
+}
+
+function propFilter( props, specialEasing ) {
+	var index, name, easing, value, hooks;
+	for ( index in props ) {
+		name = jQuery.camelCase( index );
+		easing = specialEasing[ name ];
+		value = props[ index ];
+		if ( jQuery.isArray( value ) ) {
+			easing = value[ 1 ];
+			value = props[ index ] = value[ 0 ];
+		}
+
+		if ( index !== name ) {
+			props[ name ] = value;
+			delete props[ index ];
+		}
+
+		hooks = jQuery.cssHooks[ name ];
+		if ( hooks && "expand" in hooks ) {
+			value = hooks.expand( value );
+			delete props[ name ];
+			for ( index in value ) {
+				if ( !( index in props ) ) {
+					props[ index ] = value[ index ];
+					specialEasing[ index ] = easing;
+				}
+			}
+		} else {
+			specialEasing[ name ] = easing;
+		}
+	}
+}
+
+jQuery.Animation = jQuery.extend( Animation, {
+
+	tweener: function( props, callback ) {
+		if ( jQuery.isFunction( props ) ) {
+			callback = props;
+			props = [ "*" ];
+		} else {
+			props = props.split(" ");
+		}
+
+		var prop,
+			index = 0,
+			length = props.length;
+
+		for ( ; index < length ; index++ ) {
+			prop = props[ index ];
+			tweeners[ prop ] = tweeners[ prop ] || [];
+			tweeners[ prop ].unshift( callback );
+		}
+	},
+
+	prefilter: function( callback, prepend ) {
+		if ( prepend ) {
+			animationPrefilters.unshift( callback );
+		} else {
+			animationPrefilters.push( callback );
+		}
+	}
+});
+
+function defaultPrefilter( elem, props, opts ) {
+	/*jshint validthis:true */
+	var index, prop, value, length, dataShow, toggle, tween, hooks, oldfire,
+		anim = this,
+		style = elem.style,
+		orig = {},
+		handled = [],
+		hidden = elem.nodeType && isHidden( elem );
+	if ( !opts.queue ) {
+		hooks = jQuery._queueHooks( elem, "fx" );
+		if ( hooks.unqueued == null ) {
+			hooks.unqueued = 0;
+			oldfire = hooks.empty.fire;
+			hooks.empty.fire = function() {
+				if ( !hooks.unqueued ) {
+					oldfire();
+				}
+			};
+		}
+		hooks.unqueued++;
+
+		anim.always(function() {
+			anim.always(function() {
+				hooks.unqueued--;
+				if ( !jQuery.queue( elem, "fx" ).length ) {
+					hooks.empty.fire();
+				}
+			});
+		});
+	}
+	if ( elem.nodeType === 1 && ( "height" in props || "width" in props ) ) {
+		opts.overflow = [ style.overflow, style.overflowX, style.overflowY ];
+		if ( jQuery.css( elem, "display" ) === "inline" &&
+				jQuery.css( elem, "float" ) === "none" ) {
+			if ( !jQuery.support.inlineBlockNeedsLayout || css_defaultDisplay( elem.nodeName ) === "inline" ) {
+				style.display = "inline-block";
+
+			} else {
+				style.zoom = 1;
+			}
+		}
+	}
+
+	if ( opts.overflow ) {
+		style.overflow = "hidden";
+		if ( !jQuery.support.shrinkWrapBlocks ) {
+			anim.done(function() {
+				style.overflow = opts.overflow[ 0 ];
+				style.overflowX = opts.overflow[ 1 ];
+				style.overflowY = opts.overflow[ 2 ];
+			});
+		}
+	}
+	for ( index in props ) {
+		value = props[ index ];
+		if ( rfxtypes.exec( value ) ) {
+			delete props[ index ];
+			toggle = toggle || value === "toggle";
+			if ( value === ( hidden ? "hide" : "show" ) ) {
+				continue;
+			}
+			handled.push( index );
+		}
+	}
+
+	length = handled.length;
+	if ( length ) {
+		dataShow = jQuery._data( elem, "fxshow" ) || jQuery._data( elem, "fxshow", {} );
+		if ( "hidden" in dataShow ) {
+			hidden = dataShow.hidden;
+		}
+		if ( toggle ) {
+			dataShow.hidden = !hidden;
+		}
+		if ( hidden ) {
+			jQuery( elem ).show();
+		} else {
+			anim.done(function() {
+				jQuery( elem ).hide();
+			});
+		}
+		anim.done(function() {
+			var prop;
+			jQuery._removeData( elem, "fxshow" );
+			for ( prop in orig ) {
+				jQuery.style( elem, prop, orig[ prop ] );
+			}
+		});
+		for ( index = 0 ; index < length ; index++ ) {
+			prop = handled[ index ];
+			tween = anim.createTween( prop, hidden ? dataShow[ prop ] : 0 );
+			orig[ prop ] = dataShow[ prop ] || jQuery.style( elem, prop );
+
+			if ( !( prop in dataShow ) ) {
+				dataShow[ prop ] = tween.start;
+				if ( hidden ) {
+					tween.end = tween.start;
+					tween.start = prop === "width" || prop === "height" ? 1 : 0;
+				}
+			}
+		}
+	}
+}
+
+function Tween( elem, options, prop, end, easing ) {
+	return new Tween.prototype.init( elem, options, prop, end, easing );
+}
+jQuery.Tween = Tween;
+
+Tween.prototype = {
+	constructor: Tween,
+	init: function( elem, options, prop, end, easing, unit ) {
+		this.elem = elem;
+		this.prop = prop;
+		this.easing = easing || "swing";
+		this.options = options;
+		this.start = this.now = this.cur();
+		this.end = end;
+		this.unit = unit || ( jQuery.cssNumber[ prop ] ? "" : "px" );
+	},
+	cur: function() {
+		var hooks = Tween.propHooks[ this.prop ];
+
+		return hooks && hooks.get ?
+			hooks.get( this ) :
+			Tween.propHooks._default.get( this );
+	},
+	run: function( percent ) {
+		var eased,
+			hooks = Tween.propHooks[ this.prop ];
+
+		if ( this.options.duration ) {
+			this.pos = eased = jQuery.easing[ this.easing ](
+				percent, this.options.duration * percent, 0, 1, this.options.duration
+			);
+		} else {
+			this.pos = eased = percent;
+		}
+		this.now = ( this.end - this.start ) * eased + this.start;
+
+		if ( this.options.step ) {
+			this.options.step.call( this.elem, this.now, this );
+		}
+
+		if ( hooks && hooks.set ) {
+			hooks.set( this );
+		} else {
+			Tween.propHooks._default.set( this );
+		}
+		return this;
+	}
+};
+
+Tween.prototype.init.prototype = Tween.prototype;
+
+Tween.propHooks = {
+	_default: {
+		get: function( tween ) {
+			var result;
+
+			if ( tween.elem[ tween.prop ] != null &&
+				(!tween.elem.style || tween.elem.style[ tween.prop ] == null) ) {
+				return tween.elem[ tween.prop ];
+			}
+			result = jQuery.css( tween.elem, tween.prop, "auto" );
+			return !result || result === "auto" ? 0 : result;
+		},
+		set: function( tween ) {
+			if ( jQuery.fx.step[ tween.prop ] ) {
+				jQuery.fx.step[ tween.prop ]( tween );
+			} else if ( tween.elem.style && ( tween.elem.style[ jQuery.cssProps[ tween.prop ] ] != null || jQuery.cssHooks[ tween.prop ] ) ) {
+				jQuery.style( tween.elem, tween.prop, tween.now + tween.unit );
+			} else {
+				tween.elem[ tween.prop ] = tween.now;
+			}
+		}
+	}
+};
+
+Tween.propHooks.scrollTop = Tween.propHooks.scrollLeft = {
+	set: function( tween ) {
+		if ( tween.elem.nodeType && tween.elem.parentNode ) {
+			tween.elem[ tween.prop ] = tween.now;
+		}
+	}
+};
+
+jQuery.each([ "toggle", "show", "hide" ], function( i, name ) {
+	var cssFn = jQuery.fn[ name ];
+	jQuery.fn[ name ] = function( speed, easing, callback ) {
+		return speed == null || typeof speed === "boolean" ?
+			cssFn.apply( this, arguments ) :
+			this.animate( genFx( name, true ), speed, easing, callback );
+	};
+});
 
 jQuery.fn.extend({
-	show: function( speed, easing, callback ) {
-		var elem, display;
-
-		if ( speed || speed === 0 ) {
-			return this.animate( genFx("show", 3), speed, easing, callback );
-
-		} else {
-			for ( var i = 0, j = this.length; i < j; i++ ) {
-				elem = this[ i ];
-
-				if ( elem.style ) {
-					display = elem.style.display;
-					if ( !jQuery._data(elem, "olddisplay") && display === "none" ) {
-						display = elem.style.display = "";
-					}
-					if ( display === "" && jQuery.css(elem, "display") === "none" ) {
-						jQuery._data( elem, "olddisplay", defaultDisplay(elem.nodeName) );
-					}
-				}
-			}
-			for ( i = 0; i < j; i++ ) {
-				elem = this[ i ];
-
-				if ( elem.style ) {
-					display = elem.style.display;
-
-					if ( display === "" || display === "none" ) {
-						elem.style.display = jQuery._data( elem, "olddisplay" ) || "";
-					}
-				}
-			}
-
-			return this;
-		}
-	},
-
-	hide: function( speed, easing, callback ) {
-		if ( speed || speed === 0 ) {
-			return this.animate( genFx("hide", 3), speed, easing, callback);
-
-		} else {
-			var elem, display,
-				i = 0,
-				j = this.length;
-
-			for ( ; i < j; i++ ) {
-				elem = this[i];
-				if ( elem.style ) {
-					display = jQuery.css( elem, "display" );
-
-					if ( display !== "none" && !jQuery._data( elem, "olddisplay" ) ) {
-						jQuery._data( elem, "olddisplay", display );
-					}
-				}
-			}
-			for ( i = 0; i < j; i++ ) {
-				if ( this[i].style ) {
-					this[i].style.display = "none";
-				}
-			}
-
-			return this;
-		}
-	},
-	_toggle: jQuery.fn.toggle,
-
-	toggle: function( fn, fn2, callback ) {
-		var bool = typeof fn === "boolean";
-
-		if ( jQuery.isFunction(fn) && jQuery.isFunction(fn2) ) {
-			this._toggle.apply( this, arguments );
-
-		} else if ( fn == null || bool ) {
-			this.each(function() {
-				var state = bool ? fn : jQuery(this).is(":hidden");
-				jQuery(this)[ state ? "show" : "hide" ]();
-			});
-
-		} else {
-			this.animate(genFx("toggle", 3), fn, fn2, callback);
-		}
-
-		return this;
-	},
-
 	fadeTo: function( speed, to, easing, callback ) {
-		return this.filter(":hidden").css("opacity", 0).show().end()
-					.animate({opacity: to}, speed, easing, callback);
+		return this.filter( isHidden ).css( "opacity", 0 ).show()
+			.end().animate({ opacity: to }, speed, easing, callback );
 	},
-
 	animate: function( prop, speed, easing, callback ) {
-		var optall = jQuery.speed( speed, easing, callback );
-
-		if ( jQuery.isEmptyObject( prop ) ) {
-			return this.each( optall.complete, [ false ] );
-		}
-		prop = jQuery.extend( {}, prop );
-
-		function doAnimation() {
-
-			if ( optall.queue === false ) {
-				jQuery._mark( this );
-			}
-
-			var opt = jQuery.extend( {}, optall ),
-				isElement = this.nodeType === 1,
-				hidden = isElement && jQuery(this).is(":hidden"),
-				name, val, p, e,
-				parts, start, end, unit,
-				method;
-			opt.animatedProperties = {};
-
-			for ( p in prop ) {
-				name = jQuery.camelCase( p );
-				if ( p !== name ) {
-					prop[ name ] = prop[ p ];
-					delete prop[ p ];
+		var empty = jQuery.isEmptyObject( prop ),
+			optall = jQuery.speed( speed, easing, callback ),
+			doAnimation = function() {
+				var anim = Animation( this, jQuery.extend( {}, prop ), optall );
+				doAnimation.finish = function() {
+					anim.stop( true );
+				};
+				if ( empty || jQuery._data( this, "finish" ) ) {
+					anim.stop( true );
 				}
+			};
+			doAnimation.finish = doAnimation;
 
-				val = prop[ name ];
-				if ( jQuery.isArray( val ) ) {
-					opt.animatedProperties[ name ] = val[ 1 ];
-					val = prop[ name ] = val[ 0 ];
-				} else {
-					opt.animatedProperties[ name ] = opt.specialEasing && opt.specialEasing[ name ] || opt.easing || 'swing';
-				}
-
-				if ( val === "hide" && hidden || val === "show" && !hidden ) {
-					return opt.complete.call( this );
-				}
-
-				if ( isElement && ( name === "height" || name === "width" ) ) {
-					opt.overflow = [ this.style.overflow, this.style.overflowX, this.style.overflowY ];
-					if ( jQuery.css( this, "display" ) === "inline" &&
-							jQuery.css( this, "float" ) === "none" ) {
-						if ( !jQuery.support.inlineBlockNeedsLayout || defaultDisplay( this.nodeName ) === "inline" ) {
-							this.style.display = "inline-block";
-
-						} else {
-							this.style.zoom = 1;
-						}
-					}
-				}
-			}
-
-			if ( opt.overflow != null ) {
-				this.style.overflow = "hidden";
-			}
-
-			for ( p in prop ) {
-				e = new jQuery.fx( this, opt, p );
-				val = prop[ p ];
-
-				if ( rfxtypes.test( val ) ) {
-					method = jQuery._data( this, "toggle" + p ) || ( val === "toggle" ? hidden ? "show" : "hide" : 0 );
-					if ( method ) {
-						jQuery._data( this, "toggle" + p, method === "show" ? "hide" : "show" );
-						e[ method ]();
-					} else {
-						e[ val ]();
-					}
-
-				} else {
-					parts = rfxnum.exec( val );
-					start = e.cur();
-
-					if ( parts ) {
-						end = parseFloat( parts[2] );
-						unit = parts[3] || ( jQuery.cssNumber[ p ] ? "" : "px" );
-						if ( unit !== "px" ) {
-							jQuery.style( this, p, (end || 1) + unit);
-							start = ( (end || 1) / e.cur() ) * start;
-							jQuery.style( this, p, start + unit);
-						}
-						if ( parts[1] ) {
-							end = ( (parts[ 1 ] === "-=" ? -1 : 1) * end ) + start;
-						}
-
-						e.custom( start, end, unit );
-
-					} else {
-						e.custom( start, val, "" );
-					}
-				}
-			}
-			return true;
-		}
-
-		return optall.queue === false ?
+		return empty || optall.queue === false ?
 			this.each( doAnimation ) :
 			this.queue( optall.queue, doAnimation );
 	},
-
 	stop: function( type, clearQueue, gotoEnd ) {
+		var stopQueue = function( hooks ) {
+			var stop = hooks.stop;
+			delete hooks.stop;
+			stop( gotoEnd );
+		};
+
 		if ( typeof type !== "string" ) {
 			gotoEnd = clearQueue;
 			clearQueue = type;
@@ -6868,69 +7075,87 @@ jQuery.fn.extend({
 		}
 
 		return this.each(function() {
-			var i,
-				hadTimers = false,
+			var dequeue = true,
+				index = type != null && type + "queueHooks",
 				timers = jQuery.timers,
 				data = jQuery._data( this );
-			if ( !gotoEnd ) {
-				jQuery._unmark( true, this );
-			}
 
-			function stopQueue( elem, data, i ) {
-				var hooks = data[ i ];
-				jQuery.removeData( elem, i, true );
-				hooks.stop( gotoEnd );
-			}
-
-			if ( type == null ) {
-				for ( i in data ) {
-					if ( data[ i ].stop && i.indexOf(".run") === i.length - 4 ) {
-						stopQueue( this, data, i );
+			if ( index ) {
+				if ( data[ index ] && data[ index ].stop ) {
+					stopQueue( data[ index ] );
+				}
+			} else {
+				for ( index in data ) {
+					if ( data[ index ] && data[ index ].stop && rrun.test( index ) ) {
+						stopQueue( data[ index ] );
 					}
 				}
-			} else if ( data[ i = type + ".run" ] && data[ i ].stop ){
-				stopQueue( this, data, i );
 			}
 
-			for ( i = timers.length; i--; ) {
-				if ( timers[ i ].elem === this && (type == null || timers[ i ].queue === type) ) {
-					if ( gotoEnd ) {
-						timers[ i ]( true );
-					} else {
-						timers[ i ].saveState();
-					}
-					hadTimers = true;
-					timers.splice( i, 1 );
+			for ( index = timers.length; index--; ) {
+				if ( timers[ index ].elem === this && (type == null || timers[ index ].queue === type) ) {
+					timers[ index ].anim.stop( gotoEnd );
+					dequeue = false;
+					timers.splice( index, 1 );
 				}
 			}
-			if ( !( gotoEnd && hadTimers ) ) {
+			if ( dequeue || !gotoEnd ) {
 				jQuery.dequeue( this, type );
 			}
 		});
+	},
+	finish: function( type ) {
+		if ( type !== false ) {
+			type = type || "fx";
+		}
+		return this.each(function() {
+			var index,
+				data = jQuery._data( this ),
+				queue = data[ type + "queue" ],
+				hooks = data[ type + "queueHooks" ],
+				timers = jQuery.timers,
+				length = queue ? queue.length : 0;
+			data.finish = true;
+			jQuery.queue( this, type, [] );
+
+			if ( hooks && hooks.cur && hooks.cur.finish ) {
+				hooks.cur.finish.call( this );
+			}
+			for ( index = timers.length; index--; ) {
+				if ( timers[ index ].elem === this && timers[ index ].queue === type ) {
+					timers[ index ].anim.stop( true );
+					timers.splice( index, 1 );
+				}
+			}
+			for ( index = 0; index < length; index++ ) {
+				if ( queue[ index ] && queue[ index ].finish ) {
+					queue[ index ].finish.call( this );
+				}
+			}
+			delete data.finish;
+		});
+	}
+});
+function genFx( type, includeWidth ) {
+	var which,
+		attrs = { height: type },
+		i = 0;
+	includeWidth = includeWidth? 1 : 0;
+	for( ; i < 4 ; i += 2 - includeWidth ) {
+		which = cssExpand[ i ];
+		attrs[ "margin" + which ] = attrs[ "padding" + which ] = type;
 	}
 
-});
-function createFxNow() {
-	setTimeout( clearFxNow, 0 );
-	return ( fxNow = jQuery.now() );
-}
+	if ( includeWidth ) {
+		attrs.opacity = attrs.width = type;
+	}
 
-function clearFxNow() {
-	fxNow = undefined;
-}
-function genFx( type, num ) {
-	var obj = {};
-
-	jQuery.each( fxAttrs.concat.apply([], fxAttrs.slice( 0, num )), function() {
-		obj[ this ] = type;
-	});
-
-	return obj;
+	return attrs;
 }
 jQuery.each({
-	slideDown: genFx( "show", 1 ),
-	slideUp: genFx( "hide", 1 ),
-	slideToggle: genFx( "toggle", 1 ),
+	slideDown: genFx("show"),
+	slideUp: genFx("hide"),
+	slideToggle: genFx("toggle"),
 	fadeIn: { opacity: "show" },
 	fadeOut: { opacity: "hide" },
 	fadeToggle: { opacity: "toggle" }
@@ -6940,231 +7165,90 @@ jQuery.each({
 	};
 });
 
-jQuery.extend({
-	speed: function( speed, easing, fn ) {
-		var opt = speed && typeof speed === "object" ? jQuery.extend( {}, speed ) : {
-			complete: fn || !fn && easing ||
-				jQuery.isFunction( speed ) && speed,
-			duration: speed,
-			easing: fn && easing || easing && !jQuery.isFunction( easing ) && easing
-		};
+jQuery.speed = function( speed, easing, fn ) {
+	var opt = speed && typeof speed === "object" ? jQuery.extend( {}, speed ) : {
+		complete: fn || !fn && easing ||
+			jQuery.isFunction( speed ) && speed,
+		duration: speed,
+		easing: fn && easing || easing && !jQuery.isFunction( easing ) && easing
+	};
 
-		opt.duration = jQuery.fx.off ? 0 : typeof opt.duration === "number" ? opt.duration :
-			opt.duration in jQuery.fx.speeds ? jQuery.fx.speeds[ opt.duration ] : jQuery.fx.speeds._default;
-		if ( opt.queue == null || opt.queue === true ) {
-			opt.queue = "fx";
-		}
-		opt.old = opt.complete;
-
-		opt.complete = function( noUnmark ) {
-			if ( jQuery.isFunction( opt.old ) ) {
-				opt.old.call( this );
-			}
-
-			if ( opt.queue ) {
-				jQuery.dequeue( this, opt.queue );
-			} else if ( noUnmark !== false ) {
-				jQuery._unmark( this );
-			}
-		};
-
-		return opt;
-	},
-
-	easing: {
-		linear: function( p, n, firstNum, diff ) {
-			return firstNum + diff * p;
-		},
-		swing: function( p, n, firstNum, diff ) {
-			return ( ( -Math.cos( p*Math.PI ) / 2 ) + 0.5 ) * diff + firstNum;
-		}
-	},
-
-	timers: [],
-
-	fx: function( elem, options, prop ) {
-		this.options = options;
-		this.elem = elem;
-		this.prop = prop;
-
-		options.orig = options.orig || {};
+	opt.duration = jQuery.fx.off ? 0 : typeof opt.duration === "number" ? opt.duration :
+		opt.duration in jQuery.fx.speeds ? jQuery.fx.speeds[ opt.duration ] : jQuery.fx.speeds._default;
+	if ( opt.queue == null || opt.queue === true ) {
+		opt.queue = "fx";
 	}
+	opt.old = opt.complete;
 
-});
-
-jQuery.fx.prototype = {
-	update: function() {
-		if ( this.options.step ) {
-			this.options.step.call( this.elem, this.now, this );
+	opt.complete = function() {
+		if ( jQuery.isFunction( opt.old ) ) {
+			opt.old.call( this );
 		}
 
-		( jQuery.fx.step[ this.prop ] || jQuery.fx.step._default )( this );
+		if ( opt.queue ) {
+			jQuery.dequeue( this, opt.queue );
+		}
+	};
+
+	return opt;
+};
+
+jQuery.easing = {
+	linear: function( p ) {
+		return p;
 	},
-	cur: function() {
-		if ( this.elem[ this.prop ] != null && (!this.elem.style || this.elem.style[ this.prop ] == null) ) {
-			return this.elem[ this.prop ];
-		}
-
-		var parsed,
-			r = jQuery.css( this.elem, this.prop );
-		return isNaN( parsed = parseFloat( r ) ) ? !r || r === "auto" ? 0 : r : parsed;
-	},
-	custom: function( from, to, unit ) {
-		var self = this,
-			fx = jQuery.fx;
-
-		this.startTime = fxNow || createFxNow();
-		this.end = to;
-		this.now = this.start = from;
-		this.pos = this.state = 0;
-		this.unit = unit || this.unit || ( jQuery.cssNumber[ this.prop ] ? "" : "px" );
-
-		function t( gotoEnd ) {
-			return self.step( gotoEnd );
-		}
-
-		t.queue = this.options.queue;
-		t.elem = this.elem;
-		t.saveState = function() {
-			if ( self.options.hide && jQuery._data( self.elem, "fxshow" + self.prop ) === undefined ) {
-				jQuery._data( self.elem, "fxshow" + self.prop, self.start );
-			}
-		};
-
-		if ( t() && jQuery.timers.push(t) && !timerId ) {
-			timerId = setInterval( fx.tick, fx.interval );
-		}
-	},
-	show: function() {
-		var dataShow = jQuery._data( this.elem, "fxshow" + this.prop );
-		this.options.orig[ this.prop ] = dataShow || jQuery.style( this.elem, this.prop );
-		this.options.show = true;
-		if ( dataShow !== undefined ) {
-			this.custom( this.cur(), dataShow );
-		} else {
-			this.custom( this.prop === "width" || this.prop === "height" ? 1 : 0, this.cur() );
-		}
-		jQuery( this.elem ).show();
-	},
-	hide: function() {
-		this.options.orig[ this.prop ] = jQuery._data( this.elem, "fxshow" + this.prop ) || jQuery.style( this.elem, this.prop );
-		this.options.hide = true;
-		this.custom( this.cur(), 0 );
-	},
-	step: function( gotoEnd ) {
-		var p, n, complete,
-			t = fxNow || createFxNow(),
-			done = true,
-			elem = this.elem,
-			options = this.options;
-
-		if ( gotoEnd || t >= options.duration + this.startTime ) {
-			this.now = this.end;
-			this.pos = this.state = 1;
-			this.update();
-
-			options.animatedProperties[ this.prop ] = true;
-
-			for ( p in options.animatedProperties ) {
-				if ( options.animatedProperties[ p ] !== true ) {
-					done = false;
-				}
-			}
-
-			if ( done ) {
-				if ( options.overflow != null && !jQuery.support.shrinkWrapBlocks ) {
-
-					jQuery.each( [ "", "X", "Y" ], function( index, value ) {
-						elem.style[ "overflow" + value ] = options.overflow[ index ];
-					});
-				}
-				if ( options.hide ) {
-					jQuery( elem ).hide();
-				}
-				if ( options.hide || options.show ) {
-					for ( p in options.animatedProperties ) {
-						jQuery.style( elem, p, options.orig[ p ] );
-						jQuery.removeData( elem, "fxshow" + p, true );
-						jQuery.removeData( elem, "toggle" + p, true );
-					}
-				}
-
-				complete = options.complete;
-				if ( complete ) {
-
-					options.complete = false;
-					complete.call( elem );
-				}
-			}
-
-			return false;
-
-		} else {
-			if ( options.duration == Infinity ) {
-				this.now = t;
-			} else {
-				n = t - this.startTime;
-				this.state = n / options.duration;
-				this.pos = jQuery.easing[ options.animatedProperties[this.prop] ]( this.state, n, 0, 1, options.duration );
-				this.now = this.start + ( (this.end - this.start) * this.pos );
-			}
-			this.update();
-		}
-
-		return true;
+	swing: function( p ) {
+		return 0.5 - Math.cos( p*Math.PI ) / 2;
 	}
 };
 
-jQuery.extend( jQuery.fx, {
-	tick: function() {
-		var timer,
-			timers = jQuery.timers,
-			i = 0;
+jQuery.timers = [];
+jQuery.fx = Tween.prototype.init;
+jQuery.fx.tick = function() {
+	var timer,
+		timers = jQuery.timers,
+		i = 0;
 
-		for ( ; i < timers.length; i++ ) {
-			timer = timers[ i ];
-			if ( !timer() && timers[ i ] === timer ) {
-				timers.splice( i--, 1 );
-			}
-		}
+	fxNow = jQuery.now();
 
-		if ( !timers.length ) {
-			jQuery.fx.stop();
-		}
-	},
-
-	interval: 13,
-
-	stop: function() {
-		clearInterval( timerId );
-		timerId = null;
-	},
-
-	speeds: {
-		slow: 600,
-		fast: 200,
-		_default: 400
-	},
-
-	step: {
-		opacity: function( fx ) {
-			jQuery.style( fx.elem, "opacity", fx.now );
-		},
-
-		_default: function( fx ) {
-			if ( fx.elem.style && fx.elem.style[ fx.prop ] != null ) {
-				fx.elem.style[ fx.prop ] = fx.now + fx.unit;
-			} else {
-				fx.elem[ fx.prop ] = fx.now;
-			}
+	for ( ; i < timers.length; i++ ) {
+		timer = timers[ i ];
+		if ( !timer() && timers[ i ] === timer ) {
+			timers.splice( i--, 1 );
 		}
 	}
-});
-jQuery.each([ "width", "height" ], function( i, prop ) {
-	jQuery.fx.step[ prop ] = function( fx ) {
-		jQuery.style( fx.elem, prop, Math.max(0, fx.now) );
-	};
-});
+
+	if ( !timers.length ) {
+		jQuery.fx.stop();
+	}
+	fxNow = undefined;
+};
+
+jQuery.fx.timer = function( timer ) {
+	if ( timer() && jQuery.timers.push( timer ) ) {
+		jQuery.fx.start();
+	}
+};
+
+jQuery.fx.interval = 13;
+
+jQuery.fx.start = function() {
+	if ( !timerId ) {
+		timerId = setInterval( jQuery.fx.tick, jQuery.fx.interval );
+	}
+};
+
+jQuery.fx.stop = function() {
+	clearInterval( timerId );
+	timerId = null;
+};
+
+jQuery.fx.speeds = {
+	slow: 600,
+	fast: 200,
+	_default: 400
+};
+jQuery.fx.step = {};
 
 if ( jQuery.expr && jQuery.expr.filters ) {
 	jQuery.expr.filters.animated = function( elem ) {
@@ -7173,172 +7257,39 @@ if ( jQuery.expr && jQuery.expr.filters ) {
 		}).length;
 	};
 }
-function defaultDisplay( nodeName ) {
-
-	if ( !elemdisplay[ nodeName ] ) {
-
-		var body = document.body,
-			elem = jQuery( "<" + nodeName + ">" ).appendTo( body ),
-			display = elem.css( "display" );
-		elem.remove();
-		if ( display === "none" || display === "" ) {
-			if ( !iframe ) {
-				iframe = document.createElement( "iframe" );
-				iframe.frameBorder = iframe.width = iframe.height = 0;
-			}
-
-			body.appendChild( iframe );
-			if ( !iframeDoc || !iframe.createElement ) {
-				iframeDoc = ( iframe.contentWindow || iframe.contentDocument ).document;
-				iframeDoc.write( ( document.compatMode === "CSS1Compat" ? "<!doctype html>" : "" ) + "<html><body>" );
-				iframeDoc.close();
-			}
-
-			elem = iframeDoc.createElement( nodeName );
-
-			iframeDoc.body.appendChild( elem );
-
-			display = jQuery.css( elem, "display" );
-			body.removeChild( iframe );
-		}
-		elemdisplay[ nodeName ] = display;
+jQuery.fn.offset = function( options ) {
+	if ( arguments.length ) {
+		return options === undefined ?
+			this :
+			this.each(function( i ) {
+				jQuery.offset.setOffset( this, options, i );
+			});
 	}
 
-	return elemdisplay[ nodeName ];
-}
+	var docElem, win,
+		box = { top: 0, left: 0 },
+		elem = this[ 0 ],
+		doc = elem && elem.ownerDocument;
 
+	if ( !doc ) {
+		return;
+	}
 
-
-
-var rtable = /^t(?:able|d|h)$/i,
-	rroot = /^(?:body|html)$/i;
-
-if ( "getBoundingClientRect" in document.documentElement ) {
-	jQuery.fn.offset = function( options ) {
-		var elem = this[0], box;
-
-		if ( options ) {
-			return this.each(function( i ) {
-				jQuery.offset.setOffset( this, options, i );
-			});
-		}
-
-		if ( !elem || !elem.ownerDocument ) {
-			return null;
-		}
-
-		if ( elem === elem.ownerDocument.body ) {
-			return jQuery.offset.bodyOffset( elem );
-		}
-
-		try {
-			box = elem.getBoundingClientRect();
-		} catch(e) {}
-
-		var doc = elem.ownerDocument,
-			docElem = doc.documentElement;
-		if ( !box || !jQuery.contains( docElem, elem ) ) {
-			return box ? { top: box.top, left: box.left } : { top: 0, left: 0 };
-		}
-
-		var body = doc.body,
-			win = getWindow(doc),
-			clientTop  = docElem.clientTop  || body.clientTop  || 0,
-			clientLeft = docElem.clientLeft || body.clientLeft || 0,
-			scrollTop  = win.pageYOffset || jQuery.support.boxModel && docElem.scrollTop  || body.scrollTop,
-			scrollLeft = win.pageXOffset || jQuery.support.boxModel && docElem.scrollLeft || body.scrollLeft,
-			top  = box.top  + scrollTop  - clientTop,
-			left = box.left + scrollLeft - clientLeft;
-
-		return { top: top, left: left };
+	docElem = doc.documentElement;
+	if ( !jQuery.contains( docElem, elem ) ) {
+		return box;
+	}
+	if ( typeof elem.getBoundingClientRect !== "undefined" ) {
+		box = elem.getBoundingClientRect();
+	}
+	win = getWindow( doc );
+	return {
+		top: box.top  + ( win.pageYOffset || docElem.scrollTop )  - ( docElem.clientTop  || 0 ),
+		left: box.left + ( win.pageXOffset || docElem.scrollLeft ) - ( docElem.clientLeft || 0 )
 	};
-
-} else {
-	jQuery.fn.offset = function( options ) {
-		var elem = this[0];
-
-		if ( options ) {
-			return this.each(function( i ) {
-				jQuery.offset.setOffset( this, options, i );
-			});
-		}
-
-		if ( !elem || !elem.ownerDocument ) {
-			return null;
-		}
-
-		if ( elem === elem.ownerDocument.body ) {
-			return jQuery.offset.bodyOffset( elem );
-		}
-
-		var computedStyle,
-			offsetParent = elem.offsetParent,
-			prevOffsetParent = elem,
-			doc = elem.ownerDocument,
-			docElem = doc.documentElement,
-			body = doc.body,
-			defaultView = doc.defaultView,
-			prevComputedStyle = defaultView ? defaultView.getComputedStyle( elem, null ) : elem.currentStyle,
-			top = elem.offsetTop,
-			left = elem.offsetLeft;
-
-		while ( (elem = elem.parentNode) && elem !== body && elem !== docElem ) {
-			if ( jQuery.support.fixedPosition && prevComputedStyle.position === "fixed" ) {
-				break;
-			}
-
-			computedStyle = defaultView ? defaultView.getComputedStyle(elem, null) : elem.currentStyle;
-			top  -= elem.scrollTop;
-			left -= elem.scrollLeft;
-
-			if ( elem === offsetParent ) {
-				top  += elem.offsetTop;
-				left += elem.offsetLeft;
-
-				if ( jQuery.support.doesNotAddBorder && !(jQuery.support.doesAddBorderForTableAndCells && rtable.test(elem.nodeName)) ) {
-					top  += parseFloat( computedStyle.borderTopWidth  ) || 0;
-					left += parseFloat( computedStyle.borderLeftWidth ) || 0;
-				}
-
-				prevOffsetParent = offsetParent;
-				offsetParent = elem.offsetParent;
-			}
-
-			if ( jQuery.support.subtractsBorderForOverflowNotVisible && computedStyle.overflow !== "visible" ) {
-				top  += parseFloat( computedStyle.borderTopWidth  ) || 0;
-				left += parseFloat( computedStyle.borderLeftWidth ) || 0;
-			}
-
-			prevComputedStyle = computedStyle;
-		}
-
-		if ( prevComputedStyle.position === "relative" || prevComputedStyle.position === "static" ) {
-			top  += body.offsetTop;
-			left += body.offsetLeft;
-		}
-
-		if ( jQuery.support.fixedPosition && prevComputedStyle.position === "fixed" ) {
-			top  += Math.max( docElem.scrollTop, body.scrollTop );
-			left += Math.max( docElem.scrollLeft, body.scrollLeft );
-		}
-
-		return { top: top, left: left };
-	};
-}
+};
 
 jQuery.offset = {
-
-	bodyOffset: function( body ) {
-		var top = body.offsetTop,
-			left = body.offsetLeft;
-
-		if ( jQuery.support.doesNotIncludeMarginInBodyOffset ) {
-			top  += parseFloat( jQuery.css(body, "marginTop") ) || 0;
-			left += parseFloat( jQuery.css(body, "marginLeft") ) || 0;
-		}
-
-		return { top: top, left: left };
-	},
 
 	setOffset: function( elem, options, i ) {
 		var position = jQuery.css( elem, "position" );
@@ -7384,66 +7335,63 @@ jQuery.offset = {
 jQuery.fn.extend({
 
 	position: function() {
-		if ( !this[0] ) {
-			return null;
+		if ( !this[ 0 ] ) {
+			return;
 		}
 
-		var elem = this[0],
-		offsetParent = this.offsetParent(),
-		offset       = this.offset(),
-		parentOffset = rroot.test(offsetParent[0].nodeName) ? { top: 0, left: 0 } : offsetParent.offset();
-		offset.top  -= parseFloat( jQuery.css(elem, "marginTop") ) || 0;
-		offset.left -= parseFloat( jQuery.css(elem, "marginLeft") ) || 0;
-		parentOffset.top  += parseFloat( jQuery.css(offsetParent[0], "borderTopWidth") ) || 0;
-		parentOffset.left += parseFloat( jQuery.css(offsetParent[0], "borderLeftWidth") ) || 0;
+		var offsetParent, offset,
+			parentOffset = { top: 0, left: 0 },
+			elem = this[ 0 ];
+		if ( jQuery.css( elem, "position" ) === "fixed" ) {
+			offset = elem.getBoundingClientRect();
+		} else {
+			offsetParent = this.offsetParent();
+			offset = this.offset();
+			if ( !jQuery.nodeName( offsetParent[ 0 ], "html" ) ) {
+				parentOffset = offsetParent.offset();
+			}
+			parentOffset.top  += jQuery.css( offsetParent[ 0 ], "borderTopWidth", true );
+			parentOffset.left += jQuery.css( offsetParent[ 0 ], "borderLeftWidth", true );
+		}
 		return {
-			top:  offset.top  - parentOffset.top,
-			left: offset.left - parentOffset.left
+			top:  offset.top  - parentOffset.top - jQuery.css( elem, "marginTop", true ),
+			left: offset.left - parentOffset.left - jQuery.css( elem, "marginLeft", true)
 		};
 	},
 
 	offsetParent: function() {
 		return this.map(function() {
-			var offsetParent = this.offsetParent || document.body;
-			while ( offsetParent && (!rroot.test(offsetParent.nodeName) && jQuery.css(offsetParent, "position") === "static") ) {
+			var offsetParent = this.offsetParent || document.documentElement;
+			while ( offsetParent && ( !jQuery.nodeName( offsetParent, "html" ) && jQuery.css( offsetParent, "position") === "static" ) ) {
 				offsetParent = offsetParent.offsetParent;
 			}
-			return offsetParent;
+			return offsetParent || document.documentElement;
 		});
 	}
 });
-jQuery.each( ["Left", "Top"], function( i, name ) {
-	var method = "scroll" + name;
+jQuery.each( {scrollLeft: "pageXOffset", scrollTop: "pageYOffset"}, function( method, prop ) {
+	var top = /Y/.test( prop );
 
 	jQuery.fn[ method ] = function( val ) {
-		var elem, win;
+		return jQuery.access( this, function( elem, method, val ) {
+			var win = getWindow( elem );
 
-		if ( val === undefined ) {
-			elem = this[ 0 ];
-
-			if ( !elem ) {
-				return null;
+			if ( val === undefined ) {
+				return win ? (prop in win) ? win[ prop ] :
+					win.document.documentElement[ method ] :
+					elem[ method ];
 			}
-
-			win = getWindow( elem );
-			return win ? ("pageXOffset" in win) ? win[ i ? "pageYOffset" : "pageXOffset" ] :
-				jQuery.support.boxModel && win.document.documentElement[ method ] ||
-					win.document.body[ method ] :
-				elem[ method ];
-		}
-		return this.each(function() {
-			win = getWindow( this );
 
 			if ( win ) {
 				win.scrollTo(
-					!i ? val : jQuery( win ).scrollLeft(),
-					 i ? val : jQuery( win ).scrollTop()
+					!top ? val : jQuery( win ).scrollLeft(),
+					top ? val : jQuery( win ).scrollTop()
 				);
 
 			} else {
-				this[ method ] = val;
+				elem[ method ] = val;
 			}
-		});
+		}, method, val, arguments.length, null );
 	};
 });
 
@@ -7454,62 +7402,39 @@ function getWindow( elem ) {
 			elem.defaultView || elem.parentWindow :
 			false;
 }
-jQuery.each([ "Height", "Width" ], function( i, name ) {
+jQuery.each( { Height: "height", Width: "width" }, function( name, type ) {
+	jQuery.each( { padding: "inner" + name, content: type, "": "outer" + name }, function( defaultExtra, funcName ) {
+		jQuery.fn[ funcName ] = function( margin, value ) {
+			var chainable = arguments.length && ( defaultExtra || typeof margin !== "boolean" ),
+				extra = defaultExtra || ( margin === true || value === true ? "margin" : "border" );
 
-	var type = name.toLowerCase();
-	jQuery.fn[ "inner" + name ] = function() {
-		var elem = this[0];
-		return elem ?
-			elem.style ?
-			parseFloat( jQuery.css( elem, type, "padding" ) ) :
-			this[ type ]() :
-			null;
-	};
-	jQuery.fn[ "outer" + name ] = function( margin ) {
-		var elem = this[0];
-		return elem ?
-			elem.style ?
-			parseFloat( jQuery.css( elem, type, margin ? "margin" : "border" ) ) :
-			this[ type ]() :
-			null;
-	};
+			return jQuery.access( this, function( elem, type, value ) {
+				var doc;
 
-	jQuery.fn[ type ] = function( size ) {
-		var elem = this[0];
-		if ( !elem ) {
-			return size == null ? null : this;
-		}
+				if ( jQuery.isWindow( elem ) ) {
+					return elem.document.documentElement[ "client" + name ];
+				}
+				if ( elem.nodeType === 9 ) {
+					doc = elem.documentElement;
+					return Math.max(
+						elem.body[ "scroll" + name ], doc[ "scroll" + name ],
+						elem.body[ "offset" + name ], doc[ "offset" + name ],
+						doc[ "client" + name ]
+					);
+				}
 
-		if ( jQuery.isFunction( size ) ) {
-			return this.each(function( i ) {
-				var self = jQuery( this );
-				self[ type ]( size.call( this, i, self[ type ]() ) );
-			});
-		}
-
-		if ( jQuery.isWindow( elem ) ) {
-			var docElemProp = elem.document.documentElement[ "client" + name ],
-				body = elem.document.body;
-			return elem.document.compatMode === "CSS1Compat" && docElemProp ||
-				body && body[ "client" + name ] || docElemProp;
-		} else if ( elem.nodeType === 9 ) {
-			return Math.max(
-				elem.documentElement["client" + name],
-				elem.body["scroll" + name], elem.documentElement["scroll" + name],
-				elem.body["offset" + name], elem.documentElement["offset" + name]
-			);
-		} else if ( size === undefined ) {
-			var orig = jQuery.css( elem, type ),
-				ret = parseFloat( orig );
-
-			return jQuery.isNumeric( ret ) ? ret : orig;
-		} else {
-			return this.css( type, typeof size === "string" ? size : size + "px" );
-		}
-	};
-
+				return value === undefined ?
+					jQuery.css( elem, type, extra ) :
+					jQuery.style( elem, type, value, extra );
+			}, type, chainable ? margin : undefined, chainable, null );
+		};
+	});
 });
 window.jQuery = window.$ = jQuery;
+if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
+	define( "jquery", [], function () { return jQuery; } );
+}
+
 })( window );
 
 
@@ -7646,7 +7571,8 @@ window.jQuery = window.$ = jQuery;
 
 })();
 
-(function( $ ){
+
+( function( $ ) {
 	var Description={
 		title			:'tp',
 		description		:'Tool Package - jQuery.fn.tp$ plugin',
@@ -7658,10 +7584,11 @@ window.jQuery = window.$ = jQuery;
 		contact			:'e m a i l:  b e a v e r s c r i p t   a t   l a n d k e y . n e t'
 	};
 	var deb = window.tp$ && window.tp$.deb;
-	$.fn.tp$ = (function(choice,arg){
-					var that=this && this[0];
-					if(!that)return;
-					return $.fn.tp$.beautify_el[choice].call(that,arg);
+	$.fn.tp$ = ( function( choice, arg ) {
+
+					var that= this && this[0];
+					if( !that ) return;
+					return $.fn.tp$.beautify_el[ choice ].call( that, arg );
 	});
 	$.fn.tp$.description=Description;	
 	$.fn.tp$.core=(function(){
@@ -8070,7 +7997,7 @@ window.jQuery = window.$ = jQuery;
 
 		self.setup_doc_meta('description', 'Hello Hello');
 		*/
-		self.reset_path_from_land_to_app_root( window.tp$.reset_path_from_land_to_app_root || '' );
+		self.reset_path_from_land_to_app_root( ( window.tp$ && window.tp$.reset_path_from_land_to_app_root ) || '' );
 		self.remove_warning_about_absent_JS = function ( warning_key_regex_string ) {
 			var removal_regex = new RegExp( warning_key_regex_string, 'i' );
 			var to_remove = self.matchChild( removal_regex, document.body );
@@ -8140,15 +8067,15 @@ window.jQuery = window.$ = jQuery;
 		}
 	};
 	var tooltipify_data			=	'title=description=version=version_name=maturity=';
-	tooltipify_data				+=	'author=editor=influenced_by=contributed_by=contributed=';
+	tooltipify_data				+=	'author=editor=influenced_by=inspired_by=contributed_by=contributed=';
 	tooltipify_data				+=	'copyright=license=license_text=license_link=';
 	tooltipify_data				+=	'created=date=creation_date=publication_date=';
-	tooltipify_data				+=	'download=web_site=source=';
+	tooltipify_data				+=	'download=web_site=inspired_by_web_site=source=inspired_by_link=';
 	tooltipify_data				+=	'copied_from=copied_on=copy_date=bundling_date=';
 	tooltipify_data				+=	'email=developer_comment=comments=';
 	var tooltip_data			=	'author=title=editor=copyright=license=date=source=web_site=email';
 	var tooltipify_desrc_data	=	'description=maturity=language=usage_requirements=developer_comment';
-	var anchorize_data			=	'download=source=web_site=copied_from=license_link=';
+	var anchorize_data			=	'inspired_by_web_site=download=source=web_site=copied_from=inspired_by_link=license_link=';
 
 	var tooltipify_array		=	tooltipify_data.split('=');
 	var tooltip_array			=	tooltip_data.split('=');
@@ -9387,7 +9314,8 @@ window.jQuery = window.$ = jQuery;
 
 
 
-(function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function () {	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var ceach	=  tp.core.each;
 
@@ -9423,11 +9351,37 @@ window.jQuery = window.$ = jQuery;
 										default_album_key : 'album', 
 										dresses : null,
 										inherited_games : {}, dressed_gamed_albums : {},
+										colls :
+										{	maxcid : 0
+										},
+
 										colorban_map_decoder : null,
 										procs : {}
 					},
 
 					gio.def.albums[ gio.def.default_album_key ] = {};
+
+					gio.config.metrics =
+					{
+
+
+						EXPECTED_USER :
+						{
+							BOREDOM :
+							{
+								MIN_RULES	: 2, 	// When there are only two rules, say "push" and "pull",
+								MIN_CELLS	: 16,	// When there are only 4*4 cells, don't say: hard to manage this board ...
+								MIN_BREEDS	: 3,	// When there are only hero, goal for box, and goal for hero,
+								RULES		: 8,	// 6 th rule becames boring, Chess has ~ 7 move rules +
+								CELLS		: 64,	// Chess has 64, ...
+								BREEDS		: 12	// Chess has 12 (non-couting 8-th-raw-"paun"-converting-cells),
+							},
+							MAX_KNOWN_CREATIVITY :
+							{	SCORE : 194.9,
+								QUERY : 'akey=flocks&ckey=wells&mkey=insanely_hard&dkey=default'
+							}
+						}
+					};
 
 					gio.modes		= {	
 										sta_tic : { db : null },
@@ -9437,7 +9391,7 @@ window.jQuery = window.$ = jQuery;
 					gio.gui			= { procs : {}, 	modes : {},  init : {}, create : {} };
 					gio.data_io		= { 
 											core : { load : {}, save : {} }, session : { load : {}, save : {} },
-											add_defions : function () { return; }
+											add_gafions : function () { return; }
 									};
 
 					gio.core		= { procs : {}, reflection : {}, def : { map_format : {} } };
@@ -9526,15 +9480,21 @@ window.jQuery = window.$ = jQuery;
 
 
 
+	gio.solver.CONSTANTS =
+	{
+		CANON_STRING		: 1,
+		CANON_ARRAY  		: 2,
+		CANON_LINKED_LIST	: 3
+	};
 
-
-	gio.solver.config = {
-								CANON_IS_STRING	: true,		//true, false
+	gio.solver.config =
+	{
+								CANON_REPRESENTED_AS	: gio.solver.CONSTANTS.CANON_LINKED_LIST,
 								TIME_TO_WAIT_MS : 500,
 								TIME_TO_WORK_MS : 500,
 								NODES_LIMIT : 300000,
 								CRITICAL_WAIT_TIME : 2000,	//ms
-								CRITICAL_VOLUME : 50000,	//canons
+								CRITICAL_VOLUME : 300000,	//canons
 
 								help : 
 									"Keyboard Control:\n\n"+
@@ -9548,7 +9508,7 @@ window.jQuery = window.$ = jQuery;
 									"Shift + up arrow          to highest point\n"+
 									"Shift + down arrow        to lowest point\n"
 								
-						};
+	};
 
 	gio.config.google_apps =
 	{
@@ -9862,11 +9822,12 @@ window.jQuery = window.$ = jQuery;
 })();
 
 
-(function(){		var tp		= jQuery.fn.tp$ = jQuery.fn.tp$ || {};	
+( function () {		var tp		= jQuery.fn.tp$ = jQuery.fn.tp$ || {};	
 					var gio		= tp.gio   = tp.gio   || {};
 
 					var gdef	= gio.def;
 					var cpaste	= tp.core.paste_non_arrays;
+					var clone	= tp.core.clone_many;
 
 	var tt = gio.def.templates = 
 	{
@@ -9874,21 +9835,20 @@ window.jQuery = window.$ = jQuery;
 		def :
 		{
 
+			metag :
+			{ 
+								galfinition :
+								{
+								},
+								mapfinition : {},
+								common : {}
+			},
+
 			coll :
 			{
 				script :
-				{	metag :
-					{ 			//album or coll to mark an intent
-								env		:
-								{			//akey_master : query.akey,
-								},
-								link :
-								{
-								},
-								list :
-								{			//exclusive : query.asingle,
-								}
-					}
+				{
+					metag : {}	
 				},
 
 				ref :
@@ -9917,6 +9877,7 @@ window.jQuery = window.$ = jQuery;
 			album :
 			{
 				collections : [],
+				coll_ref : {},
 				dresses : {},
 				ref : 
 				{
@@ -9935,29 +9896,38 @@ window.jQuery = window.$ = jQuery;
 
 		play :
 		{
+			coll : {}
 		}
 
 	};
-	cpaste( tt.play, tt.def );
+
+	cpaste( tt.def.coll.script.metag, tt.def.metag );
+	cpaste( tt.play.coll, tt.def.coll );
 	cpaste( tt.play.coll,
 		{
-			
 			script : { state : {}, parsed : {}, proc : {}, heap_json : {} }
 		}
 	);
+	tt.normalize_metag	= function ( seed ) { return cpaste( cpaste( seed, tt.def.metag ), seed ); };
+	tt.normalize_coll	= function ( seed ) { return cpaste( cpaste( seed, tt.def.coll ), seed ); };
+	tt.normalize_album	= function ( seed ) { return cpaste( cpaste( seed, tt.def.album ), seed ); };
+
+
 
 })();
 
 
 
 
-(function(){		var tp		= jQuery.fn.tp$ = jQuery.fn.tp$ || {};	
+( function () {		var tp		= jQuery.fn.tp$ = jQuery.fn.tp$ || {};	
 					var gio		= tp.gio   = tp.gio   || {};
 					var core	= tp.core;
 					var ggi		= gio.gui.init;
 					var gdef	= gio.def;
 					var smode	= gio.modes.sta_tic;
 					var feeder	= gio.config.feeder;
+
+
 
 
 	gio.description = {	title : 'Boardspirator' };
@@ -9967,14 +9937,14 @@ window.jQuery = window.$ = jQuery;
 
 		description			: gio.description.title + " (Boardy). Tool\n                 " +
 							  "to play, edit, solve, or develop board puzzles.",
-		version				: '0.1.189',
+		version				: '0.1.197',
 		version_name		: 'Mono',	// "Monoaction". In interaction, there is no significant reaction from actees back to actors.
 		maturity			: 'Draft',
-		date				: 'January 24, 2013',
+		date				: 'February 14, 2013',
 		copyright			: '(c) 2011-2013 Konstantin Kirillov',
 
-		license				: "Dual licensed under the MIT or GPL Version 2\n                " +
-							  "except data in \"def/albums\", \"def/skins\", and  \"doc/research\"\n " + 
+		license				: "MIT, BSD, and GPL\n							" +
+							  "except data in \"def/albums\" and \"def/skins\"\n							" + 
 							  "when they explicitly have own lincense.",
 		download			: 'http://github.com/lancelab/Boardspirator/',
 
@@ -9998,6 +9968,11 @@ window.jQuery = window.$ = jQuery;
 		diary			: 	"Diary contains stand-alone versions. Usual landing page is index.htm:\n\n" +
 
 
+						"   0.1.196     IE 10 is basicly runnable, image cosmetic glitch exists.\n" +
+						"   0.1.194     Feb 11. Creativity Metrics.\n" +
+						"   0.1.192     Feb 3. URL-query has ckey=, mkey=, dkey= ...\n" +
+						"   0.1.191     Feb 2. Mode: Canon as Linked List in Solver.\n" +
+						"   0.1.190     Jan. 25. Going to jQuery 1.9.0.\n" +
 						"   0.1.189     Jan. 23. Gamion on-line editor. Converter to co-position script.\n" +
 						"   0.1.181     Jan. 9, 2013. GitHubed. \n" +
 						"                             Last version which:\n" +
@@ -10007,47 +9982,36 @@ window.jQuery = window.$ = jQuery;
 						"   0.1.170     Dec. 30, 2012. htarget_X added.\n" +
 						"   0.1.170     all meta-maps-text info is in jwon, no more \"caption\" format. \n" +
 						"   0.1.169nn   after this version, jwon is changed. In about 169qq.\n" +
-						"   0.1.168     Dec. 16. Bugs in some Monkeyban maps fixed. \n" +
-						"	0.1.167hh	Dec. 12. Collection design concept changed. It is  self-controlling script now.\n" +
+						"	0.1.167hh	Dec. 12. Collection design concept changed. It is a gamion, self-controlling script, now.\n" +
 						"	0.1.165tt	Dec. 2. Solver Browser is better. Still obscure round manager.\n" +
 						"	0.1.164		Nov.  27. Refactoring of internal formats began. Not sure will version b1 survie.\n" +
 						"	0.1.162		Nov.  23. Map header parser fix. Won-condition corrected by motives-min-number.\n" +
-						"	0.1.162		David Holland collection removed (hope temporarily) due unclear file source and licenses.\n" +
 						"	0.1.162		Solver: canon2str added and makes memory resources 3 times effective; browser to top.\n" +
-						"	0.1.162		Fixed: herd bug for unwalled maps, interaction dress bug. \n" +
 						"	0.1.160		Nov.  6. Commenting style ... //\\\\//: is established as a horizon\n" +
-						"	0.1.159		Nov.  5. Credit info improved.\n" +
 						"	0.1.155		Nov.  4. Nested credits.\n" +
 						"	0.1.151		Oct. 31. Added jump-interaction and ghostban, ghostjump. Leap bug fix.\n" +
 						"	0.1.148		Oct. 26. salvor: contactless-path-finder-stub added.\n" +
 						"                        changed to ''doctype html''.\n" +
 						"                        LeapPush and Co-LeapPush do work.\n" +
 						"	0.1.147		Oct. 25. added stub to process move to an arbitrary point on map.\n" +
-						"	0.1.143		Oct. 24. variables renamed. Refactored.\n" +
 						"	0.1.142		Oct. 20. Copyrights. Interaction bug fix. Readmes macrosed.\n" +
 						"	0.1.141		Oct. 17. Readmes and comments\n" +
 						"	0.1.139		Oct. 15. fixed: int tp, select-element-control bug of extra bogus item\n" +
-						"	0.1.138		external collection fixed; multiban path converter fixed\n" +
-						"	0.1.133		external site demo is better\n" +
 						"	0.0.132		is renamed to branch 0.1.132. Branch 0.0.2.XXXX is to be redesigned independently.\n" +
 						"	0.0.130		URL-query input standartized\n" +
-						"	0.0.129		Deployer is better.\n" +
 						"	0.0.127		Saves/loads session to db better\n" +
 						"	0.0.125		Loads external collection supplied from URL-query\n" +
 						"	0.0.123		Skins and their images moved outside of collections\n" +
 						"	0.0.121		CoPullPush added and solves\n" +
 						"	0.0.120		PullPush added\n" +
-						"	0.0.119		code cleanup\n" +
 						"	0.0.117		game/collection scrolls changed and cleaned\n" +
 						"	0.0.116		gui is protected when map logically invalid\n" +
 						"	0.0.115		default_maps_text removed, consoles reshuffled\n" +
 						"	0.0.115		bumpytargets game added\n" +
 						"	0.0.114		simpler getgs()\n" +
-						"	0.0.113		simpler startup validation scenario\n" +
 						"	0.0.112		cb map fix, map normalizer fix\n" +
 						"	0.0.109		ajaxed login popup added\n" +
 						"	0.0.108		deployer script added\n" +
-						"	0.0.106		simplified setup of google ads and analytics\n" +
 						"	0.0.105		spawned base_game def is in gio.def.games now\n" +
 						"	0.0.104		and below: see versions in Diary folder\n"
 	});
@@ -10148,75 +10112,91 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 					var gdef	=  gio.def;
 					var gdp		=  gdef.procs;
 					var dio		=  gio.data_io;
-					var deb		=  function ( string ) { gio.debly( "Dataloader: " + string ); };			
-					var conadd	=  function ( string ) { gio.cons_add( "Dataloader: " + string ); };			
+					var session	=  gio.session;
+					var deb		=  function ( string ) { gio.debly( "DataLoader: " + string ); };			
+					var conadd	=  function ( string ) { gio.cons_add( "DataLoader: " + string ); };			
 	dio.download_gamion = function ( metag, coll_text ) {
-
-		var tdef		= gdef.templates.def;
-		var tplay		= gdef.templates.play;
-
-		var query		= metag.env.query;
-		var link		= metag.link.link;
-		var link		= metag.defion ? exp_url ( link ) : exp_url ( link, query && query.aurl );
-		metag.link.link = link;
-		deb( "Preparing gamion. " + ( link && ( ' link = ' + link ) ) );
-		var cseed = gdp.normalize_cseed();
-		cseed.ref.list.chosen	= metag.list.chosen;
-		cseed.ref.link.link		= link;
-		cseed.ref.jwon			= metag.jwon || query && query.jwon; //TODM redundant. Make one master metag.
-		cpaste( cseed.script.metag, metag );
-
-
-		if( query ) {
-			var ww = cseed.credits;
-			ceach( core.tooltipify_array, function (index, key) {
-				core.propertify( ww, key, query[ key ] );
-			});
-
-			cseed.ref.list.title = metag.list.title || "From Query";
-
+		var cseed			= gdp.normalize_cseed();
+		metag				= cpaste( cseed.script.metag, metag );
+		var galfin			= metag.galfinition;
+		var mapfin			= metag.mapfinition;
+		var gafion			= galfin.gafion;
+		var common			= metag.common;
+		var query_is_source	= metag.common.query_is_source;
+		var query_credits	= mapfin.query_credits;
+		var cref			= cseed.ref;
+		var cinsert 		= gafion ? 0 : metag.mapfinition.cix_to_insert1;
+		var link			= metag.common.link;
+		if( !coll_text && !link )
+		{
+			conadd('Possibly typo: link and gamion-text are missed ...');
+			return false;
 		}
 
-		var parent_akey			= metag.env.akey_master || metag.env.akey_advice;
-		var add_coll_into_album	= !!parent_akey && gio.def.albums[ parent_akey ];
+		deb( "Prepares gamion." + ( ( link && ( ' Link = ' + link ) ) || '' ) );
+
+		cref.list.cix_to_insert1	= cinsert;
+		cref.list.chosen			= metag.mapfinition.chosen;
+		cref.list.title				= mapfin.title;
+		cref.link.link				= link;
+		cref.jwon					= metag.common.jwon;
+
+		if( query_credits )
+		{
+			var ww = cseed.credits;
+			ceach( core.tooltipify_array, function (index, key) {
+				core.propertify( ww, key, query_credits[ key ] );
+			});
+		}
 
 
-		if( !metag.reuse_collection && ( metag.defion || !add_coll_into_album || coll_text ) ) {
+		var parent_akey	= mapfin.akey_master || mapfin.akey_advice;
+		var a_available	= !!parent_akey && gio.def.albums[ parent_akey ];
 
-			var downcoll = cpaste( cseed, tplay.coll );
 
+		if( gafion || ( !cinsert && ( !a_available || coll_text ) ) )
+		{
+
+			var downcoll = cpaste( cseed, gdef.templates.play.coll );
 		}else{
 
-			if( metag.reuse_collection ) {
-
-				var gs = gio.getgs();
-				var parent_akey = gs.akey;
-				var cix = metag.cix_to_insert1 - 1;
-				deb( "Reusing album's collection a, c = " + parent_akey + ', ' + cix );
+			if( cinsert )
+			{
+				var gs			= gio.getgs();
+				var parent_akey	= gs.akey;
+				var cix			= cinsert - 1;
+				deb( "Reuses album's collection a, c = " + parent_akey + ', ' + cix );
 			}else{
-				deb( "Adding coll-seed into album. akey = " + parent_akey );
+				deb( "Adds coll-seed into album. akey = " + parent_akey );
 			}
-			var merged_album = gdp.derive_album ( parent_akey, cseed, !query );
+			cseed.ref.list.preserve_gui_state = !query_is_source;
+
+			var merged_album = gdp.derive_album ( parent_akey, cseed );
 			if( !merged_album )
-			{	conadd( "Failed add coll-seed to akey " + parent_akey );
+			{	conadd( "Failed adding coll-seed to akey " + parent_akey );
 				return false;
 			}
 			var ww = merged_album.collections;
-			var downcoll = metag.reuse_collection ? ww[ cix ] : ww[ ww.length - 1 ];
+			var downcoll = cinsert ? ww[ cix ] : ww[ ww.length - 1 ];
 		}	
 		if( coll_text ) {
 
-			deb( 'Decoding gamion ... ' );
+			deb( 'Decodes gamion ... ' );
 			downcoll.maps_loaded = 'began';
 			downcoll.script.source_text = coll_text;
 			gio.core.def.map_format.decode( downcoll );
-			deb( 'Finished maps decoder. akey =' + downcoll.ref.list.akey + '.' );
+			deb( 'Gamion decoder finished. akey = ' + downcoll.ref.list.akey + '.' );
 			var success =
 				downcoll.maps_loaded === 'success' ||
 				downcoll.script.state.definitions_processed;
-
 		}else{
 			var success	= dio.download_cfile ( downcoll );
+		}
+		if( query_is_source && !success ) {
+			var halted		= gio.description.title + ' is halted.';
+			conadd( 'Failed download gafion from ' + link );
+			session.state.halted = true;
+			alert( halted );
 		}
 
 		return success ? downcoll : false;
@@ -10225,10 +10205,10 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 	dio.download_cfile = function( coll ) {
 
 		var url;
-		var coll_ix				= coll.ref.list.ix;
-		var folder				= coll.ref.folder;
-		var ref_db				= coll.ref.db;
-		var ownhost				= gdp.detect_ownhost_url( coll );
+		var coll_ix		= coll.ref.list.ix;
+		var folder		= coll.ref.folder;
+		var ref_db		= coll.ref.db;
+		var ownhost		= gdp.detect_ownhost_url( coll );
 
 		if( folder.full ) {
 			url = core.app_webpath_noindex + '/' + folder.full;
@@ -10318,47 +10298,6 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 		return w_success;
 	}; // dio.download_cfile
-
-
-
-
-	dio.download_defion = function ( arg ) {
-			var url					= arg.url;
-			var query				= arg.query;
-			var listify_on_top		= arg.listify_on_top;
-			var penetrate_asingle	= arg.penetrate_asingle;
-			var derive_at_download	= arg.derive_at_download;
-
-			var session				= gio.session;
-			var halted				= gio.description.title + ' is halted.';
-
-
-			var metag =
-			{ 	defion : true,
-				env	:
-				{	query				: query,
-					listify_on_top		: listify_on_top, //TODM bad coding
-					derive_at_download	: derive_at_download,
-					penetrate_asingle	: penetrate_asingle,
-				},
-				link :
-				{	link : url
-				},
-				list :
-				{	chosen : !!query,
-					title : query && "External"
-				}
-			};
-			deb( "Downloading defion " + url );
-			var downed_alb = dio.download_gamion ( metag );
-			if( !downed_alb ) {
-				conadd( 'Failed download defion from ' + url );
-				session.state.halted = true;
-				alert( halted );
-			}
-			return downed_alb;
-
-	};
 	dio.add_map_text_and_land = function( text ) {
 
 		var gs						=	gio.getgs();
@@ -10366,7 +10305,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		colln.script.source_text	+= 	"\n" + colln.maps.length + "\n\n" + text;
 
 		colln.maps_loaded = 'began';
-		if( gio.debug ) gio.cons( 'began to add map to collection ... ' );
+		if( gio.debug ) gio.cons( 'adding map to coll ... ' );
 		gio.core.def.map_format.decode ( colln );
 
 		var failed = true;
@@ -10374,7 +10313,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			var gm = colln.maps[ colln.maps.length-1 ];
 
 			deb( 'Validates added-from-text-map ...' );
-			if( gio.session.reinit.landify_map( gm ) ) {
+			if( session.reinit.landify_map( gm ) ) {
 				deb( 'Lands on added-from-text-map ...' );
 				gm.title = 'My Edited. ' + gm.title;
 				failed = !gio.navig.landify_and_land_map( gm, 'do_land' );
@@ -10426,7 +10365,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 
 
-(function( ){	 	var tp   	=  $.fn.tp$      =  $.fn.tp$ || {};	
+
+( function () {	 	var tp   	=  $.fn.tp$      =  $.fn.tp$ || {};	
 					var gio  	=  tp.gio        =  tp.gio   || {};
 					var ceach   =  tp.core.each;
 
@@ -10490,6 +10430,20 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 	gsp.get_listed_album = function ( album_key ) {
 		return session.alist_by_key[ album_key ];
 	};
+
+
+
+
+
+	gsp.disable_GUI_state = function ( ) 
+	{
+		var sstt = session.state;
+		if( !sstt.akey__bf ) return;
+		deb(	'Disabling GUI state which is: aix, a = ' +
+				sstt.album_ix + ', ' + sstt.akey__bf
+		);
+		sstt.akey__bf = '';
+	};
 	gsp.do_memorize_GUI_state = function ( akey, aix, cix, mix ) {
 
 				var ss = session;
@@ -10531,11 +10485,82 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 })();
 
+
 ( function () {	 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio  =  tp.gio    =  tp.gio   || {};
 
-					var deb  =  function ( string ) { if( gio.debug )	gio.cons_add( "Validate Map: " + string ); };			
-	var normalize_map=function(map){
+					var deb		= function ( string ) { if( gio.debug )	gio.cons_add( "Virtual Landifying Map: " + string ); };			
+					var conadd	= function ( string ) { gio.cons_add( "Virtual Landifying Map: " + string ); };			
+	var boundarify = function ( map, left_wall, right_wall,  loc2lid, lid2uid )
+	{
+
+		var msize_x = map.size[0];
+		var msize_y = map.size[1];
+		var tops	= map.pos.tops;	
+		var units	= map.units;
+
+
+		var internal_cells_number = 0;
+		var map_boundary	=	map.parsed.wall_boundary_encountered && 
+								map.script.decoder_table[ map.game.rule_helpers.map_boundary ];
+								deb( 'Map boundarness = ' + map_boundary ); //TODM  slow if scrolling maps
+
+		for( var yy = 0; yy < msize_y; yy++ ) {
+			
+			var left	= boundarify_line(	1,	yy, msize_x, map_boundary, loc2lid, lid2uid, tops, units );
+			var right	= boundarify_line(	-1,	yy, msize_x, map_boundary, loc2lid, lid2uid, tops, units );
+			if( map_boundary && left === -1 && right === msize_x )
+			{
+				deb( "Walled map but walless line " + yy + ".\n" +
+					'"Map: "' +  map.title + "'."
+				);
+			}
+			if( left >= right ) right = left + 1;
+			left_wall[ yy ]		= left;
+			right_wall[ yy ]	= right;
+			internal_cells_number += right - left - 1;
+		}
+		map.metrics.internal_cells_number = internal_cells_number;
+	};
+	var boundarify_line = function ( direction, yy, msize_x, map_boundary, loc2lid, lid2uid, tops, units )
+	{
+
+		var left = -1;
+		for( var xx_v = 0; xx_v < msize_x; xx_v++ )
+		{
+			var xx = direction < 0 ? msize_x - xx_v - 1 : xx_v;
+
+			var tower = loc2lid[ xx ][ yy ];
+			var block = false;
+			if( !tower )
+			{
+				if( left < 0 && map_boundary ) continue;
+				block = true;
+
+			} else {
+				var top = tops[ xx ][ yy ];
+				for( var zz = 1; zz <= top; zz++ )
+				{
+					var unit = units[ lid2uid[ tower[ zz ] ] ];
+					if( unit.block || ( map_boundary && unit.cname === map_boundary ) )
+					{
+						block = true;
+						break;
+					}
+				}								
+			}
+			if( block )
+			{
+				left = xx_v;
+			}else{
+				if( !map_boundary || left > -1 ) break;
+			}
+		}
+		if( map_boundary && left < 0 ) left = msize_x;
+		return ( direction > 0 ? left : msize_x - left - 1 );
+	};
+	var normalize_map = function( map )
+	{
 
 		var game = map.game;
 		var roof = game.rule_helpers.map_roof;
@@ -10547,52 +10572,18 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		var units = map.units;
 		var locs = map.locs;
 		var loc2lid = map.loc2lid;
+		var msize_x = map.size[0];
 		var exists=map.xy_exists = [];
 		map.digest = {};
 		var hid2lid = map.digest.hid2lid = [];
 		var hid2loc = map.digest.hid2loc = [];
 		var lid2hid = map.digest.lid2hid = [];
-		var map_boundary =	map.parsed.wall_boundary_encountered && 
-							map.script.decoder_table[ game.rule_helpers.map_boundary ];
-		deb( 'Map boundarness = ' + map_boundary ); //TODM  slow if scrolling maps
-		var left_wall = [];
-		var right_wall = [];
-		for(var yy=0; yy<map.size[1]; yy++){
-			var left = -1;
-			var right = map.size[0];
 
-			if( map_boundary ) {
-				for(var xx = 0; xx < map.size[0]; xx++ ) {
-					var tower = loc2lid[ xx ][ yy ];
-					if( !tower ) continue;
-					var top = tops[ xx ][ yy ];
+		var internal_blocking_units = 0;
 
-					for( var zz=1; zz <= top; zz++){
-
-						var unit = units[lid2uid[tower[zz]]];
-						if( unit.cname === map_boundary ){
-							if(left < 0) left = xx;
-							right = xx;
-						}
-					}
-				}
-				if( left === -1 && right === map.size[0] ) {
-										map.load = 'invalid';
-										gio.cons_add(	"Walled map but walless line " + yy + ".\n" +
-														"Map: " +  map.title
-										); //TODm Map validation must be separate from normilizer.
-										return false;
-				}
-			}
-
-
-			left_wall[yy] = left;
-			right_wall[yy] = right;
-		}
-
-
-
-
+		var left_wall		= [];
+		var right_wall		= [];
+		boundarify ( map, left_wall, right_wall,  loc2lid, lid2uid );
 
 		for(var xx=0; xx<map.size[0]; xx++){
 
@@ -10600,6 +10591,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 			var lx = loc2lid[xx] = loc2lid[xx] || [];
 			for(var yy=0; yy<map.size[1]; yy++){
+
+				var forbidden_xx = ( xx <= left_wall[ yy ] || xx >= right_wall[ yy ] ); //TODM why not to do continue when forbidden_xx?
 				if(!lx[yy]){
 					ex[yy]=false;
 				}else{
@@ -10616,7 +10609,11 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 							var lid = ly[zz];
 							var uid = lu[lid];
 							var unit = map.units[uid];
-							if( unit.block ) ex[yy]=false;
+							if( unit.block )
+							{
+								ex[yy]=false;
+								if( !forbidden_xx ) internal_blocking_units += 1;
+							}
 							if(rhelper_dyn && zz > 0){
 								var lid_below = ly[zz-1];
 								var uid_below = lu[lid_below];
@@ -10627,7 +10624,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 									if( activity.active || activity.passive ){
 
 										map.load = 'invalid';
-										gio.cons_add(	"Broken map. Two dynamic units in one cell.\n" +
+										conadd(	"Broken map. Two dynamic units in one cell.\n" +
 														"Map: " +  map.title +
 														" Unit below: " + unit_below.id + ", " +
 														"Unit above: " + unit.id + ", " +
@@ -10660,28 +10657,27 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 							}
 						}
 					}
-				}
-			}
-		}
+				} //.. loc2lid[xx][yy] exists ...
+			} // yy
+		} // xx
 		/*
 		c onsole.log('map.locs=',map.locs);
 		c onsole.log('map.loc2lid=',map.loc2lid);
 		c onsole.log('loc2lid=',map.pos.loc2lid);
 		*/
+		map.metrics.internal_blocking_units = internal_blocking_units;
 
 		var corners = gio.solver.bays_builder(map); 
+		gio.session.reinit.metrify( map );
+
 		map.load = 'valid';
 		return true;
 	};
 	gio.session.reinit.landify_map = function( gm ) {
 
-		if( gio.debug ) {
-			var coll = gm.collection;
-			gio.cons_add(	'Landifying map. m,c,a = ' + gm.ix + ', ' +
-							coll.ref.list.ix + ', ' + coll.ref.list.akey );
-		}
-
+		var coll = gm.collection;
 		var game = gm.game;
+		deb( 'Begins ... m,c,a = ' + gm.ix + ', ' + coll.ref.list.ix + ', ' + coll.ref.list.akey );
 
 		if( gm.load === 'invalid') {
 			gio.session.reinit.messages =
@@ -10715,13 +10711,144 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		}
 		gm.load = 'finalized';
 
-		gio.debly(	'Finalized map m,c,a = ' + gm.ix + ', ' + gm.collection.ref.list.ix + ', ' + gm.collection.ref.list.akey );
+		gio.debly(	'Finalized map: validated, boardified, titled: m,c,a = ' +
+					gm.ix + ', ' + gm.collection.ref.list.ix + ', ' + gm.collection.ref.list.akey
+		);
 		return true;
 	};
 
 
 
+
 })();
+
+
+( function () {	 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
+					var gio  =  tp.gio    =  tp.gio   || {};
+	var do_boredomize = function ( a, amin, asense, name_str, summary )
+	{
+		var x = a / asense;
+		if( x < 1 ) 
+		{
+			var x2		= x*x;
+			var min		= amin / asense;
+			var min2	= min * min;
+			var y		= x2 - min2;
+			if( y < 0 )
+			{	
+				y = 1;
+			}else{
+
+				y =  1 + y / ( 1 - min2 );  
+			}
+		}else{
+
+			var y = 1 + x;
+		}
+
+
+		message =		"    " + name_str + " factor = " + y +
+						" ( number, min, sense = " + a + ", " +
+						amin + ", " +  asense + " )\n"; 
+		summary.boredom *= y;
+		summary.message += message; 
+	};
+
+
+
+
+	gio.session.reinit.metrify = function ( gm )
+	{ 
+
+		var returner	= gm.metrics.recalculated;
+		returner.text	= '';
+
+		var config		= gio.solver.config;
+		var EU			= gio.config.metrics.EXPECTED_USER;
+		var UB			= EU.BOREDOM;
+
+		if( !gm.game.boredom ) return returner;
+
+		var uu		= gm.dynamic_units.length;
+		var nni		= gm.metrics.internal_cells_number;
+		var aww		= gm.metrics.internal_blocking_units;
+		var uuss	= nni - aww;
+		var ss		= uuss - uu;
+		var density = Math.min( 1, uu / Math.max( 1, ss ) );
+
+
+		var result	=	"<pre>Parameters:\n";
+		result		+=	"  Internal cells     = " + nni + "\n"; 
+		result		+=	"  Blocks (walls),  w = " + aww + "\n"; 
+		result		+=	"  Empty cells,     s = " + ss	+ "\n";  
+		result		+=	"  Dynamic units,   u = " + uu	+ "\n"; 
+		result		+=	"  Density ... u/s, g = " + density + "\n"; 
+		result		+=	"\n\n</pre>"; 
+
+		var summary	= { boredom : 1, message : '' };
+		var bb		=	gm.cols.length - 2;
+		do_boredomize( bb, UB.MIN_BREEDS, UB.BREEDS, 'breeds', summary );
+		var nn		=	uuss + aww * 0.5;
+		do_boredomize( nn, UB.MIN_CELLS, UB.CELLS, 'cells', summary );
+		var rr		=	gm.game.boredom;
+		do_boredomize( rr, UB.MIN_RULES, UB.RULES, 'rules', summary );
+
+		result		+=	"<pre>E x p e c t e d    A u d i e n c e    P a r a m e t e r s\n\n";
+		result		+=	"    Volumability, v = rules * breeds * cells = " + summary.boredom + "\n";
+		result		+=	summary.message;
+		result		+=	"\n</pre>"; 
+
+		returner.text = result;
+		var mmet = gm.metrics.optpath;
+		if( !mmet ) return returner;
+
+		var pp				= mmet.p;
+		var ii				= mmet.i;
+		var re_int			= mmet.r;
+		var reint		 	= ( re_int + ii ) / 1.5;
+
+
+		var flat_diff			= ii		+ density * ( pp - ii );
+		var abs_diff			= reint		+ density * ( pp - ii );
+		var creativity_metric	= cm = abs_diff / summary.boredom;
+		var estimation			= ( mmet.estimation === 'solpath' ) ? ' /= ' : ' = ';
+
+		result		+=	"<pre>\n"; 
+
+		result		+=	"    Path, Inter, ReInter: p, i, ri  = "	+ pp + ", " + ii + ", " + re_int + " (i,ri estimated)\n"; 
+		result		+=	"    Flat Diff,   fd = i+g(p-i)     "		+ estimation + flat_diff + "\n"; 
+		result		+=	"    reint           = 2(ri+i)/3     = "	+ reint + "\n"; 
+		result		+=	"    Difficulty,   d = reint+g(p-i) "		+ estimation + abs_diff + "\n"; 
+		result 		+=	"    Creativity,   c = d/v          "		+ estimation + cm + "\n"; 
+
+		var maxc			=	EU.MAX_KNOWN_CREATIVITY.SCORE;
+		var relative		=	cm * 100.0 / maxc;
+		var relative_str	=	relative + '';
+		relative_str		=	relative_str.substr(0,4) + '%';
+
+		var ten_rounded		=	Math.max( Math.ceil( relative - 0.5 ), 1 );
+		var ten_str			=	'' + ten_rounded;
+		ten_str				=	ten_str.length === 1 ? '0' + ten_str : ten_str;
+		var ww				=	ten_str.length - 1;
+		ten_str				=	ten_str.substr( 0, ww)  + '.' + ten_str.substr( ww, 1);
+
+		result 				+=	"    Soko-style,   c/maxc           "		+  estimation + ten_str + "\n"; 
+
+		result 				+=	"    Whirlitivity, c/maxc           "		+  estimation + relative_str + "\n\n"; 
+		result 				+=	"    <a style=\"color:#FFFFFF;\" href=" + 
+								tp.core.app_webpath_noindex + "/?" +					
+								EU.MAX_KNOWN_CREATIVITY.QUERY + ">Known maxc, " + maxc + ".</a>\n\n</pre>"; 
+
+		returner.text			= result;
+		returner.ten_rounded	= ten_str;
+		returner.relative		= relative;
+		return returner;
+
+	};
+
+
+})();
+
 
 ( function () {		var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 				  	var gio		=  tp.gio    =  tp.gio   || {};
@@ -10737,6 +10864,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 	var do_slide_round_to_beginning=function(round){
 		round.backs+=round.current_pos_ix;
 		round.interacts = 0;
+		round.peer_change = 0;
 
 		delete round.pos;  //TODm memory leak
 		round.pos=tclone(round.start_pos);
@@ -10751,6 +10879,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		round.current_pos_ix = 0;
 		round.backs = 0;
 		round.interacts = 0;
+		round.peer_change = 0;
 		return round;
 	};
 	rman.set_gui_title=function(round, round_ix){
@@ -10814,28 +10943,59 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 		if(play_direction){
 			var pos=round.pos;
-			if(play_direction==='back'){
+			if( play_direction === 'back' )
+			{
 				if(round.current_pos_ix===0) return;
-				var move = moves[round.current_pos_ix-1];
-				gio.navig.process_move_record(gm, pos, move.steps, 'backward');
-				round.current_pos_ix--;
-				if( move.action.intact ) round.interacts -= 1;
+				var move = moves[ round.current_pos_ix - 1 ];
+
+				gio.navig.process_move_record( gm, pos, move.steps, 'backward' );
+				var pix = --round.current_pos_ix;
+				if( move.action.intact )
+				{
+					round.interacts -= 1;
+					if( pix > 0 )
+					{
+						var former_move = moves[ pix - 1 ];
+						var former_peer = former_move.action.former_peer;
+						if( former_peer && former_peer !== move.action.peer ) round.peer_change -= 1;
+					}
+				}
 				round.backs++;
+
 			}else if(play_direction==='forward'){
-				if(round.current_pos_ix===moves.length) return;
-				var move = moves[round.current_pos_ix];
-				gio.navig.process_move_record(gm, pos, move.steps);
-				round.current_pos_ix++;
+
+				if( round.current_pos_ix === moves.length ) return;
+				var move = moves[ round.current_pos_ix ];
+				gio.navig.process_move_record( gm, pos, move.steps );
+				var pix = ++round.current_pos_ix;
 				round.backs--;
-				if( move.action.intact ) round.interacts += 1;
+				if( move.action.intact )
+				{
+					round.interacts += 1;
+					var former_move = ( pix > 1 ) && moves[ pix - 2 ]; //TODM what is a syntax ... is array[-1] legal operation?
+					var former_peer = former_move && former_move.action.former_peer;
+					if( former_peer && former_peer !== move.action.peer ) round.peer_change += 1;
+				}
+
 			}else if(play_direction === 'to beginning'){
 				do_slide_round_to_beginning(round);
 			}
 		}else{
-			moves[round.current_pos_ix]={steps : steps, action : action};
+			var move = { steps : steps, action : action };
+			var pix = round.current_pos_ix;
+			moves[ pix ] = move;
+			var former_move		= ( pix > 0 ) && moves[ pix - 1 ];
+			var former_peer		= former_move && former_move.action.former_peer;
+			action.former_peer	= action.peer || former_peer;
+
 			round.current_pos_ix++;
-			round.moves=moves.slice(0,round.current_pos_ix);
-			if( action.intact ) round.interacts += 1;
+			round.moves = moves.slice( 0, round.current_pos_ix );
+			if( action.intact )
+			{
+				round.interacts += 1;
+				if( former_peer && former_peer !== action.peer ) round.peer_change += 1;
+
+			}
 		}
 	};
 	gio.navig.in_map.autoplay=function(time_interval_between_steps){
@@ -10883,8 +11043,14 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 		if( do_comap )
 		{
-			script += ":::comment: this context_akey is approximate. You may wish different one.\n";
-			script += ":::context_akey=co_" + gm.game.akey + "\n";
+			script += ":::comment: MAKE SURE THERE IS A HERO DEFINED ON THIS MAP.\n";
+			var co_game = 'co_' + gm.game.gkey;
+			var co_game = co_game.replace( /^co_co_/, '' );
+			if( gio.def.games[ co_game ] ) {
+				script += ":::context_akey=" + co_game + "\n";	
+			}else{
+				script += ":::comment: there is no co game, " + co_game + ", defined ... \n";
+			}		
 		}
 
 		var board = '';
@@ -10911,12 +11077,16 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 									cotable[ unit.cname ] :
 									table[ unit.cname ];
 					if( symbol === cmd.map_sugar.GROUND ) {
-						if( top > 0 ) continue;
+						if( top > 0 )
+						{
+							if( zz_virt < top ) tower_script += '.';
+							continue;
+						}
 						symbol = cmd.map_sugar.GROUND;
 					}
 					if( symbol.length > 1 ) short_symbols = false;
-					if( zz_virt < top || top === 0 ) tower_script += '.';
 					tower_script += symbol;
+					if( zz_virt < top || top === 0 ) tower_script += '.';
 				}
 				if( short_symbols ) tower_script = tower_script.replace( dot_regex, '' );
 				if( mapcut[ tower_script ] ) tower_script = mapcut[ tower_script ];
@@ -10988,12 +11158,17 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			}
 		});
 
-		return { path : text, co_path : (copathy && sugar_inverse_path ) || '' };
+		return {	path : text,
+					co_path : (copathy && sugar_inverse_path ) || '',
+					metrics : '' + round.moves.length + '.' + round.interacts + '.' + round.peer_change
+		};
 	};
-	rman.path2texts_current=function(){
-		return rman.path2texts(gio.getgs().round);
+	rman.path2texts_current = function()
+	{
+		return rman.path2texts( gio.getgs().round );
 	};
-	rman.text2round = function(text_, round){
+	rman.text2round = function( text_, round )
+	{
 
 		var ww					= cmd.playpath;
 		var DIRECTION			= ww.DIRECTION;
@@ -11114,7 +11289,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			var round = rounds[rix];
 			var sr = stash.rounds[rix]={};
 			sr.path = gio.navig.in_session.round.path2texts(round).path;
-			var pstate = gm.solver.adapter.createdNode(round.start_pos, null, null, 'make pstate only');
+
+			var pstate = gm.solver.adapter.createdNode( round.start_pos );
 			sr.pstate = tclone(pstate);
 		}
 		stash.current_round_ix = rounds.ix;
@@ -11449,7 +11625,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			}
 			return new_move;
 	};
-	gio.navig.process_move_record=function(gm, pos, steps, backward){ //TODm redundant? rid?
+	gio.navig.process_move_record = function ( gm, pos, steps, backward )
+	{
 			var locs = gm.locs;
 			var tops = pos.tops;
 			var lid2uid = pos.lid2uid;
@@ -11546,7 +11723,10 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 					var state	=  session.state;
 					var ggp		=  gio.gui.procs;
 					var gsp		=  gio.session.procs;
-	gio.navig.landify_and_land_map = function( gm, do_land ) {
+				
+					var conadd		= function ( string ) { gio.cons_add( "Landing Tasks: " + string ); };			
+					var deb			= function ( string ) { if( gio.debug) conadd( string ); };			
+	gio.navig.landify_and_land_map = function( gm, do_land, dkey ) {
 
 			var coll	= gm.collection;
 			var list	= coll.ref.list;
@@ -11557,15 +11737,16 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 			var validated = session.reinit.landify_map( gm );
 			if( !validated )
-			{	gio.debly(	"Cannot land m,c,a = " + gm.ix + ', ' +
-							cix + ', ' + akey + "\n" +
-							(session.reinit.messages || '' ) + "\n"
+			{	deb(	"Cannot land m,c,a = " + gm.ix + ', ' +
+						cix + ', ' + akey + "\n" +
+						(session.reinit.messages || '' ) + "\n"
 				);
 			}
 			if( !do_land || !validated ) return validated;
 			ggp.do_display_curr_board	( false );
 			gsp.do_memorize_GUI_state	( akey, null, cix, gm.ix );
 			album.title					= ggp.get_master_title_from_session_state();
+			ggp.virtual_reselect_dress	( gm, dkey );
 			gio.gui.unhide_map			( gm ); //TODO validation ... what if this GUI fails ?
 
 			return true;
@@ -11580,7 +11761,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			var state_aix	= ( start_aix + i) % len;
 			playalb			= session.alist[ state_aix ];
 			var mess		= " scroll to album " + state_aix + " " + playalb.title;
-			if( gio.debug ) gio.cons_add( "Doing " + mess );
+			deb( "Doing " + mess );
 		
 			var found_coll_ix1	= gsp.scroll_till_landable_coll(
 					playalb.collections.ix, playalb.collections,
@@ -11588,11 +11769,11 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			);
 
 			if( found_coll_ix1 ) return true;
-			if(gio.debug) gio.cons_add( "Failed " + mess );
+			deb( "Failed " + mess );
 		}
 
 		var ww = 'No games available';
-		gio.cons_add( ww );
+		conadd( ww );
 		return false;
 	};
 	gsp.scroll_till_landable_coll = function( start_ix, collections, download_external_if_first, do_land ) {
@@ -11607,51 +11788,61 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			if( !coll.ref.link.link || (download_external_if_first && !i) ) { //TODM rid
 				var success = gio.navig.validate_coll_map( coll.ref.list.akey, coll.ref.list.ix, null, do_land ); 
 			}else{
-				if( gio.debug ) gio.cons_add( "Skipped scroll of external coll" );
+				deb( "Skipped scroll of external coll" );
 			}
 			if( success ) return ( current_coll_ix + 1 );
 		}
 		
-		gio.cons_add( "Scroll failed for colls at akey = \"" + collections[0].ref.list.akey + "\"" );
+		conadd( "Scroll failed for colls at akey = \"" + collections[0].ref.list.akey + "\"" );
 		return false;
 	};
 	gio.navig.validate_coll_map = function(
 
 			akey,
-			cix,
-			map_ix,
-			do_land
+			cref,
+			map_ref,
+			do_land,
+			dkey
 	){
 		if( akey ) {
 			var lista = gio.session.stemmed_albums[ akey ];// session.alist_by_key[ akey ];
 			if( lista ) {
 				var album_ix = lista.ix;
 			}else{
-				gio.debly( 'Missed akey ' + akey + ' in GUI-album-set');
+				deb( 'Missed akey ' + akey + ' in GUI-album-set');
 				return false;
 			}
 		}else{
 			var album_ix = state.album_ix;
 			var lista = session.alist[ album_ix ];
 		}
-		if( cix || cix === 0  ) {
-			if( lista.collections.length <= cix || cix < 0) return false;
-		}else{
-			cix = lista.collections.ix;
+		var coll = ( typeof cref === 'string' ) && cref && lista.coll_ref[ cref ];
+		if( !coll )
+		{
+			if( typeof cref === 'number' )
+			{
+				var cix = cref;
+				if( lista.collections.length <= cix || cix < 0) return false;
+			}else{
+				var cix = lista.collections.ix;
+			}
+			var coll = lista.collections[ cix ];
 		}
-		var coll = lista.collections[ cix ];
 		if( !coll.maps_loaded ) gio.data_io.download_cfile( coll );
 		if(	coll.maps_loaded !== 'success' ) {
-			gio.debtp( 'Failed maps load. Message: ' + coll.maps_loaded );
+			deb( 'Failed maps load. Message: ' + coll.maps_loaded );
 			return false;
 		}
-		var map_requested	= map_ix || map_ix === 0;
-		if( !map_requested ) map_ix = coll.map_ix;
-		var gm = coll.maps[ map_ix ];
-		if( !gm ) return false;
+		if( !map_ref && map_ref !== 0 )	map_ref = 0;
+		var gm = ( typeof map_ref === 'string' ) ? coll.maps_ref[ map_ref ] : coll.maps[ map_ref ];
+		if( !gm )
+		{
+			deb( 'Unable to find map by map_ref = ' + map_ref + '.' );
+			return false;
+		}
 
 
-		var finalized = gio.navig.landify_and_land_map( gm, do_land );
+		var finalized = gio.navig.landify_and_land_map( gm, do_land, dkey );
 
 		if( !finalized ) return false;
 		return coll;
@@ -11692,10 +11883,11 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 })();
 
 
-(function(){		var tp		= jQuery.fn.tp$ = jQuery.fn.tp$ || {};	
+( function () {		var tp		= jQuery.fn.tp$ = jQuery.fn.tp$ || {};	
 					var gio		= tp.gio   = tp.gio   || {};
 					var core	= tp.core;
 					var ceach	= core.each;
+					var exp_url	= core.expand_to_parent;
 
 					var dio		= gio.data_io;
 					var ggi		= gio.gui.init;
@@ -11706,17 +11898,22 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 					var feeder	= gconf.feeder;
 					var session	= gio.session;
 
-					var deb		= function ( string ) { gio.debly( "Preload: " + string ); };			
-					var conadd	= function ( string ) { gio.cons_add( "Preload: " + string ); };			
+					var conadd		= function ( string ) { gio.cons_add( "Preload: " + string ); };			
+					var deb			= function ( string ) { if( gio.debug) conadd( string ); };			
 	session.init.load_core_gamions = function () {
 
 		if( session.state.halted ) return 'Skipped "load_core_gamions".';
 		var query 		= gconf.query;
 		gdp.spawn_base_game_and_dress();
-		var success = dio.download_defion ( 
-			{ url :	core.app_webpath_noindex + '/' +
-					gconf.defpaths.GAMES_DEF_PATH +
-					'/games.jwon.txt'
+		var success = dio.download_gamion ( 
+			{
+				galfinition : { gafion : true },
+				common :
+				{
+						link :	core.app_webpath_noindex + '/' +
+								gconf.defpaths.GAMES_DEF_PATH +
+								'/games.jwon.txt'
+				}
 			}
 		);
 		var ww = "Core folder-games load " + ( success ? 'success.' : 'failure.' );
@@ -11736,7 +11933,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		ceach( gdef.albums, function( akey, dummy ) { gdp.derive_album( akey );	});
 		deb( "Finished deriving scode-bundled albums ... " );
 		deb( "Downloads standalone-albums if any ..." );
-		dio.add_defions();
+		dio.add_gafions();
 		gdp.normalize_album_defs( gdef.albums ); // TODM extra junk job
 		deb( "Finished standalone-albums if any ... " );
 
@@ -11758,11 +11955,27 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 
 		if( query.aurl ) {
-			deb( "Preloading album " + query.aurl );
-			var downed_alb = dio.download_defion ( 
-				{ url : query.aurl, query : query, listify_on_top : true, penetrate_asingle : true }
-			);
-			var ww = "Album preload " + query.aurl + ( downed_alb ? ' success.' : ' failure.' );
+
+			deb( "Album from query " + query.aurl );
+			var link = exp_url ( query.aurl );
+
+			var downed_alb = dio.download_gamion (
+			{
+				galfinition :
+				{	penetrate_asingle	: true,
+					derive_at_download	: true,
+					listify_on_top		: true,
+					gafion				: true
+				},
+ 
+				common :
+				{	link				: link,
+					query_is_source		: true,
+					jwon				: query.jwon
+				}
+			});
+
+			var ww = "Album from query " + link + ( downed_alb ? ' success.' : ' failure.' );
 			if( !downed_alb ) return ww;
 			deb( ww );
 		}
@@ -11770,24 +11983,34 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		var pakey = gdp.get_preferred_album_def().key;
 		if( !pakey ) return "No album definitions are loaded.";
 		var downed_coll = false;
-		if( query.curl ) {
-			var metag =
-			{ 	//"coll" : true,
-				env	:
-				{	akey_master : query.akey,
-					akey_advice : pakey,
-					passive		: query.cpassive,
-					query		: query
+		if( query.curl )
+		{
+
+			var link		= exp_url ( query.curl, query.aurl );
+			var downed_coll	= dio.download_gamion (
+			{
+				galfinition :
+				{	penetrate_asingle	: true,
+					derive_at_download	: true
 				},
-				link :
-				{	link : query.curl
+
+				mapfinition :
+				{	passive				: query.cpassive,
+					akey_master			: query.akey,
+					akey_advice			: pakey,
+					chosen				: true,
+					title				: "From Query",
+					query_credits		: query
 				},
-				list :
-				{	chosen : true  //TODM appar. overkill, aways chosen
+ 
+				common :
+				{	link				: link,
+					query_is_source		: true,
+					jwon				: query.jwon
 				}
-			};
-			var downed_coll = dio.download_gamion ( metag );
-			if( !downed_coll ) return 'Failed download coll from query.url = ' + query.curl;
+			});
+
+			if( !downed_coll ) return 'Failed download coll from query.url = ' + link;
 			deb( "Coll download success." );
 		}
 
@@ -11818,8 +12041,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 					var smode	= gio.modes.sta_tic;
 					var feeder	= gio.config.feeder;
 					var session	= gio.session;
-					var conadd	= function ( string ) { gio.cons_add( "Entry: " + string ); };			
-					var deb		= function ( string ) { gio.debly( "Entry: " + string ); };			
+					var conadd	= function ( string ) { gio.cons_add( "Core Entry: " + string ); };			
+					var deb		= function ( string ) { gio.debly( "Core Entry: " + string ); };			
 	session.init.entry = function () {
 
 		if( leave_if_user_declined_browser() )		return "User declined browser";
@@ -11829,23 +12052,23 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		var query 			= gio.config.query;
 		var pakey			= gdp.get_preferred_album_def( 'from listed albums' ).key;
 		var akey			= query.akey || pakey;
-		var collection_ix	= query.collection_ix || 0;
-		var map_ix			= query.map_ix || 0;
+		var coll_ref		= query.ckey || query.cix || query.collection_ix || 0;
+		var map_ref			= query.mkey || query.mix || query.map_ix || 0;
 		var downed_coll		= session.init.downed_coll;
 
 		if( downed_coll ) {
 			if( downed_coll.ref.list.akey && downed_coll.maps_loaded === 'success' ) {
 				var akey			= downed_coll.ref.list.akey;
-				var collection_ix	= downed_coll.ref.list.ix;
+				var coll_ref		= query.ckey || downed_coll.ckey;
 			}
 		}
-		var ww_land = 	" akey, cix, mix = \""	+
+		var ww_land = 	" akey, cref, mref = \""	+
 						akey					+ "\", \"" + 
-						collection_ix			+ "\"" + "\", \"" +
-						map_ix					+ "\". ";
-		deb( "Going to land to " + ww_land );
-		if( !gio.navig.validate_coll_map( akey, collection_ix, map_ix, 'do_land' ) ) {
-				conadd(	"Failed to land on " + ww_land + "\nAttempting pakey." );
+						coll_ref				+ "\"" + "\", \"" +
+						map_ref					+ "\". ";
+		deb( "Landing to" + ww_land );
+		if( !gio.navig.validate_coll_map( akey, coll_ref, map_ref, 'do_land', query.dkey ) ) {
+				conadd(	"Failed to land on" + ww_land + "\nAttempting preferred akey." );
 				if( !gio.navig.validate_coll_map( pakey, 0, 0, 'do_land' ) )
 				{
 					if( !gio.gui.procs.scroll_till_valid_album( 0, 'do_land' ) ) {
@@ -11863,9 +12086,10 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 	};// session.init.entry
 	var leave_if_user_declined_browser = function() {
 
-		var getout=false;
-		var question = "Would you still like to continue on your own risk?";
-		var immature_project = gio.description.title + " project and its games\nare incomplete draft and immature.\n\n";
+		var getout = false;
+		var question = "Would you like to continue?";
+		var immature_project	= gio.description.title + " is under development and not completely tested.\n";
+		immature_project		+= "All tests are positive, but incorrect execution is possible.\n\n";
 		var message = question;
 		if( core.browser.IE ) {
 
@@ -11873,7 +12097,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 			var IEVersion = parseInt( core.browser.IE[1] );
 
-			if( IEVersion <= version_barrier ) {
+			if( IEVersion <= version_barrier )
+			{
 				var message =
 								"Your Internet Explorer version " + IEVersion +
 								" is too low.\n\n" + 
@@ -11881,23 +12106,25 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 								"Fire Fox, Chrome, or Mobile browsers or\npossibly " +
 								"Internet Explorer version " + version_barrier + " or higher.\n\n" +
 								question;
+				getout = !confirm( message );
 
-
-			}else{
+			}else if( IEVersion > 10 ) {
 
 				var message =	gio.description.title + " is not tested in this browser.\n" +
 								"Fire Fox, Chrome, or Mobile browsers are recommended.\n\n" +
 								question;
+				getout = !confirm( message );
+
 			}
 
-
 		}else if( tp.core.browser.Opera ) {
-				var message = 	gio.description.title + ' was not tested and not developed in Opera.\n' + 
-								"Fire Fox, Chrome, or WebKit browsers are recommended\n"
+			var message = 	gio.description.title + ' was not tested and not developed in Opera.\n' + 
+								"Fire Fox, Chrome, or WebKit browsers are recommended\n";
+			getout = !confirm( message );
+
+		}else{
+			getout = false; // !confirm( immature_project + question );
 		}
-
-		getout = !confirm( immature_project + message );
-
 		return getout;
 	};
 	session.init.wrap =	function() { return session.init.entry(); };
@@ -12060,9 +12287,12 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 					continue;
 				}
 				if( forbid_contacts ) return false;
-				if( int_act && recursion_depth === 1 ) {
-					new_move.action.intact = int_act;
-					move.action.intact = int_act;
+				if( int_act && recursion_depth === 1 )
+				{
+					move.action.intact		= int_act;
+					new_move.action.intact	= int_act;
+					move.action.peer		= peer;
+					new_move.action.peer	= peer;
 				}
 				if( forbidden_interaction === int_act ) {
 						if( verbose ) log.move +=	"Cannot " + int_act + " with " + peer.hname + "\n";
@@ -12277,7 +12507,9 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 (function(){ 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
 				var gio  =  tp.gio    =  tp.gio   || {};
-				var CANON_IS_STRING =  gio.solver.config.CANON_IS_STRING;
+
+
+				var config	= gio.solver.config;
 	gio.solver.Adapter = function( map_sol_ver, gm  ) { 
 
 		var w;
@@ -12293,6 +12525,16 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		var dynamic_cols_len = dynamic_cols.length;
 		var units = gm.units;
 		var locs = gm.locs;
+		var game = gm.game;
+		var CANON_REPRESENTED_AS	= config.CANON_REPRESENTED_AS;
+		var wCON					= gio.solver.CONSTANTS;
+		var CANON__STRING			= CANON_REPRESENTED_AS	=== wCON.CANON_STRING;
+		var CANON__ARRAY			= CANON_REPRESENTED_AS	=== wCON.CANON_ARRAY;
+		var CANON__LINKED_LIST		= CANON_REPRESENTED_AS	=== wCON.CANON_LINKED_LIST;
+		var ww				= gio.solver.POSPOINT;
+		var STATE			= ww.STATE;
+		var HID				= ww.HID;
+		var UPLINKS			= ww.UPLINKS;
 		var l_pos=tp.core.tclone(gm.pos);
 		var l_lid2uid	= l_pos.lid2uid;
 		var l_tops		= l_pos.tops;
@@ -12328,12 +12570,12 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		}
 		adapter.createdNode = function( input_pos, sphere_id, angle_id, nodes_repository ) {
 
-			var ordered_hids = [];
-			var lid2uid = input_pos.lid2uid;
-			var tops = input_pos.tops;
-			var count = 0;
-			var new_node = false;
-			var count = 0;
+			var ground_always_on_level_0 = game.rule_helpers.ground_always_on_level_0;
+
+			var ordered_hids	= [];
+			var lid2uid			= input_pos.lid2uid;
+			var tops			= input_pos.tops;
+			var count			= 0;
 
 			for(var hid=0; hid<hid2lid.length; hid++){
 
@@ -12341,6 +12583,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 				var xx = loc0[0];
 				var yy = loc0[1];
 				var zz = tops[xx][yy];
+				if( !zz && ground_always_on_level_0 ) continue;
 				var lid = loc2lid[xx][yy][zz];
 				var uid = lid2uid[lid];
 
@@ -12355,40 +12598,52 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 			}//for( hid=...
 
-			var ordered_hids_string = !CANON_IS_STRING ? '' : canon2str( ordered_hids );
 
 			if( !nodes_repository ) {
-				return CANON_IS_STRING ? ordered_hids_string : ordered_hids;
+				return CANON__ARRAY ? ordered_hids : canon2str( ordered_hids );
 			}
+
 
 			count = 0;
 			var nd = nodes_repository;
-			for(var did=0; did<dynamic_cols_len; did++){
+			for(var did=0; did < dynamic_cols_len; did++){
 				var col = dynamic_cols[did];
 				var cunits = col.units; 
 				var ulen = cunits.length;
-				for(var uix=0; uix<ulen; uix++){
+				var w_oh_did = ordered_hids[did];
+
+				for(var uix=0; uix < ulen; uix++){
 					count += 1;
-					var hid = ordered_hids[did][uix];
-					var ndh = nd[hid];
-					if(!ndh || ndh === NOT_YET_FILLED){
-						new_node = true;
-						if(count === node_dimension){
-							ndh = nd[hid] = true; //good for statistics: [sphere_id, angle_id];
-							return CANON_IS_STRING ? ordered_hids_string : ordered_hids;
-						}else{
-							nd[hid] = [];
+					var hid = w_oh_did[uix];
+					var ndh = nd[ hid + UPLINKS ];
+					if( !ndh ) {
+
+						ndh = nd[ hid + UPLINKS ] = [];
+						if( CANON__LINKED_LIST )
+						{
+							ndh[ STATE ]		= count === 1 ? null : nd;
+							ndh[ HID ]			= hid;
+						}
+						if(count === node_dimension) {
+							if( CANON__LINKED_LIST )
+							{
+								return ndh;
+							}else{
+								nd[ hid ] = true;
+								return CANON__STRING ? canon2str( ordered_hids ) : ordered_hids;
+							}
 						}
 					}
-					if(count === node_dimension) {
+					if( count === node_dimension ) {
 						return null;
 					}
-					nd=nd[hid];
+
+					nd = ndh; //[ hid + UPLINKS ];
 				}
 			}
 
 		};
-		adapter.doReStorePosition=function(ordered_hids){
+		adapter.doReStorePosition = function( ordered_hids ) {
 			for(var ix=0; ix<dynamic_units.length; ix++){
 				var unit=dynamic_units[ix];
 				var lid=l_uid2lid[unit.id];
@@ -12424,6 +12679,45 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			}//did
 			return l_pos;
 		};//adapter.doReStorePosition
+		adapter.canode2pos = function( canode ) {
+			var l_u = l_lid2uid;
+			var l_t = l_tops;
+			var l_l = l_uid2lid;
+			var l_o = l_uid2loc;
+			for(var ix = 0, wlen = dynamic_units.length; ix < wlen; ix++ ) {
+				var unit				= dynamic_units[ ix ];
+				var lid					= l_l[ unit.id ];
+				l_u[ lid ]				= -1;
+				var lc					= locs[ lid ];
+				l_t[ lc[0] ][ lc[1] ]	-= 1;
+			}
+
+			var len = dynamic_cols_len;
+
+			for( var dcol = len-1; dcol > -1; dcol-- )
+			{
+				var col		= dynamic_cols[ dcol ];
+				var units	= col.units; 
+				var ulen	= units.length;
+
+				for( var dunit = ulen - 1; dunit > -1; dunit-- )
+				{
+					var uid = units[ dunit ].id;
+					var hid = canode[ HID ];
+					var loc0		= hid2loc[ hid ];
+					var xx			= loc0[0];
+					var yy			= loc0[1];
+					var zz			= l_t[xx][yy] + 1;
+					l_t[ xx ][ yy ]	= zz;
+					var tlid	= loc2lid[ xx ][ yy ][ zz ];
+					l_u[ tlid ]	= uid;
+					l_l[ uid ]	= tlid;
+					l_o[ uid ]	= locs[ tlid ];
+					canode = canode[ 0 ];
+				}
+			}
+			return l_pos;
+		};	// adapter.canode2p..
 
 
 
@@ -12471,6 +12765,26 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			}
 			return canon;
 		};
+		adapter.canode2canon = function( canode )
+		{	
+			var canon = [];
+			var len = dynamic_cols_len;
+
+			for( var dcol = len-1; dcol > -1; dcol-- )
+			{
+				var col = dynamic_cols[ dcol ];
+				var cunits = col.units; 
+				var ulen = cunits.length;
+				var sub_canon = canon[ dcol ] = [];
+				for( var dunit = ulen - 1; dunit > -1; dunit-- )
+				{
+					sub_canon[ dunit ] = canode[ HID ];
+					canode = canode[ 0 ];
+				}
+			}
+			return canon;
+		};
+
 
 
 		return adapter;
@@ -12479,19 +12793,21 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 })();
 
-(function(){	 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function () {	 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio  =  tp.gio    =  tp.gio   || {};
 
 					var solver			= gio.solver;
 					var config			= solver.config;
-					var CANON_IS_STRING	= config.CANON_IS_STRING;
 					var NODES_LIMIT		= config.NODES_LIMIT;
 					solver.POSPOINT = {
 							STATE			: 0,
-							PARENT_SPHERE	: 1,
-							PARENT_ANGLE	: 2,
-							DIRECTION		: 3, //spatial dir in map?
-							HID				: 4
+							HID				: 1,
+							PARENT_SPHERE	: 2,
+							PARENT_ANGLE	: 3,
+							DIRECTION		: 4, // action.direction at Aug 8, 2012 app. version
+							UNIT_HID		: 5,
+							UPLINKS			: -1 // defined dynamically
 					};
 	gio.solver.create_solver = function( gm_ ) {
 
@@ -12502,6 +12818,13 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		var PARENT_ANGLE	= ww.PARENT_ANGLE;
 		var DIRECTION		= ww.DIRECTION;
 		var HID				= ww.HID;
+		var UNIT_HID		= ww.UNIT_HID;
+		var CANON_REPRESENTED_AS	= config.CANON_REPRESENTED_AS;
+		var wCON					= gio.solver.CONSTANTS;
+		var CANON__STRING			= CANON_REPRESENTED_AS	=== wCON.CANON_STRING;
+		var CANON__ARRAY			= CANON_REPRESENTED_AS	=== wCON.CANON_ARRAY;
+		var CANON__LINKED_LIST		= CANON_REPRESENTED_AS	=== wCON.CANON_LINKED_LIST;
+		solver.POSPOINT.UPLINKS		= CANON__LINKED_LIST ? 2 : 0;
 		var forbid_contacts;
 		var dont_slice_time;
 
@@ -12531,6 +12854,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		self.browser_mode = false;
 		self.never_ran = true;
 		var adapter = self.adapter = solver.Adapter( self, gm );
+		var createdNode = adapter.createdNode;
 		self.fire_up = function(
 									startPos_,					// where to start, used ONLY at first fire
 									stop_when_solution_found_,	
@@ -12538,7 +12862,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 									dont_slice_time_			// search without interruptions
 		){
 
-			if(	gm.game.gkey !== 'sokoban' && gm.game.gkey !== 'colorban' &&
+			if(	gm.game.gkey !== 'sokoban' && gm.game.gkey !== 'colorban' && gm.game.gkey !== 'co_sokoban' && 
+				gm.game.gkey !== 'boximaze' && 
 				!gio.config.query.luckedin ) {
 				NODES_LIMIT = 300000;
 			}
@@ -12561,9 +12886,17 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			one_solution_is_added = false;
 			spheres[0]=[[]];
 			try {
-				spheres[0][0][STATE] = adapter.createdNode( startPos, 0, 0, alive_nodes );
-			}catch (err) {
-				gio.cons_add(	"zeor pos. " + 
+
+				if( CANON__LINKED_LIST )
+				{
+					spheres[0][0] = createdNode( startPos, 0, 0, alive_nodes );
+				}else{
+					spheres[0][0][STATE] = createdNode( startPos, 0, 0, alive_nodes );
+					spheres[0][0][UNIT_HID] = -1;			// sane?: 32 bits
+				}
+
+			}catch (error) {
+				gio.cons_add(	"setting zero position: " + 
 								( typeof error === 'object' && error !== null ? error.message : '' + error )
 				);
 				return;
@@ -12571,7 +12904,6 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			spheres[0][0][PARENT_SPHERE] = -1;	// max = 16 bits
 			spheres[0][0][PARENT_ANGLE] = -1;	// 32 bits
 			spheres[0][0][DIRECTION] = 0;		// 3 bits
-			spheres[0][0][HID] = -1;			// 32 bits
 			self.browser.position.sphere = 0;
 			self.browser.position.angle = 0;
 			stat.total_states			= 1
@@ -12613,7 +12945,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 					one_solution_is_added = true;
 					self.browser.position.sphere = solutions[0][0];
 					self.browser.position.angle = solutions[0][1];
-					self.browser.do_move(null, null, 'Just Solved');
+					self.browser.do_move( null, null, 'Just Solved', 'do_metrify_optimal' );
 				}
 			}
 
@@ -12691,9 +13023,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 					var spoint	= sphere[an];
 					spawned_states_number = 0;
-
-						var canon	= CANON_IS_STRING ? adapter.str2canon( spoint[STATE] ) : spoint[STATE];
-						unitsIterator( canon );
+						unitsIterator( spoint );
 /*
 					}catch (error) {
 
@@ -12732,27 +13062,37 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 			return terminate_iterations;
 		};
-		var spaceIterator=function(unit, pos, unit_hid){
+		var spaceIterator=function(unit, pos, unit_hid ) {
 			for(var x=-1; x<2; x++){
 				for(var y=-1; y<2; y++){
 					if( x !== 0 && y !== 0 ) continue;
 					if( x === 0 && y === 0 ) continue;
 					var direction = y !==0 ? 2*y : x;
-					var new_move = doHandleMove(  direction, pos, unit, unit_hid  );
+					var new_move = doHandleMove(  direction, pos, unit, unit_hid );
 					if(new_move) gio.navig.process_move_record(gm, pos, new_move.steps, 'backward');
 				}
 			}
 			return false;
 		};
-		var unitsIterator = function(canon){
-			var pos = adapter.doReStorePosition(canon);
+		var unitsIterator = function( spoint ) {
 
-			for(var ii=0; ii<gm.actor_cols.length; ii++){
+			if( CANON__LINKED_LIST )
+			{
+				var pos	= adapter.canode2pos( spoint );
+			}else{
+				var canpos	= spoint[STATE];
+				canpos		= CANON__STRING && adapter.str2canon( canpos );
+				var pos		= adapter.doReStorePosition( canpos );
+			}
+
+			for( var ii=0; ii<gm.actor_cols.length; ii++ ) {
 				var col = gm.actor_cols[ii];
-				var did = col.did;
 				var cunits=col.units;
-				for(var uix=0; uix<cunits.length; uix++){
-					spaceIterator(  cunits[uix], pos, canon[did][uix]  );
+				for( var uix=0; uix < cunits.length; uix++ ) {
+					var unit = cunits[ uix ];
+					var lid = pos.uid2lid[ unit.id ];
+					var unit_hid = lid2hid[ lid ];
+					spaceIterator( unit, pos, unit_hid );
 				}
 			}
 		};
@@ -12762,29 +13102,39 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 			var growing = spheres[phase.sphere+1];
 			var growing_angle = growing.length;
-				try {
-			var new_canon = adapter.createdNode(new_move.pos, phase.sphere+1,  growing_angle,  alive_nodes);
-				}catch (err) {
-					gio.cons_add(	"Handling move. sphere ix, angle ix= " + phase.sphere + ' ' + phase.angle + ' ' + 
+
+
+			try {
+					var new_canon = createdNode( new_move.pos, phase.sphere+1,  growing_angle,  alive_nodes );
+			}catch (error) {
+					gio.cons_add(	"Solver: Error: In doHandleMove: sphere ix, angle ix= " +
+									phase.sphere + ' ' + phase.angle + ' ' + 
 									( typeof error === 'object' && error !== null ? error.message : '' + error )
 					);
-				}
+					throw "Solver failed";
+			}
 
 
 
 
 			if( !new_canon ) return new_move;
+			if( CANON__LINKED_LIST )
+			{
+				var new_canode = new_canon;
+			}else{
+				var new_canode = [];
+				new_canode[ STATE ] = new_canon;
+			}
+			new_canode[ PARENT_SPHERE ]	= phase.sphere;
+			new_canode[ PARENT_ANGLE ]	= phase.angle;
 
+			new_canode[ UNIT_HID ]		= unit_hid;
+			new_canode[ DIRECTION ]		= direction;
+
+			growing[ growing_angle ] = new_canode;
 			spawned_states_number += 1;
-			growing[ growing_angle ]=[
-					new_canon,
-					phase.sphere,
-					phase.angle,
-					direction,
-					unit_hid
-			];
-			if( game.won_or_not(gm, new_move.pos) ){
-				solutions.push([phase.sphere+1, growing_angle]);
+			if( game.won_or_not( gm, new_move.pos ) ) {
+				solutions.push( [ phase.sphere + 1, growing_angle ] );
 			}
 			return new_move;
 		};//doHandleMove=function
@@ -12837,22 +13187,22 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 })();
 
 
-(function(){	 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function () {	 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio  =  tp.gio    =  tp.gio   || {};
 
 					var solver			= gio.solver;
 					var config			= solver.config;
-					var CANON_IS_STRING	= config.CANON_IS_STRING;
 					var NODES_LIMIT		= config.NODES_LIMIT;
-	solver.create_browser = function( map_solver, gm_ ) {
+	solver.create_browser = function ( map_solver, gm_ ) {
 
 		var msol			= map_solver;
 		var ww				= solver.POSPOINT;
-		var STATE			= ww.STATE;
 		var PARENT_SPHERE	= ww.PARENT_SPHERE;
 		var PARENT_ANGLE	= ww.PARENT_ANGLE;
 		var DIRECTION		= ww.DIRECTION;
 		var HID				= ww.HID;
+		var UNIT_HID		= ww.UNIT_HID;
 		var gm				= gm_;
 		var units			= gm.units;
 		var	loc2lid			= gm.loc2lid;
@@ -12866,8 +13216,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		msol.browser.do_move = function( 
 											direction,
 											sphere_spot,
-											add_title_to_gm_playpaths
-
+											add_title_to_gm_playpaths,
+											do_metrify_optimal
 		){
 			var bp			= msol.browser.position;
 			var new_angle	= bp.angle;
@@ -12927,12 +13277,12 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			var paths = msol.do_expand_path( 
 							spoint,
 							[bp.sphere, bp.angle],
-							'inject_into_session',
-							add_title_to_gm_playpaths	
+							( do_metrify_optimal ? 'do_metrify_optimal' : 'only inject_into_session' ),
+							add_title_to_gm_playpaths
 			);
 
 			gio.solver_cons_add(
-					' p-point = '	+ bp.sphere + '.' + bp.angle + ' l-index='+spoint[HID] +
+					' p-point = '	+ bp.sphere + '.' + bp.angle + ' l-index='+spoint[UNIT_HID] +
 					' parent = '	+ spoint[PARENT_SPHERE] + '.' + spoint[PARENT_ANGLE] +
 					' dir='			+ spoint[DIRECTION] + "\n" +
 					":::playpath=from solver\n" + paths.path + "\n\n" +
@@ -12941,34 +13291,36 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			);
 
 		};
-		msol.do_expand_path = function( spoint, slocation, inject_into_session, add_title_to_gm_playpaths ) {
+		msol.do_expand_path = function( spoint, slocation, inject_into_session, add_title_to_gm_playpaths )
+		{
 
 			var pos		= tp.core.tclone( msol.startPos ); //TODm waste of pos: make one pos per solver
 			var len		= slocation[0]; //spoint[OWN_SPHERE];
 			var moves	= [];
-			for( var ss=0; ss<len; ss++ ) {
-				/*
-				c onsole.log( (len-ss-1)+' '+spoint[HID]+'-'+
-							' dir='+spoint[DIRECTION]+': '+spoint[PARENT_SPHERE] + '.'+ spoint[PARENT_ANGLE] +
-							'->'+slocation[0]+'.'+slocation[1], spoint);
-				*/
 
-				moves[len-ss-1]= { hid : spoint[HID], action : { direction : spoint[DIRECTION] } } ;
-				spoint = spheres[spoint[PARENT_SPHERE]][spoint[PARENT_ANGLE]];
+			for( var ss = 0; ss < len; ss++ ) {
+				
+				moves[len-ss-1]= { hid : spoint[UNIT_HID], action : { direction : spoint[DIRECTION] } } ;
+
+				spoint = spheres[ spoint[ PARENT_SPHERE ] ][ spoint[ PARENT_ANGLE ] ];
+				if( !spoint ) break;
 			}
 			var uid_moves = [];
 
+
 			for(var ss=0; ss<len; ss++) {
 
-				var loc0 = hid2loc[moves[ss].hid];
-				var xx = loc0[0];
-				var yy = loc0[1];
-				var zz = pos.tops[xx][yy];
-				var lid = loc2lid[xx][yy][zz];
-				var uid = pos.lid2uid[lid];
+				var hid		= moves[ss].hid;
+				var loc0	= hid2loc[hid];
+				var xx		= loc0[0];
+				var yy		= loc0[1];
+				var zz		= pos.tops[xx][yy];
+				var lid		= loc2lid[xx][yy][zz];
+				var uid		= pos.lid2uid[lid];
 
 
 				moves[ss].action.uid = uid;
+
 				var new_move = gio.do_process_move(
 						moves[ss].action.direction,
 						gm,
@@ -12990,21 +13342,45 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			var path_text	= path_texts.path;
 			var co_path		= path_texts.co_path;
 
-			if( inject_into_session ){
-				gio.gui.procs.inject_path_from_text(path_text, null, 'stay_at_the_end');
+			if( inject_into_session )
+			{
+				if( gio.getgs().gm === gm )
+				{
+					gio.gui.procs.inject_path_from_text( path_text, null, 'stay_at_the_end' ); //TODM do validation
+					var round = gio.getgs().round;
+				}else{
+
+					var round = gm.rounds[ gm.rounds.ix ];
+					var w_validator_msg = gio.navig.in_session.round.text2round( path_text, round ); //TODM do validation
+				}
+
+				if( 'do_metrify_optimal' === inject_into_session )
+				{
+					gm.metrics.optpath		= gm.metrics.optpath || {};
+					gm.metrics.optpath.p	= round.moves.length;
+					gm.metrics.optpath.i	= round.interacts;
+					gm.metrics.optpath.r	= round.peer_change;
+					gio.session.reinit.metrify( gm );
+				}
 			}
 			if( add_title_to_gm_playpaths ) {
 
-				var ww = playpath = "playpath=" + add_title_to_gm_playpaths + "\n";
-				gio.solver_cons_add(
-					":::" + ww + path_text + (co_path && ("\n:::co_" + ww + co_path ))
-				);
+				if( 'do_metrify_optimal' === inject_into_session )
+				{
+					var ww = gm.metrics.optpath;
+					var directive = 'optpath=' + ww.p + '.' + ww.i + '.' + ww.r + "\n";
+				}else{
+					var directive = "playpath=" + add_title_to_gm_playpaths + "\n";
+				}
+				var ww = directive;
+
+				gio.solver_cons_add( ":::" + ww + path_text + (co_path && ("\n:::co_" + ww + co_path )) );
 				gm.playpaths = gm.playpaths || [];
 				gm.playpaths.push({	title : add_title_to_gm_playpaths,
 									value : path_text,
 									pos : tp.core.tclone(msol.startPos)
 				});
-				if(gio.getgs().gm === gm) gio.gui.reset_playpaths_select_el( gm );
+				if( gio.getgs().gm === gm ) gio.gui.reset_playpaths_select_el( gm );
 
 			} // \\// adds path to gm.playpaths
 
@@ -13680,7 +14056,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 })(jQuery);
 
-(function(){ 		var tp		=  jQuery.fn.tp$  =  jQuery.fn.tp$ || {};	
+
+( function () { 	var tp		=  jQuery.fn.tp$  =  jQuery.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var gstyle	=  gio.config.style;
 					var gdw		=  gio.domwrap;
@@ -14102,7 +14479,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 })(jQuery);
 
-(function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function () {	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 
 					var gstyle	=  gio.config.style;
@@ -14118,7 +14496,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 					var ANNOYANCE_DURATION = gio.config.style.annoyances.DURATION_AFTER_START_LIMIT;
 					var annoyance_count = 0;
 					var annoyance_stop_time = -1;
-	gio.draw_status = function( dont_redraw_won_status ) { 
+	gio.draw_status = function( dont_redraw_won_status )
+	{ 
 
 
 		var gs		= gio.getgs();
@@ -14151,6 +14530,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		var dress = gm.dresses_wrap.chosen_dress;
 		var dress_features = dress.features;
 		if( !dress_features || dress_features.statistics ) {
+			gde.RePartsCount[iH]		= '' + round.peer_change;
 			gde.interactionsNumber[iH]	= '' + round.interacts;
 			gde.movesCount[iH]			= '' + round.current_pos_ix;
 			gde.backsCount[iH]			= '' + round.backs;
@@ -14276,13 +14656,31 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		var won_or_not	= gm.game.won_or_not;
 		var pos			= gs.pos;
 		var WCOLOR		= gstyle.WINNING_COLOR;
-		var mcap		= gio.domwrap.headers.map_caption_div;
+		var mcap		= gio.domwrap.headers.map_caption_text_div;
 		annoyance_count	+= 1;
 		var show_annoynaces =	annoyance_count < ANNOYANCE_MOVES &&
 								(new Date()).getTime() < annoyance_stop_time;
 		mcap[iH]			=	show_annoynaces ? 'Map Level' : '';
 		if( !show_annoynaces ) {
 			gdr.dtopcenter.style.display = "none";
+		}
+		var rating_total	= gio.domwrap.headers.map_caption_total_div;
+		var w_total			= parseInt( rating_total.style.width );
+		var relative		= gm.metrics.recalculated.relative;
+		if( relative && !isNaN( w_total ) )
+		{
+			var w_width					= Math.ceil( w_total * relative / 100.0 );
+			w_width						= Math.max( Math.min( w_total, w_width ), 1 ); 
+			var rating_div				= gio.domwrap.headers.map_caption_highlighter_div;
+			rating_div.style.width		= w_width + 'px';
+			var tooltip					= 'Estimated ' + gm.metrics.recalculated.ten_rounded + ' out of 10 Whirlitivity';
+			rating_div.setAttribute		( 'title', tooltip );
+			rating_total.setAttribute	( 'title', tooltip );
+			rating_total.style.display	= 'block';
+			mcap.style.display			= 'none';
+		}else{
+			rating_total.style.display	= 'none';
+			mcap.style.display			= 'block';
 		}
 		if( !won_or_not ) return false;
 		var report = won_or_not();
@@ -14370,7 +14768,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 })();
 
-(function( $ ){ 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function( $ ) { 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var gstyle	=  gio.config.style;
 					var gdr		=  gio.domwrap.regions;
@@ -14465,7 +14864,30 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		w.style.top=ww+Math.ceil(cstyle.mapHeight/3)+'px';
 		w.style.fontFamily=cstyle.fontFamily;
 		gdr.dsubtop.appendChild(w);
-		w.innerHTML='Map';
+		var ww = dwheaders.map_caption_text_div = document.createElement( 'div' );
+		ww.style.position='absolute';
+		w.style.color='#FFFFFF';
+		w.style.width=(cstyle.subcaptionWidth-5)+'px';
+		w.style.top=ww+Math.ceil(cstyle.mapHeight/3)+'px';
+		w.style.fontFamily=cstyle.fontFamily;
+		dwheaders.map_caption_div.appendChild( ww );
+		var ww = dwheaders.map_caption_total_div = document.createElement( 'div' );
+		ww.style.position='absolute';
+		ww.style.backgroundColor='#0000DD';
+		ww.style.width = '50px';
+		ww.style.height = '10px';
+		ww.style.top = '0px';
+		ww.style.display = 'none';
+		ww.style.fontFamily=cstyle.fontFamily;
+		dwheaders.map_caption_div.appendChild( ww );
+		var ww = dwheaders.map_caption_highlighter_div = document.createElement( 'div' );
+		ww.style.position='absolute';
+		ww.style.backgroundColor='#FFAAAA';
+		ww.style.width = '0px';
+		ww.style.height = '10px';
+		ww.style.top = '0px';
+		ww.style.fontFamily=cstyle.fontFamily;
+		dwheaders.map_caption_total_div.appendChild( ww );
 		var ww = cstyle.gameHeight+cstyle.gaps;
 		dwheaders.collection_select_el=tp.form.create_select_el(
 					{r:{	parent	:gdr.dsubtop
@@ -14557,13 +14979,15 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		ww = '<td style="border:none; background-color:#333333; padding:2px;" >'
 		w = 	'<table style="border:none; color:#FFFFFF; font-family:Helvetica, Arial; font-size:10px;">';
 		w +=	www+'Moves</td>';
-		w +=	www+'InterActs</td>';
 		w +=	www+'Path</td>';
+		w +=	www+'InterActs</td>';
+		w +=	www+'ReInter</td>';
 		w +=	wwww+'Backs</td>';
 		w +=	'</tr><tr>';
 		w +=	www+'Moves</td>';
-		w +=	www+'InterActs</td>';
 		w +=	www+'Path</td>';
+		w +=	www+'InterActs</td>';
+		w +=	www+'ReInter</td>';
 		w +=	wwww+'Backs</td>';
 		w +=	'</tr></table>';
 		var ww = gio.domwrap.status.main_status_div = document.createElement( 'div' );
@@ -14571,10 +14995,11 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		ww.innerHTML=w;
 		w = $(ww).find('td');
 
-		gde.movesCount=w[4];
-		gde.interactionsNumber=w[5];
-		gde.pathCount=w[6];
-		gde.backsCount=w[7];
+		gde.movesCount			= w[5];
+		gde.pathCount			= w[6];
+		gde.interactionsNumber	= w[7];
+		gde.RePartsCount		= w[8];
+		gde.backsCount			= w[9];
 		w=gio.domwrap.status.unit_div=document.createElement('div');
 		do_complete_control(w,0,STATUS_LINE_PERIOD*1);
 
@@ -15073,6 +15498,11 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 					gio.map_editors.edit_custom_maps();
 					return false;
 
+				case 'w':
+					if(gm.load	!== 'finalized') return true;
+					gio.map_editors.display_game_path();
+					return false;
+
 				case 'p':
 					if(gm.load	!== 'finalized') return true;
 					gio.map_editors.display_game_path();
@@ -15361,11 +15791,12 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 })(jQuery);
 
-(function() { 	var tp   		=  $.fn.tp$  =  $.fn.tp$ || {};	
-				var core		=  tp.core;
-				var gio  		=  tp.gio    =  tp.gio   || {};
 
-				var gworkers	=  gio.gui.procs;
+( function () {		var tp   		=  $.fn.tp$  =  $.fn.tp$ || {};	
+					var core		=  tp.core;
+					var gio  		=  tp.gio    =  tp.gio   || {};
+
+					var gworkers	=  gio.gui.procs;
 
 
 
@@ -15468,6 +15899,9 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		}
 
 
+		res += gm.metrics.recalculated.text;
+
+
 		res += gworkers.get_map_credits('with_externals').description_table; //credits_table;
 
 
@@ -15564,9 +15998,11 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 })();
 
-(function( $ ){ 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function( $ ) { 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var clonem	=  tp.core.clone_many;
+					var exp_url	=  tp.core.expand_to_parent;
 
 					var med		=  gio.map_editors;
 					var ggp		=  gio.gui.procs;
@@ -15575,14 +16011,17 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 
 
-	med.display_game_path=function(){
+	med.display_game_path = function ()
+	{
 			ggp.lock_controls('Displaying a path');
 			gio.input_mode = 'path';
 			med.show_text_editor();
 			var ww=$(gio.domwrap.popups.input_text_popup.popup_el).children('textarea')[0];
 			var result = gio.navig.in_session.round.path2texts_current();
-			ww.value = 	":::playpath\n" + result.path; 
-			ww.value += result.co_path ? "\n\n:::co_playpath\n" + result.co_path : '';
+
+			var directive	=	'playpath=' + result.metrics + "\n";
+			ww.value		=	":::" + directive  + result.path; 
+			ww.value		+=	result.co_path ? "\n\n:::co_" + directive + result.co_path : '';
 			ww.focus();
 	};
 	med.display_albums=function(){
@@ -15758,17 +16197,35 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			return;
 		}else if( imode === 'external_link' ) {
 
-			wlink = $.trim( custom_text );
-			var akey = gm.collection.ref.list.akey;
+			var wlink		= $.trim( custom_text );
+			var success		= !!wlink;  //TODM "courtecy work" check user input
+			if( success )
+			{
+				var wlink		= exp_url ( $.trim( custom_text ) );
+				var akey		= gm.collection.ref.list.akey;
+				var downed_coll	= gio.data_io.download_gamion (
+				{
+					galfinition :
+					{	penetrate_asingle	: true,
+						title				: "My Album Choice",
+						chosen				: true
+					},
 
-			var metag =
-			{ 	env		: {	akey_advice : akey, penetrate_asingle : true },
-				link	: { link : wlink },
-				list	: { title : "My Choice", chosen : true }
-			};
+					mapfinition :
+					{
+						akey_advice			: akey,
+						title				: "My Maps Choice",
+						chosen				: true
+					},
 
-			var downed_coll = gio.data_io.download_gamion ( metag );
-			var success = !!downed_coll;
+					common :
+					{	
+						link				: wlink
+					}
+				});
+
+				var success = !!downed_coll;
+			}
 
 			if( success ) {
 				var akey	= downed_coll.ref.list.akey;
@@ -15778,13 +16235,14 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 					var success = gio.navig.validate_coll_map( akey, cix, 0, 'do land' );
 					if( !success ) conadd( "Failed landing on " + akey + ", " + ix );
 				}else{
-					conadd(	"No maps in collection ... perhaps are albums only ...\n" +
-									"try to scroll to albums manually ... "							
+					conadd(	"No maps in collection ... perhaps are albums only ...\n" + //TODM there must be a way to pull derived album or game from parsed heap and try to scroll to gkey or akey.
+							"try to scroll to albums manually ... "							
 					);
 				}
 			}else{
 				conadd( 'Failed custom scrith download for ' + wlink );
 			}
+
 
 			if( !success ) ggp.do_display_curr_board( true );
 			ggp.unlock_controls();
@@ -15792,25 +16250,43 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			return;
 		}else if( imode === 'edit_gamion' || imode === 'create_gamion' ) {
 
-			var akey	= gs.akey;
+			var custom_text	= $.trim( custom_text );
+			if( !custom_text )
+			{
+				ggp.do_display_curr_board( true );
+				ggp.unlock_controls();
+				gio.input_mode = '';
+				return;
+			}
 
-			var wedit	= imode === 'edit_gamion';
-			var metag 	=
-			{ 	
-				overdefine			:	wedit,
-				jwon				:	true,
-				cix_to_insert1 		:	wedit ? gs.cix + 1 : 0,
-				reuse_collection 	:	wedit,
-				env					:	{
-											akey_advice : akey,
-											penetrate_asingle : true
-										},
-				link				:	{},
-				list				:	{ title : "My Gamion", chosen : true }
+			var akey		= gs.akey;
+			var wedit		= imode === 'edit_gamion';
+			var metag		=
+			{
+				galfinition :
+				{	penetrate_asingle	: true,
+					overdefine			: wedit,
+					chosen				: true,
+					title				: "My Galfinition"
+				},
+
+				mapfinition :
+				{
+					cix_to_insert1		: wedit ? gs.cix + 1 : 0,
+					akey_advice			: akey,
+					title				: "My Mapfinition",
+					chosen				: true
+				},
+
+				common :
+				{	
+					jwon						: true
+				}
 			};
 
-			var downed_coll = gio.data_io.download_gamion ( metag, custom_text );
-			var success = !!downed_coll;
+
+			var downed_coll	= gio.data_io.download_gamion ( metag, custom_text );
+			var success		= !!downed_coll;
 
 			if( success ) {
 				var akey	= downed_coll.ref.list.akey;
@@ -15846,8 +16322,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		}else if( imode === 'map' ) {
 
 			gio.data_io.add_map_text_and_land( custom_text );
-			gio.navig.validate_coll_map( null, null, null, 'do_land' );
-			ggp.unlock_controls(); //only then clear it ...
+			ggp.unlock_controls();
 			gio.input_mode='';
 
 
@@ -16079,7 +16554,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 })(jQuery);
 
-(function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function () {	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 
 					var gstyle	=  gio.config.style;
@@ -16100,6 +16576,25 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			gio.draw_scene();
 			gio.draw_status();
 		}
+	};
+	ggp.virtual_reselect_dress = function ( gm, dkey )
+	{
+		if( !dkey ) return;
+		var selected_ix = -1;
+		var arr = gm.dresses_wrap.arr;
+		for( var ix = 0, len = arr.length; ix < len; ix ++ )
+		{
+			var wrap = arr[ ix ];
+			if( dkey === wrap.dress.key )
+			{
+				selected_ix = ix;
+				break;
+			}
+		}
+		if( selected_ix < 0 ) return;
+
+		gm.dresses_wrap.chosen_ix = selected_ix;
+		gm.dresses_wrap.chosen_dress = arr[ selected_ix ].dress; //TODM redundant. Poor design. Remove.
 	};
 	ggp.inject_path_from_text = function( path_text, do_messagify, do_stay_at_end ) {
 
@@ -16281,11 +16776,14 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 })();
 
-(function(){	 	var tp			=  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function () {	 	var tp			=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio			=  tp.gio    =  tp.gio   || {};
 					var ceach		=  tp.core.each;
 					var cmd			=  gio.core.def.map_format;
 					var str2mline	=  tp.core.str2mline;
+					var conadd		= function ( string ) { gio.cons_add( "Decodes Gamion: " + string ); };			
+					var deb			= function ( string ) { if( gio.debug) conadd( string ); };			
 					var trim_match	= cmd.trim_match = /^\s*|\s*$/g;
 					var reg_ex_r	= /\r/g;
 
@@ -16311,7 +16809,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		var cbzone_bf					= false;
 
 
-		var map_ix=-1;
+		var map_ix = -1;
+		var map_key = '';
 		var maps_text = script.source_text;
 
 		var flines = script.flines = maps_text.split( file_lines_split_re );  //TODM wastes performance when appending text to collection; don't do split again;
@@ -16325,13 +16824,14 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 		if( rescan_bflag ) {
 
-			map_ix = colln.maps.length-1;
+			map_ix = colln.maps.length - 1;
 			var ww = '.. rescan began for map ix ' + ( map_ix + 1 );
 			colln.maps_loaded += ww;
-			gio.debly( ww );
+			deb( ww );
 
 		}else{
 			colln.maps = [];
+			colln.maps_ref = {};
 			map_ix = -1;
 			colln.map_ix = 0;
 			colln.maps_loaded += '..decoding began..';
@@ -16340,12 +16840,13 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		var jwon			= script.proc.jwon;	
 		var parse_jwon		= jwon.parse;
 		var ww = gio.def.procs.detect_ownhost_url( colln ); //TODM slow. make test "mandatory" and logged.
-		if( !ww && !jwon.detect_format().beginner_re.test( maps_text ) ) {
+		if( !ww && !jwon.detect_format( maps_text ) ) {
 			jwon.parser_disabled_bf = true;
+			deb( "Jwon format missed ... " );
 		}
 		if( colln.ref.jwon === 'yes' )	jwon.parser_disabled_bf = false;
 		if( colln.ref.jwon === 'no' )	jwon.parser_disabled_bf = true;
-		gio.debly( 'Jwon parser = ' +	(!jwon.parser_disabled_bf) );
+		deb( 'Jwon parser = ' +	(!jwon.parser_disabled_bf) );
 		var postboard = { start : parsed.lines_number, lim : -1 };
 
 		var map = null;
@@ -16397,11 +16898,27 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 					}else if(cb_detector === 'akey'){
 						if( area_flag === BOARD ) map.bundled__ref.akey = cb_match[3];
 						continue;
+
 					}else if(cb_detector === 'collection_index'){
-						if( area_flag === BOARD ) map.bundled__ref.collection_index = cb_match[3];
+						if( area_flag === BOARD ) {
+							var ww = parseInt( cb_match[3] );
+							map.bundled__ref.coll_ref = isNaN( ww ) ? '' : ww;
+						}
 						continue;
+
 					}else if(cb_detector === 'map_index'){
-						if( area_flag === BOARD ) map.bundled__ref.map_index = cb_match[3];
+						if( area_flag === BOARD ) {
+							var ww = parseInt( cb_match[3] );
+							map.bundled__ref.map_ref = isNaN( ww ) ? '' : ww;
+						}
+						continue;
+
+					}else if( cb_detector === 'mkey' ) {
+						if( area_flag === BOARD ) map.bundled__ref.map_ref = cb_match[3];
+						continue;
+
+					}else if( cb_detector === 'ckey' ) {
+						if( area_flag === BOARD ) map.bundled__ref.coll_ref = cb_match[3];
 						continue;
 
 
@@ -16456,7 +16973,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 			if( header_raised ) {
 				cmd.finalize_file_header( postboard, colln );
-				if( colln.script.metag.defion ) {
+				if( colln.script.metag.galfinition.gafion ) {
+					deb( 'Ignoring mapfinitions in gafion' );
 					area_flag = MAP_LOOKUP;
 					break;
 				}
@@ -16464,10 +16982,10 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			}
 
 
-			if(map_fin_raised){
-					var ww = cmd.finalize_map(map, postboard);
+			if( map_fin_raised ) {
+					var ww = cmd.finalize_map( map, postboard );
 					if( ww ) {
-						gio.cons_add( ww );
+						conadd( ww );
 						colln.maps_loaded += ww;
 						if(rescan_bflag) break;
 						return;
@@ -16475,9 +16993,10 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			}
 
 
-			if(map_init_raised){
+			if( map_init_raised ) {
 					map_ix++;
-					map={
+					map =
+					{
 						ix : map_ix,
 						key : map_key,
 						game : colln.dgame,
@@ -16509,8 +17028,10 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 						cols:[],
 						actor_cols : [],
 						dynamic_cols : [],
-						objective : { target_units : [], baton_units : [] }
+						objective : { target_units : [], baton_units : [] },
+						metrics : { recalculated : { text : '' } }
 					};
+					map_key = '';
 					raw_board_lines = map.script.raw_board_lines;
 				}
 			if(board_line_raised) raw_board_lines.push(flines[yy]);
@@ -16586,13 +17107,21 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 	cmd.sugar_soko_mapcut =
 	{
+		'h0.x' : '&',
+		'h0.X' : '%',
+		'x.h0' : '&',
+		'X.h0' : '%',
+
 		'0X'   : '*',
 		'0x'   : '+',
+		'X0'   : '*',
+		'x0'   : '+',
+
 		'x'    : '@',
 		'X'    : '$',
+
 		'.h0'  : '!',
-		'h0.x' : '&',
-		'h0.X' : '%'
+		'h0.'  : '!'
 	}
 	cmd.sokoban_decoder_table = {
 
@@ -16625,7 +17154,6 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 	cmd.sokoban_decoder_table [ cmd.map_sugar.WALL ] = 'wall_x';
 	cmd.sokoban_decoder_table [ cmd.map_sugar.GROUND ] = 'ground_x';
 	cmd.colorban_decoder_table = {
-
 		'_':'ground_x',
 		'$':'box_x',
 		'@':'hero_x',
@@ -16652,11 +17180,11 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			var ct = cmd.colorban_encoder_cotable;
 			var cc = game.colors[ ii ];
 			var msw = game.wall_map_symbols[ ii ];
-			breed2color[ tt[ cc ] ] = cc;
-			color2breed[ cc ] = tt[ cc ];
 			var kkk = cc;
 			var vvv = cnames.hero[ii]; 
 			tt[kkk] = vvv;    et[vvv] = kkk;
+			breed2color[ tt[ cc ] ] = cc;
+			color2breed[ cc ] = tt[ cc ];
 			var kkk = cc.toUpperCase();
 			var vvv = cnames.box[ ii ]; 
 			tt[kkk] = vvv;    et[vvv] = kkk;
@@ -16709,7 +17237,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 		}
 
-	}; 	// //\\ Configures colorban decoder table. Part I and II.
+	}; 	// \\// Configures colorban decoder table. Part I and II.
 
 
 
@@ -16717,7 +17245,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 
 
-(function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+( function () {	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 
 					var core	=  tp.core;
@@ -16731,7 +17259,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 					var gdef	=  gio.def;
 					var gdp		=  gdef.procs;
 					var do_deb	=  gio.debug;
-					var dodeb	= function ( string ) { if( do_deb ) gio.cons_add( "FHeaderize: " + string ); };
+					var dodeb	= function ( string ) { if( do_deb ) gio.cons_add( "FileHeader: " + string ); };
 
 
 					var macro_def_match				=/^(\S+)=(.+)$/;
@@ -16783,7 +17311,9 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 		var jwon_heap = colln.script.heap_json;
 		cpaste( colln.credits, jwon_heap.credits );
-		var meg = colln.script.metag;
+		var ww = colln.script.metag;
+		var galfin	= ww.galfinition;
+		var mapfin	= ww.mapfinition;
 		if( jwon_heap.interact && !jwon_heap.games && !jwon_heap.albums && !jwon_heap.collection ) {
 			var ww = jwon_heap;
 			jwon_heap = { games : { game : ww }, albums : { game : {} }, collection : { akey : 'game' } };
@@ -16797,31 +17327,40 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 			var w_dg = gdef.games;
 			var w_da = gdef.albums;
+			gdp.normalize_album_defs( jwon_heap.albums );
 
-			if( meg.overdefine ) {
+			if( galfin.overdefine )
+			{	//:
+				deb( 'Pastes overridingly albums or games from gamion.');
 				crpaste ( w_da, jwon_heap.albums );
 				crpaste ( w_dg, jwon_heap.games );
 				ceach( jwon_heap.games, function( gkey, game ) {
-					gdp.derive_game( gkey, meg.overdefine );
+					gdp.derive_game( gkey, true );
 				});
 			}else{
+				deb( 'Pastes preventively albums or games from gamion.');
 				crpaste ( w_da, crpaste( {}, jwon_heap.albums, w_da ) );
 				crpaste ( w_dg, crpaste( {}, jwon_heap.games, w_dg ) );
 			}
-			gdp.normalize_album_defs( jwon_heap.albums );
-			ceach( jwon_heap.albums, function( albkey, walbum ) {
-				walbum.ref.link.link = colln.ref.link.link;
-				walbum.ref.list.listify_on_top = meg.env.listify_on_top;
-				walbum.ref.list.penetrate_asingle = meg.env.penetrate_asingle;
-				if( colln.ref.db ) walbum.ref.db = true;
-				if( meg.derive_at_download ) gdp.derive_album( albkey, null, null, meg.overdefine );
+			ceach( jwon_heap.albums, function( albkey, walbum )
+			{
+				var ww = walbum.ref;
+				ww.link.link				= colln.ref.link.link;
+				ww.list.listify_on_top		= galfin.listify_on_top;
+				ww.list.penetrate_asingle	= galfin.penetrate_asingle;
+				if( colln.ref.db ) ww.db	= true;
+				if( galfin.derive_at_download )
+				{
+					deb( 'Derives album ' + albkey + ' from gamion.');
+					gdp.derive_album( albkey, ( galfin.overdefine ? 'overdefine' : '' ) );
+				}
 			});
 			colln.script.state.definitions_processed = true;
 		}
 
 		
 
-		var do_albumize = !meg.defion && !meg.env.passive;
+		var do_albumize = ! ( galfin.gafion || ( mapfin.passive && colln.state.shellified ) );
 
 		if( do_albumize ) {
 
@@ -16829,9 +17368,9 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 				if( colln.state.shellified ) {
 					do_albumize = false;
 				}else{
-					var akey_probe =	meg.env.akey_master ||
+					var akey_probe =	mapfin.akey_master ||
 										estimated_master_akey ||
-										meg.env.akey_advice ||
+										mapfin.akey_advice ||
 										gdef.default_album_key;
 					var hcoll = clonem( gdef.templates.def.coll );	
 				}
@@ -16841,11 +17380,11 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 				gdp.normalize_cseed( hcoll );
 				colln.credits = clonem( colln.credits, hcoll.credits );
 
-				var akey_probe =	meg.env.akey_master ||
+				var akey_probe =	mapfin.akey_master ||
 									hcoll.akey ||
 									hcoll.ref.env.akey ||
 									estimated_master_akey ||
-									meg.env.akey_advice ||
+									mapfin.akey_advice ||
 									colln.ref.list.akey ||
 									gdef.procs.get_preferred_album_def().key ||
 									gdef.default_album_key;
@@ -16862,21 +17401,21 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			}
 		}
 		if( do_albumize ) {
-				dodeb(	'Attaches coll to album. akey = "' + akey_probe + '" from gamion' +
-						( meg.link.link && ( ' link ' +  meg.link.link ) ) + '.'
-				);
-				cpaste							( hcoll, gdef.templates.def.coll );
-				hcoll.ref.list.chosen			= hcoll.ref.list.chosen || meg.list.chosen; // TODM apparently overkill:
-				hcoll.ref.link					= clonem( colln.ref.link );
-				hcoll.credits					= clonem( colln.credits, jwon_heap.credits, hcoll.credits );
 
-				hcoll.map_title_source			= hcoll.map_title_source || colln.map_title_source;
+				var w_source	= colln.ref.link.link && ( 'from gamion link ' +  colln.ref.link.link );
+				w_source		= w_source || 'possibly from text. ';
+				dodeb(	'Attaches coll to akey = "' + akey_probe + '" ' + w_source );
+				gdp.normalize_cseed				( hcoll );
+				hcoll.ckey						= colln.ckey;					
+				hcoll.ref.link					= clonem( colln.ref.link );
 				hcoll.ref.already_downloaded	= true;
-				var w_album						= gdp.derive_album ( akey_probe, hcoll, meg.preserve_GUI_state ); 
+				hcoll.ref.list.chosen			= hcoll.ref.list.chosen || mapfin.chosen;
+				hcoll.credits					= clonem( colln.credits, jwon_heap.credits, hcoll.credits );
+				hcoll.map_title_source			= hcoll.map_title_source || colln.map_title_source;
+				var w_album						= gdp.derive_album ( akey_probe, hcoll ); // TODO error check and // TODM aways false: why? , meg.preserve_GUI_state ); 
 				var wcoll						= w_album.collections[ w_album.collections.length -1 ];
-				delete wcoll.script;
-				crpaste( colln, wcoll );
-				w_album.collections[ w_album.collections.length -1 ] = colln;
+
+				gdp.paste_coll_to_from			( colln, wcoll );
 
 		} /// Collection derives album if not done, 
 
@@ -16895,7 +17434,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 
 
-(function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+( function () {	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var core	=  tp.core;
 					var ceach	=  core.each;
@@ -16941,28 +17480,26 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			ww_b += rbl__own[yy] + "\n";
 		}
 		script.raw_board = ww_b;
-		var w_r			= map.bundled__ref;
-		var w_r_coll	= w_r.collection_index;
-		var ref_alb		= w_r.akey;
-		if( !ref_alb || !(w_r_coll || w_r_coll === 0) ) {
+		var w_r		= map.bundled__ref;
+		var w_cref	= w_r.coll_ref;
+		var ref_alb	= w_r.akey;
+		if( !ref_alb || !(w_cref || w_cref === 0) ) {
 			
 			var map__eff = map;
 
 		}else{
-			var coll_ix		= parseInt( w_r_coll );
-			var map_ix		= parseInt( w_r.map_index );
-
-			var coll__eff	= gio.navig.validate_coll_map( ref_alb, coll_ix, map_ix );
+			var map_ref		= w_r.map_ref;
+			var coll__eff	= gio.navig.validate_coll_map( ref_alb, w_cref, map_ref );
 			if( !coll__eff ) {
 				return	'Failed download referred map: ref_alb = ' + ref_alb + 
-						' coll_ix=' + coll_ix + ' map_ix=' + map_ix;
+						' w_cref=' + w_cref + ' map_ref=' + map_ref;
 			}
 
-			var map__eff = coll__eff.maps[ map_ix ];
+			var map__eff = ( typeof map_ref === 'string' ) ? coll__eff.maps_ref[ map_ref ] : coll__eff.maps[ map_ref ];
 			if( !map__eff ){
-				return	'Map with index ' + map_ix + ' does not exist' + "\n" +
+				return	'Map with ref ' + map_ref + ' does not exist' + "\n" +
 						'Failed download referred map: ref_alb = ' + ref_alb + 
-						' coll_ix=' + coll_ix;
+						' w_cref=' + w_cref;
 			}
 			script.data_source_map = map__eff.script.data_source_map || map__eff;
 
@@ -16974,8 +17511,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		var dtable			= map__eff.script.decoder_table;
 		var rbl__eff		= clonem( map__eff.script.raw_board_lines );			
 		if( !rbl__eff.length ) return 'Empty map`s board. Map ix=' + map.ix;
-		var playpaths		= [];
-		var playpath_tray	= { pp : null, cbflag : false };
+		var playpath_tray	= { pp : null, cbflag : false, map : map, playpaths : [], title : '' };
 		var dress_tray	= {	dr : null, zoneon_flag : false,
 							counter : 0, dresses : {}, map : map
 						  };
@@ -16996,8 +17532,6 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 				playpath_tray,
 				master_line_trimmed,
 				pkey,
-				master_line,
-				playpaths,
 				cbzone_bf
 			)) continue;
 
@@ -17057,9 +17591,11 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			}
 		} ///.. does loop through postboard
 
-		if( playpaths.length > 0 )	map.playpaths = playpaths;
+		if( playpath_tray.playpaths.length > 0 )	map.playpaths = playpath_tray.playpaths;
 		if( dress_tray.counter )	map.dresses = dress_tray.dresses;
 		map.parsed.macrosed_postboard = macrosed_postboard;
+
+		map.key = map.key || 'map_' + map.ix;
 
 		var ww_final_title = (parsed.credits && parsed.credits.title) || '';
 		if(!cbzone_bf){
@@ -17104,7 +17640,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		}else{
 			map.invalid_map_message = "no actor on the map";
 		}
-		collection.maps[map.ix] = map;
+		collection.maps[ map.ix ]		= map;
+		collection.maps_ref[ map.key ]	= map;
 
 
 		return '';
@@ -17166,7 +17703,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 			var w='..no maps found in text';
 			colln.maps_loaded +=w;
-			if( !colln.script.metag.defion ) {
+			if( !colln.script.metag.galfinition.gafion ) {
 				gio.cons(w);
 			}
 		}
@@ -17176,62 +17713,101 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 
 
-(function() {	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function () {	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var cmd		=  gio.core.def.map_format;
 					var sokoban_playpath_line_match	= /^( |\t)*(l|r|u|d|\[|\]|\*|[0-9])*(l|r|u|d)(l|r|u|d|\[|\]|\*|[0-9])*\s*$/i;
 					var reg_ex_und = /_/g;		
+	var grab_optpath = function ( pptt, pkey3, pkey2 )
+	{
+		var ww			= pkey3.split('.');
+		var pp			= parseInt( ww[0] );
+		var ii			= ww[1] ? parseInt( ww[1] ) : 0;
+		var rr			= ww[2] ? parseInt( ww[2] ) : 0;
+		pptt.optpath	= null;
+		if( isNaN(pp) || isNaN(ii) || isNaN(rr) ) return;
+		pptt.optpath = { p : pp, i : ii, r : rr, estimation : pkey2 };
+		pptt.map.metrics.optpath = pptt.optpath;
+		if( pptt.pp ) pptt.optpath.path = pptt.pp;
+
+		var metrified_title = ( pkey2 === 'optpath' ? 'Opt.' : 'Est.' ) + pkey3;
+		pptt.title = pptt.title || metrified_title;
+		if( pptt.pp) pptt.pp.title = pptt.pp.title || metrified_title;
+	};
+	var terminate_playpath = function ( pptt )
+	{
+		if( !pptt.pp.value ) 	pptt.playpaths.pop();
+		pptt.cbflag				= false;
+		pptt.optpath			= null;
+		pptt.title				= '';
+		pptt.pp = null;
+	};
 	cmd.extract_to_playpaths = function (
+
 			playpath_tray,
 			master_line_trimmed,
 			pkey,
-			master_line,
-			playpaths,
 			cbzone_bf
 	){
 
 			var pptt			= playpath_tray;
 			var add_to_soko_pp	= false;
 			var initiate_pp		= false;
-			var playpath_title;
+
+			var pkey2 = pkey[2];
+			var pkey3 = pkey[3];
 			if( pptt.cbflag ) {
-				if( master_line_trimmed.length === 0 ) {
-					pptt.pp		= null;
-					pptt.cbflag	= false;
+
+				if( pkey2 === 'optpath' || pkey2 === 'solpath'  )
+				{
+					grab_optpath ( pptt, pkey3, pkey2 );
+					return true;
+				}
+				if( master_line_trimmed.length === 0 )
+				{
+					terminate_playpath( pptt );
 				}else{
-					pptt.pp.value += "\n" + master_line;
+					pptt.pp.value += "\n" + master_line_trimmed;
 				}
 				return true;
 			}
-			if( pkey[2] === 'playpath' ) {
+			if( pkey2 === 'playpath' || pkey2 === 'optpath' || pkey2 === 'solpath') {
 				pptt.cbflag	= true;
-				playpath_title		= pkey[3] || '';
-				initiate_pp			= true;
-			}else if( !cbzone_bf || (pptt.pp && !pptt.cbflag ) ) {
-				var ww = master_line.match( sokoban_playpath_line_match );
+				if( pkey2 === 'optpath' || pkey2 === 'solpath')
+				{
+					grab_optpath ( pptt, pkey3, pkey2 );
+				}else{
+					pptt.title = pkey3;
+				}
+				initiate_pp		= true;
+			}else if( !cbzone_bf || ( pptt.pp && !pptt.cbflag ) ) {
+				var ww = master_line_trimmed.match( sokoban_playpath_line_match );
+
 				if( ww ) {
-					if( !pptt.pp ) {
-						playpath_title = '';
-						initiate_pp = true;
-					}
+					if( !pptt.pp ) initiate_pp = true;
 					add_to_soko_pp = true;
 
-				}else if( pptt ) {
-					pptt.pp = null;
+				}else if( pptt.pp ) {
+					terminate_playpath( pptt );
+
+				}else{
+					return false;
 				}
 			}
 
 			if( initiate_pp ) {
-				var ww = playpaths.length;
-				playpath_title = playpath_title || 'Playpath ' + ww;
-				pptt.pp = playpaths[ ww ] =
+				var ww = pptt.playpaths.length;
+				pptt.title = pptt.title || 'Playpath ' + ww;
+				pptt.pp = pptt.playpaths[ ww ] =
 				{
-					title : tp.core.capitalizeFirstLetter( playpath_title.replace( reg_ex_und, ' ') ),
+					title : tp.core.capitalizeFirstLetter( pptt.title.replace( reg_ex_und, ' ') ),
 					value : ''
 				};
+				if( pptt.optpath ) pptt.optpath.path = pptt.pp;
 			}
 
-			if( add_to_soko_pp ) pptt.pp.value += master_line + "\n";
+			if( add_to_soko_pp ) pptt.pp.value += master_line_trimmed + "\n";
 			if( add_to_soko_pp || initiate_pp) return true;
 
 			return false;
@@ -17359,7 +17935,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 
 
-(function(){	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+( function () {	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var ceach	=  tp.core.each;
 					var cmd		=  gio.core.def.map_format;
@@ -17384,10 +17960,6 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			cmd.parse_board_line(yy,raw_board_lines[yy],map,cbzone_bf,dtable);
 		}
 	};
-
-
-
-
 	cmd.parse_board_line=function( board_y, line, map, cbzone_bf, dtable){
 
 		var w,i,j,len;
@@ -17435,11 +18007,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 					utoken = ww[0];
 				}				
 
-				if( utoken === sugar_speed_map_boundary ) {
-					mparsed.wall_boundary_encountered =
-						mparsed.wall_boundary_encountered || [x, board_y];
-				}
-
+				if( utoken === sugar_speed_map_boundary ) mparsed.wall_boundary_encountered = true;
 
 				var ww = dtable[ utoken ]; //.charAt(i)]; //c[i]
 				if( !ww ) ww = dtable[ '#' ];
@@ -17478,7 +18046,9 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 				var colony = colonies[u];
 				var gcol = game.cols[u];
 				var race = gcol.race;
-				if(sugar_range){
+				if( sugar_range ) {
+
+					mparsed.wall_boundary_encountered = false;
 					var sugarr = sugar_range[race];
 					if(	sugarr && ( race === 'box' || race === 'hero' || race === 'target') ){
 						if(gcol.color_ix === 0){
@@ -17640,11 +18210,11 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		var text					= '';
 		var trim_indent__bf			= '';
 		var raw						= '';
-		self_jwon.detect_format = function () {
-			var beginner = jwon_marker + JWON_INITIALIZATION;
-			var beginner_re = new RegExp ( '^(\s\n\r)*' + beginner );
-			var ww = { beginner : beginner, beginner_re : beginner_re };
-			return ww;
+		var ww						= jwon_marker + JWON_INITIALIZATION;
+		var format_detector_re		= new RegExp ( '^(\s\n\r)*' + ww );
+		self_jwon.detect_format = function ( text )
+		{
+			return format_detector_re.test( text )
 		};
 		self_jwon.parse = function ( line_ix ) {
 
@@ -17765,7 +18335,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 
 
-(function( ){	 	var tp  	=  $.fn.tp$  =  $.fn.tp$ || {};	
+( function () {	 	var tp  	=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio 	=  tp.gio    =  tp.gio   || {};
 					var core	=  tp.core;
 					var ceach	=  core.each;
@@ -17778,15 +18348,19 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 					var gdp		=  gdef.procs;
 					var ggp		=  gio.gui.procs;
 					var dotify	=  core.dotify;
+					var gdt		=  gio.def.templates;
+
 
 					var sess	=  gio.session; 
+					var gsp		=  gio.session.procs;
 					var do_deb	=  gio.debug && !isNaN(gio.debug) &&  gio.debug % 7 === 0;
-					var dodeb	=  function ( string ) { if( do_deb )		gio.cons_add( "Derive: " + string ); };
-					var deb		=  function ( string ) { if( gio.debug )	gio.cons_add( "Derive: " + string ); };			
-					var conadd	=  function ( string ) { 					gio.cons_add( "Derive: " + string ); };			
+					var conadd		= function ( string ) { 				gio.cons_add( "Derive: " + string ); };			
+					var deb			= function ( string ) { if( gio.debug)	conadd( string ); };			
+					var dodeb		= function ( string ) { if( do_deb )	conadd( string ); };
 	gdp.normalize_album_defs = function ( album_defs ) {
 		ceach( album_defs, function( akey, ad ) {
-			cpaste( ad, gio.def.templates.def.album ); 
+
+			gdt.normalize_album( ad );
 			ad.key = akey;
 			ad.album_name = ad.album_name || '';
 		});
@@ -17852,7 +18426,6 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		var env_dgame = null;
 		if( dress_akey && dress_akey !== akey ) {
 			env_dgame = gdp.dressi_gami_fy_album( dress_akey, overdefine );
-			if( !env_dgame ) return false;
 		}
 		dgame.dresses = clonem( dgame.dresses, env_dgame && env_dgame.dresses, album_def && album_def.dresses );
 		ceach( dgame.dresses, function( dkey, dress ) {
@@ -17884,29 +18457,68 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 		return clonem( dgame );
 	}; /// Dresses album ...
-	gdp.derive_album = function ( akey, cseed_to_add, preserve_gui_state, overdefine ) {
+	var add_cseed = function( akey, album, cseed_to_add, gs )
+	{
 
-		var gs			= gio.getgs();
-		var overdefined	= false;
-		var album		= sess.stemmed_albums[ akey ];
-
-		if( album && !overdefine ) {
-			if( !cseed_to_add ) return album;
 			dodeb( 'Merges cseed into akey = "' + akey + '" ... ' );
 
-		}else{
+			var coll_to_add = clonem( cseed_to_add, gdt.play.coll );
+			var ww = cseed_to_add.ref.list.cix_to_insert1;
+			if( ww ) {
+				var cix = ww - 1;
+				cseed_to_add.ref.list.cix_to_insert1 = 0;
+				if( akey === gs.akey && gs.cix === cix ) {
+					gio.gui.procs.do_display_curr_board ( false );
+					gsp.disable_GUI_state();
+				}
+				album.collections[ cix ] = coll_to_add;
+				var ww = 'Coll overrode coll on'; 
+			}else{
+				album.collections.push( coll_to_add );
+				var cix = album.collections.length - 1;
+				var ww = 'Coll added to'; 
+			}
+			dodeb( ww + ' cix = ' + cix );
+			if( !cseed_to_add.ref.list.preserve_gui_state )
+			{
+				if( akey === gs.akey ) {
+					ggp.do_display_curr_board ( false );
+					gsp.disable_GUI_state();
+				}
+				if( coll_to_add.chosen || coll_to_add.ref.list.chosen )
+				{
+					dodeb( 'Album pointed to  stated-cix = ' + cix );
+					album.collections.ix = cix;
+				}
+			}
+			gdp.spawn_coll_up_down_links( album, cix );
 
+	}; /// Adds cseed
+	gdp.derive_album = function ( akey, modifier )
+	{
 
-			dodeb( '(Over)Derives akey "' + akey + '" ... ' );
-			var album_def = gdef.albums[ akey ] || {};
-			album = clonem( gio.def.templates.play.album, album_def );
-			var dgame = gdp.dressi_gami_fy_album( akey, overdefine );
+		var gs				= gio.getgs();
+		var album			= sess.stemmed_albums[ akey ];
+		var overdefine		= modifier === 'overdefine';
+		var cseed_to_add	= !overdefine && modifier;
+		var overdefined		= false;
 
-			if( !dgame ) return false;
-			album.dgame = dgame;
+		if( album && !modifier ) return album;
+		if( !album || overdefine )
+		{
 
+			overdefined = overdefine && !!sess.stemmed_albums[ akey ];
+			dodeb( (overdefined ? 'Over' : '' ) + 'Derives akey "' + akey + '" ... ' );
+			if( overdefined && akey === gs.akey )
+			{
+				ggp.do_display_curr_board ( false );
+				gsp.disable_GUI_state();
+			}
+			var album_def	= gdef.albums[ akey ] || {};
+			album			= clonem( album_def );
+			var dgame		= gdp.dressi_gami_fy_album( akey, overdefine );
+			album.dgame		= dgame;
 			try{
-
 
 				for( var cix=0, wlen = album.collections.length; cix < wlen; cix++ ) {
 					gdp.externify_and_hostify( album.collections[ cix ], album )
@@ -17924,108 +18536,63 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 					});
 					album.collections = w_purged
 				}
-
-				overdefined = overdefine && !!sess.stemmed_albums[ akey ];
-
-				if( overdefined )
+				for( var cix=0, wlen = album.collections.length; cix < wlen; cix++ )
 				{
-					if( akey === gs.akey ) {
-						ggp.do_display_curr_board ( false );
-						sess.state.akey__bf = '';
-					}
-				}
-				for( var cix=0, wlen = album.collections.length; cix < wlen; cix++ ) {
 					var coll =  album.collections[ cix ];
-					cpaste( coll, gio.def.templates.play.coll );
+					cpaste( coll, gdt.play.coll );
 					if( cix === 0 || coll.ref.list.chosen ) album.collections.ix = cix;
-					if( !gdp.spawn_coll_up_down_links( album, cix, 'externified' ) ) return false;
+					gdp.spawn_coll_up_down_links( album, cix, 'externified' );
 				}
-				sess.stemmed_albums[ akey ] = album;
 
-
-			}catch(error){
+			} catch ( error ) {
 
 				conadd(	"Error deriving akey " + akey + ".\n" +
-								( typeof error === 'object' && error !== null ? error.message : '' + error )
+						( typeof error === 'object' && error !== null ? error.message : '' + error )
 				);
 				gio.debtp( error );
 				return false;
 			}
-		}/// first time
-		if( cseed_to_add ) {
-			var coll_to_add = clonem( cseed_to_add, gio.def.templates.play.coll );
-			var ww = cseed_to_add.script.metag.cix_to_insert1;
-			if( ww ) {
-				var cix = ww - 1;
-				if( akey === gs.akey && gs.cix === cix ) {
-					gio.gui.procs.do_display_curr_board ( false );
-					sess.state.akey__bf = '';
-				}
-				album.collections[ cix ] = coll_to_add;
-				dodeb( 'Coll replaced cix = ' + cix );
-			}else{
-				album.collections.push( coll_to_add );
-				var cix = album.collections.length - 1;
-				dodeb( 'Coll added to cix = ' + cix );
-			}
-			if( !preserve_gui_state || overdefined ) {
-				if( !album.collections.ix || album.collections.ix !== 0 ) album.collections.ix = 0;
-				if( coll_to_add.chosen || coll_to_add.ref.list.chosen )
-				{
-					if( akey === gs.akey ) {
-						ggp.do_display_curr_board ( false );
-						sess.state.akey__bf = '';
-					}
-					dodeb( 'Album pointed to  stated-cix = ' + cix );
-					album.collections.ix = cix;
-				}
-			}
-			if( !gdp.spawn_coll_up_down_links( album, cix ) ) return false;
-		}
-		if(		( !sess.alist_by_key[ akey ] ||  overdefined )	&& 
-				album.collections.length > 0					&&
+			sess.stemmed_albums[ akey ] = album;
 
-				(	!gio.config.query.asingle || album.ref.list.listify_on_top ||
+		} ///	(Over)Derives album
+
+
+		if( cseed_to_add ) add_cseed ( akey, album, cseed_to_add, gs );
+		if(		(	!sess.alist_by_key[ akey ] ||  overdefined )	&& 
+					album.collections.length > 0					&&
+				(	!gio.config.query.asingle || 
+					album.ref.list.listify_on_top ||
 					album.ref.list.penetrate_asingle
 				)
 		){
 
-
 				if( overdefined )
 				{
-					var gs = gio.getgs();
-					if( akey === gs.akey ) {
-						ggp.do_display_curr_board ( false );
-						sess.state.akey__bf = '';
-					}
-
-					var target_album = sess.alist_by_key[ akey ];
-					var target_aix = target_album.ix;
-					sess.alist[ target_aix ] = album;					
-					sess.alist_by_key[ akey ] = album;
-					album.ix = target_aix;
-					dodeb( 'Album replaced in list: akey, axi = "' + akey + '", ' + target_aix + '.' );
+					var target_album			= sess.alist_by_key[ akey ];
+					var target_aix				= target_album.ix;
+					sess.alist[ target_aix ]	= album;					
+					sess.alist_by_key[ akey ]	= album;
+					album.ix					= target_aix;
+					var www						= 'Album replaced in';
 
 				}else{
 
-					album.ix = sess.alist.length;
-					sess.alist[ sess.alist.length ] = album;
-					sess.alist_by_key[ akey ] = album;
-					dodeb( 'Album added to list: akey, axi = "' + akey + '", ' + target_aix + '.' );
-
+					var ww						= sess.alist.length;
+					album.ix					= ww;
+					sess.alist[ ww ]			= album;
+					sess.alist_by_key[ akey ]	= album;
+					var www						= 'Album added to';
 				}
+
+				dodeb( www + ' list: akey, aix = "' + akey + '", ' + album.ix + '.' );
+
+		} /// Enables album in GUI
+		if( album.collections.length > 0 )
+		{
+			var coll	= album.collections[ album.collections.ix ];
+			album.title	= gio.gui.procs.calculate_game_titile_from_names( coll.dgame.nam, album.album_name );
 		}
-
-
-		if( album.collections.length > 0 ) {
-			var coll = album.collections[ album.collections.ix ];
-			album.title = gio.gui.procs.calculate_game_titile_from_names( coll.dgame.nam, album.album_name );
-		}
-
-		dodeb( ( cseed_to_add ? "Finished cseeding" : "Derived" ) + " akey " + akey );
-
-
-
+		dodeb( "Finished derive_album subroutine. akey = " + akey );
 
 		return album;
 
@@ -18040,7 +18607,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 
 
-(function( ){	 	var tp  	=  $.fn.tp$  =  $.fn.tp$ || {};	
+( function( ){	 	var tp  	=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio 	=  tp.gio    =  tp.gio   || {};
 					var core	=  tp.core;
 					var ceach	=  core.each;
@@ -18052,7 +18619,6 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 					var gdef	=  gio.def;
 					var gdp		=  gdef.procs;
-					var tcoll	=  gio.def.templates.def.coll;
 
 					var do_deb	=  gio.debug && !isNaN(gio.debug) &&  gio.debug % 7 === 0;
 					var dodeb	=  function ( string ) { if( do_deb )		gio.cons_add( "SpawnColl: " + string ); };
@@ -18085,28 +18651,51 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			colln.title			= title || dumb_title;
 
 	};
-	gdp.spawn_coll_up_down_links = function( album, cix, externified ) {
+	gdp.paste_coll_to_from = function ( coll_to, coll_from )
+	{
+		coll_from.script = coll_to.script;
+		core.rpaste( coll_to, coll_from );
 
+		var akey		= coll_from.ref.list.akey;
+		var cix			= coll_from.ref.list.ix;
+		var album_from	= gio.session.stemmed_albums[ akey ];
+		album_from.collections[ cix ]		= coll_to;
+		album_from.coll_ref[ coll_to.ckey ]	= coll_to;
+	};
+	gdp.spawn_coll_up_down_links = function( album, cix, externified ) {
 
 		var coll			= album.collections[ cix ];
 		gdp.normalize_cseed( coll );
+		if( !coll.ref.cid || coll.ref.cid !== 0 )
+		{
+			coll.ref.cid = gio.def.colls.maxcid;
+			gio.def.colls.maxcid += 1;
+		}
+		var ww = coll.ckey || 'col_' + coll.ref.cid;
+
+
+		/*
+		var ww_item = coll.ckey && gio.def.colls.items[ coll.ckey ];
+		if(	!album_overdefines && !coll.ref.list.cix_to_insert1 &&
+			ww_item && ww_item !== coll )
+		{
+			coll.ckey = 'col_' + coll.ref.cid;
+		}
+		gio.def.colls.items[ coll.ckey ] = coll;
+		*/
+		album.coll_ref[ coll.ckey ] = coll;
 		var akey			= album.key;
 		coll.ref.list.akey	= akey;
 		coll.ref.list.ix	= cix;
-		coll.ref.env.dgkey = coll.ref.env.dgkey || coll.ref.env.akey || akey;
-		var cgame			= album.dgame;
-		if( coll.ref.env.dgkey !== akey ) {
-			cgame = gdp.dressi_gami_fy_album( coll.ref.env.dgkey );
-			if( !cgame ) {
-				conadd(	'Missed game context for key ' + coll.ref.env.dgkey +
-								' for collection ' + cix );
-				return false;
-			}
+		var dgkey =	coll.ref.env.dgkey = coll.ref.env.dgkey || coll.ref.env.akey || akey;
+		var cgame = album.dgame;
+		if( dgkey !== akey ) {
+			cgame = gdp.dressi_gami_fy_album( dgkey );
 			cpaste( cgame.dresses, game.dresses );
 		}
 		coll.dgame = cgame;
 
-		if( !externified) gdp.externify_and_hostify( coll, album );
+		if( !externified ) gdp.externify_and_hostify( coll, album );
 		core.tooltipify( coll, "Collection" );
 		gdef.procs.assembly_coll_title( coll );
 
@@ -18115,6 +18704,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 				coll.ref.list.akey	+ ', ' +
 				coll.ref.list.ix	+ '.' );
 
+		
 		return true;
 
 	}; /// spawns collection-seed and mutifies
@@ -18151,7 +18741,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		gdp.detect_ownhost_url( coll );
 
 	}; 	/// Externifies and detects own host
-	var externify = function ( external_collection, xurl ) {
+	var externify = function ( external_collection, xurl )
+	{
 
 		var coll		= external_collection;
 		var ext			= coll.ref.link;
@@ -18210,8 +18801,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 	};
 	gdp.normalize_cseed = function ( coll ) {
 
-		coll = coll || {};
-		cpaste( coll, tcoll );
+		coll = gio.def.templates.normalize_coll( coll );
 		coll.ref.env.akey = coll.akey || coll.ref.env.akey;
 		if( coll.hasOwnProperty( 'akey') ) delete coll.akey;
 		return coll;
@@ -18682,9 +19272,9 @@ gio.def.albums['flocks']={
 
 	collections : 
 			[
-				{	credits : { title	: "Beginner" } },
+				{	ckey : 'beginner', credits : { title	: "Beginner" } },
 
-				{ 	"ref" : { "folder" : { fkey	: 'wells.txt' } },
+				{ 	ckey : 'wells', "ref" : { "folder" : { fkey	: 'wells.txt' } },
 					credits : { title	: "Wells" }
 				}
 			],
@@ -18698,13 +19288,20 @@ gio.def.albums['flocks']={
 						rules	:	"Heros push boxes of match-color ...\nBlack matches own and any color ...\nBoxes are sticky: moved box moves its neighbours ...\n"
 					},
 
+		/* abandoned, see bugs ...  why ..
+		"chickens_promoted" :
+		{
+			skip : true,
+			skin : "flockgarden"
+
+		},
+		*/
 
 		chicken_garden :
 		{
 
 			credits : {
 								"title" : "Chicken Garden",
-								"author"	: "Konstantin Kirillov",
 								"copyright"	: "Copyright (C) 2012 Konstantin Kirillov",
 								"license"	: "host-based",
 								"date"		: "December 30, 2012"
@@ -18712,7 +19309,7 @@ gio.def.albums['flocks']={
 			tile	:{	width : 60, height: 60 },
 			style	:{	play:{ backgroundImage : 'background.png' } },			
 			skin_key : "flockgarden",
-			rules : "Each bread has own Master to push.\nMaster's of other breed pull its species",
+			rules : "Each manager can push subject \nonly of own breed.",
 			objective : "Put each breed in to own eggs.",
 			skip : true,
 
@@ -18725,6 +19322,21 @@ gio.def.albums['flocks']={
 					"hero_g"	: "red_man2.png",
 					"target_g"  : "red_target.png",
 					"ground_x"  : "egg_ground.png"
+			},
+			hname_table	:{
+				hero_x	: 'grey manager',
+				hero_a	: 'blue manager',
+				hero_b	: 'green manager',
+				hero_c	: 'red manager',
+				hero_d	: 'manager',
+				hero_e	: 'manager',
+				hero_f	: 'blue manager',
+				hero_g	: 'red manager',
+				hero_h	: 'manager',
+				hero_i	: 'manager',
+				box_f	: 'blue chick',
+				box_g	: 'red chick',
+				box_h	: 'chick'
 			}
 		},
 
@@ -18855,7 +19467,7 @@ gio.def.albums['flocks']={
 
 			collections :
 			[ 
-				{	"list_title" : "Beginner" },
+				{	"ckey": "beginner", "list_title" : "Beginner" },
 
 
 				{	"list_title"	: "Unexplored. David Holland. dh1.",				"ref" : { "folder" : {  "akey" : "sokoban", "fkey": "authentic_David_Holland_dh1.txt",	"ckey": "holland"  } }, 	
@@ -18980,7 +19592,9 @@ gio.def.albums['flocks']={
 		collections	: [
 
 
-				{	"credits" : {	"title"		: "Beginner" 	}  },
+				{	"ckey" : "beginner", "credits" : {	"title"		: "Beginner" 	}  },
+
+				{	"list_title"	: "Microban",		"ref" : { "folder" : { "fkey": "monkey_microban1.txt" }  } },
 
 				{	"list_title"	: "Unexplored. D. W. Skinner. Microban.",			"ref" : { "folder" : { "akey" : "sokoban", "fkey": "microban1.txt",	"ckey": "skinner" }  } },
 				{	"list_title"	: "Unexplored. D. W. Skinner. Microban II.",		"ref" : { "folder" : { "akey" : "sokoban", "fkey": "microban2.txt",	"ckey": "skinner" }  } },
@@ -19202,11 +19816,11 @@ gio.def.albums['flockmasters']={
 	{
 			collections :[
 
-				{	"list_title"	: "David Holland. dh1.",					"ref" : { "folder" : { "fkey": "authentic_David_Holland_dh1.txt",	"ckey": "holland" } }, 	"map_title_source"	: "comment" },
+				{	"ckey" : "holland",		 "list_title"	: "David Holland. dh1.",					"ref" : { "folder" : { "fkey": "authentic_David_Holland_dh1.txt",	"ckey": "holland" } }, 	"map_title_source"	: "comment" },
 
-				{	"list_title"	: "David W Skinner. Microban.",				"ref" : { "folder" : { "fkey": "microban1.txt",	"ckey": "skinner"  } } },
-				{	"list_title"	: "David W Skinner. Microban II.",			"ref" : { "folder" : { "fkey": "microban2.txt",	"ckey": "skinner"  } } },
-				{	"list_title"	: "David W Skinner. Microban III.",			"ref" : { "folder" : { "fkey": "microban3.txt",	"ckey": "skinner"  } } },
+				{	"ckey" : "microban1",	 "list_title"	: "David W Skinner. Microban.",				"ref" : { "folder" : { "fkey": "microban1.txt",	"ckey": "skinner"  } } },
+				{	"ckey" : "microban2",	 "list_title"	: "David W Skinner. Microban II.",			"ref" : { "folder" : { "fkey": "microban2.txt",	"ckey": "skinner"  } } },
+				{	"ckey" : "microban3",	 "list_title"	: "David W Skinner. Microban III.",			"ref" : { "folder" : { "fkey": "microban3.txt",	"ckey": "skinner"  } } },
 				{	"list_title"	: "David W Skinner. Microban IV.",			"ref" : { "folder" : { "fkey": "microban4.txt",	"ckey": "skinner"  } } },
 				{	"list_title"	: "David W Skinner. Microban V.",			"ref" : { "folder" : { "fkey": "microban5.txt",	"ckey": "skinner"  } } },
 
@@ -19235,8 +19849,8 @@ gio.def.albums['flockmasters']={
 				{	"list_title"	: "David W Skinner. Sasquatch IV.", 		"ref" : { "folder" : { "fkey": "sasquatch4.txt",	"ckey": "skinner"  } } },
 				{	"list_title"	: "David W Skinner. Sasquatch V.", 			"ref" : { "folder" : { "fkey": "sasquatch5.txt",	"ckey": "skinner"  } } },
 				{	"list_title"	: "David W Skinner. Sasquatch VI.", 		"ref" : { "folder" : { "fkey": "sasquatch6.txt",	"ckey": "skinner"  } } },
-				{	"list_title"	: "David W Skinner. Sasquatch VII.", 		"ref" : { "folder" : { "fkey": "sasquatch7.txt",	"ckey": "skinner"  } } },
-				{	"list_title"	: "David W Skinner. Sasquatch VIII.", 		"ref" : { "folder" : { "fkey": "sasquatch8.txt",	"ckey": "skinner"  } } },
+				{	"ckey" : "sasquatch7",	 "list_title"	: "David W Skinner. Sasquatch VII.", 		"ref" : { "folder" : { "fkey": "sasquatch7.txt",	"ckey": "skinner"  } } },
+				{	"ckey" : "sasquatch8",	 "list_title"	: "David W Skinner. Sasquatch VIII.", 		"ref" : { "folder" : { "fkey": "sasquatch8.txt",	"ckey": "skinner"  } } },
 				{	"list_title"	: "David W Skinner. Sasquatch IX.", 		"ref" : { "folder" : { "fkey": "sasquatch9.txt",	"ckey": "skinner"  } } },
 				{	"list_title"	: "David W Skinner. Sasquatch X.", 			"ref" : { "folder" : { "fkey": "sasquatch10.txt",	"ckey": "skinner"  } } },
 				{	"list_title"	: "David W Skinner. Sasquatch XI.", 		"ref" : { "folder" : { "fkey": "sasquatch11.txt",	"ckey": "skinner"  } } },
@@ -19244,13 +19858,13 @@ gio.def.albums['flockmasters']={
 
 
 			{
-				"ref" : { "folder" : {	ckey: 'grigoriev', fkey: 'grigr2001.txt' } },
+				"ckey" : "egrig2001",	 "ref" : { "folder" : {	ckey: 'grigoriev', fkey: 'grigr2001.txt' } },
 				credits : { "title"		: "Evgeny Grigoriev. 2001." },
 				map_title_source	:'comment'
 			},
 
 			{
-				"ref" : { "folder" : {	ckey: 'grigoriev', fkey: 'grigr2002.txt' } },
+				"ckey" : "egrig2002",	 "ref" : { "folder" : {	ckey: 'grigoriev', fkey: 'grigr2002.txt' } },
 				credits : { "title"		: "Evgeny Grigoriev. 2002." },
 				map_title_source	:'comment'
 			},
@@ -19349,7 +19963,7 @@ gio.def.albums['flockmasters']={
 				},
 
 				{
-					"credits" : {	"title"		: "Soko Derivations" },
+					"ckey" : "soko_derivations", "credits" : {	"title"		: "Soko Derivations" },
 					"ref" : { "folder" : { fkey : 'soko_derivations.txt' } }
 				},
 
@@ -19463,17 +20077,50 @@ gio.def.albums['flockmasters']={
 ( function( ) { 	var tp  =  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio =  tp.gio    =  tp.gio   || {};
 
-			var wrap = gio.data_io.add_defions;
-			gio.data_io.add_defions = function ()
+			var wrap = gio.data_io.add_gafions;
+			gio.data_io.add_gafions = function ()
 			{
 				wrap();
-				arg		=	{};
-				arg.url	=	tp.core.app_webpath_noindex + '/' +
-							gio.config.defpaths.ALBUMS_DEF_PATH +
-							'/colortrain/album.jwon.txt',
-				gio.data_io.download_defion ( arg );
+				gio.data_io.download_gamion (
+				{
+					galfinition :
+					{	penetrate_asingle	: true, 
+						gafion				: true
+					},
+					common :
+					{	link :	tp.core.app_webpath_noindex + '/' +
+								gio.config.defpaths.ALBUMS_DEF_PATH +
+								'/colortrain/album.jwon.txt',
+					}
+				});
 			};
 
+})();
+
+
+
+( function( ) { 	var tp  =  $.fn.tp$  =  $.fn.tp$ || {};	
+					var gio =  tp.gio    =  tp.gio   || {};
+
+			var wrap = gio.data_io.add_gafions;
+			gio.data_io.add_gafions = function ()
+			{
+				wrap();
+
+				gio.data_io.download_gamion (
+				{
+					galfinition :
+					{	penetrate_asingle	: true, 
+						gafion				: true
+					},
+					common :
+					{	link :	tp.core.app_webpath_noindex + '/' +
+								gio.config.defpaths.ALBUMS_DEF_PATH +
+								'/boximaze/album.jwon.txt',
+					}
+				});
+
+			};
 
 })();
 
@@ -19586,15 +20233,22 @@ gio.def.albums['flockmasters']={
 ( function( ) { 	var tp  =  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio =  tp.gio    =  tp.gio   || {};
 
-			var wrap = gio.data_io.add_defions;
-			gio.data_io.add_defions = function ()
+			var wrap = gio.data_io.add_gafions;
+			gio.data_io.add_gafions = function ()
 			{
 				wrap();
-				arg		=	{};
-				arg.url	=	tp.core.app_webpath_noindex + '/' +
-							gio.config.defpaths.ALBUMS_DEF_PATH +
-							'/album.jwon.txt',
-				gio.data_io.download_defion ( arg );
+				gio.data_io.download_gamion (
+				{
+					galfinition :
+					{	penetrate_asingle	: true, 
+						gafion				: true
+					},
+					common :
+					{	link :	tp.core.app_webpath_noindex + '/' +
+								gio.config.defpaths.ALBUMS_DEF_PATH +
+								'/album.jwon.txt'
+					}
+				});
 			};
 
 
