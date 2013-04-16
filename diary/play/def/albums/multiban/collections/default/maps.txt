@@ -1,0 +1,47 @@
+/{
+	"credits" :
+	{
+		/, title          Multiban
+		/, author         KVK
+		/, license        Public Domain
+		/, date           March 3, 2013
+		/. email          beaverscript(a)landkey(.)net
+	}
+
+/}
+
+
+:::map=co_multi05-third-DcFtM-soko
+:::context_akey=colorban
+#####
+#-.-##
+#.-$@##
+#-$.$.#
+##-$-$#
+-##.$+#
+--#####
+:::board_end
+:::title=Warm Up
+
+:::optpath=46.18.16
+|x.0.L|x.0.u|x.0.l|x.0.l|x.0.d|x.0.d|x.0.R|x.0.d|x.0.R|x.0.d|x.1.U|x.0.R|x.0.l|x.0.u|x.0.l
+|x.0.u|x.0.U|x.0.r|x.0.r|x.1.L|x.1.d|x.0.D|x.0.L|x.0.u|x.0.r|x.1.l|x.1.U|x.1.l|x.1.U|x.1.d
+|x.1.r|x.1.d|x.1.r|x.1.U|x.1.r|x.0.D|x.0.u|x.0.l|x.0.L|x.0.d|x.0.l|x.1.L|x.1.u|x.1.L|x.1.D
+|x.0.R
+
+
+
+:::map=round_well
+:::context_akey=colorban
+# #  # #   #
+# -  - -   # #
+# -  # -   @ #    #
+# -  - 0   $ 0    # 
+# #  - $   - $    #
+- #  # 0   $ +    # 
+- -  # #   # #    #
+:::board_end
+:::title=Round Well
+
+
+

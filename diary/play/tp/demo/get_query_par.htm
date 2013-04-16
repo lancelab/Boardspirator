@@ -1,0 +1,17 @@
+<html><head>
+		<title>Demo-Test</title>
+		<script type="text/javascript" src="../lib/jquery.js"></script>
+		<script type="text/javascript" src="../core.js"></script>
+		<script type="text/javascript" src="../core_no_jquery.js"></script>
+<body><pre>
+To test, call like: 
+ get_query_par.htm?mypar=yes_works
+ get_query_par?x=x&y=3.4&mypar=works_again&only_moo&&&buggy
+
+<script type="text/javascript">
+	console.log( $.fn.tp$.core.getQueryKeyPairs('integerify')  );
+	//alert(  $.fn.tp$.core.getQueryPar('mypar')  );
+
+</script>
+
+</pre></body></html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html><head><title>Gravity</title>
+
+
+	<!-- TODO
+
+		detect IE canvas dynamically and hide warning if works ...
+		resize canvas dynamically ...
+		media query ... 
+
+	-->
+
+
+	<meta name="copyright" content="2012 (c) Konstantin Kirillov. License: MIT.">
+	<meta name="description" content="Bubbles spinning in 3D and drawn on 2D Canvas. Version 0.0.6."> 
+	<meta name="keywords" content="Canvas, JavaScript, HTML5"> 
+
+
+<!--[if lt IE 9 & !IEMobile]>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+<![endif]--> 
+
+	<script type="text/javascript" src="../lib/jquery.js"></script>
+
+	<script type="text/javascript" src="../tp.js"></script>
+	<script type="text/javascript" src="../debug.js"></script>
+	<script type="text/javascript" src="readme_conf_run.js"></script>
+	<script type="text/javascript" src="lens_transformation.js"></script>
+	<script type="text/javascript" src="vector23D.js"></script>
+	<script type="text/javascript" src="draw3D.js"></script>
+	<script type="text/javascript" src="draw2D.js"></script>
+	<script type="text/javascript" src="funny_graphics_2D.js"></script>
+	<script type="text/javascript" src="funny_graphics_3D.js"></script>
+	<script type="text/javascript" src="window_onload.js"></script>
+
+
+	<!-- Google Analytics --------------------------------------------------->
+	  <script type="text/javascript">
+	    var _gaq = _gaq || [];
+	    _gaq.push(['_setAccount', 'UA-26834667-3']);
+	    _gaq.push(['_trackPageview']);
+
+	    (function() {
+	      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	    })();
+	  </script>
+	<!-- Google Analytics --------------------------------------------------->
+
+
+
+	<body style="background-color:#000000; color:#AAAAAA;">
+
+
+		<!-- div id="non-canvas-browser" style="position:absolute; top:100px; background-color:#000000; color:#AAAAAA; text-align:left; font-size:18px;" -->
+			This browser is not able to run canvas.<br />
+			Use modern browsers, FireFox, Chrome,<br />
+			Internet Explorer 9+, ...<br />
+			<!--[if lt IE 9 & !IEMobile]>
+				... or to enable your browser now without restarting it, <br />
+			    install Google's plugin ... <br /><br />
+			    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+				<form>
+					<input	type="button" value="Install Google's Frame plugin ..." 
+							onClick="document.getElementById('non-canvas-browser').style.display='none'; CFInstall.check({mode:'inline'});"/>
+				</form>
+			<![endif]--> 
+
+		<div id="canvas_wrap" style="position:absolute; top:0px; left:0px; ">
+			<!-- img style="position:absolute; left:0px; top:0px; width:600px; height:600px;" src="img/DSCI2994.JPG" -->
+			<canvas id="canvas" style="position:absolute; left:0px; top:0px;"> </canvas>
+		</div>
+		<div id="java-script-disabled" style="position:absolute; top:0px; width:600px; height:600px; background-color:#000000; color:#AAAAAA; text-align:center; font-size:18px;">
+				<br />
+				Your browser does not understand JavaScript language.<br />
+				To view this page, enable JavaScript.<br />
+		</div>
+
+
+
+</body></html>
+

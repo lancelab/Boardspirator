@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html><head>
+  
+	<meta http-equiv="Content-Type"	content="text/html; charset=UTF-8">
+	<meta name="copyright"			content="2011-2013 (c) Konstantin Kirillov">
+	<meta name="description"		content="Whirly family games"> 
+	<meta name="keywords"			content="whirly, sokoban variants, sokoban, board game, puzzle, puzzle game, puzzle rating, best puzzles, brain training, mind training, mind sharpening, game development, educational game">
+
+	<title>Whirly and Sokoban Variants</title>
+
+	<link rel="stylesheet" href="css/whirly.css">
+
+	<script type="text/javascript" >window.tp$ = window.tp$ || {}; window.tp$.reset_path_from_land_to_app_root = '..' ;</script>
+	<script type="text/javascript" src="../prod/app.js"></script>
+	<script type="text/javascript" src="js/macrify.js"></script>
+
+
+
+</head><body>
+
+<div style="visibility:hidden; position:absolute; top:0px; left:0px;">
+<pre>
+
+	<h1 style="position:relative; left:30px;">Whirly and Sokoban Variants</h1>
+
+	Definitions. Scores. Playlinks. Solvers. Maps. Implementations. References.
+	<a href="../feeder/feedback/">Send your feedback, corrections, maps, scores, or games ...</a>
+	<a href="creativity_indices.htm#calculate">Scorify ...</a>
+
+	On this site, externally-sourced information is as reliable as sources were at Reasearch Date.
+	Games in blue rows - are color-match-games and in green rows - none-color-match games.
+
+<a id="variants"> </a>
+
+</pre>
+	<table style="position:relative; left:50px;">
+	<thead>
+		<tr>
+			<th>
+				Reasearch<br>Date.<br>
+				<a class="list score">Score.</a>
+			</th>
+			<th>Name.<br>Playlink.</th>
+			<th>Description</th>
+			<th>Deriving from Whirly. <br>Script. Example. Playlink.</th>
+			<th>Solver</th>
+			<th>Playlink</th>
+			<th>Reference</th>
+			<th>Maps <br>& Solutions</th>
+			<th>Implementations.<br>Development.</th>
+			<th>Research</th>
+		</tr>
+	</thead>
+
+	<tbody>
+
+
+
+	<tr class="whirly">
+		<td>	
+				2013-01-03<br>
+				<a	class="game_score" href="../?akey=flocks&ckey=wells&mkey=insanely_hard&dkey=default"
+					title="Flat difficulty = 611, flat creativity = 510, Highest known from this family CM=194, Highest known Difficulty=233" >10</a>
+		</td>
+
+	   	<td>#@Flocks@#</td>
+		<td>Heros push color-matching boxes<br>
+				Flocking: Neighbours stick <br>to moved box. </td>
+		<td>	Derived from Whirly without changes:<br>
+				herd_sense = 1,<br>
+				DEEPNESS_LIMIT = 1
+		</td>
+		<td><a href="../?akey=flocks">On Line</a><br>
+		</td>
+		<td>
+		</td>
+		<td><a href="whirly.htm">Whirly</a><br>
+		</td>
+	</tr>
+
+
+
+
+
+
+
+
+
+
+
+	<!-- Sokoban ***************************************************** -->
+	<tr class="whirly">
+
+		<td>	
+				2013-01-03<br>
+				<a class="game_score" href="../?akey=sokoban&mkey=obscured_more_bugs_167&curl=//doc/research/sokoban_highest.jwon.txt"
+					title="Likely less if to optimize solution." >9.6</a>,
+				<a class="game_score" href="../?akey=sokoban&mkey=sokoban_max&curl=//def/albums/sokoban/collections/solutions.txt"
+					title="Flat difficulty = 609, flat creativity = 351, Highest known from this family CM=102, Highest known Difficulty=178" >5.3</a>
+
+		</td>
+
+	   	<td><a href="http://www.game-sokoban.com/index.php?mode=catalog">Sokoban</a></td>
+		<td>Single hero pushes boxes <br>
+			to targets. No flocking.</td>
+		<td>#@Colorban@# with grey <br>
+			units and single <br>
+			targetless hero	<br>
+			which makes <br>
+			instance of game very special<br>
+			due rules simplicity, famous history, <br>
+			innumerable	implementations, theory, and fun.
+		</td>
+		<td>
+			<a href="http://www.joriswit.nl/sokoban/en/solvers.htm">YASS and more</a><br>
+			<a href="http://www.ic-net.or.jp/home/takaken/e/soko/index.html">Takaken</a><br>
+			<a href="http://www.freewebs.com/gamesolver/">BoxSearch</a><br>
+			<a href="http://sourceforge.net/projects/jsokoapplet/">jSoko</a><br>
+			<a href="../?akey=sokoban">On Line</a><br>
+			<a href="http://sokobano.de/wiki/index.php?title=Solver_Statistics">Compare</a>
+		</td>
+		<td>
+			<a href="http://sokobanonline.com">sokobanonline.com</a>
+			<a href="http://www.games4brains.de/sokobluejavaenglisch.php">Sokoblue</a><br>
+			<a href="http://sokoban.ws/sokoplayer/SokoPlayer_HTML5_en.php" title="It looks like very featured site">sokoban.ws</a><br>
+			<a href="http://www.onlinespiele-sammlung.de/sokoban/sokobangames/haywood/sokhard.html" title="Lee J Haywood. In Java.">SokMe</a><br>
+			<a href="http://logicking.com/games/CaravanSokoban/" title="Nice Graphics">CaravanSokoban</a><br>
+			...
+		</td>
+		<td>
+			<a href="http://en.wikipedia.org/wiki/Sokoban">Wikipedia</a><br>
+			<a href="http://sokoban.software.informer.com/wiki/">informer.com</a><br>
+			<a href="http://www.erimsever.com/sokoban.htm">erimsever</a><br>
+			<a href="http://sokobano.de/en/index.php">sokobano.de</a><br>
+			<a href="http://sneezingtiger.com/sokoban/">..sneezingtiger..</a><br>
+		</td>
+		<td>
+			<a href="http://www.ne.jp/asahi/ai/yoshio/sokoban/handmade/index.html">Y.Murase. Handmade.</a><br>
+			<a href="http://www.ne.jp/asahi/ai/yoshio/sokoban/auto52/index.html">Y.Murase. Auto</a><br>
+			<a href="http://www.sourcecode.se/sokoban/levels.php">For entire life</a><br>
+			<a href="http://users.bentonrea.com/~sasquatch/sokoban/">D.Skinner</a><br>
+			<a href="http://sneezingtiger.com/sokoban/levels.html">Sneezingtiger</a><br>
+			<a href="http://www.sneezingtiger.com/sokoban/levels/yoshioText.html">Levels</a><br>
+			<a href="http://sokoban.ws/">MF8 Competition</a><br>
+			<br>& Solutions:</br>
+			<a href="http://sokoban.nebol.se/cgi-bin/sokoban_solutions.exe">sokoban.nebol.se</a>
+		</td>
+	</tr>
+
+
+
+
+
+	<!-- Colorban ***************************************************** -->
+	<tr class="whirly">
+		<td>	
+				2013-02-22<br>
+				<a class="game_score" href="../?akey=colorban&mkey=colors_unite&ckey=team_of_two"
+					title="Flat difficulty = 369, flat creativity = 291, Highest known from this family CM=117" >6.0</a>
+		</td>
+
+	   	<td>#@Colorban@#</td>
+		<td>Heros push color-matching boxes<br>
+			No flocking.</td>
+		<td>Flocks, but herd_sense = 0<br>
+		</td>
+		<td><a href="../?akey=colorban">On Line</a><br>
+		</td>
+		<td>
+		</td>
+		<td><a href="whirly.htm">Whirly</a><br>
+		</td>
+	</tr>
+
+
+
+
+
+
+	<!-- Sokomind Plus ***************************************************** -->
+	<tr>
+		<td>	
+				2013-03-03<br>
+				<a class="game_score" href="../?akey=colorban&mkey=locked_behind&ckey=soko_derivations"
+					title="Flat difficulty = 442, flat creativity = 269, Highest known from this family CM=102" >5.2</a>
+		</td>
+
+	   	<td>Sokomind Plus<br>Block-o-Mania<br>(Unverified)</td>
+		<td>Numbered Sokoban</td>
+		<td>
+			#@Colorban@# with<br>
+			single targetless hero.
+		</td>
+		<td><a href="../?akey=colorban">On Line</a><br>
+		</td>
+		<td>
+				<a href="http://sokobanonline.com">sokobanonline.com</a>
+		</td>
+		<td><a href="http://www.erimsever.com/sokoban8.htm">Erim Sever</a> <br><a href="http://sokomind.de/">sokomind.de</a></td>
+		<td>
+		</td>
+		<td>
+				<a href="http://www.freewebs.com/sokofan/">Sokofan</a>
+		</td>
+	</tr>
+
+
+
+	<tr>
+		<td>
+				2013-03-10<br>
+				<a	class="game_score" href="../?author=Erim%20Sever&copyright=Copyright%20%28C%29%20Erim%20Sever%20from%20Turkey&email=erimsever%28at%29yahoo%28.%29com&title=All%20levels&akey=sokoban&map_ix=361&curl=http://www.erimsever.com/sokoban/all_levels.txt"
+					title="We don't have a lot of statistics." >4.3</a>,
+				<a	class="game_score" href="../?mkey=co_multi05-third-DcFtM-soko&curl=//def/albums/multiban/collections/default/maps.txt"
+					title="We don't have a lot of statistics .." >2.1</a>
+		</td>
+
+
+		<td>
+			<a href="http://sokobanonline.com">Multiban</a>
+		</td>
+		<td>Multipusher Sokoban</td>
+		<td>#@Colorban@# with grey units<br>
+			and targetless heros.
+		</td>
+		<td><a href="../?akey=colorban">On Line</a><br>
+		</td>
+		<td><a href="http://leehaywood.org/games/crossoban/">Crossoban</a><br>
+			<a href="http://sokobanonline.com">sokobanonline.com</a>
+			<a href="http://www.onlinespiele-sammlung.de/sokoban/sokobangames/haywood/multiban.html">Lee Haywood, in Java</a>
+		</td>
+		<td><a href="../?akey=colorban&map_ix=0&curl=http://www.erimsever.com/e_sokoban.htm">..erimsever..</a></td>
+	</tr>
+
+
+
+
+	<!-- MultiSokoMind ***************************************************** -->
+	<tr>
+		<td>	
+				2013-02-22<br>
+				<a	class="game_score" href="../?akey=colorban&mkey=locked_behind&ckey=soko_derivations"
+					title="Flat difficulty = 442, flat creativity = 269, Highest known from this family CM=102, Highest known Difficulty=167" >5.2</a>
+		</td>
+
+	   	<td>MultiSokoMind</td>
+		<td>Mix of Multiban and<br>Sokomind.<br>
+			<a href="http://www.sokobanonline.com/play/community-puzzles/pc46/one-thousand/set-2/17991_puzzle-0186-m1">Like this.</a>
+		</td>
+		<td>
+			#@Colorban@# with targetless grey heros.
+		</td>
+		<td><a href="../?akey=colorban">On Line</a><br>
+		</td>
+		<td>
+				<a href="http://sokobanonline.com">sokobanonline.com</a>
+		</td>
+		<td><a href="http://www.erimsever.com/sokoban8.htm">Erim Sever</a> <br><a href="http://sokomind.de/">sokomind.de</a></td>
+		<td>
+		</td>
+		<td>
+				<a href="http://www.freewebs.com/sokofan/">Sokofan</a>
+		</td>
+	</tr>
+
+
+	<!-- Monkeyban ***************************************************** -->
+	<tr class="whirly">
+		<td>	
+				2013-02-17<br>
+				<a	class="game_score" href="../?akey=monkeyban&mkey=triangle_stream&ckey=beginner"
+					title="Highest known from this family CM=93, Highest known Difficulty=111" >4.79</a>
+		</td>
+
+	   	<td>#@Monkeyban@#</td>
+		<td>Sokoban with sticky boxes<br>
+		<td>#@Flocks@# with grey units<br>
+		</td>
+		<td><a href="../?akey=monkeyban">On Line</a><br>
+		<td>
+		</td>
+		<td><a href="whirly.htm">Whirly</a><br>
+		</td>
+	</tr>
+
+
+	<tr class="whirly">	<td>2013-01-03</td>
+	   	<td>#@Colortrain@#</td>
+		<td>#@Colorban@# with infinite deepness<br>
+		<td>#@Colorban@# with infinite deepness
+		</td>
+		<td><a href="../?akey=colortrain">On Line</a><br>
+		</td>
+		<td>
+		</td>
+		<td><a href="whirly.htm">Whirly</a><br>
+		</td>
+	</tr>
+
+
+
+
+
+
+	<tr>
+		<td>2012-10-18</td>
+		<td><a href="http://puzzles.net23.net/pukoban.htm">Pukoban</a></td>
+		<td>Hero can pull or push</td>
+		<td>Non implemented</td>
+		<td>
+		</td>
+		<td>
+		</td>
+		<td><a href="http://puzzles.net23.net">..net23..</a></td>
+	</tr>
+
+
+	<!-- ******************************************** middle header ************************************ -->
+	<tr class="middle_header">
+		<td>
+				Reasearch<br>Date.<br>
+				<a class="list score">Score.</a>
+		</td>
+
+
+		<td>Name.<br>Playlink.</td>
+		<td>Description</td>
+		<td>Deriving from Whirly. <br>Script. Example. Playlink.</td>
+		<td>Solver</td>
+		<td>Playlink</td>
+		<td>Reference</td>
+		<td>Maps <br>& Solutions</td>
+		<td>Implementations.<br>Development.</td>
+		<td>Research</td>
+	</tr>
+	<!-- ******************************************** middle header ************************************ -->
+
+
+
+
+	<tr>
+		<td>2012-10-18</td>
+		<td><a href="http://puzzles.net23.net/pukoban.htm">Sokostrong</a></td>
+		<td>Hero can push any <br>number of boxes</td>
+		<td>
+				Monochrome-#@Colortrain@# with<br>
+				single-targetless hero<br>
+		</td>
+		<td><a href="../?akey=colortrain">On Line</a><br>
+		</td>
+		<td>
+		</td>
+		<td><a href="http://puzzles.net23.net">net23.net</a></td>
+	</tr>
+
+
+	<tr>
+		<td>2012-11-08</td>
+		<td>CyberBox <br>(Unverified)</td>
+		<td>Hero mast match "exit" target</td>
+		<td>Monochrome-monohero #@Colorban@#</td>
+		<td><a href="../?akey=colorban">On Line</a><br>
+		</td>
+		<td>
+		</td>
+		<td><a href="http://sokoban.software.informer.com/wiki/">informer.com</a></td>
+	</tr>
+
+
+
+	<tr>
+		<td>2012-10-13</td>
+		<td>PseudoMultiban</td>
+			<td>Not a new game.<br>
+			Just a number Sokoban maps listed together.</td>
+		<td>
+		</td>
+		<td>
+		</td>
+		<td>
+		</td>
+		<td><a href="http://www.erimsever.com/sokoban8.htm">Erim Sever</a></td>
+	</tr>
+
+
+
+	<tr>
+		<td>2012-10-13</td>
+		<td>MultiBanPlus</td>
+		<td>Who knows what is this?<br>The info will be much <br>appreciated. Please email to<br>beaverscript(at)landkey(.)net</td>
+		<td>???</td>										
+		<td>
+		</td>
+		<td>
+		</td>
+		<td>
+		</td>
+	</tr>
+
+
+	<tr>
+		<td>2012-10-13</td>
+		<td>Hexoban</td>
+		<td></td>
+		<td>Not implemented</td>
+		<td>
+		</td>
+		<td>
+		</td>
+		<td>
+			<a href="http://users.bentonrea.com/~sasquatch/sokoban/hex.html">Hex</a><br>
+			<a href="http://www.erimsever.com/sokoban8.htm">Erim Sever</a>
+		</td>
+	</tr>
+
+
+
+	<tr>
+		<td>2012-10-13</td>
+		<td>Trioban</td>
+		<td></td>
+		<td>Not implemented</td>
+		<td>
+		</td>
+		<td>
+		</td>
+		<td><a href="http://www.erimsever.com/sokoban8.htm">Erim Sever</a></td>
+	</tr>
+
+
+
+
+	<tr>
+		<td>2012-10-13</td>
+		<td>Octoban</td>
+		<td></td>
+		<td>Not implemented</td>
+		<td>
+		</td>
+		<td>
+		</td>
+		<td>
+			<a href="http://webpages.dcu.ie/~tyrrelma/MazezaM/">MazezaM</a><br>
+			<a href="http://www.erimsever.com/sokoban8.htm">Erim Sever</a>
+		</td>
+	</tr>
+
+
+
+
+	<tr>
+		<td>2012-10-18</td>
+		<td>Beanstalk.<br>(Unverified)</td>
+		<td>Constrains filling-targets <br>time-sequence</td>
+		<td>Non implemented</td>
+		<td>
+		</td>
+		<td>
+		</td>
+		<td>
+			<a href="http://sokoban.software.informer.com/wiki/">informer.com</a>
+		</td>
+	</tr>
+
+	<tr class="whirly">	<td>2013-01-03</td>
+	   	<td>#@Flockmasters@#</td>
+		<td>#@Flocks@# with heros <br>
+			pulling alien-color boxes<br>
+		<td>Just one rule added to Flocks ... <br>
+		</td>
+		<td>#@Flockmasters@#<br>
+		</td>
+		<td>
+		</td>
+		<td><a href="whirly.htm">Whirly</a><br>
+		</td>
+	</tr>
+
+
+	<tr class="no_color_match" id="boximaze">
+		<td>	
+				2013-02-17<br>
+				<a	class="game_score" href="../?akey=boximaze&ckey=beginner&mkey=lone_target"
+					title="Highest known from this family CM=24, Highest known Difficulty=66" >1.3</a>
+		</td>
+
+	   	<td>PushMan<br>
+			#@BoxiMaze@#</td>
+		<td>Sokoban with targets only for hero.<br>
+		<td>
+			Sokoban with targetless boxes<br>
+			and targets for hero.
+		</td>
+		<td>#@BoxiMaze@# <!-- solver -->
+		</td>
+		<td><!-- playlink -->
+			<a href="http://gorillaarcade.com/playgame/2103/Push">Creditcardware?</a><br>
+		</td>
+
+		<td><!-- reference -->
+			<a href="http://www.arcade-museum.com/game_detail.php?game_id=9161">History</a><br>
+			<a href="https://www.youtube.com/watch?v=bbWdZknwW30">Movie</a><br>
+			<a href="https://www.youtube.com/watch?v=TyOn9EgTie4">Movie</a><br>
+		</td>
+
+		<td><!-- maps -->
+			#@BoxiMaze-maps@#
+		</td>
+
+		<td><!-- Implementation -->
+			<a href="http://skwirl2.dyndns.org/pushman.zip">pushman.zip</a><br>
+		</td>
+
+		<td><!-- Research -->
+		</td>
+	</tr>
+
+	<tr class="no_color_match" id="boximaze">
+		<td>	
+				2013-04-16<br>
+				<a	class="game_score" href="../index_prod.htm?akey=colorban&mkey=gem_puzzle_3&ckey=beginner"
+					title="There should be better score ... Let us know please ..." >0.7</a>
+		</td>
+
+	   	<td>Gem Puzzle,<br>15 Game<br>
+		</td>
+		<td>
+			Traditional "15 Game"<br>
+			on N x N square.
+		</td>
+		<td>Colorban, no boxes, <br>
+			only one empty cell<br>
+			on sqare map without<br>
+			inner walls.<br>
+			One hero per breed.
+			<a href="../index_prod.htm?akey=colorban&mkey=gem_puzzle_3&ckey=beginner">Play</a>
+		</td>
+		<td><a href="../index_prod.htm?akey=colorban&mkey=gem_puzzle_3&ckey=beginner">Solver</a> <!-- solver -->
+		</td>
+		<td><!-- playlink -->
+
+		</td>
+
+		<td><!-- reference -->
+			<a href="http://en.wikipedia.org/wiki/15_game">Wikipedia</a><br>
+		</td>
+
+		<td><!-- maps -->
+		</td>
+
+		<td><!-- Implementation -->
+		</td>
+
+		<td><!-- Research -->
+		</td>
+	</tr>
+
+	<!-- ******************************************** middle header ************************************ -->
+	<tr class="middle_header">
+		<td>
+				Reasearch<br>Date.<br>
+				<a class="list score">Score.</a>
+		</td>
+		<td>Name.<br>Playlink.</td>
+		<td>Description</td>
+		<td>Deriving from Whirly. <br>Script. Example. Playlink.</td>
+		<td>Solver</td>
+		<td>Playlink</td>
+		<td>Reference</td>
+		<td>Maps <br>& Solutions</td>
+		<td>Implementations.<br>Development.</td>
+		<td>Research</td>
+	</tr>
+	<!-- ******************************************** middle header ************************************ -->
+
+</tbody>
+</table>
+<pre>
+
+	<h2 style="position:relative; left:30px;">Imagine:</h2>
+
+	As of today February 24, 2013,
+
+	there are push, pull, jump, swap, pass, block, leap ...          7 interactions implemented ...
+	there are: hero, box, target, htarget, wall, ground ...          6 races ...
+	10 colors ... so 60 breeds ... 20 dynamic breeds ...             20 x 60 cells
+	in interaction matrix = 1200 and
+	each cell can take independently 7 interactions ... so ...       W = 7<sup>1200</sup> interaction matrices or games is possible ...
+
+	( More than 10<sup>80</sup>, <a href="http://en.wikipedia.org/wiki/Observable_universe">possible number of atoms in Observable Universe</a>. )
+
+	Sokoban is one of these games. Sokoban Gameland is full of famous maps, web sites, fans, and developments.
+	( <a href="http://www.sourcecode.se/sokoban/index.php">This site</a> claims having 22700 levels ... for Sokoban. )
+
+	Each other "W-game" is a subtle or strong deviation from Sokoban cannonical interaction matrix and possibly stems
+	an independent Gameland which is parallel to Sokoban.
+
+	99.99% of W-games may be just a junk or too complex to be interesting for a human, but imagine 
+	each significant Gameland has own fans, depository of maps, and of course, gameland.group.yahoo.com ...
+
+<a id="sandbox"> </a>
+
+	While yahoo.com does not have enough hard drive space for new 7<sup>1200</sup> groups,
+	we show only a few Sandbox games below. The <a href="../feeder/feedback/">reader may guess</a> can these games become a Gameland.
+	We don't know yet ...
+
+
+</pre>
+
+
+<table style="position:relative; left:50px;">
+<thead>
+	<tr>
+		<th colspan="20"><h1>Sandbox Games</h1>
+	</tr>
+	<tr>
+			<th>
+				Reasearch<br>Date.<br>
+				<a class="list score">Score.</a>
+			</th>
+			<th>Name.<br>Playlink.</th>
+			<th>Description</th>
+			<th>Deriving from Whirly. <br>Script. Example. Playlink.</th>
+			<th>Solver</th>
+			<th>Playlink</th>
+			<th>Reference</th>
+			<th>Maps <br>& Solutions</th>
+			<th>Implementations.<br>Development.</th>
+			<th>Research</th>
+	</tr>
+</thead>
+
+
+
+<tbody>
+
+	<tr class="whirly">	<td>2013-01-03</td>
+	   	<td>#@Doubleban@#</td>
+		<td>#@Colorban@#, but deepness is 2.<br>
+		<td>Colorban, but deepness is 2.
+		</td>
+		<td>#@Doubleban@#
+		</td>
+		<td>
+		</td>
+		<td><a href="whirly.htm">Whirly</a><br>
+		</td>
+	</tr>
+
+
+	<tr class="whirly">	<td>2013-01-03</td>
+	   	<td>#@Antimasters@#</td>
+		<td>#@Flockmasters@#, with reverted pull - push interactions<br>
+		<td>#@Antimasters--script@#
+		</td>
+		<td>#@Antimasters@#
+		</td>
+		<td>
+		</td>
+		<td><a href="whirly.htm">Whirly</a><br>
+		</td>
+	</tr>
+
+
+	<tr class="no_color_match">	<td>2013-01-03</td>
+	   	<td> <a href="../?akey=ghostban&aurl=//def/albums/ghostban/album.json.txt">GhostBan</a>
+		</td>
+		<td>
+			#@Colorban@# with special hero, "ghost" who <br>
+			swaps with "normal" units.
+		</td>
+		<td>Derived from Colorban by adding two rules:<br>
+				"hero_b" : { <br>
+				 &nbsp;&nbsp; "box_a" : "swap", <br>
+				 &nbsp;&nbsp; "hero_a" : "swap" <br>
+				} <br>
+		</td>
+		<td><a href="../?akey=ghostban">On Line</a><br>
+		</td>
+		<td>
+		</td>
+		<td><a href="whirly.htm">Whirly</a><br>
+		</td>
+	</tr>
+
+	<tr class="no_color_match">	<td>2013-01-03<br>
+				<a	class="game_score" href="../?akey=ghostjump&mkey=share_the_tip&aurl=//def/albums/ghostjump/album.jwon.txt"
+					title="We don't have a lot of statistics ..." >4.8</a>
+		</td>
+	   	<td>
+			<a href="../?akey=ghostjump&aurl=//def/albums/ghostjump/album.jwon.txt">GhostJump</a>
+		</td>
+		<td>
+			#@Colorban@# with special hero, "ghost" who <br>
+			"goes through" "normal" units.
+		</td>
+		<td>Derived from Colorban by adding three rules:<br>
+				"hero_b" : { <br>
+				&nbsp;&nbsp; "box_a" : "jump", <br>
+				&nbsp;&nbsp; "hero_a" : "jump", <br>
+				&nbsp;&nbsp; "box_c"  : "jump" <br>
+				} <br>
+		</td>
+		<td><a href="../?akey=ghostjump">On Line</a><br>
+		</td>
+		<td>
+		</td>
+		<td><a href="whirly.htm">Whirly</a><br>
+		</td>
+	</tr>
+
+	<tr class="no_color_match">
+		<td>
+				2013-01-03<br>
+				<a	class="game_score" href="../?akey=pullpush&ckey=beginner&mkey=dinner_for_one"
+					title="Highest known from this family CM=93, Highest known Difficulty=111" >4.7</a>
+
+		</td>
+
+	   	<td>#@PullPush@#</a>
+		</td>
+		<td>
+			#@Colorban@# with heros pulling foreign color boxes<br>
+		</td>
+		<td>Derived from Colorban by adding rule<br>
+			for hero to pull non-matching color <br>
+			Heros still push own colors. <br>
+		</td>
+		<td>#@PullPush@#<br>
+		</td>
+		<td>
+		</td>
+		<td><a href="whirly.htm">Whirly</a><br>
+		</td>
+	</tr>
+
+	<tr class="no_color_match">	<td>2013-01-03</td>
+	   	<td>#@Co-PullPush@#</a>
+		</td>
+		<td>
+			Heros pull "own colors" and push foreign.
+		</td>
+		<td>Co game for PullPush.<br>
+		</td>
+		<td>#@Co-PullPush@#<br>
+		</td>
+		<td>
+		</td>
+		<td><a href="whirly.htm">Whirly</a><br>
+		</td>
+	</tr>
+
+
+	<tr class="no_color_match">	<td>2013-01-03</td>
+	   	<td>#@Pull-Swap-Push@#</td>
+		<td>#@Colorban@# with pull and push scenarios<br>
+		<td>
+			Colorban with following rule overriding parent rules: <br>
+			&nbsp;&nbsp; If box or hero are colorless, rules are the same. <br>
+			&nbsp;&nbsp; Otherwise: <br>
+			&nbsp;&nbsp; &nbsp;&nbsp; If box color is less than hero's color, then  <br>it will be pulled, - if equal, then pushed, - and  <br>
+			&nbsp;&nbsp; &nbsp;&nbsp; 	if greater, then swapped with hero.
+		</td>
+		<td><a href="../?akey=pullswappush">On Line</a><br>
+		</td>
+		<td>
+		</td>
+		<td><a href="whirly.htm">Whirly</a><br>
+		</td>
+	</tr>
+
+	<tr class="no_color_match">	<td>2013-01-03</td>
+	   	<td>#@Bumpy Targets@#</td>
+		<td>#@Flocks@# with some blocking targets<br>
+		<td>
+			Folcks with following rule overriding<br>
+			parent rules:<br>
+			&nbsp;&nbsp; target_a does block box_b, (*)<br>
+			&nbsp;&nbsp;but still target_b passes box_a (**)<br>
+			( Non-color-match-game<br>
+			because in (*) and (**),<br>
+			box and target have the same<br>
+			negative-color-match,<br>
+			but interaction is different.)<br>
+			#@Bumpy Targets--script@#
+		</td>
+		<td>#@Bumpy Targets@#
+		</td>
+		<td>
+		</td>
+		<td><a href="whirly.htm">Whirly</a><br>
+		</td>
+	</tr>
+
+
+	<tr class="no_color_match">	<td>2013-01-03</td>
+	   	<td>#@LeapOrPush@#</td>
+		<td>#@Colorban@# with "other colors leaping"<br>
+		<td>
+			#@LeapOrPush--script@#
+		</td>
+		<td>#@LeapOrPush@#
+		</td>
+		<td>
+		</td>
+		<td><a href="whirly.htm">Whirly</a><br>
+		</td>
+	</tr>
+
+
+
+
+	<!-- ******************************************** middle header ************************************ -->
+	<tr class="middle_header">
+		<td>
+				Reasearch<br>Date.<br>
+				<a class="list score">Score.</a>
+		</td>
+		<td>Name.<br>Playlink.</td>
+		<td>Description</td>
+		<td>Deriving from Whirly. <br>Script. Example. Playlink.</td>
+		<td>Solver</td>
+		<td>Playlink</td>
+		<td>Reference</td>
+		<td>Maps <br>& Solutions</td>
+		<td>Implementations.<br>Development.</td>
+		<td>Research</td>
+	</tr>
+	<!-- ******************************************** middle header ************************************ -->
+
+
+
+
+</tbody>
+</table>
+
+
+	<!-- insertion-mark-288469365783 put php feedback form here -->
+
+
+<pre>
+
+	Circular Links:
+
+	<a  href="guest_readme.htm">Guest Readme</a>
+	<a  href="project_files.htm">Project Files</a>
+
+
+	Date:		#@date@#
+	Copyright:	#@copyright@#
+	EMail:		#@email@#
+
+
+
+		</pre>
+		<span style="visibility:hidden;">
+			When JS finds this token, #@title@#   , then JS
+			will make this div visible.
+		</span>
+<!-- alignment of this div is shifted to the left -->	
+</div>
+
+	<div style="color:#666666; white-space:pre; font-family:monospace;">
+		This page won't display if no JavaScript language enabled in your browser.
+		To display this page, turn JavaScript on.
+	</div>
+
+	<script	type="text/javascript">
+		jQuery.fn.tp$.gio.config.google_apps.insert_ad_div_with_script();
+	</script>
+
+
+</body></html>
+
+

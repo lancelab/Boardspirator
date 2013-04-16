@@ -1,0 +1,40 @@
+<html><head>
+		<title>Demo-Test</title>
+		<script type="text/javascript" src="../lib/jquery.js"></script>
+		<script type="text/javascript" src="../core.js"></script>
+		<script type="text/javascript" src="../core_no_jquery.js"></script>
+		<script type="text/javascript" src="../core_gui.js"></script>
+<body>
+
+<script type="text/javascript">
+	var t=document.createElement('div');
+	t.style.backgroundColor='#AAFFAA';
+	document.body.appendChild(t);
+	t.innerHTML='Blinker Test';
+
+	var b=$.fn.tp$.core.blinker();
+	b.dosetup_and_start(t,{opacity:0.3}, {opacity:0.9}, 1000);
+
+
+	var tt=document.createElement('div');
+	tt.style.backgroundColor='#AAAAFF';
+	document.body.appendChild(tt);
+	tt.innerHTML='Second Blinker Test';
+
+	$.fn.tp$.core.blinker(tt,{opacity:0.3}, {opacity:0.9}, 700);
+
+
+	var ttt=document.createElement('div');
+	ttt.style.backgroundColor='#FFAAAA';
+	document.body.appendChild(ttt);
+	ttt.innerHTML='Third div took over the first after about 2000';
+	var delay=function()
+	{
+		b.dosetup_and_start(ttt,{opacity:0.3}, {opacity:0.9}, 200);	
+	};
+	setTimeout(delay,2000);
+	
+
+</script>
+
+</body></html>

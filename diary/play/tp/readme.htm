@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html><head>
+  
+	<meta name="copyright" content="2011-2012 (c) Konstantin Kirillov">
+	<meta name="description" content="JavaScript jQuery plugin for generic and gui functions"> 
+	<meta name="keywords" content="JavaScript, Web development, jQuery"> 
+
+	<title>tp readme. Draft.</title>
+	<script type="text/javascript" src="tp.js"></script>
+	<script type="text/javascript" src="lib/jquery.js"></script>
+	<script type="text/javascript" src="core.js"></script>
+	<script type="text/javascript" src="core_no_jquery.js"></script>
+
+	<script type="text/javascript" >
+		$('document').ready( function(){
+			$.fn.tp$.core.rebuild_readme_html($.fn.tp$.description);
+		});
+	</script>
+	<style media="screen" rel="stylesheet" type="text/css">
+		a			{	
+						text-decoration:none; 
+						border:none; 
+					}
+	</style>
+	</head><body>
+		<div style="color:#666666; white-space:pre; font-family:monospace;">
+
+			Readme wont display if no JavaScript language enabled in your browser.
+			To display a readme, turn JavaScript on.
+
+		</div>
+
+
+		<div style="white-space:pre; font-family:monospace; visibility:hidden;">
+
+		<h1>tp readme. Draft.</h1>
+
+
+#@title@# is a #@description@#.
+It can be distributed as <a href=".">this entire folder</a>.
+
+Version:	#@version@#
+Date:		#@date@#
+License:	#@license@#
+Copyright:	#@copyright@#
+EMail:		#@email@#
+WebSite:	#@web_site@#
+
+
+<a name="features"></a>F e a t u r e s   a r e:
+	... there are no css files and no images used, all is dynamic
+	... no HTML5, no XHTML stuff ... HTML4 is sufficient
+	... JavaScript globals footprint is one, it is "jQuery"
+	...	   (except optional debugger: window.tp$.deb)
+	... CSS footprint is zero, no CSS-selector names used
+	... some of subplugins like tp$.core or tp$.gui are really libraries and
+	... only one call ...tp$('select') is really jQuery modifier of a dom-element
+
+
+
+
+C O D I N G    S T Y L E
+
+
+<a name="comments"></a>
+C o m m e n t s
+
+	Attempt has been made to adhere following conventions.
+	
+	1. Scope of comments is defined by control characters following comments like 
+	      //.
+	      //: 
+	      ///
+
+	   If control characters are omitted, scope is unspecified. Scope may be
+	   deducted or guessed from the content of comment.
+
+	2. a verb should be the first word of comment which describes the code following the comment
+	   unless comment describes declaration of the variable
+	3. comment should start on a new line unless comment describes data in function call or in block literal
+
+
+	// //\\	LOGICAL SECTION OF THE CODE. This line begins "LOGICAL SECTION". It has //\\ token.
+
+	//. comments only the following line. in other words: scope of comment is the following line
+	var me = is_commented;
+
+	//: comments only the lines till the first empty line
+	var first_continuos = 1;
+	var second_continuos = 2;
+
+	/// comments till the end of the nest. Nest can be if, function call, function definition, block literal.
+	var some = 1;
+	if( open_if ) {
+		var beginning_of_the_nest = true;
+	}else{
+		//:: comments block A till the end of indent
+		var more_work = 3;
+		var more_work = 3;
+
+		//		Text next to "//.." describes context of the section or current state of execution.
+		//		This may be necessary when section is too long:
+		//..	//\\ LOGICAL SECTION
+
+		var more_work = 3;
+		var end_of_the_nest = true;
+		// end of block A. This comment has unspecified scope.
+	}
+
+	/// comments till the end of the nest. Nest can be if, function call, function definition, block literal.
+	var x = function () {
+		return "job is done";
+	}
+
+
+	// \\// LOGICAL SECTION OF THE CODE. This line actually terminates "LOGICAL SECTION". It has \\// token.
+
+	//\\// COMMENTS THE REST OF ENTIRE FILE
+
+
+	D o c u m e n t a t i o n   a n c h o r s
+
+		They are denoted with dot in the middle of "cap"-comment like this
+		//.\\ XXXXX
+
+		The same anchor must exist in documentation text.
+			1.	It is a warning to a programmer who modifies anchored source code: changes in the
+				code must be reflected in documentaion-anchor. Misleading outdated documentation is worse
+				than lack of documentation. If this burden is too high, put //TODO\\ to make fix later.
+			2.	HTML documentation is able to put link back to source code based on anchor.
+
+
+	The depricated commenting style possibly is:
+		// * 			for //.
+		// **			for //:
+		//'				for //:
+		//|				for //::
+
+
+P o s t f i x e s
+
+	__eff		- effective
+	__own		- own
+	__cur		- current
+
+
+	F l a g s
+		name_bflag, name_bf	- this variable is used as a booleable flag, flag which is cast to true or false.
+		name_flag			- has specified values, like VALUE1, VALUE2, ...
+		name_raised			- flag with life-scope inside the loop
+
+
+
+T a b ..
+
+	.. has 4 characters length.
+
+
+W o r k    v a r i a b l e s
+
+  Globals: jQuery, $. tp$.
+			If debug.js is attached, then global window.cccc is added.
+			c c c c  is a shortcut for  c o n s o l e . l o g
+			( Above assumes "remove spaces". Spaces are put to avoid catching above line by grep. )
+			
+
+  Variables w, ww are reserved for short-living variables.
+  The same way, variables beginning with w are shortcuts for short-livers.
+  "Long living variables should not begin with "w".
+
+R e s t r i c t i o n s    o n   c o d i n g
+
+	"length" is a "reserved" property. Nothing should be explicitly assigned to this property.
+	It is used in arrays and as an indicator of object beeng an array.
+
+
+H I N T S
+
+
+  U s a g e
+	To learn or find file of specific feature, start from demos.
+
+
+
+  D e m o s   a r e  <a href="demo">located here</a>. Chrome will possibly restrict them in local mode.
+
+
+
+  P h i l o s o p h y.
+
+	Project is based on jQuery, but it is always kept in mind the possibility to depart
+	from jQ at first opportunity. jQ is important for binding to events and dom-manipulation.
+
+
+  M a i n t e n a n c e
+
+	Keep browser detection code updated in tp$.core.
+
+
+
+  C r e d i t s
+
+	Following development tools we found highly effective:
+		FireBug in FireFox
+		Ubuntu Linux 10.04
+		Meld 1.30 http://meld.sourceforge.net/
+		regexxer 0.9 http://regexxer.sourceforge.net/
+		gimp
+		console grep
+
+
+  Y o u   a r e    w e l c o m e
+
+</div>
+
+
+</body></html>
+

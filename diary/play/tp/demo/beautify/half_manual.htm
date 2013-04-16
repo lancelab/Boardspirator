@@ -1,0 +1,83 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+ <html><head>
+  <!-- doctype for html 4 is only to satisfy IE -->
+ 		<title>Demo-Test</title>
+		<script type="text/javascript" src="../../lib/jquery.js"></script>
+		<script type="text/javascript" src="../../core.js"></script>
+		<script type="text/javascript" src="../../core_no_jquery.js"></script>
+		<script type="text/javascript" src="../../gui.js"></script>
+		<script type="text/javascript" src="../../form.js"></script>
+		<script type="text/javascript" src="../../debug.js"></script>
+<body>
+
+<form method="post">
+
+
+<select id="select_id" name="select_name">
+	<option value="option1">Option 1</option>
+	<option value="option2">Option 2</option>
+	<option value="option3">Option 3</option>
+</form>
+
+<script type="text/javascript">
+
+	(function(){
+
+
+		//Debugger:
+		var deb = tp$.deb
+
+
+		var callback=function(ix, option){
+				postable.value=origin.options[ix].value;
+				deb('this is a selected option '+ix,option+"\n"+
+							'postable=',postable
+				);
+		};
+
+		var form=$.fn.tp$.form;
+		var origin=document.getElementById('select_id');
+		//deb('or',origin);
+
+		origin.selectedIndex=1;
+		//deb('or',origin);
+
+
+
+		var options=$.fn.tp$.core.each_construct(origin.options, true, function(ix, option){
+				return {body:option.value, title:option.text}
+		});
+		var original_name=origin.name;
+		origin.setAttribute('name',original_name+'_tp')
+		$(origin).css('display','none');
+
+		var postable=document.createElement('input');
+		postable.setAttribute('type','hidden');
+		postable.setAttribute('name',original_name);
+
+		deb('origin=',origin, origin.selectedIndex);
+
+		var converted=form.create_select_el(
+				{r:{
+					options:options,
+					callback:callback
+				},
+				c:{	choice_ix:origin.selectedIndex,
+					gui:{	style:		{wrapper: 	{	position	:'absolute',
+														left		:'250px',
+														top			:'150px'
+													}
+										}
+					}	
+				}}
+		);
+		//Set hidden input:
+		callback(origin.selectedIndex,null);
+
+	})();
+	
+</script>
+
+
+</body></html>

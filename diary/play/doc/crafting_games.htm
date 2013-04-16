@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+	<head>
+  
+		<meta http-equiv="Content-Type"	content="text/html; charset=UTF-8">
+		<meta name="copyright" content="2011-2012 (c) Konstantin Kirillov">
+		<meta name="description" content="Board Puzzle Framework, Whirly"> 
+		<meta name="keywords" content="whirly, board game, puzzle game, on line game, game development, educational game, sokoban"> 
+
+		<title>Crafting Games</title>
+
+		<link rel="stylesheet" href="css/readme.css">
+
+		<script type="text/javascript" >window.tp$ = window.tp$ || {}; window.tp$.reset_path_from_land_to_app_root = '..' ;</script>
+		<script type="text/javascript" src="../prod/app.js""></script>
+		<script type="text/javascript" src="js/macrify.js"></script>
+
+
+
+
+	</head>
+		<body>
+			<div style="white-space:pre; font-family:monospace; visibility:hidden;">
+				<pre>
+
+
+	<h1>Crafting Games. Draft.</h1>
+
+
+		<a class="list" href="#map_craft">Map Craft</a>
+		<a class="list" href="#deriving_fails">Deriving from Whirly</a>
+		<a class="list" href="#extending">Extending Whirly</a>
+		<a class="list" href="#troubleshooting">Troubleshooting</a>
+		<a class="list" href="#credits">Giving Credits</a>
+
+
+
+	<a id="map_craft"> </a>
+	<h2>Map Craft .. </h2>
+
+		.. is a simplest way to craft a Game. It does not require creating new rules or dresses.
+		Just borrow already existing Games or dresses and apply them to your maps.
+		<a href="#deriving">This section</a> contains examples of both mapifying and derivation.
+		To get started, ignore derivation part of these gamions.
+
+
+		&aurl and &curl can be full or relative urls:
+
+			full url:
+				&aurl=http://mysite.com/mypath/myalbum.txt
+				&curl=http://users.bentonrea.com/~sasquatch/sokoban/m1 Sokoban map 123 from external collection
+			relative url:
+				relative url is attached to a "parent" by using prefix "//":
+				&curl=//mycollection_path/mycollection.txt
+					if albums is also supplied in form
+							&aurl=http://mysite.com/mypath/myalbum.txt
+						then resulting curl will become:
+							&curl=http://mysite.com/mypath/mycollection_path/mycollection.txt
+					otherwise, result is an appending to player's url:
+							&curl=#@AppRoot@#/mycollection_path/mycollection.txt
+
+		If "//" used in maps, then relative url is attached to collection's root.
+
+		You need to use <a href="map_formats.htm">collection file format</a>.
+		To get started, look at existing collections in <a href="project_files.htm">def/albums</a>
+		or at links in page <a href="whirly_and_sokoban.htm">Whirly and Sokoban Variants</a>.
+
+
+		Examples:
+			<a href="../?akey=co_pullpush&curl=http://www.ne.jp/asahi/ai/yoshio/sokoban/handmade/soko001.txt">loading reverse Sokoban from external site</a>,
+			<a href="../?akey=sokoban&map_ix=123&curl=http://users.bentonrea.com/~sasquatch/sokoban/m1">Sokoban map 123 from external collection</a>
+
+
+		<a href="url_query_samples.htm">More query samples.</a>
+
+
+	<a class="list" href="map_formats.htm">Collection file format</a>.
+
+
+	<a id="deriving_fails"> </a>
+	<h2>Deriving from Whirly</h2>
+
+	E x a m p l e s
+
+		<a href="../def/albums/standalone/collections/default/simplest.txt">Simplest gamion</a>  - "Experimental Game" and <a href="../?asingle&curl=//def/albums/standalone/collections/default/simplest.txt">its play</a>.
+
+			Perhaps this game is boring. It omits some properties which you may like to assign
+			to your own games. The original Sokoban credits are "leaked" through, because we did not assign
+			our own. There is even no dress assigned from available core dresses, and description of
+			new rules is not reworded.
+			But this game is a "fist-class citizen" with other #@title@# games:
+			it can be replayed, has solver, other maps can be landed on in context of this game.
+
+			These short gamions are good when one wants to quickly test a new set of rules.
+
+		<a href="../def/albums/standalone/collections/default/sokoleap_demo.txt">Simple gamion</a> and <a href="../?asingle&curl=//def/albums/standalone/collections/default/sokoleap_demo.txt">its play</a>.
+
+			This is the same "game" as above.
+			This gamion has games, albums, and collection sections.
+			In "albums" section, there is a description for new rules and objective. 
+			Credits added to collection and collection is pointed to defined album.
+
+		<a href="../def/albums/standalone/collections/default/leappush_demo.txt">Simple gamion with game and subgame</a> and <a href="../?asingle&curl=//def/albums/standalone/collections/default/leappush_demo.txt">its play</a>.
+
+			There are two games in gamion. The first game is still the same as above.
+			The second game is derived from the first with added twist:
+				the frog leaps and pushes another frog if latter is on its way.
+			The second game is dressed by using one of core dresses.
+			There are also variations of dress for specific maps.			
+
+		<a href="../def/albums/standalone/collections/default/power_jumppush_demo.txt">Power JumpPush</a> and <a href="../?asingle&curl=//def/albums/standalone/collections/default/power_jumppush_demo.txt">its play</a>.
+
+			In this game, heros have a little more power, they can interact at most with two boxes.
+			The "green" hero is special in this game, it can jump over blue boxes.
+			This all is clearly set in gamion text.
+			But, consequences are dramatic, this game is completely different than Colorban.
+
+		<a href="whirly_and_sokoban.htm#more_games">GhostJump</a>.  Gamion contains album which refers to collection.
+
+			Has more elaborated dress. "Jump" rule creates effect of going through units.
+
+		<a href="whirly_and_sokoban.htm#sandbox">Sandbox.</a>
+
+
+
+	Example, core games: <a href="../def/games.jwon.txt">definition seeds</a> bundled with #@title@#.
+
+	These game-properties may justify derivation (subclassing) a game:
+
+		credits. 
+			Some Whirly parameters subclass to a game which is already invented and has a name.
+			Example: Sokoban.
+
+		dresses.
+			Example. Rules of Subgame can be the same as of parent, but expected class of maps
+					can be narrower and expect special dresses like Sokoban game expects monochrome maps.
+
+		Solver simplilfications. - going to be implemented.
+			Narrowed maps may allow simplifications of solver. (Like detecting dead locks in Sokoban maps.)
+
+		interact and unconditional-behavior
+			This is rules. Certainly, game must be subclassed if they must be changed.
+
+		Repeatedly, rules is not a final judge to consider a separate game definition.
+
+	This should be a topic of itself ...
+	Deriving dresses: <a href="../core/def/proc/derive.js">//.\\	collects 4 dresses from </a>
+
+	Unconditional-behavior is game.cols[cname].pass property. Its range is true or false.
+		For example, it is true for targets by default. See examples or <a href="../core/def/games/spawn_base_game_def.js">this scode</a>.
+		game.interact is interaction matrix. The range is <a href="whirly.htm#interactions">these interactions.</a>
+
+
+
+	<a id="restrictions"> </a>
+	R e s t r i c t i o n s    f o r    C u s t o m - D e r i v e d   G a m e s</a>
+
+		1. Parent and child games must have:
+
+			herd_sense = 0 
+			DEEPNESS_LIMIT = 1
+
+			Subclassing to arbitrary DEEPNESS_LIMIT is safe only when interactions 
+
+				( hero_..., box_... ) are push, leap, jump, and
+				( box_...,  box_... ) are push.
+
+		2. Setting interaction matrix for new game must allow play-sessions which
+		   create postions non-violating this condition:
+		   "one_dynamic_unit_on_top : true" described here: <a href="../core/def/games/base_game.js">//\\ APPLICATION ASSUMPTIONS</a>
+
+		However, core games or games in readme-examples must work unrestrictedly.
+
+		In particular, this unfortunately means you cannot derive from Flocks or from Colortrain.
+
+		These restriction cased by incomplete implementation of Whirly concept.
+		More software development is required to implement concept in full.
+
+
+	<a id="credits"> </a>
+	<h2>Giving Credits</h2>
+
+
+		Games, Dresses, Collections, and Maps can have credits to others or yourself.
+		Albums do not support credits.
+
+		Collections and Games absorb credits from 
+			json-literal fields like credits.XXXXX
+
+		Additionally, Collection absorb credits from
+			jwon-header.credits, and
+			from query-string.
+
+		Maps and Dresses absorb credits from map-script and dress-script.
+			
+		Following credit keywords <a href="../tp/core2_no_jquery.js">/.\	AVAILABLE CREDIT KEYS</a>
+		are supported.
+
+		Core-bundled Skins have <a href="credits.htm">separate page</a> for credits. Other Skins may be credited in Dress credit fields.
+
+		Credits support dependence credits, like jQuery credits are nested in #@title@# description.
+
+		As a general rule, original credits override wrapper. For example, if "original" collection-A is referred
+		from maps of collection-B, then A-credits will be on top of display which will contain B-credits in subcredits fields.
+
+
+	<a id="troubleshooting"> </a>
+	<h2>Troubleshooting</h2>
+
+	Game crafter should not need debugging.
+	If you feel this helps to publish the game, add URL-query parameter:
+
+		...&debug 		- enables debugging
+		...&debug=3		- traces path representation, parsing, and replays
+		...&debug=5		- traces interaction
+		...&debug=7		- album derivation
+
+	Multiplication, enables both: ...&debug=15
+	Heavy debug may take too much browser resources.
+
+
+	M i x i n g    m a p s
+
+	Whirly can convert maps of one game to play them in other game for two cases:
+		#@Sokoban@# --&gt; #@PullPush@#: <a href="../?akey=pullpush&collection_ix=1">Modified map</a> and
+		#@Sokoban@# --&gt; #@Monkeyban@#: <a href="../?akey=monkeyban&collection_ix=1">Modified map</a>
+		In such transformation, unit's breed may be changed; however, such transformations do not necessarily result in 
+		interesting games.
+
+	(See settings of collection property sugar.do_colorize_randomly.)
+
+
+	<a id="extending"> </a>
+	<h2>Extending Whirly</h2>
+
+	.. means adding new type of interactions to interaction matrix.
+	This requires reprogramming of scode.
+	In simple cases like "push", "pull", "jump", ...,  this job is done in sections
+	<a href="../core/interaction.js">///\\\ push,  ///\\\ pull,   ///\\\ jump, ...</a>
+	
+
+
+
+  <a class="list" href="guest_readme.htm">Guide Beginnning</a>
+
+
+
+#@WebSiteWithTitle@#:
+
+Version:	#@version@#
+Date:		#@date@#
+Copyright:	#@copyright@#
+EMail:		#@email@#
+
+
+
+	</pre>
+		<span style="visibility:hidden;">
+			When JS finds this token, #@title@#   , then JS
+			will make this div visible.
+		</span>
+<!-- alignment of this div is shifted to the left -->	
+</div>
+
+	<div style="color:#666666; white-space:pre; font-family:monospace;">
+		This page won't display if no JavaScript language enabled in your browser.
+		To display this page, turn JavaScript on.
+	</div>
+
+
+	<script	type="text/javascript">
+		jQuery.fn.tp$.gio.config.google_apps.insert_ad_div_with_script();
+	</script>
+
+
+
+</body></html>
+
+

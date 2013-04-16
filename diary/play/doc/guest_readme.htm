@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+
+		<meta http-equiv="Content-Type"	content="text/html; charset=UTF-8">
+		<meta name="copyright" content="2011-2013 (c) Konstantin Kirillov">
+		<meta name="description" content="Board Puzzle Framework"> 
+		<meta name="keywords" content="board game, puzzle game, on line puzzle, game development, educational game, sokoban, sokoban for kids"> 
+
+		<title>Guest Readme</title>
+
+		<link rel="stylesheet" href="css/readme.css">
+
+		<script type="text/javascript" >window.tp$ = window.tp$ || {}; window.tp$.reset_path_from_land_to_app_root = '..' ;</script>
+		<script type="text/javascript" src="../prod/app.js""></script>
+		<script type="text/javascript" src="js/macrify.js"></script>
+
+	</head><body>
+
+	<div style="white-space:pre; font-family:monospace; visibility:hidden;">
+		<pre>
+
+		<h1 style="position:relative; left:5px;">Guest Readme</h1>
+
+	<a id="introduction"> </a>
+
+	This site allows to play, autosolve, and craft board puzzles derived from game <a href="whirly.htm">Whirly</a>.
+	All puzzles are loaded from text files called gamions.
+	Gamions can be pasted into this site or can be loaded from Internet links.
+	This site uses #@title@# as a back end player.
+
+		<a class="list" href="#components">Games, Albums, and Collections</a>
+		<a class="list" href="#loading_games">Loading Games</a>
+		<a class="list" href="#solver">Solver</a>
+		<a class="list" href="#kids">Puzzles for Kids</a>
+		<a class="list" href="whirly.htm">Whirly</a>
+		<a class="list" href="crafting_games.htm">Crafting Games</a>
+		<a class="list" href="creativity_indices.htm">Scores and Metrics</a>
+		<a class="list" href="whirly_and_sokoban.htm">Whirly and Sokoban Variants</a>
+		<a class="list" href="app_developer_readme.htm">Developing Engine</a>
+		<a class="list" href="project_files.htm">Project Files</a>
+		<a class="list"href="../feeder/feedback/">Submit your comments, maps, scores, solutions, or games.</a>
+
+
+
+	<h2 id="components">Gamions</h2>
+
+	In simple case, gamion is a Sokoban maps' collection.
+	In general, gamion contains definitions of games, albums, and maps' collection.
+
+	Game is a set of rules to play. "Game" here means a puzzle-game. In context of #@title@#,
+	Game is a mathematical definition. It contains breeds, rules, and ovbjective.
+	It cannot be copyrighted, but credited.
+
+	Album merges together all components of playgame.
+	Album merges four things: game, dress, collection-references, and listing.
+
+		Dress is how game looks and is interpreted in words.
+		Dress includes images which are called "Skin".
+		Listing specifies how to group albums in front-page-listing.
+		Collection is a file containing maps.
+
+	After merging, album displays itself as a listing on front-page. Game name often attached to album name.
+
+	Traditionally dresses and maps can be copyrighted.
+
+	Games can be derived from core-games or from external-games which are already derived from core-games.
+
+	"Collection-references" can be references to gamions ( ... so "album-gamion" is a recursive structure ).
+	This makes possible redressing and changing game-context for existing games and gamions.
+	For example, one can land to Sokoban maps in Flocks context and apply Flock-rules to Sokoban maps.
+
+
+
+
+	<a id="loading_games"> </a>
+	<h2>Loading Games</h2>
+
+
+	U R L - q u e r y    P a r a m e t e r s   control execution of the player. For example:
+
+			...&aurl=http://mysite.com/mypath/myalbum.txt               - albums url, maps in target file are ignored
+			...&curl=http://users.bentonrea.com/~sasquatch/sokoban/m1   - collection url, target intends to have maps
+			...&curl=//mycollection_path/mycollection.txt
+			...&akey=sokoban                                            - album key
+			...&ckey=yes_this_is_my_collection_key                      - gamion key
+			...&mkey=yes_this_is_my_map_key
+			...&dkey=yes_this_is_my_dress_key
+			...&mix=345                                                 - map index
+			...&cix=123                                                 - gamion index. collection index. 
+			...&asingle                                                 - suppresses display of other's albums except of &aurl
+			...&slim=300000                                             - positions' number limit for solver
+
+
+		&aurl or &curl can be set independently: both or one of them. 
+		Game Crafters may want use these parameters to point to own sites.
+
+
+
+
+	<a id="solver"> </a>
+	<h2>Solver ..</h2>
+
+	.. is breadth-first and weak. Its power depends on size of your computer memory.
+	Solver memory limit is preset to slim=(300000 positions) for PC with 1 Gig memory.
+	If your computer has less, solver may freeze your browser. If you computer has more,
+	on your own risk, you may increase the limit to solve harder puzzles.
+
+	For FireFox 11, Ubuntu, empirical values are:
+		slim=300000 for 1 Gig,
+		slim=4000000 for 3 Gig. (Ubuntu 10.04, FF 11, Boarspirator version: 1.200.)
+
+	Examples of supplying slim in URL string:
+		Do land to player URL, select game of your choice, and then run solver like this:
+			#@AppRoot@#/?slim=1000000
+		or
+			#@AppRoot@#/?akey=sokoban&slim=100000&map_ix=1
+
+	How to:
+
+		Each map has own solver. They can run concurrently. (Not a good idea for performance.)
+		You can start solver and go playing on another map.
+		If you start solver and start playing the on the same map, 
+		     your game will be overriden when solver finds solution. 
+		     Overriding goes only to current round, other rounds of the same maps are intact.
+
+		Solver starts from given position, not from initial position of the map.
+		Initially, solver has two options "Search All" and "Search First".
+
+	Usage:
+
+		1. To generate new game-scenario, run solver for co-game, find "longest" solution in terms of
+		   interactions or moves, then co-vert the scenario.
+
+		2. Solving in "reverse mode". 
+		   It is indicated that some Sokoban and Colorban games are solved faster when solving in reverse mode which
+		   practically is:
+		       Description:    Land to map, Convert map to co-map, guess in which closed area hero(s) must be and add them into
+			                   map manually, confirm map, start solver.
+		       Actions:        "Edit Co-Position", add heros manually, Ctr+d, Search/First.
+
+
+	There are possible difficulties at the edge of Web-browser capabilities:
+		Browsers die, quit, crash differently on different OSes.
+		For example: Around version 1.163. In Windows 7, in FF 16, solver halts on 2046 Megs of mem.  32 bit limit?
+		So, far the best combination we found is FF 11, on Ubuntu 10.04 on 
+		Acer laptop Aspire 5532.
+
+		FF memory limits:	http://www.talesofinterest.net/top-10-awesome-firefox-tricks/
+							http://superuser.com/questions/459448/how-can-i-configure-firefox-to-assume-i-have-less-memory
+
+
+
+
+
+
+	<h2 id="kids">Puzzles for Kids</h2>
+
+		Many of us have kids and want to develop their analytical skills ...
+		Don't compain for the lack of kid-adapted puzzles, you don't
+		need programming skills to craft them ... 
+		Here are the examples ... games: <a href="../?akey=kids6&asingle&curl=//def/albums/kids/6.json.txt">Kids 6</a>, <a href="../?akey=kids6co_colo&asingle&curl=//def/albums/kids/6co_colorban.json.txt">Kids 6 CoColo</a>, <a href="../?akey=kids7&asingle&curl=//def/albums/kids/7.json.txt">Kids 7</a>... their scripts:
+		<a href="../def/albums/kids/6.json.txt">Kids 6 Dress</a>, <a href="../def/albums/kids/collections/default/maps.txt">Kids 6 Maps</a>,
+		<a href="../def/albums/kids/6co_colorban.json.txt">Kids 6 CoColo Dress</a>,  <a href="../def/albums/kids/collections/default/coco_maps.txt">Kids 6 CoColo Maps</a>
+		<a href="../def/albums/kids/7.json.txt">Kids 7 Dress</a>.
+
+		Yes, there are other challenges compare to mature age puzzles:
+		the heros must have character and gameplay must be motivating and rewarding ...
+		Craft your images, make maps you feel be entartaining for your child ...		 
+		If you afraid to play on-line, once you dowloaded the player, disconnect
+		from adult-Internet and continue playing ...
+
+
+
+
+ Date:		#@date@#
+ Copyright:	#@copyright@#
+ EMail:		#@email@#
+
+
+	</pre>
+	<span style="visibility:hidden;">
+		When JS finds this token, #@title@#   , then JS
+		will make this div visible.
+	</span>
+	<!-- alignment of this div is shifted to the left -->	
+	</div>
+
+	<div style="color:#666666; white-space:pre; font-family:monospace;">
+		This page won't display if no JavaScript language enabled in your browser.
+		To display this page, turn JavaScript on.
+	</div>
+
+
+	<script	type="text/javascript">
+		jQuery.fn.tp$.gio.config.google_apps.insert_ad_div_with_script();
+	</script>
+
+
+</body></html>
+
+

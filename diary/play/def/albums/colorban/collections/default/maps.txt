@@ -1,0 +1,202 @@
+/{
+	"credits" :
+	{
+
+		/, title            Beginner
+		/, author           Konstantin Kirillov
+		/, license          Public Domain
+		/, date             2011 - November 2012
+		/. email            beaverscript(a)landkey(.)net
+	}
+
+/}
+
+
+
+
+
+:::map
+#  #  #  #  #  #  #  #
+#  #  @  a  b  c  d  #  # 
+#  -  $  A  C  B  D  -  #
+#  #  -  1  2  3  4  #  # 
+#  #  0  -  -  #  #
+#  #  #  #  #  # 
+:::board_end
+:::title=In few Steps
+
+:::playpath=Solution
+:::solpath=51.8.4
+|x.0.D|x.0.D|x.0.u|x.0.l|d.0.D|a.0.l|a.0.d|a.0.d|a.0.r|a.0.d|b.0.l|b.0.l|b.0.d|b.0.d|b.0.r
+|b.0.r|b.0.d|c.0.l|c.0.l|c.0.r|c.0.D|c.0.u|c.0.l|c.0.l|c.0.d|c.0.d|c.0.r|c.0.R|d.0.r|c.0.u
+|c.0.u|c.0.l|c.0.l|b.0.u|b.0.u|b.0.u|b.0.r|b.0.r|b.0.d|b.0.L|b.0.u|b.0.l|b.0.D|c.0.r|c.0.r
+|a.0.u|a.0.l|a.0.u|a.0.u|a.0.r|a.0.D
+
+
+:::dress=colorban_vases
+:::skip
+:::image=ground_x_2_1=ground_x_in_scene.png
+:::image=ground_x_3_1=ground_x_in_scene.png
+:::image=ground_x_4_1=ground_x_in_scene.png
+:::image=ground_x_5_1=ground_x_in_scene.png
+:::image=ground_x_6_1=ground_x_in_scene.png
+:::image=ground_x_1_2=ground_x_in_scene.png
+:::image=ground_x_2_2=ground_x_in_scene.png
+:::image=ground_x_3_2=ground_x_in_scene.png
+:::image=ground_x_4_2=ground_x_in_scene.png
+:::image=ground_x_5_2=ground_x_in_scene.png
+:::image=ground_x_6_2=ground_x_in_scene.png
+:::image=ground_x_7_2=ground_x_in_scene.png
+:::image=ground_x_2_3=ground_x_in_scene.png
+:::image=ground_x_3_3=ground_x_in_scene.png
+:::image=ground_x_4_3=ground_x_in_scene.png
+:::image=ground_x_5_3=ground_x_in_scene.png
+:::image=ground_x_6_3=ground_x_in_scene.png
+:::image=ground_x_2_4=ground_x_in_scene.png
+:::image=ground_x_3_4=ground_x_in_scene.png
+:::image=ground_x_4_4=ground_x_in_scene.png
+
+
+
+:::map=gem_puzzle_3
+#   #    #    #    #
+#   h1.h h2.g h3.f #
+#   h4.e h5.d h6.c #
+#   h7.b h8.a -    # 
+#   #    #    #    #
+:::board_end
+:::title=Gem Puzzle 3
+
+:::dress=default
+:::objective=Heros are smart but not enough ...\Help them to return back to place of own color ...\n
+:::story=Surly, this is not the most difficult map ...\nMake your own better ...
+
+:::optpath=30.0.0
+|c.0.d|d.0.r|g.0.d|h.0.r|e.0.u|b.0.u|a.0.l|g.0.d|h.0.d|e.0.r|b.0.u|a.0.u|g.0.l|h.0.d|e.0.d
+|f.0.l|d.0.u|c.0.u|h.0.r|e.0.d|f.0.d|d.0.l|c.0.u|f.0.r|d.0.d|b.0.r|a.0.u|d.0.l|e.0.u|h.0.l
+
+
+
+:::map=hanoifloors3
+#  #  #  #  #    #   #   #   #
+#  #  c  c  h3.c h3. h3. #   #
+#  b  b  #  -    #   h2. h2. #
+#  a  #  #  #    #   #   h1. #
+#  #  #  #  #    #   #   #   # 
+:::board_end
+:::title=Hanoi Floors 3
+
+:::playpath=122.0.0
+|c.2.d|c.1.r|c.0.r|c.1.r|c.0.r|c.1.r|c.0.r|c.1.d|c.0.r|c.1.r|c.0.d|c.1.d|c.0.r|b.1.u|b.0.r
+|b.1.r|b.0.u|b.1.r|b.0.r|b.1.r|b.0.r|b.1.r|b.0.r|c.2.u|b.1.d|b.0.r|c.2.r|a.0.u|a.0.r|a.0.u
+|a.0.r|a.0.r|a.0.d|c.2.l|c.2.l|c.2.l|c.2.d|c.2.l|c.2.d|b.0.l|b.0.l|b.0.l|b.0.l|b.0.d|b.0.l
+|b.1.u|c.0.l|c.1.u|b.1.l|c.0.u|c.1.l|b.1.l|c.0.l|c.1.u|b.1.l|c.0.l|c.1.l|b.1.l|c.0.l|c.1.l
+|b.1.d|c.0.l|c.1.l|a.0.u|a.0.r|c.1.r|c.0.r|c.1.d|c.0.r|b.1.u|b.0.r|c.2.u|b.1.r|b.0.u|a.0.r
+|c.0.r|b.1.r|b.0.r|a.0.d|c.0.r|b.1.r|b.0.r|a.0.r|c.0.d|b.1.r|b.0.r|c.1.u|c.1.l|c.1.l|c.1.d
+|b.0.l|b.0.l|b.0.l|b.1.l|c.0.u|b.1.l|c.0.l|b.1.l|c.0.l|c.0.d|b.1.r|b.0.r|c.1.u|c.2.r|b.1.r
+|b.0.r|c.1.r|c.2.u|b.1.r|b.0.r|c.1.r|c.2.r|b.1.d|b.0.r|c.1.r|c.2.r|a.0.d|b.1.r|b.0.d|c.1.r
+|c.2.r|c.0.u
+
+
+
+
+:::map
+#########
+#aAbAaAa#
+#AAaaAaA#
+#aa-B2Aa#
+#########
+:::board_end
+:::title=Through Crowd Easily
+
+
+
+:::map
+##########
+#1111----#
+#b-------#
+#-BBB----#
+#----AAA-#
+#-------a#
+#----2222#
+##########
+:::board_end
+:::multiplayer=2
+:::title=Two Players
+
+
+
+:::map
+########
+#aAbAaA#
+#ABaaAa#
+#aa-B2b#
+########
+:::board_end
+:::title=Alive Walls
+
+
+
+:::map
+#########
+#aAbAaAa#
+#ABaaAaB#
+#Aa-B2Ab#
+###A###A#
+--#aAaAa#
+--#######
+:::board_end
+:::title=Around an Island Easily
+
+
+:::map
+########
+# 1a - A a A a #
+#ABaaAa#
+# a A a B 2b a #
+########
+:::board_end
+:::title=Wrong Men in Targets
+
+
+:::map
+# # # # # # # #
+# # - - - - - # 
+# - # C a # - # 
+# - d 1 2 D - # 
+# - B 4 3 b - # 
+# - # c A # - # 
+# - - - - - # # 
+# # # # # # # #
+:::board_end
+:::title=Spiral Pie
+:::playpath=Easy
+:::solpath=118.22.11
+|c.0.u|c.0.u|a.0.d|a.0.d|a.0.l|a.0.d|a.0.d|a.0.r|c.0.r|c.0.u|c.0.u|c.0.l|d.0.r|d.0.r|d.0.u
+|d.0.u|d.0.r|d.0.r|d.0.d|d.0.d|b.0.l|b.0.l|b.0.u|b.0.l|b.0.l|b.0.d|a.0.U|d.0.d|d.0.d|a.0.l
+|a.0.u|a.0.u|a.0.r|a.0.u|a.0.u|a.0.r|a.0.r|a.0.d|a.0.d|a.0.d|a.0.l|a.0.L|a.0.d|a.0.l|a.0.U
+|a.0.d|b.0.R|a.0.r|a.0.u|a.0.u|a.0.L|a.0.r|a.0.u|a.0.u|b.0.R|b.0.d|b.0.r|b.0.U|c.0.D|c.0.D
+|c.0.D|c.0.l|c.0.l|b.0.U|c.0.d|c.0.d|c.0.r|c.0.r|c.0.U|c.0.d|c.0.l|c.0.l|c.0.u|c.0.u|c.0.r
+|c.0.R|c.0.R|a.0.l|a.0.d|a.0.d|a.0.d|a.0.l|a.0.l|a.0.u|d.0.u|d.0.u|b.0.l|b.0.u|b.0.u|b.0.l
+|d.0.L|d.0.L|d.0.r|d.0.r|d.0.u|d.0.u|d.0.l|d.0.l|d.0.l|d.0.d|d.0.D|d.0.D|c.0.u|c.0.r|c.0.r
+|c.0.d|c.0.L|d.0.l|d.0.l|d.0.d|d.0.d|d.0.r|d.0.r|d.0.U|a.0.R|b.0.r|b.0.r|b.0.D
+
+
+:::map
+# # # # # # # #
+# # - - - - # # 
+# - # C a # - # 
+# - d 1 2 D - # 
+# - B 4 3 b - # 
+# - # c A # - # 
+# # - - - - # # 
+# # # # # # # #
+:::board_end
+:::title=Spiral Fence. Unknown Solvability.
+:::playpath=unsolved
+|a.0.d|a.0.d|c.0.u|c.0.u|a.0.l|a.0.d|a.0.d|a.0.r|c.0.r|c.0.u|c.0.u|c.0.l|c.0.D|c.0.D|c.0.D
+|a.0.U|a.0.U|a.0.U|a.0.l|a.0.u|a.0.u|a.0.r|c.0.r|c.0.d|c.0.d|c.0.l|d.0.r|d.0.r|b.0.l|b.0.l
+|b.0.u|b.0.l|b.0.l|b.0.d|d.0.d|d.0.r|d.0.r|d.0.u|d.0.L|d.0.L|d.0.L|b.0.R|b.0.R|b.0.R|d.0.d
+|d.0.l|d.0.l|d.0.u|b.0.u|b.0.r|b.0.r|b.0.d|b.0.L|c.0.U|c.0.U|c.0.U|c.0.d|c.0.d|c.0.d|b.0.u
+|b.0.l|b.0.l|b.0.d|b.0.d|b.0.r|b.0.U|b.0.l|b.0.u|b.0.R|b.0.d|b.0.r|b.0.r|b.0.u|a.0.D|a.0.D
+|a.0.D

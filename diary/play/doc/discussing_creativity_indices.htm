@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+  
+		<meta http-equiv="Content-Type"	content="text/html; charset=UTF-8">
+		<meta name="copyright" content="2011-2013 (c) Konstantin Kirillov">
+		<meta name="description" content="Whirly Map Metrics"> 
+		<meta name="keywords" content="whirly, whirps, whirlick, board game, sokoban variants, sokoban rating, puzzle game, on line game, game development, educational game, sokoban"> 
+		<title>Discussing Map Metrics</title>
+
+	</head><body><pre>
+
+
+	<h2>Discussing Map Metrics</h2>
+
+	March 3, 2013.
+	Apparently CM gives overincreased results for some Multiban Maps.
+	The human solution for <a href="../?author=Erim%20Sever&copyright=Copyright%20%28C%29%20Erim%20Sever%20from%20Turkey&email=erimsever%28at%29yahoo%28.%29com&title=All%20levels&akey=sokoban&map_ix=361&curl=http://www.erimsever.com/sokoban/all_levels.txt">Erim Sever, All Levels, Map 361</a>
+	has p,i,t = 505.129.19 and gives
+	Creativity Metric, C = d/v ~ 83
+	which is apparently too high.
+	Indeed, the solution is almost straightforward and purely "geometrical", but
+	it equals this map to some possibly smaller, but harder maps.
+	
+
+Below are the details:
+
+:::playpath=505.129.19
+|x.0.u|x.0.r|x.0.r|x.0.d|x.0.d|x.0.d|x.0.l|x.0.l|x.0.l|x.0.U|x.0.d|x.0.r|x.0.r|x.0.r|x.0.u
+|x.0.u|x.0.u|x.0.l|x.0.l|x.0.l|x.0.D|x.0.D|x.0.u|x.0.u|x.0.l|x.0.u|x.0.l|x.0.l|x.0.d|x.0.d
+|x.0.d|x.0.R|x.0.R|x.0.l|x.0.l|x.0.u|x.0.u|x.0.u|x.0.r|x.0.r|x.0.d|x.0.r|x.0.r|x.0.r|x.0.r
+|x.0.d|x.0.d|x.0.d|x.0.l|x.0.l|x.0.d|x.0.l|x.0.l|x.0.U|x.0.R|x.0.d|x.0.r|x.0.r|x.0.u|x.0.r
+|x.0.u|x.0.u|x.0.u|x.0.l|x.0.l|x.0.l|x.0.d|x.0.D|x.0.D|x.0.R|x.0.d|x.0.r|x.0.d|x.0.r|x.0.U
+|x.0.U|x.0.d|x.0.r|x.0.r|x.0.r|x.0.u|x.0.u|x.0.l|x.1.U|x.1.U|x.1.U|x.0.R|x.0.R|x.0.R|x.0.R
+|x.1.d|x.1.d|x.1.d|x.0.d|x.0.r|x.0.d|x.0.d|x.0.l|x.0.l|x.0.L|x.1.U|x.1.U|x.0.r|x.0.r|x.0.r
+|x.0.u|x.0.u|x.0.r|x.0.u|x.0.L|x.0.d|x.0.l|x.0.U|x.0.r|x.0.u|x.0.L|x.0.d|x.0.l|x.0.l|x.0.l
+|x.0.l|x.1.U|x.0.R|x.0.R|x.0.R|x.0.R|x.0.R|x.0.R|x.1.d|x.1.l|x.1.l|x.1.l|x.1.l|x.1.l|x.1.u
+|x.1.l|x.1.l|x.1.d|x.1.R|x.1.R|x.1.R|x.1.R|x.1.R|x.1.R|x.0.l|x.0.d|x.0.d|x.0.d|x.0.l|x.0.l
+|x.0.l|x.0.l|x.0.U|x.0.d|x.0.r|x.0.r|x.0.r|x.0.r|x.0.u|x.0.u|x.0.u|x.0.l|x.0.l|x.0.l|x.0.l
+|x.0.l|x.1.r|x.1.U|x.0.R|x.0.R|x.0.R|x.0.R|x.0.u|x.0.r|x.0.D|x.0.l|x.0.d|x.0.R|x.0.R|x.1.d
+|x.1.l|x.1.l|x.1.l|x.1.l|x.1.l|x.1.l|x.1.u|x.1.u|x.1.u|x.1.u|x.1.r|x.1.r|x.1.r|x.1.d|x.1.D
+|x.1.D|x.1.u|x.1.u|x.1.u|x.1.l|x.1.l|x.1.l|x.1.d|x.1.d|x.1.d|x.1.d|x.1.r|x.1.r|x.1.R|x.1.R
+|x.1.R|x.0.l|x.0.d|x.0.d|x.0.l|x.0.l|x.0.l|x.0.l|x.0.U|x.0.d|x.0.r|x.0.r|x.0.r|x.0.r|x.0.u
+|x.0.u|x.0.u|x.0.l|x.0.l|x.0.l|x.0.l|x.0.l|x.1.r|x.1.U|x.0.R|x.0.R|x.0.R|x.0.R|x.0.u|x.0.r
+|x.0.D|x.0.l|x.0.d|x.0.R|x.1.d|x.1.l|x.1.l|x.1.l|x.1.l|x.1.l|x.1.u|x.1.R|x.1.l|x.1.l|x.1.u
+|x.1.u|x.1.u|x.1.r|x.1.r|x.1.r|x.1.d|x.1.d|x.1.D|x.1.l|x.1.d|x.1.R|x.1.R|x.1.R|x.0.d|x.0.d
+|x.0.l|x.0.l|x.0.l|x.0.l|x.0.U|x.0.d|x.0.r|x.0.r|x.0.r|x.0.r|x.0.u|x.0.u|x.0.u|x.0.l|x.0.l
+|x.0.l|x.0.l|x.0.l|x.1.r|x.1.U|x.0.R|x.0.R|x.0.R|x.0.R|x.0.R|x.1.d|x.1.l|x.1.l|x.1.l|x.1.l
+|x.1.l|x.1.l|x.1.u|x.1.u|x.1.u|x.1.u|x.1.l|x.1.u|x.1.l|x.1.l|x.1.d|x.1.d|x.1.d|x.1.r|x.1.R
+|x.1.l|x.1.l|x.1.u|x.1.u|x.1.u|x.1.r|x.1.r|x.1.d|x.1.r|x.1.d|x.1.D|x.1.D|x.1.l|x.1.d|x.1.R
+|x.1.R|x.1.R|x.1.R|x.1.R|x.1.R|x.0.d|x.0.d|x.0.d|x.0.l|x.0.l|x.0.l|x.0.l|x.0.U|x.0.d|x.0.r
+|x.0.r|x.0.r|x.0.r|x.0.u|x.0.u|x.0.u|x.0.l|x.0.l|x.0.l|x.0.l|x.0.l|x.1.r|x.1.U|x.0.R|x.0.R
+|x.0.R|x.0.R|x.0.d|x.0.r|x.0.U|x.1.d|x.1.l|x.1.l|x.1.l|x.1.l|x.1.l|x.1.l|x.1.u|x.1.u|x.1.u
+|x.1.u|x.1.l|x.1.u|x.1.l|x.1.l|x.1.d|x.1.R|x.1.D|x.1.l|x.1.d|x.1.R|x.1.R|x.1.l|x.1.u|x.1.u
+|x.1.R|x.1.R|x.1.d|x.1.D|x.1.D|x.1.l|x.1.d|x.1.R|x.1.R|x.1.R|x.1.R|x.1.R|x.1.R|x.0.d|x.0.d
+|x.0.d|x.0.l|x.0.l|x.0.l|x.0.l|x.0.U|x.0.d|x.0.r|x.0.r|x.0.r|x.0.r|x.0.u|x.0.u|x.0.u|x.0.l
+|x.0.l|x.0.l|x.0.l|x.0.l|x.1.r|x.1.U|x.0.R|x.0.R|x.0.R|x.0.R|x.1.d|x.1.l|x.1.l|x.1.l|x.1.u
+|x.1.u|x.1.u|x.1.u|x.1.l|x.1.L|x.1.L|x.1.L|x.1.u|x.1.l|x.1.D|x.1.D|x.1.l|x.1.d|x.1.R|x.1.R
+|x.1.l|x.1.u|x.1.u|x.1.r|x.1.r|x.1.d|x.1.D|x.1.D|x.1.l|x.1.d|x.1.R|x.1.R|x.1.R|x.1.R|x.1.R
+|x.1.R|x.0.d|x.0.r|x.0.d|x.0.d|x.0.l|x.0.l|x.0.l|x.0.l|x.0.U|x.0.d|x.0.r|x.0.r|x.0.r|x.0.r
+|x.0.u|x.0.u|x.0.l|x.0.u|x.0.l|x.0.l|x.0.l|x.0.l|x.1.r|x.1.U|x.0.R|x.0.R|x.1.d|x.1.d|x.1.r
+|x.1.r|x.1.r|x.1.r|x.1.u|x.1.u|x.1.l|x.1.u|x.1.u|x.0.R|x.1.D
+
+
+Parameters:
+  Internal cells     = 79
+  Blocks (walls),  w = 19
+  Empty cells,     s = 50
+  Dynamic units,   u = 10
+  Density ... u/s, g = 0.2
+
+
+E x p e c t e d    A u d i e n c e    P a r a m e t e r s
+
+    Volumability, v = rules * breeds * cells = 2.0859375
+    breeds factor = 1 ( number, min, sense = 3, 3, 12 )
+    cells factor = 2.0859375 ( number, min, sense = 69.5, 16, 64 )
+    rules factor = 1 ( number, min, sense = 1, 2, 8 )
+
+    Path, Inter, ReInter: p, i, t  = 505, 129, 19
+    Flat Diff.,   F = p+i+t        = 653
+    Progr. Diff., P = (p+2i+3t)/6  = 136.66666666666666
+    Effective Int., I = 2(t+i)/3   = 98.66666666666667
+    Difficulty,  d = I+g(p-i)      = 173.86666666666667
+    Flat Creativity,       F/v     ~ 313.0486891385768
+    Creativity Metric, C = d/v     ~ 83.3518102372035
+    Whirps =  C/maxc ( 10-scale )  ~ 4.3
+    Whirps =  C/maxc ( %        )  ~ 42.7%
+
+    Known maxc, 194.9.
+
+
+
+
+
+
+
+Copyright (c) 2013 Konstantin Kirillov
+
+
+
+</pre></div>
+
+</body></html>
+
+

@@ -1,0 +1,24 @@
+<html><head>
+		<title>Demo-Test</title>
+		<script type="text/javascript" src="../lib/jquery.js"></script>
+		<script type="text/javascript" src="../core.js"></script>
+		<script type="text/javascript" src="../core_no_jquery.js"></script>
+		<script type="text/javascript" src="../core_no_jquery.js"></script>
+<body>
+
+<script type="text/javascript">
+	window.onload=function(){
+
+		var joinRange=$.fn.tp$.core.joinRange;
+
+		var aa   = ['is', 'an', 'array', 'of', 'strings'];
+		console.log( joinRange(aa) );
+		console.log( joinRange(aa, 1,2) );
+
+
+	};
+</script>
+
+Test
+
+</body></html>
