@@ -1,0 +1,47 @@
+<html><head>
+		<title>Demo-Test</title>
+		<script type="text/javascript" src="../debug.js"></script>
+		<script type="text/javascript" src="../lib/jquery.js"></script>
+		<script type="text/javascript" src="../core.js"></script>
+		<script type="text/javascript" src="../core_no_jquery.js"></script>
+<body>
+
+<script type="text/javascript">
+
+	window.onload=function(){
+
+		console.log(	'Pulls numeric properties from object and drops them into array:', 
+						$.extend(true, [], { "2" : "must become third array's element", x : 'x', y : 'y' } )
+		);
+
+		var arr = [ 10, "second array's element" ];
+		var res = $.extend( true, { x : 'x', y : 'y' }, arr );
+		console.log( 'Possibly faulty: destroys top-tree-array, but keeps properties: ar to ob=', res  );
+		console.log( '   ar["0"] can be 10: but result is: = ', res["0"]);
+		console.log( '   ar[0]   can be 10: but result is: = ', res[0]);
+
+
+		var arr2 = ["first arr elem", "second array elem" ];
+		var res = $.extend( true, { x : 'x', ynull : null, yund : undefined }, { number : 10,  arr_added : arr2, myund : undefined, mynull : null } );
+		console.log('Array in subnode is not destroyed', res);
+		console.log( '   arr_added[0] = ', res.arr_added[0]);
+
+		arr2[0] = 'changed';
+		console.log( '  arr2 is changed,  arr2[0]  = ', arr2[0]);
+		console.log( '  result is really cloned: no change: res.arr_added[0] = ', res.arr_added[0]);
+
+	};
+</script>
+
+dialog: no nested dialogs? is this good to change $.ui.dialog.prototype._init = function() ?
+		what if jQ people rename this "undoc" prop "_init" ?
+http://net.tutsplus.com/tutorials/javascript-ajax/creating-a-windows-like-interface-with-jquery-ui/
+
+Conclusions:
+	jq kills top array in paper, but clones in subnode.
+	null from paper is preserved
+	undefined from paper is removed
+	undefined from wall is preserved
+
+
+</body></html>

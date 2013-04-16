@@ -24,7 +24,7 @@ gio.def.albums['flocks']={
 
 
 		"default"	:{	tile	:{	width : 60, height: 60 },
-						rules	:	"Heros push boxes of match-color ...\nBlack matches own and any color ...\nBoxes are sticky: moved box moves its neighbours ...\n"
+						rules	:	"Heros push boxes of match-color ...\nBlack matches own and any color ...\nBoxes are sticky:\npushed box moves contacting boxes.\n"
 					},
 
 		/* abandoned, see bugs ...  why ..

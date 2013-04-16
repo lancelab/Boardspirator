@@ -453,7 +453,7 @@
 		var new_move = {
 					pos : pos,
 					action : move.action,
-					steps : tp.core.tpaste([],move.steps)
+					steps : tp.core.paste_non_arrays( [], move.steps )
 		};
 		new_move.steps.push(step);
 		return new_move;

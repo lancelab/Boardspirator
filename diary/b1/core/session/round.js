@@ -124,7 +124,7 @@
 
 
 	// =============================================================
-	// Purpose:		updates round in background
+	// Purpose:		VIRTUAL. Updates round in background
 	// Actions:		depending on value of "play_direction" argument,
 	//				does single-step-play-back,
 	//				single-step-play-forward,
@@ -184,7 +184,7 @@
 			}
 		}else{
 
-			// ordinary move: at 1.146, happens only from map.js from do_manage_round:
+			// ordinary move: at 1.146, happens only from map.js from do _ manage _ round:
 			var move = { steps : steps, action : action };
 			var pix = round.current_pos_ix;
 			moves[ pix ] = move;
@@ -194,7 +194,6 @@
 			var former_move		= ( pix > 0 ) && moves[ pix - 1 ];
 			var former_peer		= former_move && former_move.action.former_peer;
 			action.former_peer	= action.peer || former_peer;
-// cccc('Oridinary move: Before reset: action.peer = ', action.peer, ' former peer=', action.former_peer );
 
 			round.current_pos_ix++;
 			//remove obsolete positions beyond current_pos_ix: 
@@ -213,27 +212,90 @@
 
 
 
-	// Sugar: autoplays current round and draws autoplay on screen:
-	gio.navig.in_map.autoplay=function(time_interval_between_steps){
-		var repeated_autoplay=function(){
-			if(gio.modes.play!=='autoplay')return;
+	///	Sugar:	autoplays current round and draws autoplay on screen:
+	//	Input:	if time_interval_between_steps_ === 0, then only last scene is drawn.
+	//			if till_won_callback is supplied, autoplay runs till winning state and
+	//				callback is called at the end.
+	gio.navig.in_map.autoplay = function ( time_interval_between_steps_, till_won_callback ) //TODO possibly unsafe: does mode blocks user input?
+	{
+		time_interval_between_steps = time_interval_between_steps_ || 1;
+		var till_won = !!till_won_callback;
+
+		var repeated_autoplay = function ()
+		{
+			if( gio.modes.play !== 'autoplay' ) return;
 	
-			var gs=gio.getgs();
-			var game=gs.game;
-			var round=gs.round;
+			var gs		= gio.getgs();
+			var gm		= gs.gm;
+			var game	= gm.game;
+			var round	= gs.round;
 
 			round.gm.solver.browser_mode = false;
+			var do_continue = round.current_pos_ix < round.moves.length
 
-			if(round.current_pos_ix<round.moves.length){
-				gio.gui.procs.do_manage_round(null,'forward');
-				gio.draw_scene();
-				gio.draw_status();
-				setTimeout(repeated_autoplay,time_interval_between_steps);
+			if( do_continue )
+			{
+				gio.gui.procs.do_manage_round( null, 'forward' );
+
+				if( time_interval_between_steps_ || round.current_pos_ix === round.moves.length )
+				{
+					gio.draw_scene();
+					gio.draw_status();
+				}
+
+				//.	Stops if won-stop is required.
+				if( till_won && game.won_or_not( gm, round.pos ) ||
+					round.current_pos_ix >= round.moves.length
+				){
+					do_continue = false;
+				}
+			}
+
+			if( do_continue )
+			{
+				setTimeout( repeated_autoplay, time_interval_between_steps );
 			}else{
-				gio.modes.play=''
+				gio.modes.play = '';
+				if( till_won_callback ) till_won_callback( gm, round );
 			}
 		};
 		repeated_autoplay();
+	};
+
+
+	/// Moves:	game pos till the end of a path in current round.
+	//			Stops whichever met first: won-stop or end.
+	//	Uses:	see // *
+	//	Calls:	callback at the end, even no move is done.	
+	gio.navig.in_map.move_till_condition = function ( do_redraw_GUI, till_won_callback )
+	{
+		var till_won	= !!till_won_callback;
+		var gs			= gio.getgs();
+		var gm			= gs.gm;
+		var game		= gm.game;
+		var round		= gs.round;
+
+		var do_continue = round.current_pos_ix < round.moves.length
+
+		while( do_continue )
+		{
+			//gio.gui.procs.do_manage_round( null, 'forward' ); // *
+			rman.do_back_forw_start_record( round, 'forward', null ); // *
+
+			if( till_won && game.won_or_not( gm, round.pos ) ||
+				round.current_pos_ix >= round.moves.length
+			){
+				do_continue = false;
+			}
+		};
+
+		if( do_redraw_GUI )
+		{
+			gio.draw_scene();
+			gio.draw_status();
+		}
+
+		if( till_won_callback ) till_won_callback( gm, round );
 	};
 
 

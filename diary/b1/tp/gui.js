@@ -34,7 +34,10 @@
 				},
 				parent		:document.body
 			};
-			tp.core.tpaste(arg,arg_);
+			tp.core.paste_non_arrays( arg.style, arg_.style );
+			arg.direction	= arg_.direction || arg.direction;
+			arg.parent		= arg_.parent || arg.parent;
+			// not good: tp.core.t paste(arg,arg_);
 
 			var slf={};
 

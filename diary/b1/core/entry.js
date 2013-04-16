@@ -76,6 +76,41 @@
 		session.state.start_time = (new Date()).getTime(); 
 		gio.modes.app_loaded = true;
 
+
+		// //.\\	LANDING ON PATH //////////////////////////
+		var path = query.optpath || query.solpath || query.playpath;
+		var path_validator = '\\e\\';
+		if( !path || path.substr( path.length -3, 3 ) !== path_validator )
+		{
+			path = '';
+		}else{
+			path = path.substr( 0, path.length -3 );
+		}
+		var gs = gio.getgs();
+		if( path )
+		{
+			var directive = query.optpath ? 'optpath' : ( query.solpath ? 'solpath' : 'playpath' );
+			var validator_err = gio.gui.add_and_land_ppath ( gs.gm, directive, gs.gm.pos, path, 'From URL' );
+			if( validator_err )
+			{
+				alert( validator_err );
+			}else{
+				if( directive === 'optpath' || directive === 'solpath' || query.metrify )
+				{
+					gio.map_editors.metrify_map( 'show_metrics' );
+				}
+			}
+		}else if( query.pix || query.pix === 0 ) {
+			gio.gui.inject_playpath ( query.pix, gs.gm );
+			if( query.metrify ) gio.map_editors.metrify_map( 'show_metrics' );
+		// \\//	LANDING ON PATH //////////////////////////
+
+
+		///	Fires up solver on current map.
+		}else if( query.solve ) {
+			gio.solver.fire_button_callback( 'dummy', { title : "Search First" } );
+		}		
+
 		// Doc: Good way to see app tree:
 		// c cc('application object tree',gio);
 

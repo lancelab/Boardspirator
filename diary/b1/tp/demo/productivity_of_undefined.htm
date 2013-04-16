@@ -1,0 +1,88 @@
+<html><head>
+		<title>Demo-Test</title>
+		<script type="text/javascript" src="../debug.js"></script>
+		<script type="text/javascript" src="../lib/jquery.js"></script>
+		<script type="text/javascript" src="../core.js"></script>
+		<script type="text/javascript" src="../core_no_jquery.js"></script>
+<body>
+
+
+<script type="text/javascript">
+
+				//http://localhost/METAP/apps/BOARD/board/public/play/tp/demo/productivity_of_undefined.htm
+
+
+				//. Shortcuts debug function.
+				var deb = window.tp$ && window.tp$.deb;
+
+
+
+
+				var arr = [];
+				arr[0] = 1;
+				arr[10] = 2;
+				var uu = arr[1];
+				var len = 20000000;
+				deb( uu );
+				deb( 'start 1' );
+				for( var i = 0; i < len; i ++ )
+				{
+					if( typeof uu === 'undefined' ) j = 1;
+				}
+				deb( 'start 2' );
+				for( var i = 0; i < len; i ++ )
+				{
+					if( uu === undefined ) j = 1;
+				}
+
+				deb( 'start 3' );
+				for( var i = 0; i < len; i ++ )
+				{
+					if( typeof uu === 'undefined' ) j = 1;
+				}
+				deb( 'start 4' );
+				for( var i = 0; i < len; i ++ )
+				{
+					if( uu === undefined ) j = 1;
+				}
+				deb( 'start 5' );
+
+
+
+				/*
+				// gives roughly equal times:
+
+				var arr = [];
+				arr[0] = 1;
+				arr[10000000] = 2;
+				var len = arr.length;
+				deb( 'start' );
+				for( var i = 0; i < len; i ++ )
+				{
+					if( typeof arr[i] === 'undefined' ) j = 1;
+				}
+//5.96
+				deb( 'start 2' );	
+				for( var i = 0; i < len; i ++ )
+				{
+					if( arr[i] === undefined ) j = 1;
+				}
+				deb( 'start 3' );	
+//6.38	
+
+				for( var i = 0; i < len; i ++ )
+				{
+					if( typeof arr[i] === 'undefined' ) j = 1;
+				}
+				deb( 'start 4' );	
+				for( var i = 0; i < len; i ++ )
+				{
+					if( arr[i] === undefined ) j = 1;
+				}
+				deb( 'start 5' );	
+
+				*/
+</script>
+
+
+</body></html>

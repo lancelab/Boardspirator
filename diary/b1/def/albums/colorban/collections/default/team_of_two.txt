@@ -143,7 +143,7 @@ Human. 95.16
 
 
 
-:::map
+:::map=colors_unite
 :::context_akey=colorban
 # # # # # - - -
 # - - - # # # -

@@ -226,13 +226,13 @@
 
 			if( inject_into_session )
 			{
-				if( gio.getgs().gm === gm )
+				var w_gs = gio.getgs();
+				var round = gm.rounds[ gm.rounds.ix ];
+				if( w_gs.gm === gm )
 				{
 					gio.gui.procs.inject_path_from_text( path_text, null, 'stay_at_the_end' ); //TODM do validation
-					var round = gio.getgs().round;
 				}else{
 
-					var round = gm.rounds[ gm.rounds.ix ];
 					var w_validator_msg = gio.navig.in_session.round.text2round( path_text, round ); //TODM do validation
 				}
 
@@ -269,7 +269,7 @@
 
 				// Reflect solution on playpaths dom-element if
 				// user is on the same map:
-				if( gio.getgs().gm === gm ) gio.gui.reset_playpaths_select_el( gm );
+				if( gio.getgs().gm === gm ) gio.gui.reset_playpaths_select_el();
 
 			} // \\// adds path to gm.playpaths
 

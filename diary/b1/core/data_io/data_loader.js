@@ -2,7 +2,6 @@
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var core	=  tp.core;
 					var ceach	=  core.each;
-					var tpaste	=  core.tpaste;
 					var cpaste	=  core.paste_non_arrays;
 					var exp_url	=  core.expand_to_parent;
 

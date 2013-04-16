@@ -312,5 +312,30 @@
 
 
 
+	///	TODM This sub. must be somewere in generate map or rebuild map ... not here
+	/// Adds path to map
+	gio.gui.add_and_land_ppath = function ( gm, directive, start_pos, path_text, title, dont_land )
+	{
+		gm.playpaths = gm.playpaths || [];
+		gm.playpaths.push(
+		{
+						title		: title,
+						value		: path_text,
+						pos			: tp.core.tclone( start_pos ),
+						directive	: directive
+		});
+
+
+		var validator_err = '';
+		// Reflect solution on playpaths dom-element if
+		// user is on the same map:
+		if( gio.getgs().gm === gm )
+		{
+			var validator_err = gio.gui.reset_playpaths_select_el( !dont_land && ( gm.playpaths.length - 1 ) );
+		}
+
+		return validator_err;
+	};
+
 
 })();

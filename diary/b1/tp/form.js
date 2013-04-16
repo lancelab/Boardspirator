@@ -103,7 +103,7 @@
 			var argt=arg_settings.c;
 
 			core.rpaste(argr,arg.r);
-			core.tpaste(argt,arg.c);
+			core.paste_non_arrays( argt, arg.c, 0, 'skip_undefined' );
 			//c onsole.log('creation of sel. el: args=',argr, argt);
 
 			//.	master object which wraps "everything" in this constructor and
@@ -442,7 +442,7 @@
 					var w,ww;
 					if(v.mousables){
 						core.each(v.mousables,function(name,mousable){
-							var m=core.tclone(v);
+							var m = core.tclone( v );
 							//if(!argt.gui.gradient)
 							core.rpaste(m.style,mousable); //add style to base-style
 							m.name=v.name+'_'+name;
@@ -460,9 +460,11 @@
 					var el_already_created = select_el[ v['name'] ] && true;
 					w = setup_element( v );
 
-					if(!el_already_created && v.arrow){
-						ww=core.tclone(v.arrow,{parent:w});
-						w=tp.gui.create_triangle(ww);
+					if(!el_already_created && v.arrow)
+					{
+						ww=core.tclone( v.arrow  );
+						ww.parent = w; //TODO Very missing ... don't clone entire DOM ... 
+						w=tp.gui.create_triangle( ww );
 						//tp$.deb('triangle-div.style.position=',w.div.style.position,  ' parent.style.position= ',w.arg.parent.style.position);
 						//w.div.style.position = 'absolute';
 						//tp$.deb('after refixing triangle-div.style.position=',w.div.style.position);
@@ -688,7 +690,9 @@
 			select_el.reset=function(arg){
 				arg = arg || {};
 				core.rpaste(argr,arg.r);
-				core.tpaste(argt,arg.c);
+				//core.t paste(argt,arg.c);
+				core.paste_non_arrays( argt, arg.c, 0, 'skip_undefined' );
+
 
 				if(!argt.dont_reset_styles)reset_styles();
 				var itembox=select_el['itembox'];
@@ -798,7 +802,9 @@
 			select_el.reset_arguments=function(arg){
 				arg=arg || {};
 				core.rpaste(argr,arg.r);
-				core.tpaste(argt,arg.c);
+				//core.t paste(argt,arg.c);
+				core.paste_non_arrays( argt, arg.c, 0, 'skip_undefined' );
+
 			};	
 
 			return select_el; //return created object

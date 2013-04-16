@@ -114,7 +114,9 @@
 					}}
 		);
 
-		//:: Builds up Map caption and Creativity Indicator.
+
+
+		//	//\\ Builds up Map caption and Creativity Indicator. //////////////////////////
 		var w = dwheaders.map_caption_div = document.createElement( 'div' );
 		w.style.position='absolute';
 		w.style.color='#FFFFFF';
@@ -135,20 +137,37 @@
 		ww.style.position='absolute';
 		ww.style.backgroundColor='#0000DD';
 		ww.style.width = '50px';
-		ww.style.height = '10px';
+		ww.style.height = '15px';
 		ww.style.top = '0px';
 		ww.style.display = 'none';
-		ww.style.fontFamily=cstyle.fontFamily;
 		dwheaders.map_caption_div.appendChild( ww );
+		tp.gui.cornerize( { r : 3 }, ww );
+		//:: Builds up Creativity Content
+		var ww = dwheaders.map_caption_total_content_div = document.createElement( 'div' );
+		ww.style.position='absolute';
+		ww.style.width = '50px';
+		ww.style.height = '15px';
+		ww.style.top = '0px';
+		ww.style.paddingTop = '2px';
+		ww.style.color='#FFFFFF';
+		ww.style.textAlign = 'center';
+		ww.style.fontFamily=cstyle.fontFamily;
+		ww.style.fontSize = '10px';
+		dwheaders.map_caption_total_div.appendChild( ww );
 		//:: Builds up Creativity Ind. Highlighter.
 		var ww = dwheaders.map_caption_highlighter_div = document.createElement( 'div' );
 		ww.style.position='absolute';
 		ww.style.backgroundColor='#FFAAAA';
+		// ww.style.opacity = '0.6';
 		ww.style.width = '0px';
-		ww.style.height = '10px';
+		ww.style.height = '15px';
 		ww.style.top = '0px';
 		ww.style.fontFamily=cstyle.fontFamily;
 		dwheaders.map_caption_total_div.appendChild( ww );
+		tp.gui.cornerize( { r : 3 }, ww );
+		jQuery( ww ).css( { opacity : 0.6 } );		
+		//	\\// Builds up Map caption and Creativity Indicator. //////////////////////////
+
 
 
 
@@ -222,7 +241,7 @@
 																//		tooltip:'Revert move. Keys: Backspace or space.'
 																//}],
 							callback	:	function(i,option,select_el){
-												arg.callback(i,option,select_el); //gio.gui.procs.do_manage_round(null,'back');
+												arg.callback(i,option,select_el);
 												if(arg.redraw_scene){
 													gio.draw_scene();
 													gio.draw_status();
@@ -441,52 +460,7 @@
 									{	title:'---'
 									}
 								],
-					callback :	function( dummy, item_option, select_el ) {
-
-									gio.debly( "Ordered: " + item_option.title );
-									var gs = gio.getgs();
-									var gm = gs.gm;
-									var msol = gm.solver;
-									var options = select_el.arg.r.options;
-
-									var do_search = '';									
-									switch ( item_option.title ) {
-									case 'Search First':
-											do_search = 'first';
-											break;
-									case 'Search All':
-											do_search = 'all';
-											break;
-									case 'Resume':
-											do_search = 'resume';
-											break;
-									case 'Suspend':
-											msol.stopped_bf = true;
-											break;
-									case 'Browse':
-											msol.browser_mode = true;
-											//. does empty move
-											msol.browser.do_move();
-											break;
-									case 'Go to Play':
-											msol.browser_mode = false;
-											break;
-									case 'Release Memory':
-											msol.resume_memory();
-											break;
-									}
-
-									gio.draw_status();
-
-									if( do_search && msol.inactive_bf ) {
-											gm.solver.fire_up(
-												do_search !== 'resume' && gs.round.pos,
-												do_search !== 'all'
-											);
-									}
-									gio.draw_status();
-			
-								}
+					callback :	gio.solver.fire_button_callback
 		});
 		gio.domwrap.cpanel.cont_rols.solver_control.display.innerHTML = 'Solver';
 
@@ -505,7 +479,7 @@
 									tooltip:'Edit current game, album, or map scripts.'
 								},
 								{	title:'Edit Map Scripts',
-									tooltip:'Edit current map in context of current collection. Key: e.'
+									tooltip:'Edit current map in context of current collection.'
 								},
 								{	title:'Edit Position',
 									tooltip:'Convers current position to board-script to be edited.'
@@ -514,8 +488,13 @@
 									tooltip:'Convers current position to co-position board-script to be edited.'
 								},
 								{	title:'Edit Playpath',
-									tooltip:'Edit or show playpath text. Key: w.'
+									tooltip:'Edit or show playpath text.'
 								},
+
+								{	title : 'Metrify Map',
+									tooltip : '(Re)metrifies currently existing path with winning position.'
+								},
+
 								{	title:'Album Definitions',
 									tooltip:'Shows Albums available to build upon.'
 								},
@@ -548,6 +527,9 @@
 											break;
 									case 'Edit Map Scripts' :	
 											gio.map_editors.edit_custom_maps( 'edit_map_scripts' );
+											break;
+									case 'Metrify Map' :	
+											gio.map_editors.metrify_map();
 											break;
 									case 'Edit Position' :	
 											gio.map_editors.edit_custom_maps( 'pos_to_map' );

@@ -5,6 +5,7 @@
 					var gstyle	=  gio.config.style;
 					var gdr		=  gio.domwrap.regions;
 					var gde		=  gio.domwrap.elems;
+					var gdh		=  gio.domwrap.headers;
 					
 					var bC				= 'backgroundColor';
 					var iH				= 'innerHTML';
@@ -50,10 +51,10 @@
 		//: resets GUI and non-GUI album's title
 		var album__cur	= gs.playalb;
 		album__cur[tL]	= gio.gui.procs.get_master_title_from_session_state();
-		gio.domwrap.headers.title_select_el[iH] = album__cur[tL];
+		gdh.title_select_el[iH] = album__cur[tL];
 		//.	TODm We need light-weight reset of dom-select-element-in-tp-package.
 		//	Don't waste time resetting all the items. do we need to shake options?:
-		//gio.domwrap.headers[tL]_select_el.reset(); 
+		//gdh[tL]_select_el.reset(); 
 
 
 		gio.core.procs.update_top_links();
@@ -275,7 +276,7 @@
 		var won_or_not	= gm.game.won_or_not;
 		var pos			= gs.pos;
 		var WCOLOR		= gstyle.WINNING_COLOR;
-		var mcap		= gio.domwrap.headers.map_caption_text_div;
+		var mcap		= gdh.map_caption_text_div;
 
 
 
@@ -290,16 +291,18 @@
 		}
 
 		//: Overrules mcap indicator with rating indicator.
-		var rating_total	= gio.domwrap.headers.map_caption_total_div;
+		var rating_total	= gdh.map_caption_total_div;
 		var w_total			= parseInt( rating_total.style.width );
 		var relative		= gm.metrics.recalculated.relative;
 		if( relative && !isNaN( w_total ) )
 		{
+			var w_content				= gdh.map_caption_total_content_div;
 			var w_width					= Math.ceil( w_total * relative / 100.0 );
 			w_width						= Math.max( Math.min( w_total, w_width ), 1 ); 
-			var rating_div				= gio.domwrap.headers.map_caption_highlighter_div;
+			var rating_div				= gdh.map_caption_highlighter_div;
 			rating_div.style.width		= w_width + 'px';
-			var tooltip					= 'Estimated ' + gm.metrics.recalculated.ten_rounded + ' out of 10 Whirlitivity';
+			var tooltip					= gm.metrics.recalculated.ten_rounded + ' whirps out of 10. Estimated.';
+			w_content.innerHTML			= '' + gm.metrics.recalculated.ten_rounded;
 			rating_div.setAttribute		( 'title', tooltip );
 			rating_total.setAttribute	( 'title', tooltip );
 			rating_total.style.display	= 'block';

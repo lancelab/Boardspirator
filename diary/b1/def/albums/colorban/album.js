@@ -12,12 +12,14 @@
 		collections :
 		[
 				{
+					"ckey" : "team_of_two",
 					"credits" : { "title"		: "Team of Two"	},
 					"ref" : { "folder" : { fkey : 'team_of_two.txt'	} }
 				},
 
 				{
-					"ckey" : "soko_derivations", "credits" : {	"title"		: "Soko Derivations" },
+					"ckey" : "soko_derivations",
+					"credits" : {	"title"		: "Soko Derivations" },
 					"ref" : { "folder" : { fkey : 'soko_derivations.txt' } }
 				},
 

@@ -1,6 +1,7 @@
 <html><head>
 		<title>Demo-Test</title>
-		<script type="text/javascript" src="../lib/jquery-1.7.js"></script>
+		<script type="text/javascript" src="../debug.js"></script>
+		<script type="text/javascript" src="../lib/jquery.js"></script>
 		<script type="text/javascript" src="../core.js"></script>
 		<script type="text/javascript" src="../core_no_jquery.js"></script>
 <body>
@@ -9,6 +10,7 @@
 	window.onload=function(){
 
 
+	/*
 		// Correct cloning:
 		var aa   = ['is', 'an', 'array'];
 		var bb   = { not_anarray : 'my_value' };
@@ -29,34 +31,38 @@
 		console.log('tree with array into ob',result);
 		console.log('operand cccob must not change', cccob);
 
+	*/
 
 
 
+	console.log('//////////////////////// Testing jQuery:');
 
 
 
-
-
-		var a=['is', 'an', 'array'];
+		var a=['is', 'an', 'array', null, null, undefined, undefined, 'last-el' ];
 		var wall={ not_anarray : 'my_value' };
-		var tpaste=$.fn.tp$.core.tpaste;
-		var result=tpaste(wall,a);
-		console.log('array into object',result);
-		console.log('length='+result.length);
 
-		var b=['is', 'an', 'array'];
-		var ball={ not_anarray : 'my_value' };
-		var tpaste=$.fn.tp$.core.tpaste;
-		var result=tpaste(b,ball);
+		//: jQuery
+		//var t paste=$.fn.tp$.core.t paste_abandoned;
+		//var result=t paste(wall,a);
+		//console.log('must fail for jQ: (note: 5,6 els are skipped) array into object',result);
+		//console.log('must fail for jQ: by making (undefind for jQ) length='+result.length);
+
+		var tppaste=$.fn.tp$.core.tppaste;
+		var result=tppaste(wall,a);
+		console.log('(note: 5,6 els are skipped) array into object',result);
+		console.log('by making length='+result.length);
+
+		var b=['is', 'an', 'array', null, null, undefined, undefined, 'last-el'];
+		var ball={ not_anarray : 'my_value', "4" : 'fake fourth array element' };
+		var result=tppaste(b,ball);
 		console.log('object into array',result);
 		console.log('length='+result.length);
 
+	console.log('//////////////////////// Testing cloning based on jQuery:');
 
-		console.log( 'cloned=', $.fn.tp$.core.tclone( { x : 'x', y : 'y' } )   );
 
-		
-		console.log( 'ob to ar=', $.extend(true, [], { x : 'x', y : 'y' } )   );
-		console.log( 'ar to ob=', $.extend(true, { x : 'x', y : 'y' }, [] )   );
+	//	console.log( 'cloned=', $.fn.tp$.core.tclone( { x : 'x', y : 'y' } )   );
 
 
 /*

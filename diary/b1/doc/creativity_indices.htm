@@ -5,28 +5,29 @@
 		<meta http-equiv="Content-Type"	content="text/html; charset=UTF-8">
 		<meta name="copyright" content="2011-2013 (c) Konstantin Kirillov">
 		<meta name="description" content="Whirly Map Rating"> 
-		<meta name="keywords" content="whirly, whirlitivity, board game, sokoban variants, sokoban rating, puzzle game, on line game, game development, educational game, sokoban"> 
+		<meta name="keywords" content="whirly, whirlitivity, whirlick, board game, sokoban variants, sokoban rating, puzzle game, on line game, game development, educational game, sokoban"> 
+		<title>Map Difficulty Metrics</title>
 
-		<title>Map Creativity Indicators</title>
 	</head><body><pre>
 
 
-	<h2>Contents</h2>
+	<h2>Map Difficulty Metrics</h2>
 
-	<a href=#cm">Map Creativity Metric</a>
+	<a href=#cm">Map Creativity Metric ..</a>
 	<a href="#pros_and_cons">Pros and Cons</a>
 	<a href="../?akey=sokoban&curl=//def/albums/sokoban/collections/solutions.txt">Samples. Open up "Help/About Map".</a>
 	<a href="creativity_indices_current_analysis.htm">Samples Digest. Former Versions.</a>
+	<a href="#calculate">Practical Steps to Calculate</a>
 
 
 	<h2 id="cm">Map Creativity Metric ..</h2>
 
-	.. is a creativity required from human-player to solve the map.
+	.. is a creativity demanded from human-player to solve the map.
 	.. does not necessarily measure aesthetic or entertaining qualities of the puzzle.
 
 	Adopted in Whirly forumula is:
 
-	cm = d / v, where
+	C = d / v, where
 	difficulty, d = I + ( p - i ) * g, where
 
 	i = number of interactions between hero and other units,
@@ -34,7 +35,8 @@
 	p, i are taken for p-minimal solution,
 	
 	g = min( density, 1 ) is "effective density" of units, to eliminate idle moves in sparse maps,
-	density = u / s,
+	density = u / s,  when s > 0
+	          u,      when s = 0,
 	u = number of dynamic units,
 	s = number of empty cells,
 
@@ -42,10 +44,10 @@
 
 	v, volumability, non-creative factor to be eliminated by division: d / v.
 
-	wm = cm / maxc, where
+	w = C / maxc, where
 
-	wm - whirlitivity metric, attempt to rate games in given family,
-	maxc - cm for the game with maximal cm in given family.
+	w - is a number of whirps necessary for stonecracker machine to let Orcs into besieged human city,
+	maxc - C for the game with maximal C in given family.
 
 
 	<h2>Let's look at idea ..</h2>
@@ -65,9 +67,9 @@
 
 	There can be more levels. But we don't go there. We include all of them as level 3.
 	Every level below 3 is a boredom by definition.
-	Level 3 is a creativity measured with cm, creativity-metric.
+	Level 3 is a creativity measured with C, creativity-metric.
 
-	So, d = cm * v.
+	So, d = C * v.
 
 	<p id="d_not_p">
 	Applying the same idea, we don't take d as plain number of moves: d != p. (**).
@@ -83,14 +85,14 @@
 	We don't use i in place of I for difficulty. Simple pushing a box along the line is
 	not a creative difficulty. Changing boxes is more creative.
 
-	I = 2( 2reint + ( i - reint ) ) / 3.   ( * )
+	I = 2( 2t + ( i - t ) ) / 3.   ( * )
 	
-	reint, "reinteractions" are changes of a target by hero. For example in Sokoban context,
-	reint = "box changes" when hero leaves one box and turns own attention to other which is
+	t, "reinteractions" are changes of a target by hero. For example in Sokoban context,
+	t = "box changes" when hero leaves one box and turns own attention to other which is
 	considered as one brain-click.
 
-	Formula (*) is arbitrary crude and needs research. An extreme case i = reint gives I = 4i/3 and 
-	is rewarded by about +30%, the case of no reinteractions: reint = 0 is gratified by about -30%.
+	Formula (*) is arbitrary crude and needs research. An extreme case i = t gives I = 4i/3 and 
+	is rewarded by about +30%, the case of no reinteractions: t = 0 is gratified by about -30%.
 
 
 
@@ -182,8 +184,8 @@
 	It is hard to calculate this metric because of
 
 		1.	Solver sorts solution by p, minimal path length, and takes the top item.
-			However, this order is not necessaritly the same as order by i, number of interactions, or by reint.
-			To have a correct creativity metric calculated, solver must sort by cm.
+			However, this order is not necessaritly the same as order by i, number of interactions, or by t.
+			To have a correct creativity metric calculated, solver must sort by C.
 
 		2.	Not every solver can solve the map. One may use human-built solutions, which
 			can be far from optimal.
@@ -198,7 +200,7 @@
 	   Maps are penalized by increasing number of cells ultimately. Patterns are not felt.
 	   However, patterns cancel human difficulty and instead make game more creative.
 
-	2. Metric cm has unknown upper bound. cm allows only to order maps, not to measure them.
+	2. Metric C has unknown upper bound. C allows only to order maps, not to measure them.
 	   Relative measure depends on max known map.
 
 	3. p-optimal solution is not necessary is i - optimal, but i is more significant in d.
@@ -208,6 +210,88 @@
 
 	1. Simplicity.
 
+
+
+
+	<h2 id="possible_metrics">Possible Metrics</h2>
+
+	d = p( 1/2 + 2(p-i)i/pp ).
+	Behaviour: maximumal and = 1 when i = p/2 which favours interactions.
+	Advantage: no need to calculate density.
+	Disadvantage: arbitrary. Coefficient "2" is for simplicity, not for adequateness.
+	              Penalizes by 50% when i=p which is not fair. However, it seems: p ~ i is rare case.
+		
+	"Progressive difficulty"
+	P = ( a*p + b*i + c*t ) / ( a+b+c )
+		Behaviour: favours interactions with weight b and reinteractions with weight c.
+		           Most sofisticated solution should be close to upper bound of Dp which is Dp ~ p.
+		Advantage: easy to setup.		           			
+		           Choice of coefficients a, b, c depends how one values i and t.
+		Disadvantage: arbitrary. Coefficients a, b, c are for simplicity, not for adequateness.
+
+	F, flat difficulty, coefficients a, b, c = 1 and norm = 1.
+	F = p + i + t.
+		
+
+
+	<h2 id="calculate">Practical Steps to Calculate</h2>
+
+
+	First about accuracy.
+
+	The following cases are listed in order of decreasing accuracy.
+
+	Solution is C-optimal ( has minimal possible C ).   --- Exact accuracy.
+	Solution is p-optimal ( has minimal path length ).  --- Not exact. Other i or t still possibly produce smaller C.
+	Solution has unknown optimality at all.
+	Possibly found by human and there is no solver
+	which can traverse through all possible solutions.  --- Not exact. Worse accuracy. 
+
+
+	If you have a map with solution, but don't know its parameters p, i, t,
+	beside of using Orc's Wallcracker, here are a few examples how to calculate metrics.
+
+	1.  The map is posted on Internet:
+	    http://users.bentonrea.com/~sasquatch/sokoban/m1
+		and you have solution in your hands:
+
+			urrDDuulldRlulldRdddddrrrrrrrrrruuuuulll
+			ddllldlluRRRRdrruLuurrrdddddlllllllllluu
+			uuuurrdLurrrdLddrrRdrUUdlllluuulldRurDDu
+			llulldRdddddrrrrrrrrrruuuuullulldRRlddll
+			ldlluRRRRdrUUdlllluululldRRurDDulllddddd
+			rrrrrrrrrruuuuuulldRlulldRRlddllldlluRRR
+			RdrUU
+
+	    Add to URL-query following parameters and land to player:
+	    <a href="../?akey=sokoban&map_ix=123&metrify&curl=http://users.bentonrea.com/~sasquatch/sokoban/m1&solpath=urrDDuulldRlulldRdddddrrrrrrrrrruuuuulllddllldlluRRRRdrruLuurrrdddddlllllllllluuuuuurrdLurrrdLddrrRdrUUdlllluuulldRurDDullulldRdddddrrrrrrrrrruuuuullulldRRlddllldlluRRRRdrUUdlllluululldRRurDDullldddddrrrrrrrrrruuuuuulldRlulldRRlddllldlluRRRRdrUU\e\">?akey=sokoban&map_ix=123&metrify&curl=http://users.bentonrea.com/~sasquatch/sokoban/m1&solpath=urrDDuulldRlulldRdddddrrrrrrrrrruuuuulllddllldlluRRRRdrruLuurrrdddddlllllllllluuuuuurrdLurrrdLddrrRdrUUdlllluuulldRurDDullulldRdddddrrrrrrrrrruuuuullulldRRlddllldlluRRRRdrUUdlllluululldRRurDDullldddddrrrrrrrrrruuuuuulldRlulldRRlddllldlluRRRRdrUU\e\</a>
+
+		Note that path must be terminated with 3 characters "\e\" to detect browser's URL-truncation.
+
+
+	2.  The map is posted on Internet and contains solution inside of collection.
+	    <a href="../def/albums/sokoban/collections/weirdy/documentation_test.txt">../def/albums/sokoban/collections/weirdy/documentation_test.txt</a>
+		(use http-form, not //-form to secure correct location).
+	    Add to URL-query following parameters and land to player
+	    <a href="../?akey=sokoban&map_ix=1&pix=0&metrify&curl=//def/albums/sokoban/collections/weirdy/documentation_test.txt">?akey=sokoban&map_ix=1&metrify&pix=0&metrify&curl=//def/albums/sokoban/collections/weirdy/documentation_test.txt</a>
+
+		pix=0 is an index of solution in the list of solutions in script.
+
+	3.  Sokoban map with solution is in your hand.
+	    Land to a player, select Sokoban, paste map with solution into "Edit Map Scripts",
+	    then select "Metrify Map" from
+	    editor's selection box.
+
+	4.  Finally, you know only map. If your computer is enough powreful, set 
+		<a class="list" href="guest_readme.htm#solver">solver</a> to run on link or
+	    after landing on map.
+
+		Example of solving on link ( set slim according to your resources, don't overestimate ):
+	    <a href="../?akey=sokoban&map_ix=0&solve&slim=4000000&curl=http://users.bentonrea.com/~sasquatch/sokoban/m1"
+		>?akey=sokoban&map_ix=0&solve&slim=4000000&curl=http://users.bentonrea.com/~sasquatch/sokoban/m1</a>
+
+
+	5.  To look at metrified map again, go to Help/About Map and find metrics there.
 
 
 

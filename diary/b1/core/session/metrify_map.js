@@ -112,29 +112,37 @@
 
 		var pp				= mmet.p;
 		var ii				= mmet.i;
-		var re_int			= mmet.r;
+		var tt				= mmet.r;
+
 
 		//: Not convincing.
-		// var reint		 	= reparts + Math.min( ( ii - reparts ), reparts );
-		// if( ii && !reint )	rint = 1;
+		// var t		 	= reparts + Math.min( ( ii - reparts ), reparts );
+		// if( ii && !t )	rint = 1;
 
-		//: Not convincing either, but simple: in "best" maps ii ~ re_int, so reint ~ 4/3, ... worst 2/3, so
-		//	range is +- 30%
-		var reint		 	= ( re_int + ii ) / 1.5;
+		var It			 	= ( tt + ii ) / 1.5;
 
-
-		var flat_diff			= ii		+ density * ( pp - ii );
-		var abs_diff			= reint		+ density * ( pp - ii );
+		//.	was:
+		//	var flat_diff			= ii		+ density * ( pp - ii );
+		var flat_diff			= pp + ii + tt;
+		var progressive_diff	= ( pp + 2.0 * ii + 3.0 * tt ) / 6.0;
+		var abs_diff			= It + density * ( pp - ii );
 		var creativity_metric	= cm = abs_diff / summary.boredom;
-		var estimation			= ( mmet.estimation === 'solpath' ) ? ' /= ' : ' = ';
+
+		//. it was /= to indicate high degree of uncertainty
+		//	var estimation			= ( mmet.estimation === 'solpath' ) ? ' /= ' : ' = ';
+
+		//. now we use "=" to decrease reader's confusion
+		var estimation			= ( mmet.estimation === 'solpath' ) ? ' = ' : ' = ';
 
 		result		+=	"<pre>\n"; 
 
-		result		+=	"    Path, Inter, ReInter: p, i, ri  = "	+ pp + ", " + ii + ", " + re_int + " (i,ri estimated)\n"; 
-		result		+=	"    Flat Diff,   fd = i+g(p-i)     "		+ estimation + flat_diff + "\n"; 
-		result		+=	"    reint           = 2(ri+i)/3     = "	+ reint + "\n"; 
-		result		+=	"    Difficulty,   d = reint+g(p-i) "		+ estimation + abs_diff + "\n"; 
-		result 		+=	"    Creativity,   c = d/v          "		+ estimation + cm + "\n"; 
+		result		+=	"    Path, Inter, ReInter: p, i, t "		+ estimation + pp + ", " + ii + ", " + tt + "\n"; 
+		result		+=	"    Flat Diff.,   F = p+i+t       "		+ estimation + flat_diff + "\n"; 
+		result		+=	"    Progr. Diff., P = (p+2i+3t)/6 "		+ estimation + progressive_diff + "\n"; 
+		result		+=	"    Effective Int., I = 2(t+i)/3  "		+ estimation	+ It + "\n"; 
+		result		+=	"    Difficulty,  d = I+g(p-i)     "		+ estimation + abs_diff + "\n"; 
+		result 		+=	"    Flat Creativity,       F/v     ~ "	+ flat_diff / summary.boredom + "\n"; 
+		result 		+=	"    Creativity Metric, C = d/v     ~ "	+ cm + "\n"; 
 
 		var maxc			=	EU.MAX_KNOWN_CREATIVITY.SCORE;
 		var relative		=	cm * 100.0 / maxc;
@@ -151,9 +159,9 @@
 		ten_str				=	ten_str.substr( 0, ww)  + '.' + ten_str.substr( ww, 1);
 		// \\// FORMATTINGS ////////////////////////////////////////////////////
 
-		result 				+=	"    Soko-style,   c/maxc           "		+  estimation + ten_str + "\n"; 
+		result 				+=	"    Whirps =  C/maxc ( 10-scale )  ~ "	+ ten_str + "\n"; 
 
-		result 				+=	"    Whirlitivity, c/maxc           "		+  estimation + relative_str + "\n\n"; 
+		result 				+=	"    Whirps =  C/maxc ( %        )  ~ "	+ relative_str + "\n\n"; 
 		result 				+=	"    <a style=\"color:#FFFFFF;\" href=" + 
 								tp.core.app_webpath_noindex + "/?" +					
 								EU.MAX_KNOWN_CREATIVITY.QUERY + ">Known maxc, " + maxc + ".</a>\n\n</pre>"; 

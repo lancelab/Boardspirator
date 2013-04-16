@@ -311,7 +311,7 @@ drruuLrdrruLLddlluluurDDldRRluuR
 # 1 A # - - #
 # A - A A x #
 # - A # 1 1 #
-# - 1- - 1 Kk #
+# - 1 - 1 Kk #
 # # # # # # #
 :::board_end
 :::title=Notch Stone :: Sweaty Work

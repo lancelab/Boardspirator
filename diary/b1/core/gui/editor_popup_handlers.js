@@ -82,6 +82,34 @@
 	*/
 
 
+	/// Runs autoplay virtually until the current path end or
+	//	winning postion is detected.
+	//	If winning position is detected, remetrifies the map.
+	med.metrify_map = function ( show_metrics )
+	{
+		gio.modes.play='autoplay';
+		gio.navig.in_map.move_till_condition( 'do GUI', function ( gm, round )
+		{
+			if( gm.game.won_or_not( gm, round.pos ) )
+			{
+				var metr = gm.metrics;
+				metr.optpath	= metr.optpath || {};
+				metr.optpath.p	= round.moves.length;
+				metr.optpath.i	= round.interacts;
+				metr.optpath.r	= round.peer_change;
+				gio.session.reinit.metrify( gm );
+				conadd( 'Remetrified' );
+				ggp.draw_status_and_scene();
+				if( show_metrics ) gio.gui.procs.toggle_about_map_pane();
+			}else{
+				conadd( 'No winning position is detected' );
+				ggp.draw_status_and_scene();
+			}
+		});
+
+	};
+
+
 
 
 	/// pops up textarea and populates it with current map script

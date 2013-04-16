@@ -1,0 +1,48 @@
+<html><head>
+
+		<title>jQ plugin sample</title>
+
+		<script type="text/javascript" src="../lib/jquery.js"></script>
+		<script type="text/javascript" src="gradientify.js"></script>
+
+	</head>
+	<body>
+	
+		Makes two gradientized divs.
+		Not very practical.
+	
+
+		<script type="text/javascript">
+
+
+			window.onload = function ()
+			{
+				var doc = document;
+				var bod = doc.body;				 
+
+				var div = doc.createElement( 'div' );
+				bod.appendChild( div );
+				div.style.width		= '100px';
+				div.style.height	= '100px';
+				$( div ).gradientify(
+				{
+					topColor : '#AAAAFF',
+					bottomColor : '#00FF00'
+				}).html( 'Gradient done' );
+
+				var div = doc.createElement( 'div' );
+				bod.appendChild( div );
+				div.style.width		= '100px';
+				div.style.height	= '100px';
+				$( div ).gradientify(
+					{
+						topColor : '#00FF00',
+						bottomColor : '#AAAAFF'
+					}).html( 'More gradients ...' );
+
+			};
+
+		</script>
+	
+	</body>
+</html>

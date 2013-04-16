@@ -21,7 +21,8 @@
 	ggp.draw_status_and_scene = function ( gm ) {
 
 		var gs = gio.getgs();
-		if( !gm || !gs.gm || gs.gm !== gm ) {
+		if( !gm || !gs.gm || gs.gm !== gm )
+		{
 			gio.draw_scene();
 			gio.draw_status();
 		}

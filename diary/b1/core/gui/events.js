@@ -1,4 +1,5 @@
-(function( $ ){ 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function( $ ) { 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 
 					var gde		=  gio.domwrap.elems;
@@ -174,14 +175,9 @@
 					return true;
 
 
-				case 'e':
+				case 't':
 					if(gm.load	!== 'finalized') return true;
 					gio.map_editors.edit_custom_maps();
-					return false;
-
-				case 'w':
-					if(gm.load	!== 'finalized') return true;
-					gio.map_editors.display_game_path();
 					return false;
 
 				case 'p':
@@ -285,7 +281,7 @@
 					return true;
 
 
-				case 't': 	//round
+				case 'd': 	//round
 					var rr=gm.rounds;
 					rr.ix=(rr.ix+1)%rr.length;
 					gio.gui.reset_rounds_select_el();
@@ -299,6 +295,14 @@
 				case 's':	//to start
 					if( !a.event.shiftKey ) {
 						gio.gui.procs.do_manage_round(null,'to beginning');
+						break;
+					}
+					return true;
+	
+				case 'e':	//to end
+					if( !a.event.shiftKey )
+					{
+						gio.navig.in_map.move_till_condition( 'do redraw GUI' );
 						break;
 					}
 					return true;

@@ -1,4 +1,5 @@
-(function( $ ){ 	var tp  =  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function( $ ) { 	var tp  =  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio =  tp.gio    =  tp.gio   || {};
 
 					var gstyle	=  gio.config.style;
@@ -175,7 +176,7 @@
 
 			gio.gui.procs.do_display_curr_board( 'yes' );
 
-			gio.gui.reset_playpaths_select_el( gm );
+			gio.gui.reset_playpaths_select_el();
 			gio.gui.reset_rounds_select_el( gm );
 			gio.gui.reskinnify_board();
 			gio.gui.procs.draw_status_and_scene();

@@ -7594,26 +7594,6 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 	$.fn.tp$.core=(function(){
 
 		var self={};
-		self.tpaste=function(){
-			var len=arguments.length; 
-			var wall={};
-			if(len<1) return wall;
-			wall=arguments[0] || wall;
-			
-			for(var i=1; i<len; i++){
-				var ob=arguments[i];
-				if(!ob || typeof ob !== 'object')continue;
-				$.extend(true,wall,ob);
-			}
-			return wall;
-		};
-		self.tclone=function(){
-			var wall={};
-			for(var i=0; i<arguments.length; i++){
-				self.tpaste(wall,arguments[i])
-			}
-			return wall;
-		};
 		self.do_center_vertically_in_screen=function(dom_el){
 			var window_top=$(window).scrollTop();
 			var el_top_gap=($(window).height()-$(dom_el).outerHeight())/2;
@@ -7671,6 +7651,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 				if(!jQuery.fn.tp$)			alert('Package tp must be loaded before tp$.'+self_name+' is loaded.');
 				if(!jQuery.fn.tp$.core)		alert('Top part of tp.core must be loaded before tp$.'+self_name+' is loaded.');
 				var self = jQuery.fn.tp$[self_name];
+				var deb = window.tp$ && window.tp$.deb;
 
 
 
@@ -7704,40 +7685,32 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 			}
 			return true;
 		};
-		self.each=function(ob,do_construct,fun){
+		self.each = function( ob, fun )
+		{
 			if( typeof ob === 'object' && ob !== null ){
 				var ret;
 				var len=ob.length;
-				if(typeof do_construct !== 'boolean'){
-					fun=do_construct;
-					do_construct=false;
-				}
-				var constructed=null;
-				if(len || len === 0){
-					if(do_construct)constructed=[];
-					for(var i=0; i<len; i++){
-						ret=fun(i,ob[i]);
-						if( ret !== undefined && !ret ) break; 
-						if(do_construct)constructed.push(ret);
+				if( len || len === 0 )
+				{
+					for(var i=0; i<len; i++)
+					{
+						ret = fun( i, ob[ i ] );
+						if( ret !== undefined && !ret ) break; // (*)
 					}
 				}else{
-					if(do_construct)constructed={};
-					for(var p in ob){
-						if(ob.hasOwnProperty(p)){
-							ret = fun(p,ob[p]);
-							if( ret !== undefined && !ret ) break; 
-							if(do_construct)constructed[p]=ret;
+					for( var p in ob )
+					{
+						if( ob.hasOwnProperty( p ) )
+						{
+							ret = fun( p, ob[ p ] );
+							if( ret !== undefined && !ret ) break; // (**)
 						}
 					}
 				}
 			}
-			if(do_construct){
-				return constructed;
-			}else{
-				return ob;
-			}
+			return ob;
 		}
-		var paste_non_arrays = self.paste_non_arrays=function(wall,paper,level)
+		var paste_non_arrays = self.paste_non_arrays=function( wall, paper, level, skip_undefined )
 		{
 
 			level = level || 0;
@@ -7753,25 +7726,52 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 				wall={};				
 			}
 
-			if( (paper.length || paper.length === 0) && !wall.length && wall.length !== 0 ) //TODM Bad test. Use "Array protot" instead.
+			var arr_detector = !!paper.length || paper.length === 0;
+			if( arr_detector && !wall.length && wall.length !== 0 ) //TODM Bad test. Use "Array protot" instead.
 			{
 				var wall_preserved = wall;
-				wall=[];
-				paste_non_arrays(wall,wall_preserved);
+				wall = [];
+				paste_non_arrays( wall, wall_preserved );
 			}
 			for(var p in paper )
 			{
-				if(paper.hasOwnProperty(p))
+				if(paper.hasOwnProperty( p ) ) //TODO when works on arrays? when not fails on 'length'?
 				{
-					if( p !== 'length' ) {
-						wall[p]=paste_non_arrays(wall[p],paper[p],level+1);
+					if( p !== 'length' )
+					{
+						var ww = paste_non_arrays( wall[ p ], paper[ p ], level + 1 );
+						if( ! ( ( arr_detector || skip_undefined ) && typeof ww === 'undefined' )  )
+						{
+							wall[ p ] = ww;
+						}
+
+
 					}else{
 						throw "Reserved word \"length\" used as a property"; //TODO
 					}
 				}
 			}
 			return wall;
-		};//cloneTwo
+		};// ...paste_non_arrays=function...
+		
+
+
+		self.tppaste = function ()
+		{
+			var len		= arguments.length; 
+			var wall	= {};
+			if( len < 1 ) return wall;
+
+			wall = arguments[0] || wall;
+			
+			for( var i=1; i < len; i++ )
+			{
+				var ob = arguments[i];
+				if( !ob || typeof ob !== 'object' ) continue;
+				wall = paste_non_arrays( wall, ob );
+			}
+			return wall;
+		};
 		self.clone_many=function()
 		{
 			var len=arguments.length; 
@@ -7780,8 +7780,21 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 
 			for(var i=0; i<len; i++){
 				var ob=arguments[i];
-				if(!ob || typeof ob !== 'object' || ob === null)continue;
+				if( !ob || typeof ob !== 'object' ) continue;
 				wall = self.paste_non_arrays(wall, ob);
+			}
+			return wall;
+		};
+		self.tclone = function ()
+		{
+			var len		= arguments.length; 
+			var wall	= {};
+			if( len < 1 ) return wall;
+			for( var i = 0; i < len; i++ )
+			{
+				var ob = arguments[ i ];
+				if( !ob || typeof ob !== 'object' ) continue;
+				wall = self.paste_non_arrays( wall, ob, 0, 'no undefines' );
 			}
 			return wall;
 		};
@@ -8374,7 +8387,9 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 				},
 				parent		:document.body
 			};
-			tp.core.tpaste(arg,arg_);
+			tp.core.paste_non_arrays( arg.style, arg_.style );
+			arg.direction	= arg_.direction || arg.direction;
+			arg.parent		= arg_.parent || arg.parent;
 
 			var slf={};
 
@@ -8821,7 +8836,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 			var argt=arg_settings.c;
 
 			core.rpaste(argr,arg.r);
-			core.tpaste(argt,arg.c);
+			core.paste_non_arrays( argt, arg.c, 0, 'skip_undefined' );
 			var select_el = { parent:argr.parent, arg : arg_settings };
 			var elements;
 			var item_settings;
@@ -9075,7 +9090,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 					var w,ww;
 					if(v.mousables){
 						core.each(v.mousables,function(name,mousable){
-							var m=core.tclone(v);
+							var m = core.tclone( v );
 							core.rpaste(m.style,mousable); //add style to base-style
 							m.name=v.name+'_'+name;
 
@@ -9086,9 +9101,11 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 					var el_already_created = select_el[ v['name'] ] && true;
 					w = setup_element( v );
 
-					if(!el_already_created && v.arrow){
-						ww=core.tclone(v.arrow,{parent:w});
-						w=tp.gui.create_triangle(ww);
+					if(!el_already_created && v.arrow)
+					{
+						ww=core.tclone( v.arrow  );
+						ww.parent = w; //TODO Very missing ... don't clone entire DOM ... 
+						w=tp.gui.create_triangle( ww );
 					}
 				});
 				select_el['ddbutton'].style.display=
@@ -9226,7 +9243,8 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 			select_el.reset=function(arg){
 				arg = arg || {};
 				core.rpaste(argr,arg.r);
-				core.tpaste(argt,arg.c);
+				core.paste_non_arrays( argt, arg.c, 0, 'skip_undefined' );
+
 
 				if(!argt.dont_reset_styles)reset_styles();
 				var itembox=select_el['itembox'];
@@ -9296,7 +9314,8 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 			select_el.reset_arguments=function(arg){
 				arg=arg || {};
 				core.rpaste(argr,arg.r);
-				core.tpaste(argt,arg.c);
+				core.paste_non_arrays( argt, arg.c, 0, 'skip_undefined' );
+
 			};	
 
 			return select_el; //return created object
@@ -9466,12 +9485,13 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 		"space, ctrl+shitf+arrows  toggle breeds or colonies\n"+
 		"u, ctrl+arrows            toggle units\n"+
 		"a/c/M                     albums/collections/maps\n"+
-		"t                         rounds\n"+
+		"d                         rounds\n"+
 		"n                         new round\n"+
 		"f                         forward replay\n"+
 		"s                         return to start\n"+
+		"e                         return to end\n"+
 		"z                         autoplay round lazily\n"+
-		"e                         edit/create/show/import map\n"+
+		"t                         edit/create/show/import map\n"+
 		"p                         playpath ... edit/create/show/import\n"+
 		"ctrl+d                    done ... do load from map editor\n"+
 		"S                         story\n"+
@@ -9932,15 +9952,15 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 
 	gio.description = {	title : 'Boardspirator' };
 
-	gio.description = core.tpaste( gio.description, {
+	core.paste_non_arrays( gio.description, {
 
 
 		description			: gio.description.title + " (Boardy). Tool\n                 " +
 							  "to play, edit, solve, or develop board puzzles.",
-		version				: '0.1.197',
+		version				: '0.1.200',
 		version_name		: 'Mono',	// "Monoaction". In interaction, there is no significant reaction from actees back to actors.
 		maturity			: 'Draft',
-		date				: 'February 14, 2013',
+		date				: 'February 24, 2013',
 		copyright			: '(c) 2011-2013 Konstantin Kirillov',
 
 		license				: "MIT, BSD, and GPL\n							" +
@@ -9968,7 +9988,16 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 		diary			: 	"Diary contains stand-alone versions. Usual landing page is index.htm:\n\n" +
 
 
-						"   0.1.196     IE 10 is basicly runnable, image cosmetic glitch exists.\n" +
+						"   0.1.200     Feb. 24, 2013. \n" +
+						"   0.1.199     Feb. 19, 2013. tp.core.each simplified.\n" +
+						"                              //tp/in_progress/ removed.\n" +
+						"                              Based on jQ self.tpaste = function ... removed.\n" +
+						"                              Based on jQ self.tclone replaced.\n" +
+
+
+						"   0.1.198     Feb. 19, 2013. Fixes to 1.197.\n" +
+						"   0.1.197     Feb. 17, 2013. To be a Publishstone.\n" +
+						"   0.1.196     Publishstone. IE 10 is basicly runnable, image cosmetic glitch exists.\n" +
 						"   0.1.194     Feb 11. Creativity Metrics.\n" +
 						"   0.1.192     Feb 3. URL-query has ckey=, mkey=, dkey= ...\n" +
 						"   0.1.191     Feb 2. Mode: Canon as Linked List in Solver.\n" +
@@ -10105,7 +10134,6 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var core	=  tp.core;
 					var ceach	=  core.each;
-					var tpaste	=  core.tpaste;
 					var cpaste	=  core.paste_non_arrays;
 					var exp_url	=  core.expand_to_parent;
 
@@ -10716,8 +10744,26 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		);
 		return true;
 	};
+	gio.gui.add_and_land_ppath = function ( gm, directive, start_pos, path_text, title, dont_land )
+	{
+		gm.playpaths = gm.playpaths || [];
+		gm.playpaths.push(
+		{
+						title		: title,
+						value		: path_text,
+						pos			: tp.core.tclone( start_pos ),
+						directive	: directive
+		});
 
 
+		var validator_err = '';
+		if( gio.getgs().gm === gm )
+		{
+			var validator_err = gio.gui.reset_playpaths_select_el( !dont_land && ( gm.playpaths.length - 1 ) );
+		}
+
+		return validator_err;
+	};
 
 
 })();
@@ -10804,22 +10850,24 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 		var pp				= mmet.p;
 		var ii				= mmet.i;
-		var re_int			= mmet.r;
-		var reint		 	= ( re_int + ii ) / 1.5;
+		var tt				= mmet.r;
 
-
-		var flat_diff			= ii		+ density * ( pp - ii );
-		var abs_diff			= reint		+ density * ( pp - ii );
+		var It			 	= ( tt + ii ) / 1.5;
+		var flat_diff			= pp + ii + tt;
+		var progressive_diff	= ( pp + 2.0 * ii + 3.0 * tt ) / 6.0;
+		var abs_diff			= It + density * ( pp - ii );
 		var creativity_metric	= cm = abs_diff / summary.boredom;
-		var estimation			= ( mmet.estimation === 'solpath' ) ? ' /= ' : ' = ';
+		var estimation			= ( mmet.estimation === 'solpath' ) ? ' = ' : ' = ';
 
 		result		+=	"<pre>\n"; 
 
-		result		+=	"    Path, Inter, ReInter: p, i, ri  = "	+ pp + ", " + ii + ", " + re_int + " (i,ri estimated)\n"; 
-		result		+=	"    Flat Diff,   fd = i+g(p-i)     "		+ estimation + flat_diff + "\n"; 
-		result		+=	"    reint           = 2(ri+i)/3     = "	+ reint + "\n"; 
-		result		+=	"    Difficulty,   d = reint+g(p-i) "		+ estimation + abs_diff + "\n"; 
-		result 		+=	"    Creativity,   c = d/v          "		+ estimation + cm + "\n"; 
+		result		+=	"    Path, Inter, ReInter: p, i, t "		+ estimation + pp + ", " + ii + ", " + tt + "\n"; 
+		result		+=	"    Flat Diff.,   F = p+i+t       "		+ estimation + flat_diff + "\n"; 
+		result		+=	"    Progr. Diff., P = (p+2i+3t)/6 "		+ estimation + progressive_diff + "\n"; 
+		result		+=	"    Effective Int., I = 2(t+i)/3  "		+ estimation	+ It + "\n"; 
+		result		+=	"    Difficulty,  d = I+g(p-i)     "		+ estimation + abs_diff + "\n"; 
+		result 		+=	"    Flat Creativity,       F/v     ~ "	+ flat_diff / summary.boredom + "\n"; 
+		result 		+=	"    Creativity Metric, C = d/v     ~ "	+ cm + "\n"; 
 
 		var maxc			=	EU.MAX_KNOWN_CREATIVITY.SCORE;
 		var relative		=	cm * 100.0 / maxc;
@@ -10832,9 +10880,9 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		var ww				=	ten_str.length - 1;
 		ten_str				=	ten_str.substr( 0, ww)  + '.' + ten_str.substr( ww, 1);
 
-		result 				+=	"    Soko-style,   c/maxc           "		+  estimation + ten_str + "\n"; 
+		result 				+=	"    Whirps =  C/maxc ( 10-scale )  ~ "	+ ten_str + "\n"; 
 
-		result 				+=	"    Whirlitivity, c/maxc           "		+  estimation + relative_str + "\n\n"; 
+		result 				+=	"    Whirps =  C/maxc ( %        )  ~ "	+ relative_str + "\n\n"; 
 		result 				+=	"    <a style=\"color:#FFFFFF;\" href=" + 
 								tp.core.app_webpath_noindex + "/?" +					
 								EU.MAX_KNOWN_CREATIVITY.QUERY + ">Known maxc, " + maxc + ".</a>\n\n</pre>"; 
@@ -10998,26 +11046,77 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 			}
 		}
 	};
-	gio.navig.in_map.autoplay=function(time_interval_between_steps){
-		var repeated_autoplay=function(){
-			if(gio.modes.play!=='autoplay')return;
+	gio.navig.in_map.autoplay = function ( time_interval_between_steps_, till_won_callback ) //TODO possibly unsafe: does mode blocks user input?
+	{
+		time_interval_between_steps = time_interval_between_steps_ || 1;
+		var till_won = !!till_won_callback;
+
+		var repeated_autoplay = function ()
+		{
+			if( gio.modes.play !== 'autoplay' ) return;
 	
-			var gs=gio.getgs();
-			var game=gs.game;
-			var round=gs.round;
+			var gs		= gio.getgs();
+			var gm		= gs.gm;
+			var game	= gm.game;
+			var round	= gs.round;
 
 			round.gm.solver.browser_mode = false;
+			var do_continue = round.current_pos_ix < round.moves.length
 
-			if(round.current_pos_ix<round.moves.length){
-				gio.gui.procs.do_manage_round(null,'forward');
-				gio.draw_scene();
-				gio.draw_status();
-				setTimeout(repeated_autoplay,time_interval_between_steps);
+			if( do_continue )
+			{
+				gio.gui.procs.do_manage_round( null, 'forward' );
+
+				if( time_interval_between_steps_ || round.current_pos_ix === round.moves.length )
+				{
+					gio.draw_scene();
+					gio.draw_status();
+				}
+				if( till_won && game.won_or_not( gm, round.pos ) ||
+					round.current_pos_ix >= round.moves.length
+				){
+					do_continue = false;
+				}
+			}
+
+			if( do_continue )
+			{
+				setTimeout( repeated_autoplay, time_interval_between_steps );
 			}else{
-				gio.modes.play=''
+				gio.modes.play = '';
+				if( till_won_callback ) till_won_callback( gm, round );
 			}
 		};
 		repeated_autoplay();
+	};
+	gio.navig.in_map.move_till_condition = function ( do_redraw_GUI, till_won_callback )
+	{
+		var till_won	= !!till_won_callback;
+		var gs			= gio.getgs();
+		var gm			= gs.gm;
+		var game		= gm.game;
+		var round		= gs.round;
+
+		var do_continue = round.current_pos_ix < round.moves.length
+
+		while( do_continue )
+		{
+			rman.do_back_forw_start_record( round, 'forward', null ); // *
+
+			if( till_won && game.won_or_not( gm, round.pos ) ||
+				round.current_pos_ix >= round.moves.length
+			){
+				do_continue = false;
+			}
+		};
+
+		if( do_redraw_GUI )
+		{
+			gio.draw_scene();
+			gio.draw_status();
+		}
+
+		if( till_won_callback ) till_won_callback( gm, round );
 	};
 	rman.pos2map_script = function ( round, do_comap ) {
 
@@ -11713,6 +11812,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 })();
 
+
 ( function () {	 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 					var core	=  tp.core;
@@ -12080,6 +12180,34 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		ggi.step_events();
 		session.state.start_time = (new Date()).getTime(); 
 		gio.modes.app_loaded = true;
+		var path = query.optpath || query.solpath || query.playpath;
+		var path_validator = '\\e\\';
+		if( !path || path.substr( path.length -3, 3 ) !== path_validator )
+		{
+			path = '';
+		}else{
+			path = path.substr( 0, path.length -3 );
+		}
+		var gs = gio.getgs();
+		if( path )
+		{
+			var directive = query.optpath ? 'optpath' : ( query.solpath ? 'solpath' : 'playpath' );
+			var validator_err = gio.gui.add_and_land_ppath ( gs.gm, directive, gs.gm.pos, path, 'From URL' );
+			if( validator_err )
+			{
+				alert( validator_err );
+			}else{
+				if( directive === 'optpath' || directive === 'solpath' || query.metrify )
+				{
+					gio.map_editors.metrify_map( 'show_metrics' );
+				}
+			}
+		}else if( query.pix || query.pix === 0 ) {
+			gio.gui.inject_playpath ( query.pix, gs.gm );
+			if( query.metrify ) gio.map_editors.metrify_map( 'show_metrics' );
+		}else if( query.solve ) {
+			gio.solver.fire_button_callback( 'dummy', { title : "Search First" } );
+		}		
 
 		return '';
 
@@ -12446,7 +12574,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		var new_move = {
 					pos : pos,
 					action : move.action,
-					steps : tp.core.tpaste([],move.steps)
+					steps : tp.core.paste_non_arrays( [], move.steps )
 		};
 		new_move.steps.push(step);
 		return new_move;
@@ -13182,6 +13310,52 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		return self;
 
 	};///	Creates core solver subroutines
+	gio.solver.fire_button_callback = function( dummy, item_option, select_el_dummy )
+	{
+									gio.debly( "Ordered: " + item_option.title );
+									var gs = gio.getgs();
+									var gm = gs.gm;
+									var msol = gm.solver;
+
+									var do_search = '';									
+									switch ( item_option.title ) {
+									case 'Search First':
+											do_search = 'first';
+											break;
+									case 'Search All':
+											do_search = 'all';
+											break;
+									case 'Resume':
+											do_search = 'resume';
+											break;
+									case 'Suspend':
+											msol.stopped_bf = true;
+											break;
+									case 'Browse':
+											msol.browser_mode = true;
+											msol.browser.do_move();
+											break;
+									case 'Go to Play':
+											msol.browser_mode = false;
+											break;
+									case 'Release Memory':
+											msol.resume_memory();
+											break;
+									}
+
+									gio.draw_status();
+
+									if( do_search && msol.inactive_bf ) {
+											gm.solver.fire_up(
+												do_search !== 'resume' && gs.round.pos,
+												do_search !== 'all'
+											);
+									}
+									gio.draw_status();
+			
+
+	};
+
 
 
 })();
@@ -13344,13 +13518,13 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 			if( inject_into_session )
 			{
-				if( gio.getgs().gm === gm )
+				var w_gs = gio.getgs();
+				var round = gm.rounds[ gm.rounds.ix ];
+				if( w_gs.gm === gm )
 				{
 					gio.gui.procs.inject_path_from_text( path_text, null, 'stay_at_the_end' ); //TODM do validation
-					var round = gio.getgs().round;
 				}else{
 
-					var round = gm.rounds[ gm.rounds.ix ];
 					var w_validator_msg = gio.navig.in_session.round.text2round( path_text, round ); //TODM do validation
 				}
 
@@ -13380,7 +13554,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 									value : path_text,
 									pos : tp.core.tclone(msol.startPos)
 				});
-				if( gio.getgs().gm === gm ) gio.gui.reset_playpaths_select_el( gm );
+				if( gio.getgs().gm === gm ) gio.gui.reset_playpaths_select_el();
 
 			} // \\// adds path to gm.playpaths
 
@@ -13446,7 +13620,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 })(jQuery);
 
-(function( $ ){ 	var tp   	=  $.fn.tp$      =  $.fn.tp$ || {};	
+
+( function( $ ) { 	var tp   	=  $.fn.tp$      =  $.fn.tp$ || {};	
 					var gio  	=  tp.gio        =  tp.gio   || {};
 					var ceach  	=  tp.core.each;
 
@@ -14150,18 +14325,17 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 })();
 
-(function( ){	 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function () { 	var tp   =  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio  =  tp.gio    =  tp.gio   || {};
-	gio.gui.reset_playpaths_select_el = function () {
 
-		var gm = gio.getgs().gm;
-		if( gm.playpaths ) {
 
-				gio.domwrap.cpanel.cont_rols.playpaths.reset(
 
-					{r:{
-						options		:gm.playpaths,
-						callback	:function(i,v){
+
+	gio.gui.inject_playpath = function ( ix, gm )
+	{
+		var ppath = gm.playpaths[ ix ];
+		if( !ppath ) return;
 										/*
 										if(	!gio.session.server.message.loggedin && 
 											!gio.config.query.luckedin &&
@@ -14172,24 +14346,45 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 											return false;
 										}
 										*/
-										gio.gui.procs.lock_controls('Validating playpath text ...');
-										if(v.pos) gio.navig.in_session.round.init_round(gm, 'doreset', v.pos)
+		gio.gui.procs.lock_controls( 'Validating playpath text ...' );
+		if( ppath.pos ) gio.navig.in_session.round.init_round( gm, 'doreset', ppath.pos );
 
-										var validator_err = gio.navig.in_session.round.text2round(v.value);
-										if( validator_err ){
-											gio.cons_add(validator_err);
-										}else{
-											gio.gui.procs.do_manage_round(null,'to beginning');
-										}
-										gio.gui.procs.draw_status_and_scene();
-										gio.gui.procs.unlock_controls();
-									}
+		var validator_err = gio.navig.in_session.round.text2round( ppath.value );
+		if( validator_err )
+		{
+			gio.cons_add( validator_err );
+		}else{
+			gio.gui.procs.do_manage_round( null, 'to beginning' );
+		}
+		gio.gui.procs.draw_status_and_scene();
+		gio.gui.procs.unlock_controls();
+		return validator_err;
+	};
+	gio.gui.reset_playpaths_select_el = function ( cursor_ix )
+	{
+
+		var gm = gio.getgs().gm;
+		var validator_err = '';
+		if( gm.playpaths ) {
+
+				gio.domwrap.cpanel.cont_rols.playpaths.reset(
+
+					{r:{
+						options		: gm.playpaths,
+						callback	: function ( ix, vvdummy ) { gio.gui.inject_playpath ( ix, gm ); }
 					},
 					c:{	dont_reset_styles	:false,
-						choice_ix			:0  //,
+						choice_ix			: ( cursor_ix || 0 )  //,
 					}}
 				);
+			if( cursor_ix || cursor_ix === 0  )
+			{
+				var validator_err = gio.gui.inject_playpath ( cursor_ix, gm );
+			}
 		}
+
+		return validator_err;
+
 	};//reset_playpaths
 
 
@@ -14350,7 +14545,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 })(jQuery);
 
-(function( $ ){ 	var tp  =  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function( $ ) { 	var tp  =  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio =  tp.gio    =  tp.gio   || {};
 
 					var gstyle	=  gio.config.style;
@@ -14469,7 +14665,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 			gio.gui.procs.do_display_curr_board( 'yes' );
 
-			gio.gui.reset_playpaths_select_el( gm );
+			gio.gui.reset_playpaths_select_el();
 			gio.gui.reset_rounds_select_el( gm );
 			gio.gui.reskinnify_board();
 			gio.gui.procs.draw_status_and_scene();
@@ -14486,6 +14682,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 					var gstyle	=  gio.config.style;
 					var gdr		=  gio.domwrap.regions;
 					var gde		=  gio.domwrap.elems;
+					var gdh		=  gio.domwrap.headers;
 					
 					var bC				= 'backgroundColor';
 					var iH				= 'innerHTML';
@@ -14514,7 +14711,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		gdr.dcenter.style.display = 'block';
 		var album__cur	= gs.playalb;
 		album__cur[tL]	= gio.gui.procs.get_master_title_from_session_state();
-		gio.domwrap.headers.title_select_el[iH] = album__cur[tL];
+		gdh.title_select_el[iH] = album__cur[tL];
 
 
 		gio.core.procs.update_top_links();
@@ -14656,7 +14853,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		var won_or_not	= gm.game.won_or_not;
 		var pos			= gs.pos;
 		var WCOLOR		= gstyle.WINNING_COLOR;
-		var mcap		= gio.domwrap.headers.map_caption_text_div;
+		var mcap		= gdh.map_caption_text_div;
 		annoyance_count	+= 1;
 		var show_annoynaces =	annoyance_count < ANNOYANCE_MOVES &&
 								(new Date()).getTime() < annoyance_stop_time;
@@ -14664,16 +14861,18 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		if( !show_annoynaces ) {
 			gdr.dtopcenter.style.display = "none";
 		}
-		var rating_total	= gio.domwrap.headers.map_caption_total_div;
+		var rating_total	= gdh.map_caption_total_div;
 		var w_total			= parseInt( rating_total.style.width );
 		var relative		= gm.metrics.recalculated.relative;
 		if( relative && !isNaN( w_total ) )
 		{
+			var w_content				= gdh.map_caption_total_content_div;
 			var w_width					= Math.ceil( w_total * relative / 100.0 );
 			w_width						= Math.max( Math.min( w_total, w_width ), 1 ); 
-			var rating_div				= gio.domwrap.headers.map_caption_highlighter_div;
+			var rating_div				= gdh.map_caption_highlighter_div;
 			rating_div.style.width		= w_width + 'px';
-			var tooltip					= 'Estimated ' + gm.metrics.recalculated.ten_rounded + ' out of 10 Whirlitivity';
+			var tooltip					= gm.metrics.recalculated.ten_rounded + ' whirps out of 10. Estimated.';
+			w_content.innerHTML			= '' + gm.metrics.recalculated.ten_rounded;
 			rating_div.setAttribute		( 'title', tooltip );
 			rating_total.setAttribute	( 'title', tooltip );
 			rating_total.style.display	= 'block';
@@ -14875,19 +15074,32 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		ww.style.position='absolute';
 		ww.style.backgroundColor='#0000DD';
 		ww.style.width = '50px';
-		ww.style.height = '10px';
+		ww.style.height = '15px';
 		ww.style.top = '0px';
 		ww.style.display = 'none';
-		ww.style.fontFamily=cstyle.fontFamily;
 		dwheaders.map_caption_div.appendChild( ww );
+		tp.gui.cornerize( { r : 3 }, ww );
+		var ww = dwheaders.map_caption_total_content_div = document.createElement( 'div' );
+		ww.style.position='absolute';
+		ww.style.width = '50px';
+		ww.style.height = '15px';
+		ww.style.top = '0px';
+		ww.style.paddingTop = '2px';
+		ww.style.color='#FFFFFF';
+		ww.style.textAlign = 'center';
+		ww.style.fontFamily=cstyle.fontFamily;
+		ww.style.fontSize = '10px';
+		dwheaders.map_caption_total_div.appendChild( ww );
 		var ww = dwheaders.map_caption_highlighter_div = document.createElement( 'div' );
 		ww.style.position='absolute';
 		ww.style.backgroundColor='#FFAAAA';
 		ww.style.width = '0px';
-		ww.style.height = '10px';
+		ww.style.height = '15px';
 		ww.style.top = '0px';
 		ww.style.fontFamily=cstyle.fontFamily;
 		dwheaders.map_caption_total_div.appendChild( ww );
+		tp.gui.cornerize( { r : 3 }, ww );
+		jQuery( ww ).css( { opacity : 0.6 } );		
 		var ww = cstyle.gameHeight+cstyle.gaps;
 		dwheaders.collection_select_el=tp.form.create_select_el(
 					{r:{	parent	:gdr.dsubtop
@@ -14938,7 +15150,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 					{r:{	parent		: arg.parent,			//gde.chaser,
 							options		: arg.options,			//[{	title:'Back',
 							callback	:	function(i,option,select_el){
-												arg.callback(i,option,select_el); //gio.gui.procs.do_manage_round(null,'back');
+												arg.callback(i,option,select_el);
 												if(arg.redraw_scene){
 													gio.draw_scene();
 													gio.draw_status();
@@ -15108,51 +15320,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 									{	title:'---'
 									}
 								],
-					callback :	function( dummy, item_option, select_el ) {
-
-									gio.debly( "Ordered: " + item_option.title );
-									var gs = gio.getgs();
-									var gm = gs.gm;
-									var msol = gm.solver;
-									var options = select_el.arg.r.options;
-
-									var do_search = '';									
-									switch ( item_option.title ) {
-									case 'Search First':
-											do_search = 'first';
-											break;
-									case 'Search All':
-											do_search = 'all';
-											break;
-									case 'Resume':
-											do_search = 'resume';
-											break;
-									case 'Suspend':
-											msol.stopped_bf = true;
-											break;
-									case 'Browse':
-											msol.browser_mode = true;
-											msol.browser.do_move();
-											break;
-									case 'Go to Play':
-											msol.browser_mode = false;
-											break;
-									case 'Release Memory':
-											msol.resume_memory();
-											break;
-									}
-
-									gio.draw_status();
-
-									if( do_search && msol.inactive_bf ) {
-											gm.solver.fire_up(
-												do_search !== 'resume' && gs.round.pos,
-												do_search !== 'all'
-											);
-									}
-									gio.draw_status();
-			
-								}
+					callback :	gio.solver.fire_button_callback
 		});
 		gio.domwrap.cpanel.cont_rols.solver_control.display.innerHTML = 'Solver';
 
@@ -15166,7 +15334,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 									tooltip:'Edit current game, album, or map scripts.'
 								},
 								{	title:'Edit Map Scripts',
-									tooltip:'Edit current map in context of current collection. Key: e.'
+									tooltip:'Edit current map in context of current collection.'
 								},
 								{	title:'Edit Position',
 									tooltip:'Convers current position to board-script to be edited.'
@@ -15175,8 +15343,13 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 									tooltip:'Convers current position to co-position board-script to be edited.'
 								},
 								{	title:'Edit Playpath',
-									tooltip:'Edit or show playpath text. Key: w.'
+									tooltip:'Edit or show playpath text.'
 								},
+
+								{	title : 'Metrify Map',
+									tooltip : '(Re)metrifies currently existing path with winning position.'
+								},
+
 								{	title:'Album Definitions',
 									tooltip:'Shows Albums available to build upon.'
 								},
@@ -15208,6 +15381,9 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 											break;
 									case 'Edit Map Scripts' :	
 											gio.map_editors.edit_custom_maps( 'edit_map_scripts' );
+											break;
+									case 'Metrify Map' :	
+											gio.map_editors.metrify_map();
 											break;
 									case 'Edit Position' :	
 											gio.map_editors.edit_custom_maps( 'pos_to_map' );
@@ -15375,7 +15551,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 })(jQuery);
 
 
-(function( $ ){ 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
+
+( function( $ ) { 	var tp		=  $.fn.tp$  =  $.fn.tp$ || {};	
 					var gio		=  tp.gio    =  tp.gio   || {};
 
 					var gde		=  gio.domwrap.elems;
@@ -15493,14 +15670,9 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 					return true;
 
 
-				case 'e':
+				case 't':
 					if(gm.load	!== 'finalized') return true;
 					gio.map_editors.edit_custom_maps();
-					return false;
-
-				case 'w':
-					if(gm.load	!== 'finalized') return true;
-					gio.map_editors.display_game_path();
 					return false;
 
 				case 'p':
@@ -15585,7 +15757,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 					return true;
 
 
-				case 't': 	//round
+				case 'd': 	//round
 					var rr=gm.rounds;
 					rr.ix=(rr.ix+1)%rr.length;
 					gio.gui.reset_rounds_select_el();
@@ -15599,6 +15771,14 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 				case 's':	//to start
 					if( !a.event.shiftKey ) {
 						gio.gui.procs.do_manage_round(null,'to beginning');
+						break;
+					}
+					return true;
+	
+				case 'e':	//to end
+					if( !a.event.shiftKey )
+					{
+						gio.navig.in_map.move_till_condition( 'do redraw GUI' );
 						break;
 					}
 					return true;
@@ -16067,6 +16247,29 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		w.focus();
 	};
 	*/
+	med.metrify_map = function ( show_metrics )
+	{
+		gio.modes.play='autoplay';
+		gio.navig.in_map.move_till_condition( 'do GUI', function ( gm, round )
+		{
+			if( gm.game.won_or_not( gm, round.pos ) )
+			{
+				var metr = gm.metrics;
+				metr.optpath	= metr.optpath || {};
+				metr.optpath.p	= round.moves.length;
+				metr.optpath.i	= round.interacts;
+				metr.optpath.r	= round.peer_change;
+				gio.session.reinit.metrify( gm );
+				conadd( 'Remetrified' );
+				ggp.draw_status_and_scene();
+				if( show_metrics ) gio.gui.procs.toggle_about_map_pane();
+			}else{
+				conadd( 'No winning position is detected' );
+				ggp.draw_status_and_scene();
+			}
+		});
+
+	};
 	med.edit_custom_maps = function ( task ) {
 
 		var gs=gio.getgs();
@@ -16572,7 +16775,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 	ggp.draw_status_and_scene = function ( gm ) {
 
 		var gs = gio.getgs();
-		if( !gm || !gs.gm || gs.gm !== gm ) {
+		if( !gm || !gs.gm || gs.gm !== gm )
+		{
 			gio.draw_scene();
 			gio.draw_status();
 		}
@@ -18339,7 +18543,6 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 					var gio 	=  tp.gio    =  tp.gio   || {};
 					var core	=  tp.core;
 					var ceach	=  core.each;
-					var tpaste	=  core.tpaste;
 					var cpaste	=  core.paste_non_arrays;
 					var clonem	=  core.clone_many;
 					var exp_url	=  core.expand_to_parent;
@@ -19285,7 +19488,7 @@ gio.def.albums['flocks']={
 
 
 		"default"	:{	tile	:{	width : 60, height: 60 },
-						rules	:	"Heros push boxes of match-color ...\nBlack matches own and any color ...\nBoxes are sticky: moved box moves its neighbours ...\n"
+						rules	:	"Heros push boxes of match-color ...\nBlack matches own and any color ...\nBoxes are sticky:\npushed box moves contacting boxes.\n"
 					},
 
 		/* abandoned, see bugs ...  why ..
@@ -19958,12 +20161,14 @@ gio.def.albums['flockmasters']={
 		collections :
 		[
 				{
+					"ckey" : "team_of_two",
 					"credits" : { "title"		: "Team of Two"	},
 					"ref" : { "folder" : { fkey : 'team_of_two.txt'	} }
 				},
 
 				{
-					"ckey" : "soko_derivations", "credits" : {	"title"		: "Soko Derivations" },
+					"ckey" : "soko_derivations",
+					"credits" : {	"title"		: "Soko Derivations" },
 					"ref" : { "folder" : { fkey : 'soko_derivations.txt' } }
 				},
 

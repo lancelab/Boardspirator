@@ -11,33 +11,51 @@
 
 
 
-:::map=submarine
+
+
+
+====================                                         ===========
+==================== Locked Behind  :::solpath=308.85.49:5.2 ===========
+====================                                         ===========
+
+factory :::map=lsubmarine_locked_behind_small_crew
+:::map=locked_behind
 :::context_akey=colorban
-- # # #  # 
+- # # #  #
 - # - -  # 
-# # D @  #  #  # # #
-# - - A  -  -  - - # 
-# 2 - 3B B  1C - 2 # 
-# - - -  4  -  # # #
-# # # #  #  #  # 
+# # B -  # #  # # #
+# - C -  - -  C @ # 
+# 1 - 2  D 3  A 4 # 
+# - - -  3 -  # # #
+# # # #  # #  # 
 :::board_end
+:::title=Locked Behind
 :::author=Konstantin Kirillov
-:::title=submarine
 :::inspired_by=puzzle-0174
 :::inspired_by_link=http://www.sokobanonline.com/play/community-puzzles/pc46/one-thousand/set-2/15680_puzzle-0174
 :::inspired_by_web_site=http://www.sokobanonline.com/
 
 :::playpath=Hint
-:::solpath=299.85.52
-ulDDlddrUdrrULrRurr
+:::solpath=308.85.49
+LLdLLrrurrdLLdlluuRRllddlluu
 
-dLLdlluURRllddlluuRRluurDDllddrrrruuLLrr
-ddllUdlluRURuulDDlddrrrruuLLrrddllUdlluR
-UddrrruulLDurrddlLulluRRuulDDrddrruuLrdd
-lluUluurDDllddRUUrrrddlLrULulldRRuuulDDr
-ddrruuLrdrruLdldlluUluurDDllddRRURuLddll
-uRUrrdRdLLruulldRuuulDDrddrruRuLLrddlluU
-luurDDllddRRURuLddlluRUruulDDlddrrULuurD
+RRuulDrdddlluuRurDllddrrrruuLLrrddllUdll
+uRURuulDDlddrrrruuLLrrddllUdlluRUddrrruu
+lLDurrddlLulluRRuulDDrddrruuLrddlluUluur
+DDllddRUUrrrddlLrULulldRRuuulDDrddrruuLr
+drruLdldlluRlUluurDDllddRRlUUruulDrdrdRR
+uLLdLUddlluuRRluurDDllddrUUrRdrdLLruulld
+RuuulDDrddrruruLLrddlluRlUllddRRuLuuurDD
+
+:::dress=default
+:::skip
+
+:::dress=merry_crew
+:::title=Merry crew
+:::chosen
+:::rules=To be moved salor has to\nbe slightly tapped by captain
+:::objective=Put salors to bed
+:::story=After celebration of a glorious fishing,\nthe submarine crew needs rest,\nbut salors are so merry\nthat captain has to personally\ninvite each salor to his bed
 
 
 
@@ -48,27 +66,30 @@ luurDDllddRRURuLddlluRUruulDDlddrrULuurD
 - # # #  # 
 - # - -  # 
 # # - B  # # # #  #
-# - - -  - - E -  # 
+# - - !  - - E -  # 
 # 1 F 2D C 3 A 4@ # 
 # - - -  5 - 6 #  #
 # # # #  # # # #
 :::board_end
-:::title=little_submarine
+:::title=Little Submarine
 :::author=Konstantin Kirillov
 :::inspired_by=puzzle-0174
 :::inspired_by_link=http://www.sokobanonline.com/play/community-puzzles/pc46/one-thousand/set-2/15680_puzzle-0174
 :::inspired_by_web_site=http://www.sokobanonline.com/
+
+:::dress=default
+:::skip
 
 :::dress=merry_crew
 :::title=Merry crew
 :::chosen
 :::rules=To be moved salor has to\nbe slightly tapped by captain
 :::objective=Put everyone to bed including captain
-:::story=After celebration a glorious fishing\nthe submarine crew needs rest,\nbut salors are so merry\nthat captain has to personally\ninvite each salir to his bed\n(including himself) ....
+:::story=After celebration a glorious fishing,\nthe submarine crew needs rest,\nbut salors are so merry\nthat captain has to personally\ninvite each salor to his bed\n(including himself) ....
 
 
 :::playpath=Hint
-:::solpath=323.91.52
+:::optpath=323.91.52
 uLL
 ddlllluurDldRRRRuuLLrrddlULrrurrdLLdlluu
 
@@ -84,17 +105,17 @@ RuuulDDrddrruruLLrddlluRlUllddRRuLuuurDD
 
 
 
-:::map=little_submarine
+:::map=co_little_submarine
 :::context_akey=co_colorban
 - # # #  # 
 - # - -  # 
 # # - 2  # # # # #
-# - - @  - - 5 - # 
+# - - @  - - 5 ! # 
 # A 6 4B 3 C 1 D # 
 # - - -  E - F # #
 # # # #  # # # #
 :::board_end
-:::title=little_submarine
+:::title=CoLittle Submarine
 :::author=Konstantin Kirillov
 :::inspired_by=puzzle-0174
 :::inspired_by_link=http://www.sokobanonline.com/play/community-puzzles/pc46/one-thousand/set-2/15680_puzzle-0174
@@ -102,15 +123,19 @@ RuuulDDrddrruruLLrddlluRlUllddRRuLuuurDD
 
 :::comment=map=submarine_big_team3_generic
 
+:::dress=default
+:::skip
+
 :::dress=merry_crew
-:::dress=merry_crew
+:::title=Merry crew
+:::chosen
 :::rules=To be pulled salor has to\nbe slightly tapped by captain
 :::objective=Get everyone up to own work position
 :::story=After celebration a glorious fishing\nthe submarine crew got rest.\nHelp captain to bring\nevery salor to work position again ...
 
 
 :::playpath=Hint
-:::solpath=323.91.52
+:::optpath=323.91.52
 DDldddLdRRuurrUrRdrruulLLdldlluulDDrdddR
 
 urrddlLLuluRlUUluurrDDlddrRRddrruuULuLLd

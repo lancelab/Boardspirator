@@ -205,12 +205,13 @@
 		"space, ctrl+shitf+arrows  toggle breeds or colonies\n"+
 		"u, ctrl+arrows            toggle units\n"+
 		"a/c/M                     albums/collections/maps\n"+
-		"t                         rounds\n"+
+		"d                         rounds\n"+
 		"n                         new round\n"+
 		"f                         forward replay\n"+
 		"s                         return to start\n"+
+		"e                         return to end\n"+
 		"z                         autoplay round lazily\n"+
-		"e                         edit/create/show/import map\n"+
+		"t                         edit/create/show/import map\n"+
 		"p                         playpath ... edit/create/show/import\n"+
 		"ctrl+d                    done ... do load from map editor\n"+
 		"S                         story\n"+

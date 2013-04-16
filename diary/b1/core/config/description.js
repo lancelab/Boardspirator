@@ -23,15 +23,15 @@
 
 	gio.description = {	title : 'Boardspirator' };
 
-	gio.description = core.tpaste( gio.description, {
+	core.paste_non_arrays( gio.description, {
 
 
 		description			: gio.description.title + " (Boardy). Tool\n                 " +
 							  "to play, edit, solve, or develop board puzzles.",
-		version				: '0.1.198',
+		version				: '0.1.200',
 		version_name		: 'Mono',	// "Monoaction". In interaction, there is no significant reaction from actees back to actors.
 		maturity			: 'Draft',
-		date				: 'February 17, 2013',
+		date				: 'February 24, 2013',
 		copyright			: '(c) 2011-2013 Konstantin Kirillov',
 
 		license				: "MIT, BSD, and GPL\n							" +
@@ -59,6 +59,14 @@
 		diary			: 	"Diary contains stand-alone versions. Usual landing page is index.htm:\n\n" +
 
 
+						"   0.1.200     Feb. 24, 2013. \n" +
+						"   0.1.199     Feb. 19, 2013. tp.core.each simplified.\n" +
+						"                              //tp/in_progress/ removed.\n" +
+						"                              Based on jQ self.tpaste = function ... removed.\n" +
+						"                              Based on jQ self.tclone replaced.\n" +
+
+
+						"   0.1.198     Feb. 19, 2013. Fixes to 1.197.\n" +
 						"   0.1.197     Feb. 17, 2013. To be a Publishstone.\n" +
 						"   0.1.196     Publishstone. IE 10 is basicly runnable, image cosmetic glitch exists.\n" +
 						"   0.1.194     Feb 11. Creativity Metrics.\n" +

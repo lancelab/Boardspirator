@@ -16,6 +16,9 @@
 
 				// \\//
 
+				//. Shortcuts debug function.
+				var deb = window.tp$ && window.tp$.deb;
+
 
 
 	self.userAgent = navigator.userAgent;
@@ -65,55 +68,38 @@
 
 
 
-
-		//==============================================================================
-		//Iterator through first-level nodes.
-		//If ob has length property,	assume it is an array and iterate
-		//		 						through its elements.
-		//						        NOTE: undefined elements still trigger callback.
-		//Otherwise,					iterate through "hasOwnProperty".
-		//Behaviour						stops iteration if callback returns false.
-		//Input							
-		//			signature:	ob,callback - action: iterates with callback
-		//						ob,true,callbak	- action: iterates and builds
-		//													array/object with elements
-		//													taken as returns from 
-		//													callback
-		//Drawback				constructed collection cannot have false, '', null, 0
-		//						as its elements
-		//==============================================================================
-		self.each=function(ob,do_construct,fun){
+		///	Iterator through first-level object-nodes.
+		//					If ob has length property,	assumes it is an array and iterates
+		//			 						through array's indices.
+		//							        NOTES: undefined elements still trigger callback.
+		//									NOTES: non-number-convertible properties are skipped.
+		//					Otherwise,		iterates through "hasOwnProperty".
+		//	Behaviour:		stops iteration at conditions (*), (**).
+		//	Input:			object, callback
+		self.each = function( ob, fun )
+		{
 			if( typeof ob === 'object' && ob !== null ){
 				var ret;
 				var len=ob.length;
-				if(typeof do_construct !== 'boolean'){
-					fun=do_construct;
-					do_construct=false;
-				}
-				var constructed=null;
-				if(len || len === 0){
-					if(do_construct)constructed=[];
-					for(var i=0; i<len; i++){
-						ret=fun(i,ob[i]);
-						if( ret !== undefined && !ret ) break; 
-						if(do_construct)constructed.push(ret);
+				if( len || len === 0 )
+				{
+					for(var i=0; i<len; i++)
+					{
+						ret = fun( i, ob[ i ] );
+						if( ret !== undefined && !ret ) break; // (*)
 					}
 				}else{
-					if(do_construct)constructed={};
-					for(var p in ob){
-						if(ob.hasOwnProperty(p)){
-							ret = fun(p,ob[p]);
-							if( ret !== undefined && !ret ) break; 
-							if(do_construct)constructed[p]=ret;
+					for( var p in ob )
+					{
+						if( ob.hasOwnProperty( p ) )
+						{
+							ret = fun( p, ob[ p ] );
+							if( ret !== undefined && !ret ) break; // (**)
 						}
 					}
 				}
 			}
-			if(do_construct){
-				return constructed;
-			}else{
-				return ob;
-			}
+			return ob;
 		}
 
 
@@ -129,59 +115,96 @@
 		//			No anti-recursion protection.
 		// Returns:	combined clone of wall and paper.
 		//			In case if both wall and paper do not have arrays in their trees,
-		//			makes wall a correct paste of paper; otherwise
-		//			paste result not always correct.
+		//			makes wall a correct paste of paper;
+		//			otherwise
+		//				non-single-second-levle-references-to-object-overridee-by-array are split, or
+		//				in the case when top "wall" is such overridee, top-result and "wall" do split.
 		// Result:  wall changes
-		var paste_non_arrays = self.paste_non_arrays=function(wall,paper,level)
+		var paste_non_arrays = self.paste_non_arrays=function( wall, paper, level, skip_undefined )
 		{
 
 			level = level || 0;
 
-			// TODm slow:
+			// TODm slow?:
 			var t = typeof paper;
+
+			// if( deb ) deb( 'Entered: paper-type=' + t + '. Level = ' + level + '.' );
 
 			// On top level, pasting nothing does not change wall:
 			if(!level && (t=='undefined' || paper === null )) return wall;
 
 			if(t == 'undefined' || t == 'string' || t=='boolean' || t=='number' || t=='function' || paper === null)
 			{
-				// tp$.deb('Paper is a plain value with type='+t+'. Returning paper.');
+				// if( deb ) deb( 'Paper is a plain value with type='+t+'. Returning paper.' );
 				return paper;
 			}
 
-			// tp$.deb('Paper is non-void array or object. Checking wall.');
+			// if( deb ) deb( 'Paper is non-void array or object. What about wall? Checking ...' );
 			if(typeof wall !== 'object' || wall === null)
 			{
-				// tp$.deb('Wall is a plain value array. Making it an empty object');
+				// if( deb ) deb( 'Wall is a plain value. Making it an empty object' );
 				wall={};				
 			}
 
-			if( (paper.length || paper.length === 0) && !wall.length && wall.length !== 0 ) //TODM Bad test. Use "Array protot" instead.
+			var arr_detector = !!paper.length || paper.length === 0;
+			if( arr_detector && !wall.length && wall.length !== 0 ) //TODM Bad test. Use "Array protot" instead.
 			{
-				// tp$.deb(' Paper is an array and wall not. Generating array. Breaking paste feature.');
+				// if( deb ) deb( ' Paper is an array and wall not. Generating array. Breaking paste feature.' );
 				var wall_preserved = wall;
-				wall=[];
-				paste_non_arrays(wall,wall_preserved);
+				wall = [];
+				paste_non_arrays( wall, wall_preserved );
 			}
 
-			// tp$.deb(' Now both wall and paper are objects of the same type. Pasting their properties.');
+			// if( deb ) deb( ' Now both wall and paper are objects of the same type. Pasting their properties.' );
 			for(var p in paper )
 			{
-				if(paper.hasOwnProperty(p))
+				if(paper.hasOwnProperty( p ) ) //TODO when works on arrays? when not fails on 'length'?
 				{
-					if( p !== 'length' ) {
-						wall[p]=paste_non_arrays(wall[p],paper[p],level+1);
+					if( p !== 'length' )
+					{
+						var ww = paste_non_arrays( wall[ p ], paper[ p ], level + 1 );
+						if( ! ( ( arr_detector || skip_undefined ) && typeof ww === 'undefined' )  )
+						{
+							// if( deb ) deb( 'Assigning wall[' + p + '] = "' + ww +'".' );
+							wall[ p ] = ww;
+						}
+						//else{
+						//	if( deb ) deb( 'Skipping undefined from page-array[' + p + '].' );
+						//}
+
+
 					}else{
 						throw "Reserved word \"length\" used as a property"; //TODO
 					}
 				}
 			}
 			return wall;
-		};//cloneTwo
+		};// ...paste_non_arrays=function...
 		
 
 
+		self.tppaste = function ()
+		{
+			var len		= arguments.length; 
+			var wall	= {};
+			if( len < 1 ) return wall;
 
+			wall = arguments[0] || wall;
+			
+			for( var i=1; i < len; i++ )
+			{
+				var ob = arguments[i];
+				if( !ob || typeof ob !== 'object' ) continue;
+				wall = paste_non_arrays( wall, ob );
+				// Was:
+				//jQuery.extend(true,wall,ob);
+			}
+			return wall;
+		};
+
+
+		// //\\ clone_many and tclone: difference: tclone ignores "undefined" from
+		//		"papers", clone_many pastes them.
 		// ========================================================================
 		// Purpose: Hard cloning. Type, array or non-array, is cloned also.
 		// Input:	if no arguments or all arguments are !!-false, returns {}
@@ -198,11 +221,32 @@
 
 			for(var i=0; i<len; i++){
 				var ob=arguments[i];
-				if(!ob || typeof ob !== 'object' || ob === null)continue;
+				if( !ob || typeof ob !== 'object' ) continue;
 				wall = self.paste_non_arrays(wall, ob);
 			}
 			return wall;
 		};
+
+		/// Behaviour:	"no undefines pasted".
+		self.tclone = function ()
+		{
+			var len		= arguments.length; 
+			var wall	= {};
+			if( len < 1 ) return wall;
+
+			// return self.clone_many.apply( null, arguments ); //TODO right?
+			for( var i = 0; i < len; i++ )
+			{
+				//wall = self.t paste( wall, arguments[i] )
+				var ob = arguments[ i ];
+				if( !ob || typeof ob !== 'object' ) continue;
+				wall = self.paste_non_arrays( wall, ob, 0, 'no undefines' );
+			}
+			return wall;
+		};
+		// \\// clone_many and tclone: difference: tclone ignores "undefined" from
+
+
 
 
 		// ========================================================================

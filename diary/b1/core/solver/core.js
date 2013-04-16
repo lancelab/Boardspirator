@@ -566,5 +566,59 @@
 	};///	Creates core solver subroutines
 
 
+
+	///	Fires:	Solver Utilities.
+	//	Used:	as callback from solver-select-element-buttons,
+	//			as direct call by URL-query.solve command.
+	gio.solver.fire_button_callback = function( dummy, item_option, select_el_dummy )
+	{
+									gio.debly( "Ordered: " + item_option.title );
+									var gs = gio.getgs();
+									var gm = gs.gm;
+									var msol = gm.solver;
+									//var options = select_el.arg.r.options;
+
+									var do_search = '';									
+									switch ( item_option.title ) {
+									case 'Search First':
+											do_search = 'first';
+											break;
+									case 'Search All':
+											do_search = 'all';
+											break;
+									case 'Resume':
+											do_search = 'resume';
+											break;
+									case 'Suspend':
+											msol.stopped_bf = true;
+											break;
+									case 'Browse':
+											msol.browser_mode = true;
+											//. does empty move
+											msol.browser.do_move();
+											break;
+									case 'Go to Play':
+											msol.browser_mode = false;
+											break;
+									case 'Release Memory':
+											msol.resume_memory();
+											break;
+									}
+
+									gio.draw_status();
+
+									if( do_search && msol.inactive_bf ) {
+											gm.solver.fire_up(
+												do_search !== 'resume' && gs.round.pos,
+												do_search !== 'all'
+											);
+									}
+									gio.draw_status();
+			
+
+	};
+
+
+
 })();
 
