@@ -19,8 +19,8 @@
 
 			if( doclean ) console_text = '';
 			// tp.core.each(arguments,function(i,msg){					// ABANDONED
-			if( window.console && window.console.log && msg !== '' ) {  // ***** safe console
-				console.log( msg );                                     // ***** safe console
+			if( window.console && window.console.log && msg !== '' ) {  // *** browser safe c onsole.log string
+				console.log( msg );                                     // *** browser safe c onsole.log string
 			}
 			console_text += "\n" + msg;
 			//. this "if" makes code slow, but is output to screen a rare exception ?

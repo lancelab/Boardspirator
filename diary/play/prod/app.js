@@ -44,34 +44,38 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
 
 
 
-(function(){  var tp$ = window.tp$ = window.tp$ || {};
-    var CALLS_LIMIT				=1000;
-	var TRUNCATE_STRING_TO		=2000;
-    var SIZE_LIMIT				=50000;
-    var LEVEL_LIMIT				=10;
-	var DEFAULT_DEBUG_WINDOW_ID	='tpdebug';	//CSS-id
-	var debug_window= null;
-	var collected_in_session='';
+( function () {  var tp$ = window.tp$ = window.tp$ || {};
+    var CALLS_LIMIT				= 1000;
+	var TRUNCATE_STRING_TO		= 2000;
+    var SIZE_LIMIT				= 50000;
+    var LEVEL_LIMIT				= 10;
+	var DEFAULT_DEBUG_WINDOW_ID	= 'tpdebug';	//CSS-id
+
+	
+	var debug_window			= null;	// Debug-console: DOM-element where debug text will be shown to user
+	var collected_in_session	= '';
 	var calls_count;
 	var r;
 
-    var e$ = function(id){ return document.getElementById( id ); };
-	var space=function(length){
-		var INDENT='                                                                                                           	                                                                              ';
-		return INDENT.substr(0,length);
+    var e$		= function ( id ) { return document.getElementById( id ); };
+	var INDENT	= '                                                                                                           	                                                                              ';
+	var space = function( length )
+	{
+		return INDENT.substr( 0, length );
 	};
-	var indentize=function(s,length){
-		if(s.length>TRUNCATE_STRING_TO){
+	var indentize = function( s, length )
+	{
+		if( s.length > TRUNCATE_STRING_TO )
+		{
 			s=s.substr(0,TRUNCATE_STRING_TO)+' ... ';
 		}
 		return s.replace("\n", "\n" + space(length));
 	};
 
-	var c_onsole_log = 
-		!IE && window.console &&
-		typeof console !== 'undefined' &&
-		console.log;  // *** safe c onsole.log	
-	var c_onsole_clear = console.log &&  console.clear;  // *** safe c onsole.log
+	var c_onsole_log =	!IE && window.console &&
+						typeof console !== 'undefined' &&
+						console.log;						// *** browser safe c onsole.log string
+	var c_onsole_clear = c_onsole_log && console.clear;		// *** browser safe c onsole.clear string
 	var setup_debug_window=function(debug_window_, debug_window_parent_){
 		if(debug_window)return;
         debug_window = debug_window_ || e$(DEFAULT_DEBUG_WINDOW_ID);
@@ -164,10 +168,14 @@ return(!i||i!==r&&!b.contains(r,i))&&(e.type=o.origType,n=o.handler.apply(this,a
 		}
 		for(var i=0; i<arguments.length; i++) debug(arguments[i]); 
 	};
-	window.cccc = function () {
-		if( !c_onsole_log ) return;
-		for( var ii=0; ii < arguments.length; ii++) {
-			c_onsole_log( arguments[ ii ] );
+	if( !tp$.production_mode )
+	{	/// reduces annoying name c onsole.log to shorter
+		window.cccc = function ()
+		{
+			if( !c_onsole_log ) return;
+			for( var ii=0; ii < arguments.length; ii++) {
+				c_onsole_log( arguments[ ii ] );
+			}
 		}
 	}
 
@@ -1330,7 +1338,11 @@ if( true ) {
 		{
 			return prot + '://' + host + ( port && ( ':' + port ) );
 		};
-		self.do_match_prot_host_port = function( p_h_p, prot, host, port )
+		var strip_www = function ( link )
+		{
+			return link.replace( /^([^:]*:\/\/)www\./, "$1" );
+		};
+		self.do_match_prot_host_port = function( p_h_p, prot, host, port, do_strip_www )
 		{
 			if( !p_h_p )
 			{
@@ -1338,7 +1350,12 @@ if( true ) {
 				if( port === '80' ) port = '';
 				p_h_p = self.build_p_h_p ( prot, host, port );
 			}
-			return ( p_h_p.toLowerCase() === self.effective_p_h_p );
+			if( do_strip_www )
+			{
+				return strip_www( p_h_p.toLowerCase() ) === strip_www( self.effective_p_h_p );
+			}else{
+				return ( p_h_p.toLowerCase() === self.effective_p_h_p );
+			}
 		};
 		self.reset_path_from_land_to_app_root = function ( from_land_to_root ) {
 			self.path_from_page_to_app_root		=	from_land_to_root;
@@ -2954,7 +2971,9 @@ if( true ) {
 			'localhost/play'	: 'prod',
 			'localhost'			: 'dev',
 			'landkey.net'		: 'prod',
-			'whirlio.com'		: 'prod'
+			'whirlio.com'		: 'prod',
+			'www.landkey.net'	: 'prod',
+			'www.whirlio.com'	: 'prod'
 		}
 
 	};
@@ -3559,7 +3578,7 @@ if( true ) {
 
 		description			: gio.description.title + " (Boardy). Tool\n" +
 							  "to play, edit, solve, or develop board puzzles.",
-		version				: '0.1.215',
+		version				: '0.1.216',
 		version_name		: 'Mono',	// "Monoaction". In interaction, there is no significant reaction from actees back to actors.
 		maturity			: 'Draft',
 		date				: 'April 16, 2013',
@@ -3575,7 +3594,7 @@ if( true ) {
 		usage				: "Do land browser on " + tp.core.app_webpath_noindex + '/index.htm',
 		web_site			: 'http://landkey.net/gio/',
 		email				: 'beaverscript(a)landkey(.)net',
-		developer_comment	: gio.description.title + " name is too long." + 
+		developer_comment	: gio.description.title + " name is too long.\n" + 
 							  "Ruby is not required, but helpful for deployment scripts.",
 		credits				:[	
 								{	"title"		: "jQuery",
@@ -3686,7 +3705,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 	var query 	=	conf.query = core.clone_many( conf.query, core.getQueryKeyPairs('integerify') );
 	gio.debug	=	gio.debug || query.debug;
 	gio.debly	=	function ( message ) { if( gio.debug) gio.cons_add( message ); };
-	gio.debtp	=	function ( message ) { if( gio.debug) window.tp$.deb( message ); };
+	gio.debtp	=	function ()			 { if( gio.debug) window.tp$.deb.apply( this, arguments ); };
 	gio.debsol	=	function ( message ) { if( gio.debug) gio.solver_cons_add( message ); };		
 	gio.debtp( query );
 	if( window.tp$ && window.tp$.server_message )
@@ -3719,7 +3738,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 	srv_msg.login_url	= ww_prv.p_h_p + '/login';
 	srv_msg.logout_url	= ww_prv.p_h_p + '/logout';
 	var ww = ww_prv; 
-	if( core.do_match_prot_host_port( ww_prv.p_h_p ) )
+	if( core.do_match_prot_host_port( ww_prv.p_h_p, null, null, null, 'strip www' ) )
 	{
 		env.com = ww;
 		conf.google_apps.enabled = false;
@@ -3727,8 +3746,9 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 
 		core.each( ww_env, function ( kk, vv )
 		{
-			if( core.do_match_prot_host_port( vv.p_h_p ) )
+			if( core.do_match_prot_host_port( vv.p_h_p, null, null, null, 'strip www' ) )
 			{
+				gio.debtp( 'matched: ' + vv.p_h_p + ' name=' + vv.name);
 				env.com = vv;
 				return false;
 			}
@@ -8089,8 +8109,8 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 		var basic_cons = self.cons_add = function( msg, doclean ) {
 
 			if( doclean ) console_text = '';
-			if( window.console && window.console.log && msg !== '' ) {  // ***** safe console
-				console.log( msg );                                     // ***** safe console
+			if( window.console && window.console.log && msg !== '' ) {  // *** browser safe c onsole.log string
+				console.log( msg );                                     // *** browser safe c onsole.log string
 			}
 			console_text += "\n" + msg;
 			if( gde[ div_name ] ) {
@@ -8835,7 +8855,7 @@ jQuery('document').ready( jQuery.fn.tp$.gio.session.init.wrap );
 																fontFamily	:cstyle.fontFamily
 															}
 												},
-									height_of_box_limit : 300 //TODm 500 collides with console. Console is on top.
+									height_of_box_limit : 300 //TODm 500 collides with c onsole. Console is on top.
 								}	
 					}}
 		);

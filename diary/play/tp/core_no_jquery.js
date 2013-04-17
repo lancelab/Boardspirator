@@ -589,12 +589,18 @@
 			return prot + '://' + host + ( port && ( ':' + port ) );
 		};
 
+		/// Helper. Strips "www." from http://www.... .
+		var strip_www = function ( link )
+		{
+			return link.replace( /^([^:]*:\/\/)www\./, "$1" );
+		};
+
 
 		/// Matches lo_my_host against p_h_p
 		//	Input:	Either prot, host, port or
 		//			p_h_p as prot://host:port
 		//	Note:	port :80 is reduced to '' when matching.
-		self.do_match_prot_host_port = function( p_h_p, prot, host, port )
+		self.do_match_prot_host_port = function( p_h_p, prot, host, port, do_strip_www )
 		{
 			if( !p_h_p )
 			{
@@ -602,7 +608,12 @@
 				if( port === '80' ) port = '';
 				p_h_p = self.build_p_h_p ( prot, host, port );
 			}
-			return ( p_h_p.toLowerCase() === self.effective_p_h_p );
+			if( do_strip_www )
+			{
+				return strip_www( p_h_p.toLowerCase() ) === strip_www( self.effective_p_h_p );
+			}else{
+				return ( p_h_p.toLowerCase() === self.effective_p_h_p );
+			}
 		};
 
 		/// (re)sets primary paths:

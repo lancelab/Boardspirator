@@ -1,69 +1,69 @@
 
-//==================================================================================
-//This is:		a tiny custom debugger
-//Purpose:		1.	when no console, Firebug, or other debugger available,
-//				2.	to timestamp execution of a code.
-//				3.	stashes messages while no <body> yet loaded, but
-//					able to paste them on <body> later
-//Dependencies: none. Does not depend on btb.
-//Package:		btb. 
-//For:			License, Copyright, WebSite, Contact, see this "Package"
-//Pollution:	of global namespace is a name window.tp$
-//Usagel:  		tp$.deb( arg1, arg2, ..., argN ), tp$.debc..., 
-//				tp$.debug(ob [, title [, debug_window_ [, debug_window_parent_
-//								[, level_restriction]]]]);
+//============================================================================================
+//	This is:		a tiny custom debugger
+//	Purpose:		1.	when no console, Firebug, or other debugger available,
+//					2.	to timestamp execution of a code.
+//					3.	stashes messages while no <body> yet loaded, but
+//						able to paste them on <body> later
+//	Dependencies:	none. Does not depend on tp
+//	Package:		tp. 
+//	For:			License, Copyright, WebSite, Contact, see this "Package"
+//	Pollutes:		global namespace with window.tp$ and non-production mode with window.cccc
+//	Usagel:  		tp$.deb( arg1, arg2, ..., argN ), tp$.debc..., 
+//					tp$.debug(	ob	[, title [, debug_window_ [, debug_window_parent_
+//									[, level_restriction  ] ] ] ] );
 //					level_restriction - deepness of displaying ob-tree
-//==================================================================================
+//=============================================================================================
 
 
 
 
 
-(function(){  var tp$ = window.tp$ = window.tp$ || {};
+( function () {  var tp$ = window.tp$ = window.tp$ || {};
 
-	//==============================================================================
-	// Default setup
-	//==============================================================================
-    var CALLS_LIMIT				=1000;
-	var TRUNCATE_STRING_TO		=2000;
-    var SIZE_LIMIT				=50000;
-    var LEVEL_LIMIT				=10;
-	var DEFAULT_DEBUG_WINDOW_ID	='tpdebug';	//CSS-id
+	//: Default setup
+    var CALLS_LIMIT				= 1000;
+	var TRUNCATE_STRING_TO		= 2000;
+    var SIZE_LIMIT				= 50000;
+    var LEVEL_LIMIT				= 10;
+	var DEFAULT_DEBUG_WINDOW_ID	= 'tpdebug';	//CSS-id
 
 
-	//==============================================================================
-	// Auxilairy variables and functions
-	//==============================================================================
-	//Debug-console: DOM-element where debug text will be shown to user
-	var debug_window= null;
-	var collected_in_session='';
+
+
+	//	//\\	Helper functions and variables   //////////////////
+
+	
+	var debug_window			= null;	// Debug-console: DOM-element where debug text will be shown to user
+	var collected_in_session	= '';
 	var calls_count;
 	var r;
 
-    var e$ = function(id){ return document.getElementById( id ); };
-	//Purpose:	generate blank string comprised with char(32) characters.
-	//Input:	length
-	var space=function(length){
-		var INDENT='                                                                                                           	                                                                              ';
-		return INDENT.substr(0,length);
+    var e$		= function ( id ) { return document.getElementById( id ); };
+
+	///	Purpose:	generate blank string comprised with char(32) characters.
+	//	Input:		length
+	var INDENT	= '                                                                                                           	                                                                              ';
+	var space = function( length )
+	{
+		return INDENT.substr( 0, length );
 	};
 	
-	//Purpose:	apparently to add nice indent for tree nodes in deep levels:
-	var indentize=function(s,length){
-		if(s.length>TRUNCATE_STRING_TO){
+	///	Purpose:	apparently to add nice indent for tree nodes in deep levels
+	var indentize = function( s, length )
+	{
+		if( s.length > TRUNCATE_STRING_TO )
+		{
 			s=s.substr(0,TRUNCATE_STRING_TO)+' ... ';
 		}
 		return s.replace("\n", "\n" + space(length));
 	};
 
-	var c_onsole_log = 
-		!IE && window.console &&
-		typeof console !== 'undefined' &&
-		console.log;  // *** safe c onsole.log	
-	var c_onsole_clear = console.log &&  console.clear;  // *** safe c onsole.log
-	//==============================================================================
-	// End of auxilairy variables and functions
-	//==============================================================================
+	var c_onsole_log =	!IE && window.console &&
+						typeof console !== 'undefined' &&
+						console.log;						// *** browser safe c onsole.log string
+	var c_onsole_clear = c_onsole_log && console.clear;		// *** browser safe c onsole.clear string
+	//	\\//	Helper functions and variables   //////////////////
 
 
 
@@ -226,12 +226,16 @@
 	// E x t e r n a l   c a l l s
 	//==============================================================
 
-
-	//: reduces annoying name c onsole.log to shorter
-	window.cccc = function () {
-		if( !c_onsole_log ) return;
-		for( var ii=0; ii < arguments.length; ii++) {
-			c_onsole_log( arguments[ ii ] );
+	///	production_mode usually passed from "PHP or ROR server" if any
+	//	before tp$ content is filled
+	if( !tp$.production_mode )
+	{	/// reduces annoying name c onsole.log to shorter
+		window.cccc = function ()
+		{
+			if( !c_onsole_log ) return;
+			for( var ii=0; ii < arguments.length; ii++) {
+				c_onsole_log( arguments[ ii ] );
+			}
 		}
 	}
 

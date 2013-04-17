@@ -109,7 +109,7 @@
 																fontFamily	:cstyle.fontFamily
 															}
 												},
-									height_of_box_limit : 300 //TODm 500 collides with console. Console is on top.
+									height_of_box_limit : 300 //TODm 500 collides with c onsole. Console is on top.
 								}	
 					}}
 		);

@@ -66,4 +66,6 @@ gave us working games on our local PC desktop:
   http://localhost/ww/Boardspirator/diary/55_NewYearEdition/
 
 
-
+############### pitfall:
+	instead of "git history" 
+	there is a "git log"

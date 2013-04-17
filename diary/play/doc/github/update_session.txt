@@ -1,5 +1,7 @@
 
-example of good update session for version 1.165
+######################## example of good update session for version 1.165
+
+
 naladchik@Acerfrog:~/w$ history 100
 
   465  git clone git@github.com:lancelab/Boardspirator.git
@@ -18,4 +20,10 @@ naladchik@Acerfrog:~/w$ history 100
   496  git clone git@github.com:lancelab/Boardspirator.git
 
   ... compare with original
+
+
+
+######################## checking out former versions:
+
+git checkout -b 200 7cd1cbf16e90655a9decad2b65e4c5d83bff6e2c
 

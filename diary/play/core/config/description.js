@@ -27,7 +27,7 @@
 
 		description			: gio.description.title + " (Boardy). Tool\n" +
 							  "to play, edit, solve, or develop board puzzles.",
-		version				: '0.1.215',
+		version				: '0.1.216',
 		version_name		: 'Mono',	// "Monoaction". In interaction, there is no significant reaction from actees back to actors.
 		maturity			: 'Draft',
 		date				: 'April 16, 2013',

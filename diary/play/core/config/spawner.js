@@ -19,7 +19,7 @@
 
 	//: 			shortcuts for conditional debug messages
 	gio.debly	=	function ( message ) { if( gio.debug) gio.cons_add( message ); };
-	gio.debtp	=	function ( message ) { if( gio.debug) window.tp$.deb( message ); };
+	gio.debtp	=	function ()			 { if( gio.debug) window.tp$.deb.apply( this, arguments ); };
 	gio.debsol	=	function ( message ) { if( gio.debug) gio.solver_cons_add( message ); };		
 	gio.debtp( query );
 
@@ -67,7 +67,7 @@
 
 	/// First, we check are we community private site.
 	var ww = ww_prv; 
-	if( core.do_match_prot_host_port( ww_prv.p_h_p ) )
+	if( core.do_match_prot_host_port( ww_prv.p_h_p, null, null, null, 'strip www' ) )
 	{
 		env.com = ww;
 		conf.google_apps.enabled = false;
@@ -77,8 +77,9 @@
 
 		core.each( ww_env, function ( kk, vv )
 		{
-			if( core.do_match_prot_host_port( vv.p_h_p ) )
+			if( core.do_match_prot_host_port( vv.p_h_p, null, null, null, 'strip www' ) )
 			{
+				gio.debtp( 'matched: ' + vv.p_h_p + ' name=' + vv.name);
 				env.com = vv;
 				return false;
 			}

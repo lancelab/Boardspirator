@@ -87,7 +87,9 @@
 			'localhost/play'	: 'prod',
 			'localhost'			: 'dev',
 			'landkey.net'		: 'prod',
-			'whirlio.com'		: 'prod'
+			'whirlio.com'		: 'prod',
+			'www.landkey.net'	: 'prod',
+			'www.whirlio.com'	: 'prod'
 		}
 
 	};
